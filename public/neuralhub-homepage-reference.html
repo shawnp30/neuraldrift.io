@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuralHub.ai — Train. Build. Master.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b10;
+    --surface: #0d1117;
+    --border: #1a2030;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #f97316;
+    --text: #e2e8f0;
+    --muted: #4a5568;
+    --card: #111827;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* GRID OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+    background: rgba(8,11,16,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  .logo span { color: var(--accent); }
+
+  nav ul {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  nav ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  nav ul a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #000 !important;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: 500 !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.85; color: #000 !important; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 40px 80px;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(0,229,255,0.08) 0%, rgba(124,58,237,0.06) 50%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,229,255,0.08);
+    border: 1px solid rgba(0,229,255,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .badge-dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(1.4); }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 12px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero h1 .line2 {
+    display: block;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 520px;
+    line-height: 1.6;
+    margin: 24px auto 40px;
+    font-weight: 300;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+    padding: 14px 32px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(0,229,255,0.2);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(0,229,255,0.35);
+  }
+
+  .btn-ghost {
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 14px 32px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: border-color 0.2s, color 0.2s;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* STATS STRIP */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+    margin-top: 80px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    animation: fadeUp 0.6s 0.4s ease both;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 800px;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.04em;
+  }
+  .stat-num span { color: var(--accent); }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTION COMMON */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 100px 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 480px;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* FOCUS AREAS */
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 60px;
+  }
+
+  .focus-card {
+    background: var(--card);
+    padding: 36px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+    cursor: default;
+  }
+  .focus-card:hover { background: #151e2d; }
+
+  .focus-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .focus-card:hover::before { opacity: 1; }
+
+  .focus-icon {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .focus-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+
+  .focus-card p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .focus-tag {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: rgba(0,229,255,0.07);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  /* TWO COL FEATURE */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .feature-terminal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+  }
+
+  .terminal-bar {
+    background: #1a2030;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .t-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .t-dot.r { background: #ff5f57; }
+  .t-dot.y { background: #febc2e; }
+  .t-dot.g { background: #28c840; }
+  .t-title {
+    margin-left: 8px;
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+
+  .terminal-body {
+    padding: 24px;
+    line-height: 2;
+  }
+  .t-comment { color: #4a5568; }
+  .t-keyword { color: var(--accent2); }
+  .t-fn { color: var(--accent); }
+  .t-str { color: #a3e635; }
+  .t-num { color: var(--accent3); }
+  .t-out { color: #94a3b8; }
+
+  /* PIPELINE SECTION */
+  .pipeline {
+    background: linear-gradient(135deg, rgba(0,229,255,0.03), rgba(124,58,237,0.03));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 48px;
+    margin-top: 60px;
+  }
+
+  .pipeline-steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 40px;
+    flex-wrap: wrap;
+  }
+
+  .p-step {
+    flex: 1;
+    min-width: 120px;
+    text-align: center;
+    position: relative;
+  }
+
+  .p-step::after {
+    content: '→';
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent);
+    font-size: 1.2rem;
+    opacity: 0.4;
+  }
+  .p-step:last-child::after { display: none; }
+
+  .p-icon {
+    width: 52px; height: 52px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    margin: 0 auto 12px;
+  }
+
+  .p-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .p-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  /* GUIDES GRID */
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 60px;
+  }
+
+  .guide-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+  .guide-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0,229,255,0.3);
+  }
+
+  .guide-difficulty {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+  .diff-beginner { background: rgba(163,230,53,0.1); color: #a3e635; }
+  .diff-intermediate { background: rgba(249,115,22,0.1); color: var(--accent3); }
+  .diff-advanced { background: rgba(124,58,237,0.1); color: #a78bfa; }
+
+  .guide-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .guide-card p {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .guide-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* COMPUTE BRIDGE */
+  .compute-bridge {
+    background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(0,229,255,0.05));
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 12px;
+    padding: 64px;
+    text-align: center;
+    margin: 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .compute-bridge::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12), transparent 70%);
+    pointer-events: none;
+  }
+
+  .bridge-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: #a78bfa;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .compute-bridge h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+  .compute-bridge h2 span { color: #a78bfa; }
+
+  .compute-bridge p {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .btn-purple {
+    background: var(--accent2);
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 0 30px rgba(124,58,237,0.3);
+    display: inline-block;
+  }
+  .btn-purple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 50px rgba(124,58,237,0.5);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    color: #fff;
+  }
+  .footer-logo span { color: var(--accent); }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+  .footer-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* SCROLL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Neural<span>Hub</span>.ai</div>
+  <ul>
+    <li><a href="#">Guides</a></li>
+    <li><a href="#">LoRA Library</a></li>
+    <li><a href="#">Pipelines</a></li>
+    <li><a href="#">Datasets</a></li>
+    <li><a href="#">Tools</a></li>
+    <li><a href="#" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    v2.3 · LTX Video · FLUX · SD3.5 Supported
+  </div>
+  <h1>
+    Train. Build.<br>
+    <span class="line2">Master AI.</span>
+  </h1>
+  <p class="hero-sub">The hub for building, training, and deploying AI systems. LoRA creation, ComfyUI pipelines, datasets, and optimization — all in one place.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start Building →</a>
+    <a href="#" class="btn-ghost">Browse Guides</a>
+  </div>
+  <div class="stats">
+    <div class="stat-item">
+      <div class="stat-num">4<span>K+</span></div>
+      <div class="stat-label">Workflows Published</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">180<span>+</span></div>
+      <div class="stat-label">LoRA Models</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">92<span>K</span></div>
+      <div class="stat-label">Builders</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">11<span>ms</span></div>
+      <div class="stat-label">Avg. Inference</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOCUS AREAS -->
+<section>
+  <div class="section-label reveal">// Focus Areas</div>
+  <h2 class="section-title reveal">Everything you need to<br>go from 0 to deployed.</h2>
+  <p class="section-desc reveal">From dataset curation to model optimization — every layer of the AI stack, documented and ready.</p>
+
+  <div class="focus-grid reveal">
+    <div class="focus-card">
+      <span class="focus-icon">🧠</span>
+      <h3>AI Model Training</h3>
+      <p>End-to-end training guides for image, video, and language models with hardware-tuned configs.</p>
+      <span class="focus-tag">Training</span>
+    </div>
+    <div class="focus-card">
+      <span class="focus-icon">🔧</span>
+      <h3>LoRA Creation</h3>
+      <p>Build style, character, and concept LoRAs from scratch. Dreambooth, Kohya, and custom pipelines.</p>
+      <span class="focus-tag">Fine-tuning</span>
+    </div>
+    <div class="focus-card">
+      <span class="focus-icon">⚡</span>
+      <h3>Workflow Pipelines</h3>
+      <p>ComfyUI node graphs, AnimateDiff chains, LTX Video flows — shareable and version-controlled.</p>
+      <span class="focus-tag">ComfyUI</span>
+    </div>
+    <div class="focus-card">
+      <span class="focus-icon">🗃️</span>
+      <h3>Dataset Tooling</h3>
+      <p>Curate, caption, tag, and structure training datasets for maximum model quality.</p>
+      <span class="focus-tag">Datasets</span>
+    </div>
+    <div class="focus-card">
+      <span class="focus-icon">📦</span>
+      <h3>Tooling & Scripts</h3>
+      <p>Open-source utilities for batch inference, VRAM optimization, model merging, and quantization.</p>
+      <span class="focus-tag">Utilities</span>
+    </div>
+    <div class="focus-card">
+      <span class="focus-icon">🚀</span>
+      <h3>Optimization & Deploy</h3>
+      <p>GGUF, ONNX, TensorRT conversions. Serve models locally or in the cloud at scale.</p>
+      <span class="focus-tag">Deployment</span>
+    </div>
+  </div>
+</section>
+
+<!-- CODE FEATURE -->
+<section>
+  <div class="two-col reveal">
+    <div>
+      <div class="section-label">// Practical, Not Theoretical</div>
+      <h2 class="section-title">Every guide ships with real code.</h2>
+      <p class="section-desc">No fluff. Every article includes tested configs, working scripts, and hardware benchmarks on real consumer GPUs — RTX 3080 to 5090.</p>
+      <br><br>
+      <a href="#" class="btn-primary">Browse Code Guides →</a>
+    </div>
+    <div class="feature-terminal">
+      <div class="terminal-bar">
+        <span class="t-dot r"></span>
+        <span class="t-dot y"></span>
+        <span class="t-dot g"></span>
+        <span class="t-title">lora_train.py — NeuralHub Guide #047</span>
+      </div>
+      <div class="terminal-body">
+        <div><span class="t-comment"># LoRA training config — RTX 5080 optimized</span></div>
+        <div><span class="t-keyword">from</span> <span class="t-fn">neuralhub</span> <span class="t-keyword">import</span> LoRATrainer</div>
+        <div>&nbsp;</div>
+        <div>trainer = <span class="t-fn">LoRATrainer</span>(</div>
+        <div>&nbsp;&nbsp;model=<span class="t-str">"flux-dev"</span>,</div>
+        <div>&nbsp;&nbsp;rank=<span class="t-num">32</span>,</div>
+        <div>&nbsp;&nbsp;alpha=<span class="t-num">16</span>,</div>
+        <div>&nbsp;&nbsp;dataset=<span class="t-str">"./my_dataset"</span>,</div>
+        <div>&nbsp;&nbsp;epochs=<span class="t-num">10</span>,</div>
+        <div>&nbsp;&nbsp;vram_budget=<span class="t-str">"16GB"</span></div>
+        <div>)</div>
+        <div>&nbsp;</div>
+        <div>trainer.<span class="t-fn">train</span>() <span class="t-comment"># ~4h on RTX 5080</span></div>
+        <div>&nbsp;</div>
+        <div class="t-out">✓ Epoch 10/10 — Loss: 0.0023</div>
+        <div class="t-out">✓ Saved: ./output/my_lora_v1.safetensors</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section>
+  <div class="section-label reveal">// Video Pipeline</div>
+  <h2 class="section-title reveal">From prompt to publish<br>in under 15 seconds.</h2>
+  <div class="pipeline reveal">
+    <div class="pipeline-steps">
+      <div class="p-step">
+        <div class="p-icon">✍️</div>
+        <div class="p-name">Prompt</div>
+        <div class="p-sub">Scene Design</div>
+      </div>
+      <div class="p-step">
+        <div class="p-icon">⚙️</div>
+        <div class="p-name">ComfyUI</div>
+        <div class="p-sub">Workflow</div>
+      </div>
+      <div class="p-step">
+        <div class="p-icon">🎬</div>
+        <div class="p-name">LTX Video</div>
+        <div class="p-sub">Generation</div>
+      </div>
+      <div class="p-step">
+        <div class="p-icon">🎞️</div>
+        <div class="p-name">CapCut</div>
+        <div class="p-sub">Edit + Hook</div>
+      </div>
+      <div class="p-step">
+        <div class="p-icon">📱</div>
+        <div class="p-name">Publish</div>
+        <div class="p-sub">Shorts / TikTok</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUIDES -->
+<section>
+  <div class="section-label reveal">// Latest Guides</div>
+  <h2 class="section-title reveal">Start with the essentials.</h2>
+
+  <div class="guides-grid reveal">
+    <a href="#" class="guide-card">
+      <span class="guide-difficulty diff-beginner">Beginner</span>
+      <h4>ComfyUI Complete Setup: RTX 5080 Edition</h4>
+      <p>Install, configure, and benchmark your first ComfyUI workflow with optimal VRAM settings.</p>
+      <div class="guide-meta"><span>⏱ 12 min</span><span>·</span><span>Image Gen</span></div>
+    </a>
+    <a href="#" class="guide-card">
+      <span class="guide-difficulty diff-intermediate">Intermediate</span>
+      <h4>Train Your First FLUX LoRA in Under 6 Hours</h4>
+      <p>Dataset prep, Kohya config, training loop, and quality evaluation from scratch.</p>
+      <div class="guide-meta"><span>⏱ 28 min</span><span>·</span><span>LoRA Training</span></div>
+    </a>
+    <a href="#" class="guide-card">
+      <span class="guide-difficulty diff-advanced">Advanced</span>
+      <h4>LTX Video 2.3: Cinematic Action Sequences</h4>
+      <p>Build chase and action scenes with consistent motion, camera lock, and temporal coherence.</p>
+      <div class="guide-meta"><span>⏱ 35 min</span><span>·</span><span>Video Gen</span></div>
+    </a>
+    <a href="#" class="guide-card">
+      <span class="guide-difficulty diff-beginner">Beginner</span>
+      <h4>Dataset Curation: Captioning at Scale</h4>
+      <p>Auto-caption 1000+ images with WD14 tagger and build clean training data fast.</p>
+      <div class="guide-meta"><span>⏱ 15 min</span><span>·</span><span>Datasets</span></div>
+    </a>
+    <a href="#" class="guide-card">
+      <span class="guide-difficulty diff-intermediate">Intermediate</span>
+      <h4>AnimateDiff + LoRA Character Consistency</h4>
+      <p>Lock a character across frames with motion modules and custom LoRA injection.</p>
+      <div class="guide-meta"><span>⏱ 22 min</span><span>·</span><span>Animation</span></div>
+    </a>
+    <a href="#" class="guide-card">
+      <span class="guide-difficulty diff-advanced">Advanced</span>
+      <h4>Multi-GPU Inference: 3x Speed, Same VRAM</h4>
+      <p>Route compute across RTX workstation + laptop for parallel batch inference workflows.</p>
+      <div class="guide-meta"><span>⏱ 40 min</span><span>·</span><span>Optimization</span></div>
+    </a>
+  </div>
+</section>
+
+<!-- COMPUTE BRIDGE -->
+<div style="padding: 0 40px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+  <div class="compute-bridge reveal">
+    <div class="bridge-label">// Powered by ComputeAtlas</div>
+    <h2>Need more <span>GPU</span> power?</h2>
+    <p>When your local rig hits its limits, route heavy training runs and batch inference jobs to ComputeAtlas — our GPU compute partner.</p>
+    <a href="#" class="btn-purple">Explore ComputeAtlas →</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Neural<span>Hub</span>.ai</div>
+  <ul class="footer-links">
+    <li><a href="#">Guides</a></li>
+    <li><a href="#">LoRAs</a></li>
+    <li><a href="#">Pipelines</a></li>
+    <li><a href="#">Datasets</a></li>
+    <li><a href="#">ComputeAtlas</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 NeuralHub.ai</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
