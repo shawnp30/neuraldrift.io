@@ -30,20 +30,25 @@ export interface ExportConfig {
 
 function getLTXTemplate(): object {
   return {
-    last_node_id: 8,
-    last_link_id: 9,
+    last_node_id: 13,
+    last_link_id: 15,
     nodes: [
-      { id: 1, type: "CheckpointLoaderSimple", pos: [26, 474], size: {"0": 315, "1": 98}, flags: {}, order: 0, mode: 0, inputs: [], outputs: [{"name":"MODEL","type":"MODEL","links":[1],"slot_index":0},{"name":"CLIP","type":"CLIP","links":[2,3],"slot_index":1},{"name":"VAE","type":"VAE","links":[4],"slot_index":2}], properties: {}, widgets_values: ["REPLACE_MODEL"] },
-      { id: 2, type: "CLIPTextEncode", pos: [415, 186], size: {"0": 422, "1": 164}, flags: {}, order: 2, mode: 0, inputs: [{"name":"clip","type":"CLIP","link":2}], outputs: [{"name":"CONDITIONING","type":"CONDITIONING","links":[5],"slot_index":0}], properties: {}, widgets_values: ["REPLACE_POSITIVE"] },
-      { id: 3, type: "CLIPTextEncode", pos: [415, 386], size: {"0": 422, "1": 164}, flags: {}, order: 3, mode: 0, inputs: [{"name":"clip","type":"CLIP","link":3}], outputs: [{"name":"CONDITIONING","type":"CONDITIONING","links":[6],"slot_index":0}], properties: {}, widgets_values: ["REPLACE_NEGATIVE"] },
-      { id: 4, type: "EmptyLTXVLatentVideo", pos: [26, 640], size: {"0": 315, "1": 130}, flags: {}, order: 1, mode: 0, inputs: [], outputs: [{"name":"LATENT","type":"LATENT","links":[7],"slot_index":0}], properties: {}, widgets_values: [512, 768, 97, 1] },
-      { id: 5, type: "KSampler", pos: [905, 386], size: {"0": 315, "1": 262}, flags: {}, order: 4, mode: 0, inputs: [{"name":"model","type":"MODEL","link":1},{"name":"positive","type":"CONDITIONING","link":5},{"name":"negative","type":"CONDITIONING","link":6},{"name":"latent_image","type":"LATENT","link":7}], outputs: [{"name":"LATENT","type":"LATENT","links":[8],"slot_index":0}], properties: {}, widgets_values: [42, "fixed", 25, 3.0, "euler", "beta", 1.0] },
-      { id: 6, type: "VAEDecodeTiled", pos: [1270, 386], size: {"0": 210, "1": 82}, flags: {}, order: 5, mode: 0, inputs: [{"name":"samples","type":"LATENT","link":8},{"name":"vae","type":"VAE","link":4}], outputs: [{"name":"IMAGE","type":"IMAGE","links":[9],"slot_index":0}], properties: {}, widgets_values: [512, 64, 64, 1] },
-      { id: 7, type: "VHS_VideoCombine", pos: [1530, 386], size: {"0": 315, "1": 198}, flags: {}, order: 6, mode: 0, inputs: [{"name":"images","type":"IMAGE","link":9},{"name":"audio","type":"AUDIO","link":null}], outputs: [{"name":"Filenames","type":"VHS_FILENAMES","links":[],"slot_index":0}], properties: {}, widgets_values: [24, 1, "neuralhub_output", "video/h264-mp4", true, "default", []] },
-      { id: 8, type: "Note", pos: [26, 200], size: {"0": 340, "1": 160}, flags: {}, order: 7, mode: 0, inputs: [], outputs: [], properties: {}, widgets_values: ["NeuralHub.ai — LTX Cinematic Chase\nHardware: REPLACE_TIER\nResolution: REPLACE_WxH\nFrames: REPLACE_FRAMES\nSteps: REPLACE_STEPS | CFG: REPLACE_CFG\nSampler: REPLACE_SAMPLER\nFlags: REPLACE_FLAGS\nneuralhub.ai"] },
+      { id: 1, type: "LTXVLoader", pos: [26, 474], size: {"0": 315, "1": 130}, flags: {}, order: 0, mode: 0, inputs: [], outputs: [{"name":"model","type":"LTXV","links":[1],"slot_index":0},{"name":"vae","type":"VAE","links":[4],"slot_index":1}], properties: {}, widgets_values: ["REPLACE_MODEL", "bfloat16"] },
+      { id: 2, type: "CLIPLoader", pos: [26, 640], size: {"0": 315, "1": 82}, flags: {}, order: 1, mode: 0, inputs: [], outputs: [{"name":"CLIP","type":"CLIP","links":[2,3],"slot_index":0}], properties: {}, widgets_values: ["t5xxl_fp8_e4m3fn.safetensors", "ltxv"] },
+      { id: 3, type: "CLIPTextEncode", pos: [415, 186], size: {"0": 422, "1": 164}, flags: {}, order: 2, mode: 0, inputs: [{"name":"clip","type":"CLIP","link":2}], outputs: [{"name":"CONDITIONING","type":"CONDITIONING","links":[5],"slot_index":0}], properties: {}, widgets_values: ["REPLACE_POSITIVE"] },
+      { id: 4, type: "CLIPTextEncode", pos: [415, 386], size: {"0": 422, "1": 164}, flags: {}, order: 3, mode: 0, inputs: [{"name":"clip","type":"CLIP","link":3}], outputs: [{"name":"CONDITIONING","type":"CONDITIONING","links":[6],"slot_index":0}], properties: {}, widgets_values: ["REPLACE_NEGATIVE"] },
+      { id: 5, type: "EmptyLTXVLatentVideo", pos: [26, 760], size: {"0": 315, "1": 130}, flags: {}, order: 4, mode: 0, inputs: [], outputs: [{"name":"LATENT","type":"LATENT","links":[7],"slot_index":0}], properties: {}, widgets_values: [512, 768, 97, 25, 1] },
+      { id: 6, type: "LTXVScheduler", pos: [415, 560], size: {"0": 315, "1": 130}, flags: {}, order: 5, mode: 0, inputs: [{"name":"latent","type":"LATENT","link":7}], outputs: [{"name":"sigmas","type":"SIGMAS","links":[8],"slot_index":0}], properties: {}, widgets_values: [25, 0.05, 1.0, true] },
+      { id: 7, type: "SamplerCustomAdvanced", pos: [800, 386], size: {"0": 355, "1": 226}, flags: {}, order: 6, mode: 0, inputs: [{"name":"noise","type":"NOISE","link":13},{"name":"guider","type":"GUIDER","link":14},{"name":"sampler","type":"SAMPLER","link":15},{"name":"sigmas","type":"SIGMAS","link":8},{"name":"latent_image","type":"LATENT","link":7}], outputs: [{"name":"output","type":"LATENT","links":[9],"slot_index":0},{"name":"denoised_output","type":"LATENT","links":[],"slot_index":1}], properties: {}, widgets_values: [] },
+      { id: 8, type: "RandomNoise", pos: [415, 760], size: {"0": 315, "1": 82}, flags: {}, order: 7, mode: 0, inputs: [], outputs: [{"name":"NOISE","type":"NOISE","links":[13],"slot_index":0}], properties: {}, widgets_values: [42, "fixed"] },
+      { id: 9, type: "CFGGuider", pos: [415, 880], size: {"0": 315, "1": 130}, flags: {}, order: 8, mode: 0, inputs: [{"name":"model","type":"LTXV","link":1},{"name":"positive","type":"CONDITIONING","link":5},{"name":"negative","type":"CONDITIONING","link":6}], outputs: [{"name":"GUIDER","type":"GUIDER","links":[14],"slot_index":0}], properties: {}, widgets_values: [3.0] },
+      { id: 10, type: "KSamplerSelect", pos: [415, 1020], size: {"0": 315, "1": 58}, flags: {}, order: 9, mode: 0, inputs: [], outputs: [{"name":"SAMPLER","type":"SAMPLER","links":[15],"slot_index":0}], properties: {}, widgets_values: ["euler"] },
+      { id: 11, type: "VAEDecodeTiled", pos: [1220, 386], size: {"0": 210, "1": 82}, flags: {}, order: 10, mode: 0, inputs: [{"name":"samples","type":"LATENT","link":9},{"name":"vae","type":"VAE","link":4}], outputs: [{"name":"IMAGE","type":"IMAGE","links":[10],"slot_index":0}], properties: {}, widgets_values: [512, 64, 64, 1] },
+      { id: 12, type: "VHS_VideoCombine", pos: [1480, 386], size: {"0": 315, "1": 198}, flags: {}, order: 11, mode: 0, inputs: [{"name":"images","type":"IMAGE","link":10},{"name":"audio","type":"AUDIO","link":null}], outputs: [{"name":"Filenames","type":"VHS_FILENAMES","links":[],"slot_index":0}], properties: {}, widgets_values: [24, 1, "neuralhub_ltx", "video/h264-mp4", true, "default", []] },
+      { id: 13, type: "Note", pos: [26, 200], size: {"0": 340, "1": 200}, flags: {}, order: 12, mode: 0, inputs: [], outputs: [], properties: {}, widgets_values: ["NeuralHub.ai — LTX Cinematic Chase\nHardware: REPLACE_TIER\nResolution: REPLACE_WxH | Frames: REPLACE_FRAMES\nSteps: REPLACE_STEPS | CFG: REPLACE_CFG\nSampler: euler | Scheduler: LTXVScheduler\nFlags: REPLACE_FLAGS\n\nRequired nodes:\n- ComfyUI-VideoHelperSuite\nneuralhub.ai"] },
     ],
-    links: [[1,1,0,5,0,"MODEL"],[2,1,1,2,0,"CLIP"],[3,1,1,3,0,"CLIP"],[4,1,2,6,1,"VAE"],[5,2,0,5,1,"CONDITIONING"],[6,3,0,5,2,"CONDITIONING"],[7,4,0,5,3,"LATENT"],[8,5,0,6,0,"LATENT"],[9,6,0,7,0,"IMAGE"]],
-    groups: [{"title":"NeuralHub LTX Chase Pipeline","bounding":[0,170,1900,700],"color":"#1a2030","font_size":24}],
+    links: [[1,1,0,9,0,"LTXV"],[2,2,0,3,0,"CLIP"],[3,2,0,4,0,"CLIP"],[4,1,1,11,1,"VAE"],[5,3,0,9,1,"CONDITIONING"],[6,4,0,9,2,"CONDITIONING"],[7,5,0,6,0,"LATENT"],[8,6,0,7,3,"SIGMAS"],[9,7,0,11,0,"LATENT"],[10,11,0,12,0,"IMAGE"],[13,8,0,7,0,"NOISE"],[14,9,0,7,1,"GUIDER"],[15,10,0,7,2,"SAMPLER"]],
+    groups: [{"title":"NeuralHub LTX Chase Pipeline","bounding":[0,170,1860,900],"color":"#1a2030","font_size":24}],
     config: {}, extra: {}, version: 0.4,
   };
 }
@@ -199,6 +204,25 @@ export function exportWorkflow(config: ExportConfig): string {
         if (!params.lora_enabled) {
           return { ...node, mode: 4, widgets_values: updated };
         }
+        break;
+      case "LTXVScheduler":
+        // steps is widget index 0, terminal_snr at index 3
+        updated[0] = profile.steps;
+        break;
+      case "RandomNoise":
+        updated[0] = seed;
+        break;
+      case "CFGGuider":
+        updated[0] = profile.cfg;
+        break;
+      case "KSamplerSelect":
+        updated[0] = profile.sampler;
+        break;
+      case "EmptyLTXVLatentVideo":
+        updated[0] = profile.width;
+        updated[1] = profile.height;
+        updated[2] = profile.frames || 97;
+        updated[3] = profile.steps;
         break;
       case "Note":
         updated[0] = String(widgetValues[0])
