@@ -1,4 +1,4 @@
-import { createServerClient, type CookieMethodsServer } from "@supabase/ssr";
+import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export function createClient() {
@@ -11,7 +11,9 @@ export function createClient() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet: Parameters<CookieMethodsServer["setAll"]>[0]) {
+        setAll(
+          cookiesToSet: { name: string; value: string; options?: object }[]
+        ) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
@@ -22,14 +24,3 @@ export function createClient() {
     }
   );
 }
-```
-
-Press **Ctrl + S**, then run:
-```
-git add .
-```
-```
-git commit -m "fix supabase server types"
-```
-```
-git push
