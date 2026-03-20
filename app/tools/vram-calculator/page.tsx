@@ -461,25 +461,42 @@ export default function VRAMCalculatorPage() {
                   <span className="text-muted leading-relaxed">{recBuild.notes}</span>
                 </div>
               </div>
+              <a
+                href="https://computeatlas.ai/recommended-builds"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 block text-center border border-white/10 text-muted py-2 rounded text-xs font-mono tracking-widest uppercase hover:text-text hover:border-white/20 transition-colors"
+              >
+                Plan this build on ComputeAtlas →
+              </a>
             </div>
 
             {/* ComputeAtlas CTA if over 16GB */}
             {estimatedVRAM > 16 && (
-              <div className="bg-gradient-to-br from-accent-purple/8 to-accent/5 border border-accent-purple/25 rounded-xl p-6 text-center">
-                <p className="font-mono text-xs text-[#a78bfa] tracking-widest uppercase mb-2">// Heavy Workload Detected</p>
+              <div className="bg-gradient-to-br from-accent-purple/8 to-accent/5 border border-accent-purple/25 rounded-xl p-6">
+                <p className="font-mono text-xs text-[#a78bfa] tracking-widest uppercase mb-2">// Hardware Upgrade Path</p>
                 <h3 className="font-syne text-xl font-black text-white mb-2">
-                  Need {estimatedVRAM}GB? Use the cloud.
+                  Your rig needs {estimatedVRAM}GB — time to plan an upgrade.
                 </h3>
-                <p className="text-muted text-sm leading-relaxed mb-4 max-w-md mx-auto">
-                  Your local rig may not handle this. Route it to ComputeAtlas — GPU cloud built for AI workloads. Pay per minute.
+                <p className="text-muted text-sm leading-relaxed mb-4">
+                  ComputeAtlas is an AI workstation planning platform. Input your target workloads and it recommends exact hardware — GPU, CPU, RAM, and storage — before you buy.
                 </p>
-                <Link
-                  href="https://computeatlas.ai"
-                  target="_blank"
-                  className="inline-block bg-accent-purple text-white px-6 py-2.5 rounded font-semibold text-sm hover:opacity-85 transition-opacity"
-                >
-                  Run on ComputeAtlas →
-                </Link>
+                <div className="flex gap-3 flex-wrap">
+                  <Link
+                    href="https://computeatlas.ai/ai-hardware-estimator"
+                    target="_blank"
+                    className="inline-block bg-accent-purple text-white px-5 py-2.5 rounded font-semibold text-sm hover:opacity-85 transition-opacity"
+                  >
+                    Use Hardware Estimator →
+                  </Link>
+                  <Link
+                    href="https://computeatlas.ai/recommended-builds"
+                    target="_blank"
+                    className="inline-block bg-white/5 border border-white/10 text-muted px-5 py-2.5 rounded font-semibold text-sm hover:text-text transition-colors"
+                  >
+                    Browse Recommended Builds
+                  </Link>
+                </div>
               </div>
             )}
           </div>
