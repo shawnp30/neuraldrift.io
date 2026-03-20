@@ -88,7 +88,7 @@ function buildInfoNote(workflowId: string, tier: string, profile: ExportConfig["
 // LTX Video 2 - GGUF variant (UnetLoaderGGUF)
 function getLTXGGUFTemplate(filename: string): object {
   return {
-    last_node_id: 14, last_link_id: 15,
+    last_node_id: 15, last_link_id: 16,
     nodes: [
       { id: 1, type: "UnetLoaderGGUF", pos: [460, 200], size: [360, 80], flags: {}, order: 0, mode: 0, inputs: [], outputs: [{ name: "MODEL", type: "MODEL", links: [1, 15] }], properties: { "Node name for S&R": "Load UNet (GGUF)" }, widgets_values: [filename, "auto"] },
       { id: 2, type: "DualCLIPLoader", pos: [460, 310], size: [360, 110], flags: {}, order: 1, mode: 0, inputs: [], outputs: [{ name: "CLIP", type: "CLIP", links: [2, 14] }], properties: { "Node name for S&R": "DualCLIPLoader" }, widgets_values: ["", "", "bf16", "default"] },
@@ -100,12 +100,13 @@ function getLTXGGUFTemplate(filename: string): object {
       { id: 8, type: "KSamplerSelect", pos: [1280, 450], size: [320, 80], flags: {}, order: 7, mode: 0, inputs: [], outputs: [{ name: "SAMPLER", type: "SAMPLER", links: [9] }], properties: { "Node name for S&R": "KSamplerSelect" }, widgets_values: ["euler"] },
       { id: 9, type: "BasicScheduler", pos: [1280, 560], size: [320, 120], flags: {}, order: 8, mode: 0, inputs: [{ name: "model", type: "MODEL", link: 15 }], outputs: [{ name: "SIGMAS", type: "SIGMAS", links: [10] }], properties: { "Node name for S&R": "BasicScheduler" }, widgets_values: ["beta", 25, 1.0] },
       { id: 10, type: "RandomNoise", pos: [1280, 710], size: [320, 80], flags: {}, order: 9, mode: 0, inputs: [], outputs: [{ name: "NOISE", type: "NOISE", links: [11] }], properties: { "Node name for S&R": "RandomNoise" }, widgets_values: [42, "fixed"] },
+      { id: 15, type: "VAELoader", pos: [460, 670], size: [360, 60], flags: {}, order: 11, mode: 0, inputs: [], outputs: [{ name: "VAE", type: "VAE", links: [16] }], properties: { "Node name for S&R": "VAELoader" }, widgets_values: ["ltxv-spatial-vae-small.safetensors"] },
       { id: 11, type: "SamplerCustom", pos: [1640, 280], size: [360, 140], flags: {}, order: 10, mode: 0, inputs: [{ name: "noise", type: "NOISE", link: 11 }, { name: "guider", type: "GUIDER", link: 8 }, { name: "sampler", type: "SAMPLER", link: 9 }, { name: "sigmas", type: "SIGMAS", link: 10 }, { name: "latent_image", type: "LATENT", link: 5 }], outputs: [{ name: "output", type: "LATENT", links: [12] }], properties: { "Node name for S&R": "SamplerCustom" }, widgets_values: [] },
-      { id: 12, type: "LTXVDecode", pos: [2040, 280], size: [320, 110], flags: {}, order: 11, mode: 0, inputs: [{ name: "samples", type: "LATENT", link: 12 }], outputs: [{ name: "IMAGE", type: "IMAGE", links: [13] }], properties: { "Node name for S&R": "LTXVDecode" }, widgets_values: [] },
+      { id: 12, type: "VAEDecodeTiled", pos: [2040, 280], size: [320, 100], flags: {}, order: 11, mode: 0, inputs: [{ name: "samples", type: "LATENT", link: 12 }, { name: "vae", type: "VAE", link: 16 }], outputs: [{ name: "IMAGE", type: "IMAGE", links: [13] }], properties: { "Node name for S&R": "VAEDecodeTiled" }, widgets_values: [512, 64, 64, 1] },
       { id: 13, type: "VHS_VideoCombine", pos: [2400, 280], size: [340, 220], flags: {}, order: 12, mode: 0, inputs: [{ name: "images", type: "IMAGE", link: 13 }, { name: "audio", type: "AUDIO", link: null }], outputs: [{ name: "Filenames", type: "VHS_FILENAMES", links: [] }], properties: { "Node name for S&R": "VHS_VideoCombine" }, widgets_values: [24, 1, "neuralhub_ltx", "video/h264-mp4", true, "default", []] },
       { id: 14, type: "Note", pos: [20, 160], size: [400, 500], flags: {}, order: 13, mode: 0, inputs: [], outputs: [], properties: {}, widgets_values: ["INJECT_NOTE"] },
     ],
-    links: [[1,1,0,7,0,"MODEL"],[2,2,0,3,0,"CLIP"],[14,2,0,4,0,"CLIP"],[3,3,0,6,0,"CONDITIONING"],[4,4,0,6,1,"CONDITIONING"],[5,5,0,11,4,"LATENT"],[6,6,0,7,1,"CONDITIONING"],[7,6,1,7,2,"CONDITIONING"],[8,7,0,11,1,"GUIDER"],[9,8,0,11,2,"SAMPLER"],[10,9,0,11,3,"SIGMAS"],[11,10,0,11,0,"NOISE"],[12,11,0,12,0,"LATENT"],[13,12,0,13,0,"IMAGE"],[15,1,0,9,0,"MODEL"]],
+    links: [[1,1,0,7,0,"MODEL"],[2,2,0,3,0,"CLIP"],[14,2,0,4,0,"CLIP"],[3,3,0,6,0,"CONDITIONING"],[4,4,0,6,1,"CONDITIONING"],[5,5,0,11,4,"LATENT"],[6,6,0,7,1,"CONDITIONING"],[7,6,1,7,2,"CONDITIONING"],[8,7,0,11,1,"GUIDER"],[9,8,0,11,2,"SAMPLER"],[10,9,0,11,3,"SIGMAS"],[11,10,0,11,0,"NOISE"],[12,11,0,12,0,"LATENT"],[13,12,0,13,0,"IMAGE"],[15,1,0,9,0,"MODEL"],[16,15,0,12,1,"VAE"]],
     groups: [{ title: "NeuralHub -- LTX Chase Pipeline", bounding: [0, 140, 2800, 800], color: "#1a2030", font_size: 24 }],
     config: {}, extra: { ds: { scale: 0.6, offset: [0, 0] } }, version: 0.4
   };
