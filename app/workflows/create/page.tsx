@@ -1,3 +1,4 @@
+﻿"use client"
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
@@ -23,8 +24,8 @@ const NODES = [
     outputs: ["MODEL", "CLIP"],
     notes: "Start at 0.8 strength. Go higher for stronger character lock, lower for subtle style.",
     settings: {
-      strength_model: "0.6–1.0",
-      strength_clip: "0.6–1.0",
+      strength_model: "0.6â€“1.0",
+      strength_clip: "0.6â€“1.0",
     },
   },
   {
@@ -56,26 +57,26 @@ const NODES = [
     outputs: ["LATENT"],
     notes: "SDXL: 1024x1024. LTX Video: 768x512 (landscape) or 512x768 (vertical). Always use multiples of 64.",
     settings: {
-      width: "512–2048",
-      height: "512–2048",
-      batch_size: "1–8",
+      width: "512â€“2048",
+      height: "512â€“2048",
+      batch_size: "1â€“8",
     },
   },
   {
     step: 6,
     name: "KSampler",
     node: "KSampler",
-    purpose: "The core generation node. This is where denoising happens — the model iteratively refines the latent.",
+    purpose: "The core generation node. This is where denoising happens â€” the model iteratively refines the latent.",
     inputs: ["MODEL", "positive CONDITIONING", "negative CONDITIONING", "LATENT"],
     outputs: ["LATENT"],
     notes: "This node has the most impact on output quality and speed.",
     settings: {
       seed: "Fixed for reproducibility, randomize for variety",
-      steps: "20–30 (quality), 4–8 (speed with Schnell/distilled)",
-      cfg: "1.0 (FLUX Schnell), 3.0–3.5 (FLUX Dev), 6.0–8.0 (SDXL)",
+      steps: "20â€“30 (quality), 4â€“8 (speed with Schnell/distilled)",
+      cfg: "1.0 (FLUX Schnell), 3.0â€“3.5 (FLUX Dev), 6.0â€“8.0 (SDXL)",
       sampler_name: "euler (FLUX), dpmpp_2m (SDXL), euler_ancestral (creative)",
       scheduler: "simple (FLUX), karras (SDXL), beta (LTX Video)",
-      denoise: "1.0 (text-to-image), 0.5–0.8 (img2img)",
+      denoise: "1.0 (text-to-image), 0.5â€“0.8 (img2img)",
     },
   },
   {
@@ -105,7 +106,7 @@ const NODES = [
 const BUILDS = [
   {
     id: "highway-ghost",
-    title: "Highway Ghost — LTX Chase Build",
+    title: "Highway Ghost â€” LTX Chase Build",
     status: "Complete",
     statusColor: "text-[#10b981]",
     date: "March 2025",
@@ -115,21 +116,21 @@ const BUILDS = [
       {
         session: 1,
         title: "Initial concept and prompt testing",
-        notes: "Started with wide establishing shots. CFG 3.0 was too static — bumped motion scale to 1.3. Realized 97 frames was the sweet spot for ~4 second clips on RTX 5080. First frame conditioning between clips was the key breakthrough for continuity.",
+        notes: "Started with wide establishing shots. CFG 3.0 was too static â€” bumped motion scale to 1.3. Realized 97 frames was the sweet spot for ~4 second clips on RTX 5080. First frame conditioning between clips was the key breakthrough for continuity.",
         iterations: 12,
         breakthrough: "First frame conditioning eliminates character drift between clips",
       },
       {
         session: 2,
         title: "Camera movement refinement",
-        notes: "Low tracking shot language wasn't working consistently. Added 'camera mounted to car hood' style descriptions. Motion blur in the prompt helped a lot. Switched scheduler from karras to beta — much smoother motion.",
+        notes: "Low tracking shot language wasn't working consistently. Added 'camera mounted to car hood' style descriptions. Motion blur in the prompt helped a lot. Switched scheduler from karras to beta â€” much smoother motion.",
         iterations: 22,
         breakthrough: "Scheduler switch to beta eliminated stuttery motion artifacts",
       },
       {
         session: 3,
         title: "Assembly and color grade",
-        notes: "Assembled 5 clips in CapCut. Added Cinematic LUT at 60%. The crossfade between clips 3 and 4 needed to be 4 frames minimum — anything less showed a hard cut. Final video: 14 seconds, exported 1080p.",
+        notes: "Assembled 5 clips in CapCut. Added Cinematic LUT at 60%. The crossfade between clips 3 and 4 needed to be 4 frames minimum â€” anything less showed a hard cut. Final video: 14 seconds, exported 1080p.",
         iterations: 13,
         breakthrough: "4-frame crossfade hides the transition artifacts completely",
       },
@@ -147,7 +148,7 @@ const BUILDS = [
   },
   {
     id: "fat-bigfoot-loop",
-    title: "Fat Bigfoot GoPro Loop — AnimateDiff Build",
+    title: "Fat Bigfoot GoPro Loop â€” AnimateDiff Build",
     status: "Complete",
     statusColor: "text-[#10b981]",
     date: "March 2025",
@@ -157,14 +158,14 @@ const BUILDS = [
       {
         session: 1,
         title: "Character LoRA testing",
-        notes: "Fat Bigfoot LoRA at 0.9 was too dominant — broke the background. Dropped to 0.75. Fisheye lens simulation in the prompt worked better than expected. The key phrase was 'handheld shaky GoPro footage' for the right movement feel.",
+        notes: "Fat Bigfoot LoRA at 0.9 was too dominant â€” broke the background. Dropped to 0.75. Fisheye lens simulation in the prompt worked better than expected. The key phrase was 'handheld shaky GoPro footage' for the right movement feel.",
         iterations: 8,
         breakthrough: "LoRA at 0.75 keeps character without breaking environment",
       },
       {
         session: 2,
         title: "Loop seamlessness",
-        notes: "AnimateDiff default 16 frames didn't loop cleanly. Switched to 24 frames with context_length 16. Added the loop conditioning node. Had to match first and last frame manually in CapCut — added 2 frame crossfade.",
+        notes: "AnimateDiff default 16 frames didn't loop cleanly. Switched to 24 frames with context_length 16. Added the loop conditioning node. Had to match first and last frame manually in CapCut â€” added 2 frame crossfade.",
         iterations: 19,
         breakthrough: "24 frames + context_length 16 creates clean loop point",
       },
@@ -203,7 +204,7 @@ export default function WorkflowCreatorPage() {
         <div className="mb-20">
           <p className="font-mono text-xs text-accent tracking-widest uppercase mb-6">// Node Reference Guide</p>
           <h2 className="font-syne text-3xl font-black tracking-tight text-white mb-10">
-            The standard node chain — explained.
+            The standard node chain â€” explained.
           </h2>
 
           <div className="space-y-4">
@@ -232,7 +233,7 @@ export default function WorkflowCreatorPage() {
                         <ul className="space-y-1">
                           {node.inputs.map((input, i) => (
                             <li key={i} className="font-mono text-xs text-slate-400 flex items-start gap-1.5">
-                              <span className="text-accent mt-0.5">→</span> {input}
+                              <span className="text-accent mt-0.5">â†’</span> {input}
                             </li>
                           ))}
                         </ul>
@@ -244,7 +245,7 @@ export default function WorkflowCreatorPage() {
                         <ul className="space-y-1">
                           {node.outputs.map((output, i) => (
                             <li key={i} className="font-mono text-xs text-[#a3e635] flex items-start gap-1.5">
-                              <span className="mt-0.5">←</span> {output}
+                              <span className="mt-0.5">â†</span> {output}
                             </li>
                           ))}
                         </ul>
@@ -301,7 +302,7 @@ export default function WorkflowCreatorPage() {
                     <div>
                       <div className="flex items-center gap-3 mb-3">
                         <span className={`font-mono text-xs tracking-widest uppercase ${build.statusColor}`}>
-                          ● {build.status}
+                          â— {build.status}
                         </span>
                         <span className="font-mono text-xs text-muted tracking-wide">{build.date}</span>
                         <span className="font-mono text-xs bg-accent/8 text-accent px-2 py-0.5 rounded tracking-wide">
@@ -330,7 +331,7 @@ export default function WorkflowCreatorPage() {
                           <p className="text-xs text-muted leading-relaxed mb-3">{session.notes}</p>
                           <div className="bg-[#a3e635]/5 border border-[#a3e635]/15 rounded p-3">
                             <p className="font-mono text-xs text-[#a3e635] leading-relaxed">
-                              💡 {session.breakthrough}
+                              ðŸ’¡ {session.breakthrough}
                             </p>
                           </div>
                         </div>
@@ -361,3 +362,4 @@ export default function WorkflowCreatorPage() {
     </>
   );
 }
+

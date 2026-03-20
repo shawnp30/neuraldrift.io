@@ -1,3 +1,4 @@
+﻿"use client"
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import Link from "next/link";
@@ -423,7 +424,7 @@ export default function WorkflowsPage() {
             target="_blank"
             className="inline-block bg-accent-purple text-white px-6 py-3 rounded font-semibold text-sm hover:opacity-85 transition-opacity"
           >
-            Explore ComputeAtlas →
+            Explore ComputeAtlas â†’
           </Link>
         </div>
       </main>
@@ -440,3 +441,4 @@ function ConfigRow({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
