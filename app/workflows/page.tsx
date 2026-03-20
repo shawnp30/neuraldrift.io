@@ -1,9 +1,8 @@
-﻿"use client"
-import { Navbar } from "@/components/layout/Navbar";
+﻿import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import Link from "next/link";
 
-
+export const metadata = { title: "ComfyUI Workflows" };
 
 type Difficulty = "Beginner" | "Intermediate" | "Advanced";
 
@@ -226,26 +225,26 @@ export default function WorkflowsPage() {
   return (
     <>
       <Navbar />
-      <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
+      <main className="mx-auto max-w-7xl px-10 pb-20 pt-24">
         {/* Header */}
-        <div className="flex items-end justify-between mb-16">
+        <div className="mb-16 flex items-end justify-between">
           <div>
-            <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">
+            <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
               // ComfyUI Workflows
             </p>
-            <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">
+            <h1 className="mb-4 font-syne text-5xl font-black tracking-tight text-white">
               Ready-to-run
               <br />
               workflow library.
             </h1>
-            <p className="text-muted max-w-lg leading-relaxed">
+            <p className="max-w-lg leading-relaxed text-muted">
               Download, drop into ComfyUI, and generate. Every workflow includes
               full config specs, VRAM requirements, and hardware compatibility.
             </p>
           </div>
           <Link
             href="/workflows/create"
-            className="bg-accent text-black px-6 py-3 rounded font-semibold text-sm hover:opacity-85 transition-opacity whitespace-nowrap"
+            className="whitespace-nowrap rounded bg-accent px-6 py-3 text-sm font-semibold text-black transition-opacity hover:opacity-85"
           >
             + Create Workflow
           </Link>
@@ -256,34 +255,34 @@ export default function WorkflowsPage() {
           {WORKFLOWS.map((wf) => (
             <div
               key={wf.id}
-              className="bg-card border border-border rounded-xl overflow-hidden hover:border-accent/20 transition-colors"
+              className="overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-accent/20"
             >
               <div className="grid grid-cols-[1fr_340px]">
                 {/* Left: Info */}
-                <div className="p-8 border-r border-border">
-                  <div className="flex items-center gap-3 mb-4">
+                <div className="border-r border-border p-8">
+                  <div className="mb-4 flex items-center gap-3">
                     <span
-                      className={`font-mono text-xs px-2 py-0.5 rounded-sm tracking-widest uppercase ${TYPE_STYLES[wf.type] || "bg-white/5 text-muted"}`}
+                      className={`rounded-sm px-2 py-0.5 font-mono text-xs uppercase tracking-widest ${TYPE_STYLES[wf.type] || "bg-white/5 text-muted"}`}
                     >
                       {wf.type}
                     </span>
                     <span
-                      className={`font-mono text-xs px-2 py-0.5 rounded-sm tracking-widest uppercase ${DIFF_STYLES[wf.difficulty]}`}
+                      className={`rounded-sm px-2 py-0.5 font-mono text-xs uppercase tracking-widest ${DIFF_STYLES[wf.difficulty]}`}
                     >
                       {wf.difficulty}
                     </span>
                   </div>
 
-                  <h3 className="font-syne text-xl font-bold text-white mb-2 tracking-tight">
+                  <h3 className="mb-2 font-syne text-xl font-bold tracking-tight text-white">
                     {wf.name}
                   </h3>
-                  <p className="text-sm text-muted leading-relaxed mb-6">
+                  <p className="mb-6 text-sm leading-relaxed text-muted">
                     {wf.description}
                   </p>
 
                   {/* Model */}
                   <div className="mb-4">
-                    <p className="font-mono text-xs text-muted tracking-widest uppercase mb-1">
+                    <p className="mb-1 font-mono text-xs uppercase tracking-widest text-muted">
                       Model
                     </p>
                     <p className="font-mono text-xs text-accent">{wf.model}</p>
@@ -294,7 +293,7 @@ export default function WorkflowsPage() {
                     {wf.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-xs bg-white/4 text-muted px-2 py-1 rounded tracking-wide"
+                        className="bg-white/4 rounded px-2 py-1 font-mono text-xs tracking-wide text-muted"
                       >
                         {tag}
                       </span>
@@ -303,13 +302,13 @@ export default function WorkflowsPage() {
                 </div>
 
                 {/* Right: Config + System */}
-                <div className="p-8 flex flex-col gap-6">
+                <div className="flex flex-col gap-6 p-8">
                   {/* ComfyUI Config */}
                   <div>
-                    <p className="font-mono text-xs text-accent tracking-widest uppercase mb-3">
+                    <p className="mb-3 font-mono text-xs uppercase tracking-widest text-accent">
                       ComfyUI Config
                     </p>
-                    <div className="bg-surface border border-border rounded-lg p-4 font-mono text-xs space-y-1.5">
+                    <div className="space-y-1.5 rounded-lg border border-border bg-surface p-4 font-mono text-xs">
                       <ConfigRow
                         label="Steps"
                         value={wf.config.steps.toString()}
@@ -348,10 +347,10 @@ export default function WorkflowsPage() {
 
                   {/* System Requirements */}
                   <div>
-                    <p className="font-mono text-xs text-accent tracking-widest uppercase mb-3">
+                    <p className="mb-3 font-mono text-xs uppercase tracking-widest text-accent">
                       System Requirements
                     </p>
-                    <div className="bg-surface border border-border rounded-lg p-4 space-y-2">
+                    <div className="space-y-2 rounded-lg border border-border bg-surface p-4">
                       <div className="flex justify-between font-mono text-xs">
                         <span className="text-muted">Min VRAM</span>
                         <span className={VRAM_COLOR(wf.system.minVRAM)}>
@@ -376,15 +375,15 @@ export default function WorkflowsPage() {
                           {wf.system.cpuOk ? "Supported" : "GPU Only"}
                         </span>
                       </div>
-                      <div className="pt-2 border-t border-border">
-                        <p className="font-mono text-xs text-muted mb-1.5">
+                      <div className="border-t border-border pt-2">
+                        <p className="mb-1.5 font-mono text-xs text-muted">
                           Compatible GPUs
                         </p>
                         <div className="flex flex-wrap gap-1">
                           {wf.system.gpus.map((gpu) => (
                             <span
                               key={gpu}
-                              className="font-mono text-xs bg-white/4 text-muted px-1.5 py-0.5 rounded text-[10px]"
+                              className="bg-white/4 rounded px-1.5 py-0.5 font-mono text-[10px] text-xs text-muted"
                             >
                               {gpu}
                             </span>
@@ -397,7 +396,7 @@ export default function WorkflowsPage() {
                   {/* Download */}
                   <a
                     href={wf.downloadUrl}
-                    className="block text-center bg-accent text-black py-2.5 rounded font-semibold text-sm hover:opacity-85 transition-opacity mt-auto"
+                    className="mt-auto block rounded bg-accent py-2.5 text-center text-sm font-semibold text-black transition-opacity hover:opacity-85"
                   >
                     Download Workflow JSON
                   </a>
@@ -408,24 +407,34 @@ export default function WorkflowsPage() {
         </div>
 
         {/* ComputeAtlas CTA */}
-        <div className="mt-16 bg-gradient-to-br from-accent-purple/8 to-accent/5 border border-accent-purple/25 rounded-xl p-12 text-center">
-          <p className="font-mono text-xs text-[#a78bfa] tracking-widest uppercase mb-3">
-            // Heavy Workflows
+        <div className="from-accent-purple/8 mt-16 rounded-xl border border-accent-purple/25 bg-gradient-to-br to-accent/5 p-12 text-center">
+          <p className="mb-3 font-mono text-xs uppercase tracking-widest text-[#a78bfa]">
+            // Hardware Partner
           </p>
-          <h2 className="font-syne text-3xl font-black tracking-tight text-white mb-3">
+          <h2 className="mb-3 font-syne text-3xl font-black tracking-tight text-white">
             Running out of VRAM?
           </h2>
-          <p className="text-muted max-w-md mx-auto mb-6 leading-relaxed text-sm">
-            Route heavy batch jobs and high-res video generation to ComputeAtlas
-            GPU cloud. Pay per minute, no subscription.
+          <p className="mx-auto mb-6 max-w-md text-sm leading-relaxed text-muted">
+            These workflows need serious hardware. ComputeAtlas helps you plan
+            the right AI workstation — spec GPU, CPU, RAM, and storage before
+            you buy.
           </p>
-          <Link
-            href="https://computeatlas.ai"
-            target="_blank"
-            className="inline-block bg-accent-purple text-white px-6 py-3 rounded font-semibold text-sm hover:opacity-85 transition-opacity"
-          >
-            Explore ComputeAtlas â†’
-          </Link>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Link
+              href="https://computeatlas.ai/ai-hardware-estimator"
+              target="_blank"
+              className="inline-block rounded bg-accent-purple px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-85"
+            >
+              Estimate My Hardware →
+            </Link>
+            <Link
+              href="https://computeatlas.ai/recommended-builds"
+              target="_blank"
+              className="hover:text-text inline-block rounded border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-muted transition-colors"
+            >
+              View Recommended Builds
+            </Link>
+          </div>
         </div>
       </main>
       <Footer />
@@ -441,4 +450,3 @@ function ConfigRow({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
-
