@@ -12,14 +12,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-```
-
-Save with **Ctrl + S**, then run:
-```
-git add .
-```
-```
-git commit -m "disable eslint during build"
-```
-```
-git push
