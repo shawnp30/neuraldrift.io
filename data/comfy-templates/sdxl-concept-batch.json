@@ -1,144 +1,507 @@
 {
-  "last_node_id": 10,
-  "last_link_id": 12,
+  "id": "88bcf757-1298-432f-885a-db5ab88cf224",
+  "revision": 0,
+  "last_node_id": 58,
+  "last_link_id": 60,
   "nodes": [
     {
-      "id": 1,
-      "type": "CheckpointLoaderSimple",
-      "pos": [26, 474],
-      "size": {"0": 315, "1": 98},
+      "id": 5,
+      "type": "EmptyLatentImage",
+      "pos": [
+        -112.73139001717306,
+        -683.275807166532
+      ],
+      "size": [
+        360,
+        209.56666564941406
+      ],
       "flags": {},
       "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
-        {"name": "MODEL", "type": "MODEL", "links": [1], "slot_index": 0},
-        {"name": "CLIP", "type": "CLIP", "links": [2, 3], "slot_index": 1},
-        {"name": "VAE", "type": "VAE", "links": [4], "slot_index": 2}
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            27
+          ]
+        }
       ],
-      "properties": {"Node name for S&R": "CheckpointLoaderSimple"},
-      "widgets_values": ["__MODEL_FILENAME__"]
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.33"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        4
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
     },
     {
-      "id": 2,
-      "type": "CLIPTextEncode",
-      "pos": [415, 186],
-      "size": {"0": 422, "1": 164},
+      "id": 42,
+      "type": "Note",
+      "pos": [
+        -280.7843670460396,
+        -423.95834068501256
+      ],
+      "size": [
+        312,
+        312
+      ],
       "flags": {},
       "order": 1,
       "mode": 0,
-      "inputs": [{"name": "clip", "type": "CLIP", "link": 2}],
-      "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [5], "slot_index": 0}],
-      "properties": {"Node name for S&R": "CLIPTextEncode"},
-      "widgets_values": ["__POSITIVE_PROMPT__"]
-    },
-    {
-      "id": 3,
-      "type": "CLIPTextEncode",
-      "pos": [415, 386],
-      "size": {"0": 422, "1": 164},
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [{"name": "clip", "type": "CLIP", "link": 3}],
-      "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [6], "slot_index": 0}],
-      "properties": {"Node name for S&R": "CLIPTextEncode"},
-      "widgets_values": ["__NEGATIVE_PROMPT__"]
+      "inputs": [],
+      "outputs": [],
+      "title": "Note - Empty Latent Image",
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "This node sets the image's resolution in Width and Height.\n\nNOTE: For SDXL, it is recommended to use trained values listed below:\n - 1024 x 1024\n - 1152 x 896\n - 896  x 1152\n - 1216 x 832\n - 832  x 1216\n - 1344 x 768\n - 768  x 1344\n - 1536 x 640\n - 640  x 1536"
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
     },
     {
       "id": 4,
-      "type": "EmptyLatentImage",
-      "pos": [26, 620],
-      "size": {"0": 315, "1": 106},
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -60.515251793673144,
+        -44.70866119784364
+      ],
+      "size": [
+        420,
+        159.56666564941406
+      ],
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "inputs": [],
-      "outputs": [{"name": "LATENT", "type": "LATENT", "links": [7], "slot_index": 0}],
-      "properties": {"Node name for S&R": "EmptyLatentImage"},
-      "widgets_values": [__WIDTH__, __HEIGHT__, __BATCH_SIZE__]
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            10
+          ]
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 1,
+          "links": [
+            3,
+            5
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 2,
+          "links": [
+            54
+          ]
+        }
+      ],
+      "title": "Load Checkpoint - BASE",
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.33",
+        "models": [
+          {
+            "name": "sd_xl_base_1.0.safetensors",
+            "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors?download=true",
+            "directory": "checkpoints"
+          }
+        ]
+      },
+      "widgets_values": [
+        "sd_xl_base_1.0.safetensors"
+      ],
+      "color": "#323",
+      "bgcolor": "#535"
     },
     {
-      "id": 5,
-      "type": "KSampler",
-      "pos": [905, 386],
-      "size": {"0": 315, "1": 262},
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        516.6496102472951,
+        13.59372394651075
+      ],
+      "size": [
+        477.0666809082031,
+        231.06668090820312
+      ],
       "flags": {},
-      "order": 4,
+      "order": 6,
       "mode": 0,
       "inputs": [
-        {"name": "model", "type": "MODEL", "link": 1},
-        {"name": "positive", "type": "CONDITIONING", "link": 5},
-        {"name": "negative", "type": "CONDITIONING", "link": 6},
-        {"name": "latent_image", "type": "LATENT", "link": 7}
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 5
+        }
       ],
-      "outputs": [{"name": "LATENT", "type": "LATENT", "links": [8], "slot_index": 0}],
-      "properties": {"Node name for S&R": "KSampler"},
-      "widgets_values": [__SEED__, "fixed", __STEPS__, __CFG__, "__SAMPLER__", "__SCHEDULER__", __DENOISE__]
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            60
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.33"
+      },
+      "widgets_values": [
+        "text, watermark, logo, illustration, CGI, smooth plastic, fantasy, sci-fi glow, dramatic lighting\n"
+      ],
+      "color": "#322",
+      "bgcolor": "#533"
     },
     {
       "id": 6,
-      "type": "VAEDecode",
-      "pos": [1270, 386],
-      "size": {"0": 210, "1": 46},
+      "type": "CLIPTextEncode",
+      "pos": [
+        510.4211711509912,
+        -282.98040986288856
+      ],
+      "size": [
+        486.0666809082031,
+        149
+      ],
       "flags": {},
       "order": 5,
       "mode": 0,
       "inputs": [
-        {"name": "samples", "type": "LATENT", "link": 8},
-        {"name": "vae", "type": "VAE", "link": 4}
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
       ],
-      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [9], "slot_index": 0}],
-      "properties": {"Node name for S&R": "VAEDecode"},
-      "widgets_values": []
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "slot_index": 0,
+          "links": [
+            59
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.33"
+      },
+      "widgets_values": [
+        "close-up of a military gas mask filter canister showing internal degradation, moisture damage, worn metal surface, inspection-style photograph\n"
+      ],
+      "color": "#232",
+      "bgcolor": "#353"
     },
     {
-      "id": 7,
-      "type": "SaveImage",
-      "pos": [1510, 386],
-      "size": {"0": 315, "1": 58},
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [{"name": "images", "type": "IMAGE", "link": 9}],
-      "outputs": [],
-      "properties": {"Node name for S&R": "SaveImage"},
-      "widgets_values": ["neuralhub_sdxl_concept"]
-    },
-    {
-      "id": 8,
+      "id": 36,
       "type": "Note",
-      "pos": [26, 200],
-      "size": {"0": 340, "1": 200],
+      "pos": [
+        -54.969418460339966,
+        344.23914435352776
+      ],
+      "size": [
+        378.8166809082031,
+        237.5
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [],
+      "title": "Note - Load Checkpoint BASE",
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "This is a checkpoint model loader. \n - This is set up automatically with the optimal settings for whatever SD model version you choose to use.\n - In this example, it is for the Base SDXL model\n - This node is also used for SD1.5 and SD2.x models\n \nNOTE: When loading in another person's workflow, be sure to manually choose your own *local* model. This also applies to LoRas and all their deviations"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 10,
+      "type": "KSamplerAdvanced",
+      "pos": [
+        1162.3836220098474,
+        -660.3530536906587
+      ],
+      "size": [
+        360,
+        485.566650390625
+      ],
       "flags": {},
       "order": 7,
       "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 10
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 59
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 60
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "slot_index": 0,
+          "links": [
+            52
+          ]
+        }
+      ],
+      "title": "KSampler (Advanced) - BASE",
+      "properties": {
+        "Node name for S&R": "KSamplerAdvanced",
+        "cnr_id": "comfy-core",
+        "ver": "0.3.33"
+      },
+      "widgets_values": [
+        "enable",
+        963246494967394,
+        "randomize",
+        35,
+        5.6,
+        "dpmpp_2m",
+        "karras",
+        0,
+        30,
+        "disable"
+      ]
+    },
+    {
+      "id": 39,
+      "type": "Note",
+      "pos": [
+        516.6496102472951,
+        241.5416593149689
+      ],
+      "size": [
+        468.1833190917969,
+        239.56668090820312
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 4,
       "inputs": [],
       "outputs": [],
-      "properties": {},
-      "widgets_values": ["NeuralHub.ai — SDXL Batch Concepts\n\nHardware: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nBatch: __BATCH_SIZE__ images\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__ | Scheduler: __SCHEDULER__\n\nRequired: sd_xl_base_1.0.safetensors\n\nExported by NeuralHub.ai"]
+      "title": "Note - CLIP Encode (BASE)",
+      "properties": {
+        "text": ""
+      },
+      "widgets_values": [
+        "These nodes receive the text from the prompt and use the optimal CLIP settings for the specified checkpoint model (in this case: SDXL Base)"
+      ],
+      "color": "#432",
+      "bgcolor": "#653"
+    },
+    {
+      "id": 57,
+      "type": "VAEDecode",
+      "pos": [
+        1638.8134905807974,
+        -194.27550975709676
+      ],
+      "size": [
+        225,
+        131.56666564941406
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 52
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 54
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            55
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 58,
+      "type": "PreviewImage",
+      "pos": [
+        2019.9401796896113,
+        -137.2814176080974
+      ],
+      "size": [
+        440.45001220703125,
+        530.4500122070312
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 55
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
     }
   ],
   "links": [
-    [1, 1, 0, 5, 0, "MODEL"],
-    [2, 1, 1, 2, 0, "CLIP"],
-    [3, 1, 1, 3, 0, "CLIP"],
-    [4, 1, 2, 6, 1, "VAE"],
-    [5, 2, 0, 5, 1, "CONDITIONING"],
-    [6, 3, 0, 5, 2, "CONDITIONING"],
-    [7, 4, 0, 5, 3, "LATENT"],
-    [8, 5, 0, 6, 0, "LATENT"],
-    [9, 6, 0, 7, 0, "IMAGE"]
+    [
+      3,
+      4,
+      1,
+      6,
+      0,
+      "CLIP"
+    ],
+    [
+      5,
+      4,
+      1,
+      7,
+      0,
+      "CLIP"
+    ],
+    [
+      10,
+      4,
+      0,
+      10,
+      0,
+      "MODEL"
+    ],
+    [
+      27,
+      5,
+      0,
+      10,
+      3,
+      "LATENT"
+    ],
+    [
+      52,
+      10,
+      0,
+      57,
+      0,
+      "LATENT"
+    ],
+    [
+      54,
+      4,
+      2,
+      57,
+      1,
+      "VAE"
+    ],
+    [
+      55,
+      57,
+      0,
+      58,
+      0,
+      "IMAGE"
+    ],
+    [
+      59,
+      6,
+      0,
+      10,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      60,
+      7,
+      0,
+      10,
+      2,
+      "CONDITIONING"
+    ]
   ],
   "groups": [
     {
-      "title": "NeuralHub — SDXL Batch Pipeline",
-      "bounding": [0, 170, 1890, 680],
-      "color": "#1a2415",
-      "font_size": 24
+      "id": 6,
+      "title": "Empty Latent Image",
+      "bounding": [
+        -136.11646423339843,
+        -780.5890380859374,
+        423.94973144531247,
+        554.1882202148437
+      ],
+      "color": "#a1309b",
+      "font_size": 24,
+      "flags": {}
     }
   ],
   "config": {},
-  "extra": {"ds": {"scale": 0.7, "offset": [0, 0]}},
+  "extra": {
+    "ds": {
+      "scale": 0.586025544703247,
+      "offset": [
+        1136.3215927399385,
+        852.8317381208989
+      ]
+    },
+    "frontendVersion": "1.38.14",
+    "workflowRendererVersion": "Vue",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
   "version": 0.4
 }
