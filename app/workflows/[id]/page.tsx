@@ -58,11 +58,11 @@ export default function WorkflowDetailPage() {
 
   const primaryModel = workflow.requiredModels.find((m) => m.required && m.type === "checkpoint");
 
-  const handleExport = async () => {
+  const handleExport = () => {
     setExporting(true);
     setExportError("");
     try {
-      const json = await exportWorkflow({
+      const json = exportWorkflow({
         workflowId: workflow.id,
         hardwareTier: selectedTier,
         profile,
