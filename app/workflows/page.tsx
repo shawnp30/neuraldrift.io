@@ -3,7 +3,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import Link from "next/link";
 
-export const metadata = { title: "ComfyUI Workflows" };
+
 
 type Difficulty = "Beginner" | "Intermediate" | "Advanced";
 
