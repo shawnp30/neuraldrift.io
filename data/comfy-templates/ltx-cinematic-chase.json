@@ -1,147 +1,36 @@
-{
-  "last_node_id": 14,
-  "last_link_id": 16,
-  "nodes": [
-    {
-      "id": 1,
-      "type": "CheckpointLoaderSimple",
-      "pos": [26, 474],
-      "size": {"0": 315, "1": 98},
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {"name": "MODEL", "type": "MODEL", "links": [1], "slot_index": 0},
-        {"name": "CLIP", "type": "CLIP", "links": [2, 3], "slot_index": 1},
-        {"name": "VAE", "type": "VAE", "links": [4], "slot_index": 2}
-      ],
-      "properties": {"Node name for S&R": "CheckpointLoaderSimple"},
-      "widgets_values": ["__MODEL_FILENAME__"]
+import { NextRequest, NextResponse } from "next/server";
+import { readFileSync, existsSync } from "fs";
+import { join } from "path";
+
+const VALID_IDS = [
+  "ltx-cinematic-chase",
+  "flux-portrait-lora",
+  "sdxl-concept-batch",
+  "animatediff-character-loop",
+];
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+
+  if (!VALID_IDS.includes(id)) {
+    return NextResponse.json({ error: "Template not found" }, { status: 404 });
+  }
+
+  const templatePath = join(process.cwd(), "data/comfy-templates", `${id}.json`);
+
+  if (!existsSync(templatePath)) {
+    return NextResponse.json({ error: "Template file not found" }, { status: 404 });
+  }
+
+  const template = readFileSync(templatePath, "utf-8");
+
+  return new NextResponse(template, {
+    headers: {
+      "Content-Type": "application/json",
+      "Cache-Control": "public, max-age=3600",
     },
-    {
-      "id": 2,
-      "type": "CLIPTextEncode",
-      "pos": [415, 186],
-      "size": {"0": 422, "1": 164},
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [{"name": "clip", "type": "CLIP", "link": 2}],
-      "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [5], "slot_index": 0}],
-      "properties": {"Node name for S&R": "CLIPTextEncode"},
-      "widgets_values": ["__POSITIVE_PROMPT__"]
-    },
-    {
-      "id": 3,
-      "type": "CLIPTextEncode",
-      "pos": [415, 386],
-      "size": {"0": 422, "1": 164},
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [{"name": "clip", "type": "CLIP", "link": 3}],
-      "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [6], "slot_index": 0}],
-      "properties": {"Node name for S&R": "CLIPTextEncode"},
-      "widgets_values": ["__NEGATIVE_PROMPT__"]
-    },
-    {
-      "id": 4,
-      "type": "EmptyLTXVLatentVideo",
-      "pos": [26, 640],
-      "size": {"0": 315, "1": 130},
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [{"name": "LATENT", "type": "LATENT", "links": [7], "slot_index": 0}],
-      "properties": {"Node name for S&R": "EmptyLTXVLatentVideo"},
-      "widgets_values": [__WIDTH__, __HEIGHT__, __FRAMES__, 1]
-    },
-    {
-      "id": 5,
-      "type": "KSampler",
-      "pos": [905, 386],
-      "size": {"0": 315, "1": 262},
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {"name": "model", "type": "MODEL", "link": 1},
-        {"name": "positive", "type": "CONDITIONING", "link": 5},
-        {"name": "negative", "type": "CONDITIONING", "link": 6},
-        {"name": "latent_image", "type": "LATENT", "link": 7}
-      ],
-      "outputs": [{"name": "LATENT", "type": "LATENT", "links": [8], "slot_index": 0}],
-      "properties": {"Node name for S&R": "KSampler"},
-      "widgets_values": [__SEED__, "fixed", __STEPS__, __CFG__, "__SAMPLER__", "__SCHEDULER__", __DENOISE__]
-    },
-    {
-      "id": 6,
-      "type": "VAEDecodeTiled",
-      "pos": [1270, 386],
-      "size": {"0": 210, "1": 82},
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {"name": "samples", "type": "LATENT", "link": 8},
-        {"name": "vae", "type": "VAE", "link": 4}
-      ],
-      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [9], "slot_index": 0}],
-      "properties": {"Node name for S&R": "VAEDecodeTiled"},
-      "widgets_values": [512, 64, 64, 1]
-    },
-    {
-      "id": 7,
-      "type": "VHS_VideoCombine",
-      "pos": [1530, 386],
-      "size": {"0": 315, "1": 198},
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {"name": "images", "type": "IMAGE", "link": 9},
-        {"name": "audio", "type": "AUDIO", "link": null}
-      ],
-      "outputs": [{"name": "Filenames", "type": "VHS_FILENAMES", "links": [], "slot_index": 0}],
-      "properties": {"Node name for S&R": "VHS_VideoCombine"},
-      "widgets_values": [24, 1, "neuralhub_output", "video/h264-mp4", true, "default", []]
-    },
-    {
-      "id": 8,
-      "type": "Note",
-      "pos": [26, 200],
-      "size": {"0": 340, "1": 220},
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": ["NeuralHub.ai — LTX Cinematic Chase\n\nHardware Profile: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nFrames: __FRAMES__\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__ | Scheduler: __SCHEDULER__\n\nRequired: ComfyUI-VideoHelperSuite\nModel: ltx-video-2b-v0.9.1.safetensors\n\nExported by NeuralHub.ai"]
-    }
-  ],
-  "links": [
-    [1, 1, 0, 5, 0, "MODEL"],
-    [2, 1, 1, 2, 0, "CLIP"],
-    [3, 1, 1, 3, 0, "CLIP"],
-    [4, 1, 2, 6, 1, "VAE"],
-    [5, 2, 0, 5, 1, "CONDITIONING"],
-    [6, 3, 0, 5, 2, "CONDITIONING"],
-    [7, 4, 0, 5, 3, "LATENT"],
-    [8, 5, 0, 6, 0, "LATENT"],
-    [9, 6, 0, 7, 0, "IMAGE"]
-  ],
-  "groups": [
-    {
-      "title": "NeuralHub — LTX Chase Pipeline",
-      "bounding": [0, 170, 1900, 700],
-      "color": "#1a2030",
-      "font_size": 24
-    }
-  ],
-  "config": {},
-  "extra": {"ds": {"scale": 0.7, "offset": [0, 0]}},
-  "version": 0.4
+  });
 }
