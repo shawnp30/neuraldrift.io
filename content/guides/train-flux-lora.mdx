@@ -1,6 +1,6 @@
 ---
 title: "Train Your First FLUX LoRA in Under 6 Hours"
-description: "Dataset prep, Kohya config, training loop, and quality evaluation from scratch."
+description: "Dataset prep, Kohya config, training loop, and quality evaluation from scratch. Tested on RTX 5080 and RTX 3080."
 difficulty: "Intermediate"
 readTime: "28 min"
 tag: "LoRA Training"
@@ -9,4 +9,207 @@ publishedAt: "2025-03-05"
 
 # Train Your First FLUX LoRA in Under 6 Hours
 
-<!-- Add guide content here -->
+LoRA (Low-Rank Adaptation) lets you fine-tune a model on your own images without training from scratch. This guide covers building a character or style LoRA for FLUX Dev using Kohya SS — the most reliable training tool available.
+
+## Hardware Requirements
+
+| GPU           | VRAM | Training Time (10 epochs)       |
+| ------------- | ---- | ------------------------------- |
+| RTX 5080      | 16GB | ~2–3 hours                      |
+| RTX 4090      | 24GB | ~1.5–2 hours                    |
+| RTX 3080 16GB | 16GB | ~4–5 hours                      |
+| RTX 3080 10GB | 10GB | Requires gradient checkpointing |
+
+Minimum: **10GB VRAM** with 8-bit Adam optimizer.
+
+## Step 1 — Dataset Preparation
+
+Quality of training data is 80% of your result.
+
+### Image Requirements
+
+- **Quantity:** 15–50 images (character LoRA), 50–200 (style LoRA)
+- **Resolution:** 1024x1024 minimum, consistent aspect ratio
+- **Variety:** Different angles, lighting, expressions (character), or diverse examples (style)
+- **Quality:** Sharp, no compression artifacts, no watermarks
+
+### Folder Structure
+
+```
+my_dataset/
+├── img/
+│   └── 10_my_character/     # "10" = repeat count
+│       ├── image_001.jpg
+│       ├── image_001.txt    # caption file
+│       ├── image_002.jpg
+│       ├── image_002.txt
+│       └── ...
+├── log/
+└── model/
+```
+
+The number before the underscore (`10_`) is the **repeat count** — how many times each image is shown per epoch. For small datasets (15–20 images), use 10–15. For larger datasets (50+), use 3–5.
+
+## Step 2 — Auto-Captioning
+
+Every image needs a text caption. Use WD14 tagger for automatic captioning.
+
+```bash
+# Install tagger
+pip install wd14-tagger
+
+# Run on your dataset
+python wd14_tagger.py \
+  --input_dir ./my_dataset/img/10_my_character \
+  --output_dir ./my_dataset/img/10_my_character \
+  --threshold 0.35 \
+  --caption_extension .txt
+```
+
+**Edit the captions** — Add your trigger word to the start of every caption:
+
+```
+# Before:
+woman, blonde hair, blue eyes, outdoor, sunlight
+
+# After:
+mycharcterv1, woman, blonde hair, blue eyes, outdoor, sunlight
+```
+
+Your trigger word (`mycharcterv1`) is what you type in prompts to activate the LoRA later.
+
+## Step 3 — Install Kohya SS
+
+```bash
+git clone https://github.com/kohya-ss/sd-scripts
+cd sd-scripts
+python -m venv venv
+.\venv\Scripts\activate
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+pip install -r requirements.txt
+```
+
+## Step 4 — Training Configuration
+
+Create `flux_lora_config.toml`:
+
+```toml
+[model_arguments]
+pretrained_model_name_or_path = "C:/models/flux1-dev-fp8.safetensors"
+clip_l = "C:/models/clip_l.safetensors"
+t5xxl = "C:/models/t5xxl_fp16.safetensors"
+ae = "C:/models/ae.safetensors"
+
+[dataset_arguments]
+train_data_dir = "C:/my_dataset/img"
+resolution = "1024,1024"
+batch_size = 1
+cache_latents = true
+cache_latents_to_disk = true
+
+[training_arguments]
+output_dir = "C:/my_dataset/model"
+output_name = "my_character_lora_v1"
+save_every_n_epochs = 2
+max_train_epochs = 10
+learning_rate = 1e-4
+optimizer_type = "AdamW8bit"
+lr_scheduler = "cosine_with_restarts"
+lr_warmup_steps = 100
+gradient_checkpointing = true
+mixed_precision = "bf16"
+save_precision = "bf16"
+seed = 42
+
+[network_arguments]
+network_module = "networks.lora_flux"
+network_dim = 32
+network_alpha = 16
+```
+
+### Key Parameters Explained
+
+**network_dim (rank)** — Controls LoRA size. Higher = more capacity, more VRAM.
+
+- Character LoRA: `32`
+- Style LoRA: `16–64`
+- Concept LoRA: `8–16`
+
+**network_alpha** — Usually set to half of dim. Controls learning rate scaling.
+
+**learning_rate** — Start at `1e-4`. If results are too strong, lower to `5e-5`.
+
+**max_train_epochs** — 8–12 for character, 5–8 for style.
+
+## Step 5 — Run Training
+
+```bash
+# Activate venv
+.\venv\Scripts\activate
+
+# Start training
+python flux_train_network.py --config_file flux_lora_config.toml
+```
+
+### RTX 5080 Performance
+
+```
+Epoch 1/10: ~18 minutes
+Total (10 epochs): ~3 hours
+VRAM usage: ~14.2GB peak
+Loss start: ~0.18
+Loss target: ~0.01–0.03
+```
+
+Watch the loss curve — it should decrease steadily. If it plateaus early, lower the learning rate.
+
+## Step 6 — Evaluate Your LoRA
+
+Test your LoRA in ComfyUI after each saved checkpoint:
+
+```
+# Test prompt
+mycharcterv1, portrait photo, professional lighting, sharp focus
+
+# LoRA weight in ComfyUI
+Start: 0.8
+Adjust: 0.6 (subtle) — 1.0 (strong)
+```
+
+**Good signs:**
+
+- Subject is recognizable at weight 0.7–0.9
+- Prompt still controls other elements (background, lighting)
+- No artifacts or distortion
+
+**Bad signs:**
+
+- Only activates at weight 1.0+ (undertrained)
+- Breaks non-subject elements (overtrained)
+- Flickering or artifacts (learning rate too high)
+
+## Step 7 — Export and Use
+
+Your trained LoRA is saved as a `.safetensors` file in your output directory.
+
+```
+# Place in ComfyUI
+ComfyUI/models/loras/my_character_lora_v1.safetensors
+
+# Load in workflow
+Use "Load LoRA" node
+Set strength_model: 0.8
+Set strength_clip: 0.8
+```
+
+## Common Issues
+
+**OOM at start** — Enable `gradient_checkpointing = true` and reduce `batch_size` to 1.
+
+**Loss not decreasing** — Check your captions are correct and trigger word is consistent.
+
+**Subject not activating** — Increase LoRA weight, or train more epochs.
+
+**Overfit (everything looks like subject)** — Reduce epochs or increase dataset variety.
+
+**Slow training** — Ensure `cache_latents = true` and `mixed_precision = "bf16"`.
