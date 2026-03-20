@@ -6,6 +6,7 @@ import { ComputeBridge } from "@/components/home/ComputeBridge";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { CodeFeature } from "@/components/home/CodeFeature";
+import { NewsletterSignup } from "@/components/home/NewsletterSignup";
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
         <PipelineVisual />
         <GuidesPreview />
         <ComputeBridge />
+        <NewsletterSignup />
       </main>
       <Footer />
     </>
