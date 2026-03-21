@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { getRequirements } from "@/components/dashboard/requirements";
+import { getRequirements } from "@/components/dashboard/RequirementsPanel";
 
 const TYPE_COLORS: Record<string, string> = {
   checkpoint:   "bg-[rgba(0,229,255,0.08)] text-[#00e5ff]",

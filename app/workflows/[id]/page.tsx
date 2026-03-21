@@ -6,6 +6,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WORKFLOWS, type HardwareTier, type WorkflowParam } from "@/data/workflows";
 import { exportWorkflow } from "@/lib/utils/workflow-export";
+import { RequirementsPanel } from "@/components/dashboard/RequirementsPanel";
 
 const TIER_ORDER: HardwareTier[] = ["8gb", "12gb", "16gb", "24gb"];
 
@@ -368,6 +369,9 @@ export default function WorkflowDetailPage() {
                 ))}
               </div>
             </div>
+
+            {/* Requirements Panel */}
+            <RequirementsPanel workflowId={workflow.id} />
 
             {/* Export CTA */}
             <div className="bg-card border border-accent/20 rounded-xl p-5">
