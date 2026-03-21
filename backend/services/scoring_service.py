@@ -155,6 +155,9 @@ def score_workflow(workflow: dict, hardware: dict) -> dict:
     final_score = max(0, min(100, score))
     band = get_band(final_score)
 
+    # should_run is based on actual VRAM vs minimum — not score threshold
+    can_actually_run = hardware.get("vram_gb", 0) >= req["min_vram_gb"]
+
     # Determine primary risk
     primary_risk = None
     if bottlenecks:
@@ -167,7 +170,7 @@ def score_workflow(workflow: dict, hardware: dict) -> dict:
         "band": band["label"],
         "band_color": band["color"],
         "band_description": band["description"],
-        "should_run": final_score >= 40,
+        "should_run": can_actually_run,
         "primary_risk": primary_risk,
         "bottlenecks": bottlenecks,
         "reasons": reasons,

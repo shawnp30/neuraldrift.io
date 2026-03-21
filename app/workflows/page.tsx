@@ -220,7 +220,7 @@ export default function WorkflowsPage() {
             const score = scores[wf.id];
             return (
               <Link key={wf.id} href={`/workflows/${wf.id}`}
-                className={`bg-card border rounded-xl p-7 block hover:-translate-y-0.5 transition-all duration-200 group ${score && !score.should_run ? "border-[#ef4444]/15" : "border-border hover:border-accent/25"}`}>
+                className={`bg-card border rounded-xl p-7 block hover:-translate-y-0.5 transition-all duration-200 group ${score && (!score.should_run || score.score < 60) ? "border-[#ef4444]/15" : "border-border hover:border-accent/25"}`}>
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className={`font-mono text-xs px-2 py-0.5 rounded-sm tracking-widest uppercase ${TYPE_STYLES[wf.category]}`}>{wf.category}</span>
@@ -259,7 +259,7 @@ export default function WorkflowsPage() {
                     {wf.requiredModels.filter(m => m.required).length} models · {wf.requiredModels.filter(m => m.required).reduce((a, m) => a + m.sizeGB, 0).toFixed(1)}GB
                   </div>
                   <span className="font-mono text-xs text-accent group-hover:translate-x-1 transition-transform inline-block">
-                    {score && !score.should_run ? "Fix for My PC →" : "Configure & Export →"}
+                    {score && (!score.should_run || score.score < 60) ? "Fix for My PC →" : "Configure & Export →"}
                   </span>
                 </div>
               </Link>
