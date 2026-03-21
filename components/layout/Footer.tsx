@@ -3,9 +3,10 @@ import { Logo } from "@/components/shared/Logo";
 
 const LINKS = [
   { href: "/guides", label: "Guides" },
+  { href: "/workflows", label: "Workflows" },
   { href: "/loras", label: "LoRAs" },
-  { href: "/workflows", label: "Pipelines" },
   { href: "/datasets", label: "Datasets" },
+  { href: "/optimizer", label: "Optimizer" },
   { href: "/tools", label: "Tools" },
   { href: "https://computeatlas.ai", label: "ComputeAtlas" },
 ];

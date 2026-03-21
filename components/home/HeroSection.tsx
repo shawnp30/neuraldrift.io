@@ -3,10 +3,10 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 const STATS = [
-  { value: "4K+", label: "Workflows Published" },
-  { value: "180+", label: "LoRA Models" },
-  { value: "92K", label: "Builders" },
-  { value: "11ms", label: "Avg. Inference" },
+  { value: "6", label: "Workflows" },
+  { value: "6", label: "LoRA Models" },
+  { value: "RTX 5080", label: "Tested On" },
+  { value: "16GB", label: "Optimized For" },
 ];
 
 export function HeroSection() {
