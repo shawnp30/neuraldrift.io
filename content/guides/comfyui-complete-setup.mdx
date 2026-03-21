@@ -7,45 +7,73 @@ tag: "Image Gen"
 publishedAt: "2025-03-01"
 ---
 
+<!-- learn
+- Install ComfyUI on Windows from scratch
+- Configure Python, CUDA, and PyTorch correctly
+- Launch with GPU-optimized flags for your VRAM
+- Install and manage custom nodes via ComfyUI Manager
+- Run your first SDXL workflow in under 30 minutes
+- Read benchmarks for RTX 5080, 4090, and 3080
+-->
+
 # ComfyUI Complete Setup: RTX 5080 Edition
 
-ComfyUI is the most powerful node-based interface for running local AI image and video generation. This guide gets you from zero to a working workflow on Windows with an NVIDIA GPU.
+ComfyUI is the most powerful node-based interface for running local AI image and video generation. This guide gets you from zero to a working workflow on Windows with an NVIDIA GPU — tested live on an RTX 5080 and RTX 3080 16GB.
+
+:::stats
+:::stat 16GB | VRAM Required
+:::stat 12 min | Setup Time
+:::stat 3.2s | SDXL per image
+:::stat Free | Open Source
+:::
 
 ## Hardware Requirements
 
-| GPU | VRAM | Recommended Use |
-|-----|------|----------------|
-| RTX 5080 | 16GB | Full quality, all models |
-| RTX 4090 | 24GB | Full quality, batch generation |
-| RTX 3080 16GB | 16GB | Full quality, slower |
-| RTX 3080 10GB | 10GB | Reduced resolution |
-| RTX 3060 | 12GB | Standard models only |
+| GPU | VRAM | Best Use Case |
+|-----|------|--------------|
+| RTX 5080 | 16GB | Full quality, all models, fast batch |
+| RTX 4090 | 24GB | Full quality, FLUX FP16, large batch |
+| RTX 3080 16GB | 16GB | Full quality, slower on large models |
+| RTX 3080 10GB | 10GB | Reduced resolution, GGUF models |
+| RTX 3060 | 12GB | Standard models, SD1.5 and SDXL |
+| GTX 1660 Ti | 6GB | SD1.5 only, very slow |
 
-Minimum: **6GB VRAM** for SD1.5. FLUX requires at least **12GB**.
+:::note Minimum Requirements
+**6GB VRAM** for SD1.5. FLUX and LTX Video require at least **12GB**. For best results with modern models, 16GB is the sweet spot.
+:::
 
 ## Step 1 — Install Prerequisites
 
-### Python 3.10.x (required)
-Download from python.org — use exactly **3.10.x**, not 3.11 or 3.12.
+You need three things before cloning ComfyUI: Python 3.10, Git, and the CUDA Toolkit.
+
+### Python 3.10.x
+
+Download from python.org — use exactly **3.10.x**, not 3.11 or 3.12. Many custom nodes have dependency conflicts with newer versions.
 
 ```bash
-# Verify after install
+# Verify your Python version after install
 python --version
-# Should show: Python 3.10.x
+# Expected: Python 3.10.11
 ```
 
+:::warning Version matters
+Do NOT install Python 3.11 or 3.12. Custom nodes like AnimateDiff and VideoHelperSuite require 3.10.x. Using a newer version will cause cryptic import errors.
+:::
+
 ### Git
+
 ```bash
 git --version
-# Should show: git version 2.x.x
+# Expected: git version 2.x.x
 ```
 
 ### CUDA Toolkit
-Download CUDA 12.1 from nvidia.com/cuda-downloads. Match your driver version.
+
+Download CUDA 12.1 from [nvidia.com/cuda-downloads](https://developer.nvidia.com/cuda-downloads). Match your driver version.
 
 ```bash
 nvcc --version
-# Should show: release 12.1
+# Expected: release 12.1
 ```
 
 ## Step 2 — Clone ComfyUI
@@ -56,13 +84,17 @@ git clone https://github.com/comfyanonymous/ComfyUI
 cd ComfyUI
 ```
 
+:::tip Keep it at C:\ComfyUI
+Installing at the root avoids Windows path length issues that break certain custom node installs. Deeply nested paths cause silent failures.
+:::
+
 ## Step 3 — Install Dependencies
 
 ```bash
 # Create virtual environment
 python -m venv venv
 
-# Activate it
+# Activate it (run this every time you open a new terminal)
 .\venv\Scripts\activate
 
 # Install PyTorch for CUDA 12.1
@@ -72,9 +104,11 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install -r requirements.txt
 ```
 
+The PyTorch install will download ~2.5GB. This is the step most people mess up — make sure you're using the `cu121` index URL, not the default PyPI version.
+
 ## Step 4 — Install ComfyUI Manager
 
-ComfyUI Manager lets you install custom nodes with one click.
+ComfyUI Manager adds a one-click node installer directly inside the UI. It's essential.
 
 ```bash
 cd custom_nodes
@@ -82,15 +116,30 @@ git clone https://github.com/ltdrdata/ComfyUI-Manager
 cd ..
 ```
 
+After this, every time you find a workflow that needs missing nodes, ComfyUI Manager will detect and install them automatically.
+
+:::pro Install Order
+Install Manager BEFORE downloading any models. When you load a workflow that requires missing custom nodes, Manager will prompt you to install them all at once.
+:::
+
 ## Step 5 — Download Your First Model
 
 Place models in `ComfyUI/models/checkpoints/`
 
-**Recommended starter model:**
+**Recommended starter:**
+
 ```bash
-# SDXL (best quality/speed balance)
-# Download from: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
+# SDXL Base 1.0 — best quality/speed balance for beginners
+# Download from: huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
 # File: sd_xl_base_1.0.safetensors (6.5GB)
+```
+
+For FLUX (requires 12GB+ VRAM):
+
+```bash
+# FLUX Dev FP8 — best quality at reduced VRAM
+# Download from: huggingface.co/lllyasviel/flux1-dev-fp8
+# File: flux1-dev-fp8.safetensors (12.1GB)
 ```
 
 ## Step 6 — Launch ComfyUI
@@ -99,67 +148,89 @@ Place models in `ComfyUI/models/checkpoints/`
 # Standard launch
 python main.py
 
-# RTX 5080 optimized (recommended)
+# RTX 5080 / 4090 optimized
 python main.py --gpu-only --highvram
 
-# Low VRAM mode (under 8GB)
+# RTX 3080 16GB
+python main.py --gpu-only
+
+# Under 8GB VRAM
 python main.py --lowvram
 ```
 
 Open your browser to: `http://127.0.0.1:8188`
 
+:::note Bookmark this URL
+ComfyUI runs as a local server. Bookmark `127.0.0.1:8188` — it's faster than typing it each time.
+:::
+
 ## RTX 5080 Optimal Settings
 
-These settings maximize quality and speed on 16GB VRAM:
+These settings max out quality on 16GB VRAM with headroom for LoRAs:
 
 ```
-Batch size: 2–4 images
-Resolution: 1024x1024 (SDXL) / 768x512 (video)
-Steps: 20–30
-CFG Scale: 7.0 (images) / 3.0 (video)
-Sampler: dpmpp_2m
-Scheduler: karras
-VAE: Built-in (bake into checkpoint)
-Precision: fp16
+Model:       FLUX Dev FP8 or SDXL
+Batch size:  2–4 images
+Resolution:  1024x1024 (SDXL) / 768x512 (video)
+Steps:       20–30
+CFG Scale:   7.0 (images) / 3.0 (video)
+Sampler:     dpmpp_2m
+Scheduler:   karras
+VAE:         Built-in (baked into checkpoint)
+Precision:   fp16
 ```
 
 ## Installing Essential Custom Nodes
 
-In ComfyUI Manager, install these nodes first:
+In ComfyUI Manager, search and install these first:
 
-1. **ComfyUI-Impact-Pack** — face detailing, segmentation
-2. **ComfyUI_IPAdapter_plus** — image prompt adapter
+1. **ComfyUI-Impact-Pack** — face detailing, segmentation, upscaling
+2. **ComfyUI_IPAdapter_plus** — image prompt control
 3. **ComfyUI-AnimateDiff-Evolved** — video animation
-4. **ComfyUI-VideoHelperSuite** — video input/output
-5. **rgthree-comfy** — better node organization
+4. **ComfyUI-VideoHelperSuite** — video input/output (required for LTX)
+5. **rgthree-comfy** — better node organization and groups
 
 ## Your First Workflow
 
-Once launched, load the default workflow:
 1. Click **Load** in the top menu
 2. Select `default_workflow.json`
-3. Change the checkpoint to your downloaded model
+3. In the `Load Checkpoint` node, select your downloaded model
 4. Click **Queue Prompt**
 
-You should see your first image generate in 15–30 seconds on an RTX 5080.
+You should see your first image in 15–30 seconds on an RTX 5080.
+
+:::tip Speed up iteration
+While testing prompts, use batch size 1 and 15 steps. Once you find a direction you like, bump to 25 steps and batch 4 for the final run.
+:::
 
 ## Performance Benchmarks
 
-Tested on RTX 5080 16GB:
+Tested on RTX 5080 16GB, `--gpu-only --highvram`:
 
 | Model | Resolution | Steps | Time |
 |-------|-----------|-------|------|
-| SDXL | 1024x1024 | 20 | ~3.2s |
-| FLUX Dev FP8 | 1024x1024 | 20 | ~8.1s |
-| SD 1.5 | 512x512 | 20 | ~0.8s |
-| LTX Video | 768x512 97f | 25 | ~5.4s |
+| SDXL FP16 | 1024×1024 | 20 | ~3.2s |
+| FLUX Dev FP8 | 1024×1024 | 20 | ~8.1s |
+| SD 1.5 | 512×512 | 20 | ~0.8s |
+| LTX Video 2.3 | 768×512 97f | 25 | ~5.4s |
+
+:::stats
+:::stat 3.2s | SDXL per image
+:::stat 8.1s | FLUX Dev FP8
+:::stat 5.4s | LTX Video clip
+:::stat 0.8s | SD 1.5 image
+:::
 
 ## Common Issues
 
-**"CUDA out of memory"** — Add `--lowvram` to launch command, or reduce batch size to 1.
+**"CUDA out of memory"** — Add `--lowvram` to launch command, reduce batch size to 1, or switch to a GGUF quantized model.
 
-**Black images** — Wrong VAE. Download the correct VAE for your model.
+**Black images** — Your VAE doesn't match the model. Download the correct VAE for your checkpoint and load it manually with a `VAELoader` node.
 
-**Slow generation** — Ensure `--gpu-only` flag is set and venv is activated.
+**Slow generation** — Check `--gpu-only` flag is set and your venv is activated. Without the venv, you'll use the system Python and possibly CPU inference.
 
-**Nodes missing** — Open ComfyUI Manager and click "Install Missing Custom Nodes".
+**Nodes missing** — Open ComfyUI Manager → click "Install Missing Custom Nodes". This auto-detects and installs everything a workflow needs.
+
+---
+
+You're ready to run your first workflow. Next up — training your own LoRA to lock a character or style into any model.
