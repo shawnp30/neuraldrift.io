@@ -1,0 +1,579 @@
+[
+  {
+    "id": "ltx-cinematic-chase",
+    "slug": "ltx-cinematic-chase",
+    "title": "LTX Cinematic Chase Sequence",
+    "description": "Hollywood-style action and chase clips for Shorts and TikTok. Consistent motion, camera lock, temporal coherence.",
+    "category": "video_generation",
+    "task": "text_to_video",
+    "engine": "comfyui",
+    "version": "1.0.0",
+    "status": "stable",
+    "author": "NeuralHub",
+    "tags": ["ltx2", "video", "cinematic", "action", "shorts"],
+    "hardware_requirements": {
+      "min_vram_gb": 12,
+      "recommended_vram_gb": 16,
+      "min_ram_gb": 32,
+      "recommended_ram_gb": 64,
+      "gpu_tiers": ["mid", "high", "ultra"],
+      "supports_windows": true,
+      "supports_linux": true
+    },
+    "performance_profiles": {
+      "safe": {
+        "resolution": "512x512",
+        "frames": 49,
+        "steps": 20,
+        "cfg": 3.0,
+        "sampler": "euler",
+        "scheduler": "beta",
+        "precision": "fp16",
+        "vae_mode": "tiled",
+        "batch_size": 1
+      },
+      "balanced": {
+        "resolution": "512x768",
+        "frames": 73,
+        "steps": 25,
+        "cfg": 3.0,
+        "sampler": "euler",
+        "scheduler": "beta",
+        "precision": "fp16",
+        "vae_mode": "tiled",
+        "batch_size": 1
+      },
+      "max_quality": {
+        "resolution": "768x1024",
+        "frames": 97,
+        "steps": 30,
+        "cfg": 3.5,
+        "sampler": "euler",
+        "scheduler": "beta",
+        "precision": "fp16",
+        "vae_mode": "standard",
+        "batch_size": 1
+      }
+    },
+    "dependencies": {
+      "models": [
+        {
+          "name": "LTX Video 2.3 FP8",
+          "filename": "ltx-2.3-22b-dev-fp8.safetensors",
+          "type": "checkpoint",
+          "size_gb": 22.4,
+          "required": true,
+          "download_url": "https://huggingface.co/Lightricks/LTX-2.3-fp8"
+        },
+        {
+          "name": "Gemma 3 12B Text Encoder",
+          "filename": "gemma_3_12B_it_fp4_mixed.safetensors",
+          "type": "text_encoder",
+          "size_gb": 7.2,
+          "required": true,
+          "download_url": "https://huggingface.co/Comfy-Org/ltx-2"
+        }
+      ],
+      "custom_nodes": [
+        {
+          "name": "ComfyUI-LTXVideo",
+          "repo": "Lightricks/ComfyUI-LTXVideo",
+          "required": true
+        },
+        {
+          "name": "ComfyUI-VideoHelperSuite",
+          "repo": "Kosinkadink/ComfyUI-VideoHelperSuite",
+          "required": true
+        }
+      ]
+    },
+    "optimizer_rules": [
+      "enable_tiled_vae_under_16gb",
+      "reduce_frames_on_12gb",
+      "downshift_resolution_if_vram_below_recommended",
+      "force_batch_1_near_threshold"
+    ],
+    "launch_flags": {
+      "recommended": "--gpu-only",
+      "low_vram": "--gpu-only --lowvram"
+    },
+    "ui": {
+      "difficulty": "intermediate",
+      "estimated_setup_minutes": 25,
+      "thumbnail": "/images/workflows/ltx-cinematic.jpg"
+    },
+    "exports": ["comfyui_json", "settings_manifest", "install_guide"]
+  },
+  {
+    "id": "sdxl-concept-batch",
+    "slug": "sdxl-concept-batch",
+    "title": "SDXL Concept Batch Generator",
+    "description": "Generate multiple concept art variations in a single run. Clean linework, professional illustration style.",
+    "category": "image_generation",
+    "task": "text_to_image",
+    "engine": "comfyui",
+    "version": "1.0.0",
+    "status": "stable",
+    "author": "NeuralHub",
+    "tags": ["sdxl", "image", "batch", "concept-art", "illustration"],
+    "hardware_requirements": {
+      "min_vram_gb": 6,
+      "recommended_vram_gb": 10,
+      "min_ram_gb": 16,
+      "recommended_ram_gb": 32,
+      "gpu_tiers": ["entry", "mid", "high", "ultra"],
+      "supports_windows": true,
+      "supports_linux": true
+    },
+    "performance_profiles": {
+      "safe": {
+        "resolution": "768x768",
+        "frames": null,
+        "steps": 20,
+        "cfg": 7.0,
+        "sampler": "dpmpp_2m",
+        "scheduler": "karras",
+        "precision": "fp16",
+        "vae_mode": "standard",
+        "batch_size": 1
+      },
+      "balanced": {
+        "resolution": "1024x1024",
+        "frames": null,
+        "steps": 20,
+        "cfg": 7.0,
+        "sampler": "dpmpp_2m",
+        "scheduler": "karras",
+        "precision": "fp16",
+        "vae_mode": "standard",
+        "batch_size": 4
+      },
+      "max_quality": {
+        "resolution": "1024x1024",
+        "frames": null,
+        "steps": 30,
+        "cfg": 7.5,
+        "sampler": "dpmpp_2m_sde",
+        "scheduler": "karras",
+        "precision": "fp16",
+        "vae_mode": "standard",
+        "batch_size": 8
+      }
+    },
+    "dependencies": {
+      "models": [
+        {
+          "name": "SDXL Base 1.0",
+          "filename": "sd_xl_base_1.0.safetensors",
+          "type": "checkpoint",
+          "size_gb": 6.5,
+          "required": true,
+          "download_url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+        }
+      ],
+      "custom_nodes": []
+    },
+    "optimizer_rules": [
+      "reduce_batch_size_under_8gb",
+      "downshift_resolution_under_6gb",
+      "force_batch_1_near_threshold"
+    ],
+    "launch_flags": {
+      "recommended": "--gpu-only --highvram",
+      "low_vram": "--lowvram"
+    },
+    "ui": {
+      "difficulty": "beginner",
+      "estimated_setup_minutes": 10,
+      "thumbnail": "/images/workflows/sdxl-concept.jpg"
+    },
+    "exports": ["comfyui_json", "settings_manifest", "install_guide"]
+  },
+  {
+    "id": "flux-portrait-lora",
+    "slug": "flux-portrait-lora",
+    "title": "FLUX Portrait + LoRA",
+    "description": "High-fidelity portrait generation with LoRA injection. Sharp detail, consistent character rendering.",
+    "category": "image_generation",
+    "task": "text_to_image",
+    "engine": "comfyui",
+    "version": "1.0.0",
+    "status": "stable",
+    "author": "NeuralHub",
+    "tags": ["flux", "portrait", "lora", "character", "high-quality"],
+    "hardware_requirements": {
+      "min_vram_gb": 10,
+      "recommended_vram_gb": 16,
+      "min_ram_gb": 32,
+      "recommended_ram_gb": 64,
+      "gpu_tiers": ["mid", "high", "ultra"],
+      "supports_windows": true,
+      "supports_linux": true
+    },
+    "performance_profiles": {
+      "safe": {
+        "resolution": "768x768",
+        "frames": null,
+        "steps": 20,
+        "cfg": 3.5,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "precision": "fp8",
+        "vae_mode": "standard",
+        "batch_size": 1
+      },
+      "balanced": {
+        "resolution": "1024x1024",
+        "frames": null,
+        "steps": 20,
+        "cfg": 3.5,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "precision": "fp8",
+        "vae_mode": "standard",
+        "batch_size": 1
+      },
+      "max_quality": {
+        "resolution": "1024x1024",
+        "frames": null,
+        "steps": 28,
+        "cfg": 3.5,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "precision": "fp16",
+        "vae_mode": "standard",
+        "batch_size": 2
+      }
+    },
+    "dependencies": {
+      "models": [
+        {
+          "name": "FLUX Dev FP8",
+          "filename": "flux1-dev-fp8.safetensors",
+          "type": "checkpoint",
+          "size_gb": 12.1,
+          "required": true,
+          "download_url": "https://huggingface.co/Comfy-Org/flux1-dev"
+        },
+        {
+          "name": "AE VAE",
+          "filename": "ae.safetensors",
+          "type": "vae",
+          "size_gb": 0.3,
+          "required": true,
+          "download_url": "https://huggingface.co/Comfy-Org/flux1-dev"
+        }
+      ],
+      "custom_nodes": []
+    },
+    "optimizer_rules": [
+      "downshift_resolution_under_12gb",
+      "force_fp8_under_16gb",
+      "force_batch_1_near_threshold"
+    ],
+    "launch_flags": {
+      "recommended": "--gpu-only",
+      "low_vram": "--gpu-only --lowvram"
+    },
+    "ui": {
+      "difficulty": "intermediate",
+      "estimated_setup_minutes": 15,
+      "thumbnail": "/images/workflows/flux-portrait.jpg"
+    },
+    "exports": ["comfyui_json", "settings_manifest", "install_guide"]
+  },
+  {
+    "id": "animatediff-character-loop",
+    "slug": "animatediff-character-loop",
+    "title": "AnimateDiff Character Loop",
+    "description": "Seamless looping character animation with LoRA injection. Built for Instagram Reels and TikTok loop format.",
+    "category": "video_generation",
+    "task": "text_to_video",
+    "engine": "comfyui",
+    "version": "1.0.0",
+    "status": "stable",
+    "author": "NeuralHub",
+    "tags": ["animatediff", "animation", "loop", "character", "sdxl"],
+    "hardware_requirements": {
+      "min_vram_gb": 8,
+      "recommended_vram_gb": 12,
+      "min_ram_gb": 16,
+      "recommended_ram_gb": 32,
+      "gpu_tiers": ["mid", "high", "ultra"],
+      "supports_windows": true,
+      "supports_linux": true
+    },
+    "performance_profiles": {
+      "safe": {
+        "resolution": "512x512",
+        "frames": 16,
+        "steps": 20,
+        "cfg": 7.0,
+        "sampler": "dpmpp_2m",
+        "scheduler": "karras",
+        "precision": "fp16",
+        "vae_mode": "standard",
+        "batch_size": 1
+      },
+      "balanced": {
+        "resolution": "512x768",
+        "frames": 24,
+        "steps": 20,
+        "cfg": 7.0,
+        "sampler": "dpmpp_2m",
+        "scheduler": "karras",
+        "precision": "fp16",
+        "vae_mode": "standard",
+        "batch_size": 1
+      },
+      "max_quality": {
+        "resolution": "768x768",
+        "frames": 32,
+        "steps": 25,
+        "cfg": 7.5,
+        "sampler": "dpmpp_2m_sde",
+        "scheduler": "karras",
+        "precision": "fp16",
+        "vae_mode": "standard",
+        "batch_size": 1
+      }
+    },
+    "dependencies": {
+      "models": [
+        {
+          "name": "DreamShaper XL Turbo",
+          "filename": "dreamshaperXL_v21TurboDPMSDE.safetensors",
+          "type": "checkpoint",
+          "size_gb": 6.5,
+          "required": true,
+          "download_url": "https://civitai.com/models/112902"
+        },
+        {
+          "name": "AnimateDiff Motion Module v15",
+          "filename": "animatediff_v15_3.safetensors",
+          "type": "motion",
+          "size_gb": 1.7,
+          "required": true,
+          "download_url": "https://huggingface.co/guoyww/animatediff"
+        }
+      ],
+      "custom_nodes": [
+        {
+          "name": "ComfyUI-AnimateDiff-Evolved",
+          "repo": "Kosinkadink/ComfyUI-AnimateDiff-Evolved",
+          "required": true
+        },
+        {
+          "name": "ComfyUI-VideoHelperSuite",
+          "repo": "Kosinkadink/ComfyUI-VideoHelperSuite",
+          "required": true
+        }
+      ]
+    },
+    "optimizer_rules": [
+      "cap_frames_under_8gb",
+      "downshift_resolution_under_10gb",
+      "force_batch_1_near_threshold"
+    ],
+    "launch_flags": {
+      "recommended": "--gpu-only",
+      "low_vram": "--lowvram"
+    },
+    "ui": {
+      "difficulty": "intermediate",
+      "estimated_setup_minutes": 20,
+      "thumbnail": "/images/workflows/animatediff-loop.jpg"
+    },
+    "exports": ["comfyui_json", "settings_manifest", "install_guide"]
+  },
+  {
+    "id": "flux-lora-training",
+    "slug": "flux-lora-training",
+    "title": "FLUX LoRA Training Pipeline",
+    "description": "End-to-end LoRA training for FLUX Dev. Dataset prep, Kohya config, training loop, and evaluation.",
+    "category": "training",
+    "task": "lora_training",
+    "engine": "kohya",
+    "version": "1.0.0",
+    "status": "stable",
+    "author": "NeuralHub",
+    "tags": ["flux", "lora", "training", "kohya", "fine-tuning"],
+    "hardware_requirements": {
+      "min_vram_gb": 12,
+      "recommended_vram_gb": 16,
+      "min_ram_gb": 32,
+      "recommended_ram_gb": 64,
+      "gpu_tiers": ["mid", "high", "ultra"],
+      "supports_windows": true,
+      "supports_linux": true
+    },
+    "performance_profiles": {
+      "safe": {
+        "resolution": "768x768",
+        "frames": null,
+        "steps": 1000,
+        "cfg": null,
+        "sampler": null,
+        "scheduler": "cosine_with_restarts",
+        "precision": "bf16",
+        "vae_mode": "standard",
+        "batch_size": 1,
+        "gradient_checkpointing": true,
+        "learning_rate": "5e-5",
+        "network_dim": 16,
+        "network_alpha": 8
+      },
+      "balanced": {
+        "resolution": "1024x1024",
+        "frames": null,
+        "steps": 1000,
+        "cfg": null,
+        "sampler": null,
+        "scheduler": "cosine_with_restarts",
+        "precision": "bf16",
+        "vae_mode": "standard",
+        "batch_size": 1,
+        "gradient_checkpointing": true,
+        "learning_rate": "1e-4",
+        "network_dim": 32,
+        "network_alpha": 16
+      },
+      "max_quality": {
+        "resolution": "1024x1024",
+        "frames": null,
+        "steps": 2000,
+        "cfg": null,
+        "sampler": null,
+        "scheduler": "cosine_with_restarts",
+        "precision": "bf16",
+        "vae_mode": "standard",
+        "batch_size": 2,
+        "gradient_checkpointing": true,
+        "learning_rate": "1e-4",
+        "network_dim": 64,
+        "network_alpha": 32
+      }
+    },
+    "dependencies": {
+      "models": [
+        {
+          "name": "FLUX Dev FP8",
+          "filename": "flux1-dev-fp8.safetensors",
+          "type": "checkpoint",
+          "size_gb": 12.1,
+          "required": true,
+          "download_url": "https://huggingface.co/Comfy-Org/flux1-dev"
+        }
+      ],
+      "custom_nodes": []
+    },
+    "optimizer_rules": [
+      "enable_gradient_checkpointing_always",
+      "force_batch_1_under_16gb",
+      "downshift_resolution_under_14gb",
+      "lower_learning_rate_under_14gb"
+    ],
+    "launch_flags": {
+      "recommended": "--gradient_checkpointing",
+      "low_vram": "--gradient_checkpointing --cpu_offload"
+    },
+    "ui": {
+      "difficulty": "advanced",
+      "estimated_setup_minutes": 45,
+      "thumbnail": "/images/workflows/flux-training.jpg"
+    },
+    "exports": ["kohya_toml", "settings_manifest", "install_guide"]
+  },
+  {
+    "id": "z-image-turbo",
+    "slug": "z-image-turbo",
+    "title": "Z-Image Turbo",
+    "description": "Ultra-fast image generation in 8 steps. Portrait, illustration, concept art — clean results with minimal wait.",
+    "category": "image_generation",
+    "task": "text_to_image",
+    "engine": "comfyui",
+    "version": "1.0.0",
+    "status": "stable",
+    "author": "NeuralHub",
+    "tags": ["z-image", "turbo", "fast", "8-step", "portrait"],
+    "hardware_requirements": {
+      "min_vram_gb": 6,
+      "recommended_vram_gb": 10,
+      "min_ram_gb": 16,
+      "recommended_ram_gb": 32,
+      "gpu_tiers": ["entry", "mid", "high", "ultra"],
+      "supports_windows": true,
+      "supports_linux": true
+    },
+    "performance_profiles": {
+      "safe": {
+        "resolution": "768x768",
+        "frames": null,
+        "steps": 8,
+        "cfg": 1.0,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "precision": "bf16",
+        "vae_mode": "standard",
+        "batch_size": 1
+      },
+      "balanced": {
+        "resolution": "1024x1024",
+        "frames": null,
+        "steps": 8,
+        "cfg": 1.0,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "precision": "bf16",
+        "vae_mode": "standard",
+        "batch_size": 2
+      },
+      "max_quality": {
+        "resolution": "1024x1024",
+        "frames": null,
+        "steps": 8,
+        "cfg": 1.0,
+        "sampler": "euler",
+        "scheduler": "simple",
+        "precision": "bf16",
+        "vae_mode": "standard",
+        "batch_size": 4
+      }
+    },
+    "dependencies": {
+      "models": [
+        {
+          "name": "Z-Image Turbo BF16",
+          "filename": "z_image_turbo_bf16.safetensors",
+          "type": "checkpoint",
+          "size_gb": 6.2,
+          "required": true,
+          "download_url": "https://huggingface.co/Comfy-Org/z_image_turbo"
+        },
+        {
+          "name": "Qwen 3 4B Text Encoder",
+          "filename": "qwen_3_4b.safetensors",
+          "type": "text_encoder",
+          "size_gb": 4.1,
+          "required": true,
+          "download_url": "https://huggingface.co/Comfy-Org/z_image_turbo"
+        }
+      ],
+      "custom_nodes": []
+    },
+    "optimizer_rules": [
+      "reduce_batch_size_under_8gb",
+      "downshift_resolution_under_6gb"
+    ],
+    "launch_flags": {
+      "recommended": "--gpu-only",
+      "low_vram": "--lowvram"
+    },
+    "ui": {
+      "difficulty": "beginner",
+      "estimated_setup_minutes": 10,
+      "thumbnail": "/images/workflows/z-image-turbo.jpg"
+    },
+    "exports": ["comfyui_json", "settings_manifest", "install_guide"]
+  }
+]

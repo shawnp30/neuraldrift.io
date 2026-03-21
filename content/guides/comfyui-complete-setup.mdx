@@ -29,14 +29,14 @@ ComfyUI is the most powerful node-based interface for running local AI image and
 
 ## Hardware Requirements
 
-| GPU | VRAM | Best Use Case |
-|-----|------|--------------|
-| RTX 5080 | 16GB | Full quality, all models, fast batch |
-| RTX 4090 | 24GB | Full quality, FLUX FP16, large batch |
+| GPU           | VRAM | Best Use Case                        |
+| ------------- | ---- | ------------------------------------ |
+| RTX 5080      | 16GB | Full quality, all models, fast batch |
+| RTX 4090      | 24GB | Full quality, FLUX FP16, large batch |
 | RTX 3080 16GB | 16GB | Full quality, slower on large models |
-| RTX 3080 10GB | 10GB | Reduced resolution, GGUF models |
-| RTX 3060 | 12GB | Standard models, SD1.5 and SDXL |
-| GTX 1660 Ti | 6GB | SD1.5 only, very slow |
+| RTX 3080 10GB | 10GB | Reduced resolution, GGUF models      |
+| RTX 3060      | 12GB | Standard models, SD1.5 and SDXL      |
+| GTX 1660 Ti   | 6GB  | SD1.5 only, very slow                |
 
 :::note Minimum Requirements
 **6GB VRAM** for SD1.5. FLUX and LTX Video require at least **12GB**. For best results with modern models, 16GB is the sweet spot.
@@ -207,12 +207,12 @@ While testing prompts, use batch size 1 and 15 steps. Once you find a direction 
 
 Tested on RTX 5080 16GB, `--gpu-only --highvram`:
 
-| Model | Resolution | Steps | Time |
-|-------|-----------|-------|------|
-| SDXL FP16 | 1024×1024 | 20 | ~3.2s |
-| FLUX Dev FP8 | 1024×1024 | 20 | ~8.1s |
-| SD 1.5 | 512×512 | 20 | ~0.8s |
-| LTX Video 2.3 | 768×512 97f | 25 | ~5.4s |
+| Model         | Resolution  | Steps | Time  |
+| ------------- | ----------- | ----- | ----- |
+| SDXL FP16     | 1024×1024   | 20    | ~3.2s |
+| FLUX Dev FP8  | 1024×1024   | 20    | ~8.1s |
+| SD 1.5        | 512×512     | 20    | ~0.8s |
+| LTX Video 2.3 | 768×512 97f | 25    | ~5.4s |
 
 :::stats
 :::stat 3.2s | SDXL per image

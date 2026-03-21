@@ -1,0 +1,222 @@
+{
+  "description": "NeuralHub Phase 1 — Test Payloads (copy-paste into Postman, Insomnia, or curl)",
+  "base_url": "http://localhost:5000",
+
+  "tests": {
+
+    "1_health_check": {
+      "method": "GET",
+      "url": "/api/health",
+      "expected": { "status": "ok" }
+    },
+
+    "2_list_all_workflows": {
+      "method": "GET",
+      "url": "/api/workflows"
+    },
+
+    "3_filter_video_workflows": {
+      "method": "GET",
+      "url": "/api/workflows?category=video_generation"
+    },
+
+    "4_filter_by_vram": {
+      "method": "GET",
+      "url": "/api/workflows?max_vram=12",
+      "description": "Get workflows that run on 12GB or less VRAM"
+    },
+
+    "5_search": {
+      "method": "GET",
+      "url": "/api/workflows/search?q=flux"
+    },
+
+    "6_get_single_workflow": {
+      "method": "GET",
+      "url": "/api/workflows/ltx-cinematic-chase"
+    },
+
+    "7_score_rtx5080_high_end": {
+      "method": "POST",
+      "url": "/api/score",
+      "body": {
+        "workflow_id": "ltx-cinematic-chase",
+        "hardware": {
+          "gpu_name": "RTX 5080",
+          "vram_gb": 16,
+          "ram_gb": 64,
+          "storage_free_gb": 500,
+          "gpu_tier": "high",
+          "goal": "video_quality",
+          "experience_level": "intermediate"
+        }
+      },
+      "expected_score_range": [75, 100]
+    },
+
+    "8_score_rtx3060_entry": {
+      "method": "POST",
+      "url": "/api/score",
+      "body": {
+        "workflow_id": "ltx-cinematic-chase",
+        "hardware": {
+          "gpu_name": "RTX 3060 12GB",
+          "vram_gb": 12,
+          "ram_gb": 32,
+          "storage_free_gb": 100,
+          "gpu_tier": "entry",
+          "goal": "balanced"
+        }
+      },
+      "expected_score_range": [40, 70]
+    },
+
+    "9_score_gtx1660_below_min": {
+      "method": "POST",
+      "url": "/api/score",
+      "body": {
+        "workflow_id": "ltx-cinematic-chase",
+        "hardware": {
+          "gpu_name": "GTX 1660 Ti",
+          "vram_gb": 6,
+          "ram_gb": 16,
+          "storage_free_gb": 50
+        }
+      },
+      "expected": { "should_run": false },
+      "expected_score_range": [0, 39]
+    },
+
+    "10_optimize_quality_16gb": {
+      "method": "POST",
+      "url": "/api/optimize",
+      "body": {
+        "workflow_id": "ltx-cinematic-chase",
+        "hardware": {
+          "gpu_name": "RTX 5080",
+          "vram_gb": 16,
+          "ram_gb": 64
+        },
+        "priority": "quality"
+      },
+      "expected": { "selected_profile": "max_quality" }
+    },
+
+    "11_optimize_balanced_12gb": {
+      "method": "POST",
+      "url": "/api/optimize",
+      "body": {
+        "workflow_id": "ltx-cinematic-chase",
+        "hardware": {
+          "gpu_name": "RTX 3060",
+          "vram_gb": 12,
+          "ram_gb": 32
+        },
+        "priority": "balanced"
+      },
+      "description": "Should select balanced profile and apply tiled VAE + frame reduction"
+    },
+
+    "12_optimize_same_hw_different_priority": {
+      "description": "SAME hardware, DIFFERENT priority — outputs must be meaningfully different (Checkpoint 3)",
+      "tests": [
+        {
+          "label": "quality",
+          "method": "POST",
+          "url": "/api/optimize",
+          "body": {
+            "workflow_id": "ltx-cinematic-chase",
+            "hardware": { "vram_gb": 12, "ram_gb": 32 },
+            "priority": "quality"
+          }
+        },
+        {
+          "label": "reliability",
+          "method": "POST",
+          "url": "/api/optimize",
+          "body": {
+            "workflow_id": "ltx-cinematic-chase",
+            "hardware": { "vram_gb": 12, "ram_gb": 32 },
+            "priority": "reliability"
+          }
+        }
+      ]
+    },
+
+    "13_fix_my_pc_tight_vram": {
+      "method": "POST",
+      "url": "/api/fix-my-pc",
+      "body": {
+        "workflow_id": "ltx-cinematic-chase",
+        "hardware": {
+          "gpu_name": "RTX 3080 10GB",
+          "vram_gb": 10,
+          "ram_gb": 32,
+          "storage_free_gb": 200
+        }
+      },
+      "expected": { "status": "settings_fix_possible" }
+    },
+
+    "14_fix_my_pc_below_minimum": {
+      "method": "POST",
+      "url": "/api/fix-my-pc",
+      "body": {
+        "workflow_id": "ltx-cinematic-chase",
+        "hardware": {
+          "gpu_name": "GTX 1660 Ti",
+          "vram_gb": 6,
+          "ram_gb": 16,
+          "storage_free_gb": 100
+        }
+      },
+      "expected": { "can_run": false }
+    },
+
+    "15_fix_my_pc_sdxl_runs_fine": {
+      "method": "POST",
+      "url": "/api/fix-my-pc",
+      "body": {
+        "workflow_id": "sdxl-concept-batch",
+        "hardware": {
+          "gpu_name": "RTX 3060 12GB",
+          "vram_gb": 12,
+          "ram_gb": 32,
+          "storage_free_gb": 200
+        }
+      },
+      "expected": { "status": "no_changes_needed" }
+    },
+
+    "16_batch_score_all": {
+      "method": "POST",
+      "url": "/api/score/batch",
+      "body": {
+        "hardware": {
+          "gpu_name": "RTX 5080",
+          "vram_gb": 16,
+          "ram_gb": 64,
+          "storage_free_gb": 500
+        }
+      },
+      "description": "Score ALL workflows at once for the catalog page"
+    },
+
+    "17_hardware_profile_normalize": {
+      "method": "POST",
+      "url": "/api/hardware/profile",
+      "body": {
+        "gpu_name": "RTX 3080",
+        "vram_gb": 16,
+        "ram_gb": 32,
+        "storage_free_gb": 500
+      }
+    }
+  },
+
+  "curl_examples": {
+    "score": "curl -X POST http://localhost:5000/api/score -H 'Content-Type: application/json' -d '{\"workflow_id\": \"ltx-cinematic-chase\", \"hardware\": {\"vram_gb\": 16, \"ram_gb\": 64}}'",
+    "optimize": "curl -X POST http://localhost:5000/api/optimize -H 'Content-Type: application/json' -d '{\"workflow_id\": \"sdxl-concept-batch\", \"hardware\": {\"vram_gb\": 12, \"ram_gb\": 32}, \"priority\": \"balanced\"}'",
+    "fix": "curl -X POST http://localhost:5000/api/fix-my-pc -H 'Content-Type: application/json' -d '{\"workflow_id\": \"ltx-cinematic-chase\", \"hardware\": {\"vram_gb\": 10, \"ram_gb\": 32}}'"
+  }
+}
