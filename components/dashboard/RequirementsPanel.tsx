@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 import { useState } from "react";
-import { getRequirements } from "@/components/dashboard/RequirementsPanel";
+import { getRequirements } from "@/data/workflows/requirements";
 
 const TYPE_COLORS: Record<string, string> = {
   checkpoint:   "bg-[rgba(0,229,255,0.08)] text-[#00e5ff]",
@@ -33,7 +33,7 @@ export function RequirementsPanel({ workflowId }: { workflowId: string }) {
       <div className="px-5 py-4 border-b border-border">
         <h3 className="font-syne text-sm font-bold text-white">Requirements</h3>
         <p className="font-mono text-xs text-muted mt-0.5">
-          {req.vramMin}GB min · {req.vramRec}GB rec · {totalGB.toFixed(1)}GB total
+          {req.vramMin}GB min Â· {req.vramRec}GB rec Â· {totalGB.toFixed(1)}GB total
         </p>
       </div>
 
@@ -41,7 +41,7 @@ export function RequirementsPanel({ workflowId }: { workflowId: string }) {
       <div className="px-5 pt-4">
         <div className="flex items-center justify-between font-mono text-xs mb-1.5">
           <span className="text-muted">VRAM</span>
-          <span className="text-white">{req.vramMin}–{req.vramRec}GB</span>
+          <span className="text-white">{req.vramMin}â€“{req.vramRec}GB</span>
         </div>
         <div className="h-1.5 bg-border rounded-full overflow-hidden mb-4">
           <div
@@ -93,13 +93,13 @@ export function RequirementsPanel({ workflowId }: { workflowId: string }) {
                   rel="noopener noreferrer"
                   className="font-mono text-xs text-accent border border-accent/20 px-2 py-1 rounded hover:bg-accent/8 transition-colors tracking-wide"
                 >
-                  Download →
+                  Download â†’
                 </a>
                 <button
                   onClick={() => copyPath(model.directory + model.filename)}
                   className="font-mono text-xs text-muted border border-border px-2 py-1 rounded hover:text-text transition-colors tracking-wide"
                 >
-                  {copiedFile === model.directory + model.filename ? "✓ Copied" : "Copy path"}
+                  {copiedFile === model.directory + model.filename ? "âœ“ Copied" : "Copy path"}
                 </button>
               </div>
             </div>
@@ -118,7 +118,7 @@ export function RequirementsPanel({ workflowId }: { workflowId: string }) {
         <div className="px-5 pb-5 space-y-3">
           {req.customNodes.length === 0 ? (
             <div className="text-center py-6">
-              <p className="font-mono text-xs text-[#10b981]">✓ No custom nodes required</p>
+              <p className="font-mono text-xs text-[#10b981]">âœ“ No custom nodes required</p>
               <p className="font-mono text-xs text-muted mt-1">Built-in ComfyUI nodes only</p>
             </div>
           ) : (
@@ -137,7 +137,7 @@ export function RequirementsPanel({ workflowId }: { workflowId: string }) {
                   rel="noopener noreferrer"
                   className="font-mono text-xs text-accent border border-accent/20 px-2 py-1 rounded hover:bg-accent/8 transition-colors tracking-wide inline-block"
                 >
-                  Install via Manager →
+                  Install via Manager â†’
                 </a>
               </div>
             ))
@@ -163,7 +163,7 @@ export function RequirementsPanel({ workflowId }: { workflowId: string }) {
             <ul className="space-y-1.5">
               {req.tips.map((tip, i) => (
                 <li key={i} className="font-mono text-xs text-muted flex items-start gap-1.5 leading-relaxed">
-                  <span className="text-accent flex-shrink-0 mt-0.5">→</span> {tip}
+                  <span className="text-accent flex-shrink-0 mt-0.5">â†’</span> {tip}
                 </li>
               ))}
             </ul>
