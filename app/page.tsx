@@ -19,7 +19,7 @@ const TICKER = [
   { icon: "🎬", label: "LTX Video 2.3", desc: "Cinematic generation" },
   { icon: "🧠", label: "FLUX Dev/Schnell", desc: "Image models" },
   { icon: "📦", label: "6 LoRA Models", desc: "Ready to download" },
-  { icon: "⚙️", label: "6 ComfyUI Workflows", desc: "Plug & play" },
+  { icon: "⚙️", label: "50 ComfyUI Workflows", desc: "Plug & play" },
   { icon: "📧", label: "2,400+ Subscribers", desc: "Weekly drops" },
   { icon: "🎯", label: "0 Ads", desc: "Just signal" },
 ];
@@ -145,6 +145,7 @@ export default function HomePage() {
           <div className="nh-nav-links">
             <Link href="/guides">Guides</Link>
             <Link href="/workflows">Workflows</Link>
+            <Link href="/proof">Workflow Proof</Link>
             <Link href="/loras">LoRAs</Link>
             <Link href="/datasets">Datasets</Link>
             <Link href="/optimizer">Optimizer</Link>
@@ -154,7 +155,7 @@ export default function HomePage() {
           </div>
 
           <Link className="nh-nav-cta" href="/optimizer">
-            Score My Hardware →
+            Rate My Hardware →
           </Link>
         </div>
       </nav>
@@ -180,7 +181,7 @@ export default function HomePage() {
 
           {/* Sub */}
           <p className="nh-hero-sub">
-            No fluff. Every guide ready in minutes with{" "}
+            No fluff. Every guide ready in seconds with{" "}
             <strong>working ComfyUI configs, real LoRA training scripts,
             and benchmarked hardware settings</strong>{" "}
             — from RTX 3080 to 5090. Built by a creator running this stack daily.
@@ -403,9 +404,9 @@ export default function HomePage() {
         <div className="nh-container">
           <div className="nh-stats-row">
             {[
-              { num: "6+",   label: "ComfyUI Workflows" },
+              { num: "50",   label: "ComfyUI Workflows" },
               { num: "6+",   label: "LoRA Models" },
-              { num: "2.4K", label: "Subscribers" },
+              { num: "15", label: "Subscribers" },
               { num: "0",    label: "Ads. Ever." },
             ].map((s) => (
               <div key={s.label} className="nh-stat-box">
@@ -507,7 +508,7 @@ export default function HomePage() {
             </div>
 
             <div className="nh-nl-proof">
-              <span>2,400+ builders subscribed</span>
+              <span>15+ builders subscribed</span>
               <span className="nh-nl-dot" />
               <span>Weekly cadence</span>
               <span className="nh-nl-dot" />
