@@ -7,7 +7,7 @@
 
 import { put } from "@vercel/blob";
 export const runtime = "edge";
-const { url } = await put('articles/blob.txt', 'Hello World!', { access: 'public' });
+
 
 
 export async function POST(request: NextRequest) {
