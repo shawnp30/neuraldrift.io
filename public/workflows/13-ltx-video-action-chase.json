@@ -1,5 +1,5 @@
 {
-  "last_node_id": 8,
+  "last_node_id": 9,
   "last_link_id": 8,
   "nodes": [
     {
@@ -308,6 +308,29 @@
         "nh_ltx_chase",
         true,
         false
+      ]
+    },
+    {
+      "id": 9,
+      "type": "Note",
+      "pos": [
+        40,
+        448
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 13-ltx-video-action-chase\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 1344\nFrames: 97 frames (~8s at 12fps)\nSteps: 25 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~47s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 13-ltx-video-action-chase\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 1344\nFrames: 97 frames (~8s at 12fps)\nSteps: 25 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~47s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuralhub.ai"
       ]
     }
   ],

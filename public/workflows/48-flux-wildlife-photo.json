@@ -1,5 +1,5 @@
 {
-  "last_node_id": 7,
+  "last_node_id": 8,
   "last_link_id": 9,
   "nodes": [
     {
@@ -205,14 +205,12 @@
       },
       "widgets_values": [
         42,
-        "euler",
-        "normal",
-        "",
-        1,
+        "fixed",
         20,
         3.5,
-        true,
-        42
+        "euler",
+        "normal",
+        1.0
       ]
     },
     {
@@ -282,6 +280,29 @@
       },
       "widgets_values": [
         "nh_wildlife"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [
+        40,
+        434
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 48-flux-wildlife-photo\n\nHardware: 16GB -- Maximum Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 3.5\nSampler: euler | Scheduler: normal\nLaunch flags: --gpu-only --highvram\nEst. time: ~22s per image\n\n-- Required Models --\nModel: flux1-dev.safetensors\nSize: 23.8GB (bf16) / 12GB (fp8)\nPlace in: ComfyUI/models/diffusion_models/\nDownload: https://huggingface.co/black-forest-labs/FLUX.1-dev\nAlso needs: t5xxl_fp16.safetensors + clip_l.safetensors (text_encoders/) + ae.safetensors (vae/)\nCustom nodes: None -- core only\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 48-flux-wildlife-photo\n\nHardware: 16GB -- Maximum Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 3.5\nSampler: euler | Scheduler: normal\nLaunch flags: --gpu-only --highvram\nEst. time: ~22s per image\n\n-- Required Models --\nModel: flux1-dev.safetensors\nSize: 23.8GB (bf16) / 12GB (fp8)\nPlace in: ComfyUI/models/diffusion_models/\nDownload: https://huggingface.co/black-forest-labs/FLUX.1-dev\nAlso needs: t5xxl_fp16.safetensors + clip_l.safetensors (text_encoders/) + ae.safetensors (vae/)\nCustom nodes: None -- core only\n\nneuralhub.ai"
       ]
     }
   ],

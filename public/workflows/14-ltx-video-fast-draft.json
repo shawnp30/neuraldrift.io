@@ -1,5 +1,5 @@
 {
-  "last_node_id": 8,
+  "last_node_id": 9,
   "last_link_id": 8,
   "nodes": [
     {
@@ -308,6 +308,29 @@
         "nh_ltx_draft",
         true,
         false
+      ]
+    },
+    {
+      "id": 9,
+      "type": "Note",
+      "pos": [
+        40,
+        448
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 14-ltx-video-fast-draft\n\nHardware: 12GB -- Draft Preview\nResolution: 512 x 512\nFrames: 25 frames (~2s at 12fps)\nSteps: 15 | CFG: 3.0\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only\nEst. time: ~12s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 14-ltx-video-fast-draft\n\nHardware: 12GB -- Draft Preview\nResolution: 512 x 512\nFrames: 25 frames (~2s at 12fps)\nSteps: 15 | CFG: 3.0\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only\nEst. time: ~12s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuralhub.ai"
       ]
     }
   ],

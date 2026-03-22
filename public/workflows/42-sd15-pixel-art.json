@@ -1,5 +1,5 @@
 {
-  "last_node_id": 7,
+  "last_node_id": 8,
   "last_link_id": 9,
   "nodes": [
     {
@@ -205,14 +205,12 @@
       },
       "widgets_values": [
         42,
-        "euler",
-        "normal",
-        "",
-        1,
+        "fixed",
         20,
         7.5,
-        true,
-        42
+        "euler",
+        "normal",
+        1.0
       ]
     },
     {
@@ -282,6 +280,29 @@
       },
       "widgets_values": [
         "nh_pixel"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [
+        40,
+        434
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 42-sd15-pixel-art\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: euler | Scheduler: normal\nLaunch flags: --lowvram\nEst. time: ~2s per image\n\n-- Required Models --\nModel: deliberate_v6.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4823\nAlso needs: None -- text-to-image workflow\nCustom nodes: None -- core only\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 42-sd15-pixel-art\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: euler | Scheduler: normal\nLaunch flags: --lowvram\nEst. time: ~2s per image\n\n-- Required Models --\nModel: deliberate_v6.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4823\nAlso needs: None -- text-to-image workflow\nCustom nodes: None -- core only\n\nneuralhub.ai"
       ]
     }
   ],

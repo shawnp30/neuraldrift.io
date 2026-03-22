@@ -1,5 +1,5 @@
 {
-  "last_node_id": 11,
+  "last_node_id": 12,
   "last_link_id": 13,
   "nodes": [
     {
@@ -250,13 +250,11 @@
       },
       "widgets_values": [
         1337,
-        "dpmpp_2m",
-        "karras",
-        "",
-        1,
+        "fixed",
         25,
         7.5,
-        false,
+        "dpmpp_2m",
+        "karras",
         0.85
       ]
     },
@@ -327,6 +325,29 @@
       },
       "widgets_values": [
         "nh_sketch2img"
+      ]
+    },
+    {
+      "id": 12,
+      "type": "Note",
+      "pos": [
+        40,
+        554
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 25-sdxl-sketch-to-image\n\nHardware: 8GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input sketch image -- load via LoadImage node\nCustom nodes: None -- core only\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 25-sdxl-sketch-to-image\n\nHardware: 8GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input sketch image -- load via LoadImage node\nCustom nodes: None -- core only\n\nneuralhub.ai"
       ]
     }
   ],

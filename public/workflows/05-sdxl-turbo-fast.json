@@ -1,5 +1,5 @@
 {
-  "last_node_id": 7,
+  "last_node_id": 8,
   "last_link_id": 9,
   "nodes": [
     {
@@ -205,14 +205,12 @@
       },
       "widgets_values": [
         42,
-        "euler_ancestral",
-        "simple",
-        "",
-        1,
+        "fixed",
         1,
         0.0,
-        true,
-        42
+        "euler_ancestral",
+        "simple",
+        1.0
       ]
     },
     {
@@ -282,6 +280,29 @@
       },
       "widgets_values": [
         "nh_sdxl_turbo"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [
+        40,
+        434
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 05-sdxl-turbo-fast\n\nHardware: 8GB -- Instant Preview\nResolution: 512 x 512\nSteps: 1 | CFG: 0.0\nSampler: euler_ancestral | Scheduler: simple\nLaunch flags: --gpu-only\nEst. time: ~0.8s per image\n\n-- Required Models --\nModel: sd_xl_turbo_1.0_fp16.safetensors\nSize: 6.7GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/sdxl-turbo\nAlso needs: None -- single checkpoint file\nCustom nodes: None -- core only\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 05-sdxl-turbo-fast\n\nHardware: 8GB -- Instant Preview\nResolution: 512 x 512\nSteps: 1 | CFG: 0.0\nSampler: euler_ancestral | Scheduler: simple\nLaunch flags: --gpu-only\nEst. time: ~0.8s per image\n\n-- Required Models --\nModel: sd_xl_turbo_1.0_fp16.safetensors\nSize: 6.7GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/sdxl-turbo\nAlso needs: None -- single checkpoint file\nCustom nodes: None -- core only\n\nneuralhub.ai"
       ]
     }
   ],

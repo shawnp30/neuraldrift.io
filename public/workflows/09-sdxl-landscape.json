@@ -1,5 +1,5 @@
 {
-  "last_node_id": 7,
+  "last_node_id": 8,
   "last_link_id": 9,
   "nodes": [
     {
@@ -205,14 +205,12 @@
       },
       "widgets_values": [
         2024,
-        "dpmpp_2m",
-        "karras",
-        "",
-        1,
+        "fixed",
         25,
         7.5,
-        true,
-        2024
+        "dpmpp_2m",
+        "karras",
+        1.0
       ]
     },
     {
@@ -282,6 +280,29 @@
       },
       "widgets_values": [
         "nh_sdxl_landscape"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [
+        40,
+        434
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 09-sdxl-landscape\n\nHardware: 8GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~5s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: sdxl_vae.safetensors (vae/) recommended\nCustom nodes: None -- core only\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 09-sdxl-landscape\n\nHardware: 8GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~5s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: sdxl_vae.safetensors (vae/) recommended\nCustom nodes: None -- core only\n\nneuralhub.ai"
       ]
     }
   ],

@@ -1,5 +1,5 @@
 {
-  "last_node_id": 10,
+  "last_node_id": 11,
   "last_link_id": 11,
   "nodes": [
     {
@@ -256,14 +256,12 @@
       },
       "widgets_values": [
         42,
-        "euler",
-        "simple",
-        "",
-        1,
+        "fixed",
         20,
         3.5,
-        true,
-        42
+        "euler",
+        "simple",
+        1.0
       ]
     },
     {
@@ -333,6 +331,29 @@
       },
       "widgets_values": [
         "nh_alien_lora"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "Note",
+      "pos": [
+        40,
+        478
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 46-flux-lora-slacker-alien\n\nHardware: 16GB -- High Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 3.5\nSampler: euler | Scheduler: simple\nLaunch flags: --gpu-only --highvram\nEst. time: ~22s per image\n\n-- Required Models --\nModel: flux1-dev-fp8.safetensors\nSize: 12GB (fp8)\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/Comfy-Org/flux1-dev\nAlso needs: slackeralien.safetensors in ComfyUI/models/loras/\nCustom nodes: None -- core only\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 46-flux-lora-slacker-alien\n\nHardware: 16GB -- High Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 3.5\nSampler: euler | Scheduler: simple\nLaunch flags: --gpu-only --highvram\nEst. time: ~22s per image\n\n-- Required Models --\nModel: flux1-dev-fp8.safetensors\nSize: 12GB (fp8)\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/Comfy-Org/flux1-dev\nAlso needs: slackeralien.safetensors in ComfyUI/models/loras/\nCustom nodes: None -- core only\n\nneuralhub.ai"
       ]
     }
   ],

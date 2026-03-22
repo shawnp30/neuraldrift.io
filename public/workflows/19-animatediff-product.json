@@ -1,5 +1,5 @@
 {
-  "last_node_id": 10,
+  "last_node_id": 11,
   "last_link_id": 10,
   "nodes": [
     {
@@ -246,14 +246,12 @@
       },
       "widgets_values": [
         42,
-        "dpmpp_2m",
-        "karras",
-        "",
-        1,
+        "fixed",
         25,
         7.5,
-        true,
-        42
+        "dpmpp_2m",
+        "karras",
+        1.0
       ]
     },
     {
@@ -328,6 +326,29 @@
         "nh_animatediff_prod",
         true,
         false
+      ]
+    },
+    {
+      "id": 11,
+      "type": "Note",
+      "pos": [
+        40,
+        538
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 19-animatediff-product\n\nHardware: 10GB -- Standard Quality\nResolution: 512 x 512\nFrames: 24 frames (3s at 8fps)\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~2min per clip\n\n-- Required Models --\nModel: deliberate_v6.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4823\nAlso needs: mm_sd_v15_v3.ckpt in ComfyUI-AnimateDiff-Evolved/models/\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 19-animatediff-product\n\nHardware: 10GB -- Standard Quality\nResolution: 512 x 512\nFrames: 24 frames (3s at 8fps)\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~2min per clip\n\n-- Required Models --\nModel: deliberate_v6.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4823\nAlso needs: mm_sd_v15_v3.ckpt in ComfyUI-AnimateDiff-Evolved/models/\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuralhub.ai"
       ]
     }
   ],

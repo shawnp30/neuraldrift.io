@@ -1,5 +1,5 @@
 {
-  "last_node_id": 4,
+  "last_node_id": 5,
   "last_link_id": 3,
   "nodes": [
     {
@@ -137,6 +137,29 @@
       },
       "widgets_values": [
         "nh_upscale_anime"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "Note",
+      "pos": [
+        40,
+        498
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralHub.ai -- 22-upscale-anime\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~2s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus_anime_6B.pth\nSize: 18MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuralhub.ai"
+      },
+      "widgets_values": [
+        "NeuralHub.ai -- 22-upscale-anime\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~2s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus_anime_6B.pth\nSize: 18MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuralhub.ai"
       ]
     }
   ],
