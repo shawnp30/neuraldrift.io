@@ -174,12 +174,12 @@ export default function HomePage() {
           <h1 className="nh-h1">
             AI workflows<br />
             tuned for <span className="accent">your exact GPU.</span><br />
-            <span className="dim">Ship in hours, not weeks.</span>
+            <span className="dim">Create, Optimize, Download, and Utilize in minutes.</span>
           </h1>
 
           {/* Sub */}
           <p className="nh-hero-sub">
-            No fluff. Every guide ships with{" "}
+            No fluff. Every guide ready in minutes with{" "}
             <strong>working ComfyUI configs, real LoRA training scripts,
             and benchmarked hardware settings</strong>{" "}
             — from RTX 3080 to 5090. Built by a creator running this stack daily.
@@ -250,7 +250,7 @@ export default function HomePage() {
           <div className="nh-section-label">Focus Areas</div>
           <h2 className="nh-h2">Everything from dataset to deploy.</h2>
           <p className="nh-section-sub">
-            Each pillar is a full vertical — guides, code, configs, and hardware
+             — guides, code, configs, and hardware
             benchmarks. No surface-level tutorials.
           </p>
 
@@ -273,8 +273,9 @@ export default function HomePage() {
           <div className="nh-section-label">Real Code, Every Guide</div>
           <h2 className="nh-h2">Not theory. Working scripts.</h2>
           <p className="nh-section-sub">
-            Every article ships with tested configs and benchmarks on actual
-            consumer GPUs — the exact same hardware you&apos;re running.
+            Every article comes  with tested configs and benchmarks on actual
+            consumer GPUs — the exact same hardware you&apos;re running. As well as proof
+            of working model.
           </p>
 
           <div className="nh-code-box">
