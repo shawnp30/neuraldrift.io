@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WORKFLOWS, type HardwareTier, type WorkflowParam } from "@/data/workflows";
+import { exportWorkflow } from "@/lib/utils/workflow-export";
 import { RequirementsPanel } from "@/components/dashboard/RequirementsPanel";
 
 const TIER_ORDER: HardwareTier[] = ["8gb", "12gb", "16gb", "24gb"];
@@ -58,14 +59,18 @@ export default function WorkflowDetailPage() {
 
   const primaryModel = workflow.requiredModels.find((m) => m.required && m.type === "checkpoint");
 
-  // ── Export: fetch the pre-built JSON from public/workflows/ ──────────────
-  const handleExport = async () => {
+  const handleExport = () => {
     setExporting(true);
     setExportError("");
     try {
-      const res = await fetch(`/workflows/${workflow.id}.json`);
-      if (!res.ok) throw new Error(`File not found (${res.status})`);
-      const json = await res.text();
+      const json = exportWorkflow({
+        workflowId: workflow.id,
+        hardwareTier: selectedTier,
+        profile,
+        params: paramValues,
+        modelFilename: primaryModel?.filename,
+      });
+
       const blob = new Blob([json], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -209,7 +214,7 @@ export default function WorkflowDetailPage() {
               <div className="space-y-5">
                 <div className="bg-card border border-border rounded-xl p-6">
                   <h2 className="font-syne text-lg font-bold text-white mb-1">Configure Parameters</h2>
-                  <p className="font-mono text-xs text-muted mb-6">Values are shown in the settings summary. Download the JSON and adjust nodes directly in ComfyUI.</p>
+                  <p className="font-mono text-xs text-muted mb-6">Values are injected directly into the exported ComfyUI workflow JSON.</p>
                   <div className="space-y-6">
                     {workflow.configurableParams.map((param) => (
                       <ParamControl key={param.id} param={param} value={paramValues[param.id]} onChange={(v) => updateParam(param.id, v)} />
