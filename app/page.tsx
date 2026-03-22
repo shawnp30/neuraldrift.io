@@ -149,6 +149,7 @@ export default function HomePage() {
             <Link href="/datasets">Datasets</Link>
             <Link href="/optimizer">Optimizer</Link>
             <Link href="/tools">Tools</Link>
+            <Link href="/gpu-guide">GPU Guide</Link>
             <span className="nh-nav-badge">v2.3 LTX ✦ FLUX</span>
           </div>
 
@@ -562,11 +563,11 @@ export default function HomePage() {
             <div className="nh-footer-col">
               <h4>Resources</h4>
               <Link href="/optimizer">Hardware Optimizer</Link>
-              <a href="https://computeatlas.ai" target="_blank" rel="noopener noreferrer">
-                ComputeAtlas.ai ↗
-              </a>
-              <Link href="/newsletter">Weekly Newsletter</Link>
-              <Link href="/about">About</Link>
+              <Link href="/gpu-guide">GPU Compatibility Guide</Link>
+              <Link href="/proof">Workflow Proof</Link>
+              <a href="https://computeatlas.ai">ComputeAtlas.ai ↗</a>
+             <Link href="/newsletter">Weekly Newsletter</Link>
+             <Link href="/about">About</Link>
             </div>
           </div>
 
