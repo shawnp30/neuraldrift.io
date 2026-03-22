@@ -1,4 +1,5 @@
-"use client";
+"use client"
+
 const handleGenerate = async () => {
   const res = await fetch("/api/workflow/generate", {
     method: "POST",
