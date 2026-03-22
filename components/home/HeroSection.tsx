@@ -1,65 +1,110 @@
-"use client";
-import { useEffect, useRef } from "react";
-import Link from "next/link";
+// components/home/HeroSection.tsx — REPLACE FULL FILE
+'use client'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
-const STATS = [
-  { value: "6", label: "Workflows" },
-  { value: "6", label: "LoRA Models" },
-  { value: "RTX 5080", label: "Tested On" },
-  { value: "16GB", label: "Optimized For" },
-];
+const GPU_OPTIONS = ['8GB', '12GB', '16GB', '24GB', '48GB+']
+const GOAL_OPTIONS = [
+  { value: 'video', label: 'AI Video' },
+  { value: 'image', label: 'AI Images' },
+  { value: 'lora', label: 'Train LoRA' },
+  { value: 'upscale', label: 'Upscaling' },
+]
 
-export function HeroSection() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("visible")),
-      { threshold: 0.1 }
-    );
-    ref.current?.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+export default function HeroSection() {
+  const [gpu, setGpu] = useState('')
+  const [goal, setGoal] = useState('')
+  const router = useRouter()
+
+  const handleGenerate = () => {
+    if (!gpu || !goal) return
+    router.push(`/optimizer/result?gpu=${gpu}&goal=${goal}`)
+  }
 
   return (
-    <section ref={ref} className="relative min-h-screen flex flex-col items-center justify-center text-center px-10 pt-24 pb-20 overflow-hidden bg-grid">
-      {/* Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[radial-gradient(ellipse,rgba(0,229,255,0.08)_0%,rgba(124,58,237,0.06)_50%,transparent_70%)] pointer-events-none" />
+    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#0a0a0f]">
+      {/* Background grid */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:48px_48px]" />
 
-      {/* Badge */}
-      <div className="reveal inline-flex items-center gap-2 bg-accent/8 border border-accent/20 rounded-full px-4 py-1.5 font-mono text-xs text-accent tracking-widest mb-8">
-        <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse-dot" />
-        v2.3 · LTX Video · FLUX · SD3.5 Supported
-      </div>
+      <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-medium mb-6 tracking-wider uppercase">
+          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+          50+ Optimized Workflows
+        </div>
 
-      {/* Heading */}
-      <h1 className="reveal font-syne font-black text-[clamp(3rem,7vw,6rem)] leading-[0.95] tracking-[-0.04em] mb-3">
-        Train. Build.
-        <br />
-        <span className="gradient-text">Master AI.</span>
-      </h1>
+        <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight mb-4">
+          Get the Exact AI Workflow
+          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">
+            for Your PC in Seconds
+          </span>
+        </h1>
 
-      <p className="reveal text-lg text-muted max-w-xl leading-relaxed font-light mt-6 mb-10">
-        The hub for building, training, and deploying AI systems. LoRA creation, ComfyUI pipelines, datasets, and optimization — all in one place.
-      </p>
+        <p className="text-lg text-zinc-400 mb-10 max-w-xl mx-auto">
+          No guesswork. No wasted VRAM. Personalized to your hardware.
+        </p>
 
-      <div className="reveal flex gap-4 justify-center">
-        <Link href="/dashboard" className="bg-accent text-black px-8 py-3.5 rounded font-semibold text-sm glow-cyan transition-transform hover:-translate-y-0.5">
-          Start Building →
-        </Link>
-        <Link href="/guides" className="border border-border text-text px-8 py-3.5 rounded text-sm font-mono tracking-wider hover:border-accent hover:text-accent transition-colors">
-          Browse Guides
-        </Link>
-      </div>
+        {/* Selector widget */}
+        <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 backdrop-blur-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {/* GPU Select */}
+            <div className="text-left">
+              <label className="text-xs text-zinc-500 font-medium uppercase tracking-wider mb-2 block">
+                Your GPU VRAM
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {GPU_OPTIONS.map((g) => (
+                  <button
+                    key={g}
+                    onClick={() => setGpu(g)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
+                      gpu === g
+                        ? 'bg-indigo-600 border-indigo-500 text-white'
+                        : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-indigo-500/50'
+                    }`}
+                  >
+                    {g}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-      {/* Stats */}
-      <div className="reveal flex justify-center gap-16 mt-20 pt-12 border-t border-border w-full max-w-3xl">
-        {STATS.map((s) => (
-          <div key={s.label} className="text-center">
-            <div className="font-syne text-3xl font-black text-white tracking-tight">{s.value}</div>
-            <div className="font-mono text-xs text-muted tracking-widest uppercase mt-1">{s.label}</div>
+            {/* Goal Select */}
+            <div className="text-left">
+              <label className="text-xs text-zinc-500 font-medium uppercase tracking-wider mb-2 block">
+                What do you want to create?
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {GOAL_OPTIONS.map((g) => (
+                  <button
+                    key={g.value}
+                    onClick={() => setGoal(g.value)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
+                      goal === g.value
+                        ? 'bg-indigo-600 border-indigo-500 text-white'
+                        : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-indigo-500/50'
+                    }`}
+                  >
+                    {g.label}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-        ))}
+
+          <button
+            onClick={handleGenerate}
+            disabled={!gpu || !goal}
+            className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-base transition-all"
+          >
+            Generate My Workflow →
+          </button>
+        </div>
+
+        {/* Trust bar */}
+        <p className="mt-5 text-sm text-zinc-600">
+          Free · No signup required · Works with ComfyUI
+        </p>
       </div>
     </section>
-  );
+  )
 }

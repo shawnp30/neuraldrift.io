@@ -4,6 +4,7 @@
 //        <GuideBody slug={params.slug} />
 
 import { getGuideContent, GuideSection } from "@/lib/guideContent";
+import GuideConversionCTA from './guides/GuideConversionCTA';
 
 // ─── Code block ───────────────────────────────────────────────────────────────
 function CodeBlock({ filename, language, body }: { filename: string; language: string; body: string }) {
@@ -165,6 +166,15 @@ export default function GuideBody({ slug }: { slug: string }) {
 
   return (
     <div style={{ paddingTop: "1rem" }}>
+
+      {/* Workflow conversion CTA — only renders if guide has a workflowId */}
+      {guide.workflowId && (
+        <GuideConversionCTA
+          workflowId={guide.workflowId}
+          workflowName={guide.title}
+        />
+      )}
+
       {guide.sections.map((section, i) => (
         <Section key={i} section={section} index={i} />
       ))}

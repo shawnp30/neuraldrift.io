@@ -13,6 +13,8 @@ export interface GuideSection {
 
 export interface GuideData {
   slug: string;
+  title: string;
+  workflowId?: string;
   sections: GuideSection[];
 }
 
@@ -22,6 +24,8 @@ export const GUIDE_CONTENT: GuideData[] = [
   // ─────────────────────────────────────────────────────────────────────────────
   {
     slug: "comfyui-complete-setup",
+    title: "ComfyUI Complete Setup",
+    workflowId: "01",
     sections: [
       {
         title: "Step 1 — System Requirements",
@@ -165,6 +169,8 @@ export const GUIDE_CONTENT: GuideData[] = [
   // ─────────────────────────────────────────────────────────────────────────────
   {
     slug: "train-flux-lora",
+    title: "Train Your First FLUX LoRA",
+    workflowId: "02",
     sections: [
       {
         title: "What You're Building",
@@ -267,6 +273,8 @@ export const GUIDE_CONTENT: GuideData[] = [
   // ─────────────────────────────────────────────────────────────────────────────
   {
     slug: "ltx-video-cinematic-action",
+    title: "LTX Video 2.3: Cinematic Action Sequences",
+    workflowId: "03",
     sections: [
       {
         title: "What LTX Video 2.3 Does",
@@ -375,6 +383,8 @@ export const GUIDE_CONTENT: GuideData[] = [
   // ─────────────────────────────────────────────────────────────────────────────
   {
     slug: "dataset-curation-captioning",
+    title: "Dataset Curation: Captioning at Scale",
+    workflowId: "04",
     sections: [
       {
         title: "Why Dataset Quality Matters",
@@ -457,6 +467,8 @@ export const GUIDE_CONTENT: GuideData[] = [
   // ─────────────────────────────────────────────────────────────────────────────
   {
     slug: "animatediff-character-consistency",
+    title: "AnimateDiff + LoRA Character Consistency",
+    workflowId: "05",
     sections: [
       {
         title: "What This Guide Covers",
@@ -533,6 +545,8 @@ export const GUIDE_CONTENT: GuideData[] = [
   // ─────────────────────────────────────────────────────────────────────────────
   {
     slug: "multi-gpu-inference",
+    title: "Multi-GPU Inference",
+    workflowId: "06",
     sections: [
       {
         title: "What Multi-GPU Inference Means Here",
