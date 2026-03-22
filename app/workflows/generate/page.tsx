@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 export default function GeneratePage() {
   const [result, setResult] = useState(null);
 
@@ -18,7 +20,9 @@ export default function GeneratePage() {
   };
 
   return (
-    <button onClick={handleGenerate}>Generate</button>
-    // render result...
+    <div>
+      <button onClick={handleGenerate}>Generate</button>
+      <pre>{result ? JSON.stringify(result, null, 2) : null}</pre>
+    </div>
   );
 }
