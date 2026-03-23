@@ -1,15 +1,10 @@
+// components/optimizer/WorkflowCard.tsx
 'use client'
 
 import Link from 'next/link'
 import { getCompatColor, getScoreBarColor, type WorkflowMatch } from '@/lib/workflowMatcher'
 
-export default function WorkflowCard({ 
-  workflow: w, 
-  rank 
-}: { 
-  workflow: WorkflowMatch; 
-  rank: number 
-}) {
+export default function WorkflowCard({ workflow: w, rank }: { workflow: WorkflowMatch; rank: number }) {
   const compatClasses = getCompatColor(w.compatLabel)
   const barColor = getScoreBarColor(w.compatScore)
   const cardBorder = rank === 1 ? 'border-indigo-500/40' : 'border-zinc-800'
@@ -17,6 +12,7 @@ export default function WorkflowCard({
 
   return (
     <div className={cardClass}>
+
       <div className="flex items-start justify-between gap-4 mb-3">
         <div className="flex items-center gap-3">
           {rank === 1 && (
@@ -58,8 +54,8 @@ export default function WorkflowCard({
       </div>
 
       <div className="flex gap-2">
-        <a
-          href={`/workflows/${w.filename}.json`}
+        
+          href={'/workflows/' + w.filename + '.json'}
           download
           className="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold text-center transition-all"
         >
@@ -67,14 +63,14 @@ export default function WorkflowCard({
         </a>
         {w.guideSlug && (
           <Link
-            href={`/guides/${w.guideSlug}`}
+            href={'/guides/' + w.guideSlug}
             className="px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-zinc-500 text-zinc-300 text-sm font-semibold transition-all"
           >
             View Guide
           </Link>
         )}
-        <a
-          href={`/workflows/${w.filename}.json`}
+        
+          href={'/workflows/' + w.filename + '.json'}
           target="_blank"
           rel="noopener noreferrer"
           className="px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-zinc-500 text-zinc-300 text-sm font-semibold transition-all"
@@ -82,6 +78,7 @@ export default function WorkflowCard({
           Preview
         </a>
       </div>
+
     </div>
   )
 }
