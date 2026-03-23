@@ -111,10 +111,10 @@ function WorkflowCard({ workflow: w, rank }: { workflow: WorkflowMatch; rank: nu
   const compatClasses = getCompatColor(w.compatLabel)
   const barColor = getScoreBarColor(w.compatScore)
 
+  const cardBorder = rank === 1 ? 'border-indigo-500/40' : 'border-zinc-800'
+
   return (
-    <div className={`rounded-2xl border bg-zinc-900/60 p-5 transition-all hover:border-zinc-600 ${
-      rank === 1 ? 'border-indigo-500/40' : 'border-zinc-800'
-    }`}>
+    <div className={`rounded-2xl border bg-zinc-900/60 p-5 transition-all hover:border-zinc-600 ${cardBorder}`}>
 
       {/* Top row */}
       <div className="flex items-start justify-between gap-4 mb-3">
@@ -183,8 +183,8 @@ function WorkflowCard({ workflow: w, rank }: { workflow: WorkflowMatch; rank: nu
           rel="noopener noreferrer"
           className="px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-zinc-500 text-zinc-300 text-sm font-semibold transition-all"
           title="Preview JSON"
-        >
-          { }
+      >
+          ↗
         </a>
       </div>
 
