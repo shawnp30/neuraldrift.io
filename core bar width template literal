@@ -1,0 +1,93 @@
+warning: in the working copy of 'components/optimizer/WorkflowCard.tsx', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/components/optimizer/WorkflowCard.tsx b/components/optimizer/WorkflowCard.tsx[m
+[1mindex e0bc363..ef9f946 100644[m
+[1m--- a/components/optimizer/WorkflowCard.tsx[m
+[1m+++ b/components/optimizer/WorkflowCard.tsx[m
+[36m@@ -1,84 +1,17 @@[m
+[31m-// components/optimizer/WorkflowCard.tsx[m
+ 'use client'[m
+[31m-[m
+ import Link from 'next/link'[m
+[31m-import { getCompatColor, getScoreBarColor, type WorkflowMatch } from '@/lib/workflowMatcher'[m
+[32m+[m[32mimport { getCompatColor, getScoreBarColor } from '@/lib/workflowMatcher'[m
+[32m+[m[32mimport type { WorkflowMatch } from '@/lib/workflowMatcher'[m
+ [m
+ export default function WorkflowCard({ workflow: w, rank }: { workflow: WorkflowMatch; rank: number }) {[m
+   const compatClasses = getCompatColor(w.compatLabel)[m
+   const barColor = getScoreBarColor(w.compatScore)[m
+   const cardBorder = rank === 1 ? 'border-indigo-500/40' : 'border-zinc-800'[m
+   const cardClass = 'rounded-2xl border bg-zinc-900/60 p-5 transition-all hover:border-zinc-600 ' + cardBorder[m
+[31m-[m
+   return ([m
+     <div className={cardClass}>[m
+[31m-[m
+       <div className="flex items-start justify-between gap-4 mb-3">[m
+[31m-        <div className="flex items-center gap-3">[m
+[31m-          {rank === 1 && ([m
+[31m-            <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-600/20 border border-indigo-500/30 text-indigo-400">[m
+[31m-              Best Match[m
+[31m-            </span>[m
+[31m-          )}[m
+[31m-          <span className={'text-xs font-semibold px-2 py-0.5 rounded-full border ' + compatClasses}>[m
+[31m-            {w.compatLabel}[m
+[31m-          </span>[m
+[31m-          <span className="text-xs text-zinc-600 bg-zinc-800 px-2 py-0.5 rounded-full">[m
+[31m-            {w.difficulty}[m
+[31m-          </span>[m
+[31m-        </div>[m
+[31m-        <span className="text-xs text-zinc-600 shrink-0">{w.estimatedTime}</span>[m
+[31m-      </div>[m
+[31m-[m
+[31m-      <h2 className="text-lg font-bold text-white mb-1">{w.name}</h2>[m
+[31m-      <p className="text-sm text-zinc-400 leading-relaxed mb-4">{w.desc}</p>[m
+[31m-[m
+[31m-      <div className="flex gap-4 text-xs text-zinc-600 mb-4">[m
+[31m-        <span>Model: <span className="text-zinc-400">{w.model}</span></span>[m
+[31m-        <span>Steps: <span className="text-zinc-400">{w.steps}</span></span>[m
+[31m-        <span>CFG: <span className="text-zinc-400">{w.cfg}</span></span>[m
+[31m-        <span>VRAM: <span className="text-zinc-400">{w.vramRequired}GB</span></span>[m
+       </div>[m
+[31m-[m
+[31m-      <div className="mb-4">[m
+[31m-        <div className="flex justify-between text-xs text-zinc-600 mb-1">[m
+[31m-          <span>Hardware compatibility</span>[m
+[31m-          <span className="text-zinc-400 font-medium">{w.compatScore}%</span>[m
+[31m-        </div>[m
+[31m-        <div className="h-1.5 rounded-full bg-zinc-800 overflow-hidden">[m
+[31m-          <div[m
+[31m-            className={'h-full rounded-full transition-all ' + barColor}[m
+[31m-            style={{ width: `${w.compatScore}%` }}[m
+[31m-          />[m
+[31m-        </div>[m
+[31m-      </div>[m
+[31m-[m
+[31m-      <div className="flex gap-2">[m
+[31m-        [m
+[31m-          href={'/workflows/' + w.filename + '.json'}[m
+[31m-          download[m
+[31m-          className="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold text-center transition-all"[m
+[31m-        >[m
+[31m-          Download JSON[m
+[31m-        </a>[m
+[31m-        {w.guideSlug && ([m
+[31m-          <Link[m
+[31m-            href={'/guides/' + w.guideSlug}[m
+[31m-            className="px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-zinc-500 text-zinc-300 text-sm font-semibold transition-all"[m
+[31m-          >[m
+[31m-            View Guide[m
+[31m-          </Link>[m
+[31m-        )}[m
+[31m-        [m
+[31m-          href={'/workflows/' + w.filename + '.json'}[m
+[31m-          target="_blank"[m
+[31m-          rel="noopener noreferrer"[m
+[31m-          className="px-4 py-2.5 rounded-xl border border-zinc-700 hover:border-zinc-500 text-zinc-300 text-sm font-semibold transition-all"[m
+[31m-        >[m
+[31m-          Preview[m
+[31m-        </a>[m
+[31m-      </div>[m
+[31m-[m
+     </div>[m
+   )[m
+ }[m
+\ No newline at end of file[m

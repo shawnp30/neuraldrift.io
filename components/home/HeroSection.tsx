@@ -1,54 +1,54 @@
 // components/home/HeroSection.tsx — REPLACE FULL FILE
-'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-const GPU_OPTIONS = ['8GB', '12GB', '16GB', '24GB', '48GB+']
+const GPU_OPTIONS = ["8GB", "12GB", "16GB", "24GB", "48GB+"];
 const GOAL_OPTIONS = [
-  { value: 'video', label: 'AI Video' },
-  { value: 'image', label: 'AI Images' },
-  { value: 'lora', label: 'Train LoRA' },
-  { value: 'upscale', label: 'Upscaling' },
-]
+  { value: "video", label: "AI Video" },
+  { value: "image", label: "AI Images" },
+  { value: "lora", label: "Train LoRA" },
+  { value: "upscale", label: "Upscaling" },
+];
 
 export default function HeroSection() {
-  const [gpu, setGpu] = useState('')
-  const [goal, setGoal] = useState('')
-  const router = useRouter()
+  const [gpu, setGpu] = useState("");
+  const [goal, setGoal] = useState("");
+  const router = useRouter();
 
   const handleGenerate = () => {
-    if (!gpu || !goal) return
-    router.push(`/optimizer/result?gpu=${gpu}&goal=${goal}`)
-  }
+    if (!gpu || !goal) return;
+    router.push(`/optimizer/result?gpu=${gpu}&goal=${goal}`);
+  };
 
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#0a0a0f]">
+    <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-[#0a0a0f]">
       {/* Background grid */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(99,102,241,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(99,102,241,0.03)_1px,transparent_1px)] bg-[size:48px_48px]" />
 
-      <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-400 text-xs font-medium mb-6 tracking-wider uppercase">
-          <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+      <div className="relative z-10 mx-auto max-w-3xl px-6 text-center">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-indigo-400">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-indigo-400" />
           50+ Optimized Workflows
         </div>
 
-        <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight mb-4">
+        <h1 className="mb-4 text-5xl font-bold leading-tight text-white md:text-6xl">
           Get the Exact AI Workflow
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400">
+          <span className="block bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
             for Your PC in Seconds
           </span>
         </h1>
 
-        <p className="text-lg text-zinc-400 mb-10 max-w-xl mx-auto">
+        <p className="mx-auto mb-10 max-w-xl text-lg text-zinc-400">
           No guesswork. No wasted VRAM. Personalized to your hardware.
         </p>
 
         {/* Selector widget */}
-        <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 backdrop-blur-sm">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900/80 p-6 backdrop-blur-sm">
+          <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* GPU Select */}
             <div className="text-left">
-              <label className="text-xs text-zinc-500 font-medium uppercase tracking-wider mb-2 block">
+              <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-zinc-500">
                 Your GPU VRAM
               </label>
               <div className="flex flex-wrap gap-2">
@@ -56,10 +56,10 @@ export default function HeroSection() {
                   <button
                     key={g}
                     onClick={() => setGpu(g)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
+                    className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition-all ${
                       gpu === g
-                        ? 'bg-indigo-600 border-indigo-500 text-white'
-                        : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-indigo-500/50'
+                        ? "border-indigo-500 bg-indigo-600 text-white"
+                        : "border-zinc-700 bg-zinc-800 text-zinc-300 hover:border-indigo-500/50"
                     }`}
                   >
                     {g}
@@ -70,7 +70,7 @@ export default function HeroSection() {
 
             {/* Goal Select */}
             <div className="text-left">
-              <label className="text-xs text-zinc-500 font-medium uppercase tracking-wider mb-2 block">
+              <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-zinc-500">
                 What do you want to create?
               </label>
               <div className="flex flex-wrap gap-2">
@@ -78,10 +78,10 @@ export default function HeroSection() {
                   <button
                     key={g.value}
                     onClick={() => setGoal(g.value)}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-all ${
+                    className={`rounded-lg border px-3 py-1.5 text-sm font-medium transition-all ${
                       goal === g.value
-                        ? 'bg-indigo-600 border-indigo-500 text-white'
-                        : 'bg-zinc-800 border-zinc-700 text-zinc-300 hover:border-indigo-500/50'
+                        ? "border-indigo-500 bg-indigo-600 text-white"
+                        : "border-zinc-700 bg-zinc-800 text-zinc-300 hover:border-indigo-500/50"
                     }`}
                   >
                     {g.label}
@@ -94,7 +94,7 @@ export default function HeroSection() {
           <button
             onClick={handleGenerate}
             disabled={!gpu || !goal}
-            className="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold text-base transition-all"
+            className="w-full rounded-xl bg-indigo-600 py-3.5 text-base font-semibold text-white transition-all hover:bg-indigo-500 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Generate My Workflow →
           </button>
@@ -106,5 +106,5 @@ export default function HeroSection() {
         </p>
       </div>
     </section>
-  )
+  );
 }
