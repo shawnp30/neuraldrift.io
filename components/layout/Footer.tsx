@@ -29,7 +29,7 @@ export function Footer() {
         ))}
       </ul>
       <p className="font-mono text-xs tracking-widest text-muted">
-        © {new Date().getFullYear()} neuraldrift.io.ai
+        © {new Date().getFullYear()} neuraldrift
       </p>
     </footer>
   );

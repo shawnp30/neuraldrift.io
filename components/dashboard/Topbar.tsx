@@ -21,7 +21,7 @@ export function Topbar() {
           {title}
         </div>
         <div className="font-mono text-xs tracking-wider text-muted">
-          neuraldrift.io.ai / workspace / {title.toLowerCase()}
+          neuraldrift / workspace / {title.toLowerCase()}
         </div>
       </div>
       <div className="flex items-center gap-3">

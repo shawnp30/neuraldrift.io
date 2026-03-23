@@ -258,10 +258,10 @@
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "neuraldrift.io.ai -- 26-sdxl-inpainting\n\nHardware: 10GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input image + mask -- white = inpaint area\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
+        "text": "neuraldrift -- 26-sdxl-inpainting\n\nHardware: 10GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input image + mask -- white = inpaint area\nCustom nodes: None -- core only\n\nneuraldrift"
       },
       "widgets_values": [
-        "neuraldrift.io.ai -- 26-sdxl-inpainting\n\nHardware: 10GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input image + mask -- white = inpaint area\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
+        "neuraldrift -- 26-sdxl-inpainting\n\nHardware: 10GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input image + mask -- white = inpaint area\nCustom nodes: None -- core only\n\nneuraldrift"
       ]
     }
   ],

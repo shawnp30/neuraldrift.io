@@ -151,7 +151,7 @@
       "inputs": [],
       "outputs": [],
       "properties": {},
-      "widgets_values": ["neuraldrift.io.ai — FLUX Portrait + LoRA\n\nHardware: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__ | Scheduler: __SCHEDULER__\nLoRA: __LORA_NAME__ @ __LORA_STRENGTH__\n\nRequired models:\n- flux1-dev-fp8.safetensors\n- t5xxl_fp16.safetensors\n- clip_l.safetensors\n- ae.safetensors\n\nExported by neuraldrift.io.ai"]
+      "widgets_values": ["neuraldrift — FLUX Portrait + LoRA\n\nHardware: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__ | Scheduler: __SCHEDULER__\nLoRA: __LORA_NAME__ @ __LORA_STRENGTH__\n\nRequired models:\n- flux1-dev-fp8.safetensors\n- t5xxl_fp16.safetensors\n- clip_l.safetensors\n- ae.safetensors\n\nExported by neuraldrift"]
     }
   ],
   "links": [

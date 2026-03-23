@@ -37,7 +37,7 @@ function buildWorkflowJSON(
       workflow_id: templateId,
       exported_at: new Date().toISOString(),
       hardware_tier: tier,
-      generator: "neuraldrift.io.ai Workflow Configurator",
+      generator: "neuraldrift Workflow Configurator",
     },
     checkpoint: {
       ckpt_name: "__REPLACE_WITH_YOUR_MODEL__",

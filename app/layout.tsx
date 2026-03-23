@@ -23,17 +23,17 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "neuraldrift.io.ai — Train. Build. Master AI.",
-    template: "%s | neuraldrift.io.ai",
+    default: "neuraldrift — Train. Build. Master AI.",
+    template: "%s | neuraldrift",
   },
   description:
     "The hub for building, training, and mastering AI systems. LoRA creation, ComfyUI pipelines, datasets, and optimization — all in one place.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://neuraldrift.io.ai"
+    process.env.NEXT_PUBLIC_SITE_URL || "https://neuraldrift"
   ),
   openGraph: {
     type: "website",
-    siteName: "neuraldrift.io.ai",
+    siteName: "neuraldrift",
     images: [{ url: "/logo/neuraldrift.io-og.png", width: 1200, height: 630 }],
   },
   twitter: {

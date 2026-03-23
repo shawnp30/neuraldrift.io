@@ -258,10 +258,10 @@
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "neuraldrift.io.ai -- 27-sd15-object-removal\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --lowvram\nEst. time: ~3s per image\n\n-- Required Models --\nModel: sd-v1-5-inpainting.ckpt\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting\nAlso needs: Input image + mask -- paint white over object to remove\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
+        "text": "neuraldrift -- 27-sd15-object-removal\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --lowvram\nEst. time: ~3s per image\n\n-- Required Models --\nModel: sd-v1-5-inpainting.ckpt\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting\nAlso needs: Input image + mask -- paint white over object to remove\nCustom nodes: None -- core only\n\nneuraldrift"
       },
       "widgets_values": [
-        "neuraldrift.io.ai -- 27-sd15-object-removal\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --lowvram\nEst. time: ~3s per image\n\n-- Required Models --\nModel: sd-v1-5-inpainting.ckpt\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting\nAlso needs: Input image + mask -- paint white over object to remove\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
+        "neuraldrift -- 27-sd15-object-removal\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --lowvram\nEst. time: ~3s per image\n\n-- Required Models --\nModel: sd-v1-5-inpainting.ckpt\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting\nAlso needs: Input image + mask -- paint white over object to remove\nCustom nodes: None -- core only\n\nneuraldrift"
       ]
     }
   ],

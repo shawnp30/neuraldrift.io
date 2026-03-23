@@ -243,10 +243,10 @@
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "neuraldrift.io.ai -- 17-animatediff-loop\n\nHardware: 8GB -- Standard Quality\nResolution: 512 x 512\nFrames: 16 frames (2s infinite loop)\nSteps: 20 | CFG: 7.0\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~40s per clip\n\n-- Required Models --\nModel: dreamshaper_8.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4384\nAlso needs: mm_sd_v15_v3.ckpt in ComfyUI-AnimateDiff-Evolved/models/\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuraldrift.io.ai"
+        "text": "neuraldrift -- 17-animatediff-loop\n\nHardware: 8GB -- Standard Quality\nResolution: 512 x 512\nFrames: 16 frames (2s infinite loop)\nSteps: 20 | CFG: 7.0\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~40s per clip\n\n-- Required Models --\nModel: dreamshaper_8.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4384\nAlso needs: mm_sd_v15_v3.ckpt in ComfyUI-AnimateDiff-Evolved/models/\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuraldrift"
       },
       "widgets_values": [
-        "neuraldrift.io.ai -- 17-animatediff-loop\n\nHardware: 8GB -- Standard Quality\nResolution: 512 x 512\nFrames: 16 frames (2s infinite loop)\nSteps: 20 | CFG: 7.0\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~40s per clip\n\n-- Required Models --\nModel: dreamshaper_8.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4384\nAlso needs: mm_sd_v15_v3.ckpt in ComfyUI-AnimateDiff-Evolved/models/\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuraldrift.io.ai"
+        "neuraldrift -- 17-animatediff-loop\n\nHardware: 8GB -- Standard Quality\nResolution: 512 x 512\nFrames: 16 frames (2s infinite loop)\nSteps: 20 | CFG: 7.0\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~40s per clip\n\n-- Required Models --\nModel: dreamshaper_8.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4384\nAlso needs: mm_sd_v15_v3.ckpt in ComfyUI-AnimateDiff-Evolved/models/\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuraldrift"
       ]
     }
   ],

@@ -232,10 +232,10 @@
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "neuraldrift.io.ai -- 11-ltx-video-t2v-basic\n\nHardware: 12GB -- Basic Quality\nResolution: 768 x 512\nFrames: 25 frames (~2s at 12fps)\nSteps: 20 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only\nEst. time: ~25s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift.io.ai"
+        "text": "neuraldrift -- 11-ltx-video-t2v-basic\n\nHardware: 12GB -- Basic Quality\nResolution: 768 x 512\nFrames: 25 frames (~2s at 12fps)\nSteps: 20 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only\nEst. time: ~25s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift"
       },
       "widgets_values": [
-        "neuraldrift.io.ai -- 11-ltx-video-t2v-basic\n\nHardware: 12GB -- Basic Quality\nResolution: 768 x 512\nFrames: 25 frames (~2s at 12fps)\nSteps: 20 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only\nEst. time: ~25s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift.io.ai"
+        "neuraldrift -- 11-ltx-video-t2v-basic\n\nHardware: 12GB -- Basic Quality\nResolution: 768 x 512\nFrames: 25 frames (~2s at 12fps)\nSteps: 20 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only\nEst. time: ~25s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift"
       ]
     }
   ],

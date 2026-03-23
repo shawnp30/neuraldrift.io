@@ -178,7 +178,7 @@ function buildValueMap(config: ExportConfig): Record<string, unknown> {
     batch_size: profile.batchSize,
     lora_name: String(params.lora_name || ""),
     lora_strength: Number(params.lora_strength ?? 0.8),
-    note: `neuraldrift.io.ai Export\nWorkflow: ${config.workflowId}\nHardware: ${config.hardwareTier} -- ${profile.label}\nResolution: ${profile.width}x${profile.height}\nSteps: ${profile.steps} | CFG: ${profile.cfg}\nFlags: ${profile.extraFlags.join(" ") || "none"}\nneuraldrift.io.ai`,
+    note: `neuraldrift Export\nWorkflow: ${config.workflowId}\nHardware: ${config.hardwareTier} -- ${profile.label}\nResolution: ${profile.width}x${profile.height}\nSteps: ${profile.steps} | CFG: ${profile.cfg}\nFlags: ${profile.extraFlags.join(" ") || "none"}\nneuraldrift`,
   };
 }
 
@@ -231,7 +231,7 @@ export function exportWorkflow(config: ExportConfig): string {
       workflow_id: workflowId,
       hardware_tier: hardwareTier,
       exported_at: new Date().toISOString(),
-      generated_by: "neuraldrift.io.ai",
+      generated_by: "neuraldrift",
       launch_flags: profile.extraFlags.join(" "),
       estimated_time: profile.estimatedTime,
     },

@@ -428,7 +428,7 @@ export default function HomePage() {
               </span>
               <br />
               <span className="nh-cmt">
-                # Full guide: neuraldrift.io.ai/guides/train-flux-lora
+                # Full guide: neuraldrift/guides/train-flux-lora
               </span>
               <br />
               <br />
@@ -723,7 +723,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="nh-footer-bottom">
-            <span>© 2026 neuraldrift.io.ai — Built in Virginia, USA</span>
+            <span>© 2026 neuraldrift — Built in Virginia, USA</span>
             <div className="nh-footer-status">
               <span className="nh-status-dot" />
               <span>All systems operational</span>

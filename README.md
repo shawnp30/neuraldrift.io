@@ -64,4 +64,4 @@ vercel deploy
 
 ---
 
-Built with neuraldrift.io.ai · ComputeAtlas Partner
+Built with neuraldrift · ComputeAtlas Partner

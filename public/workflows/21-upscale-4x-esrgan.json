@@ -113,10 +113,10 @@
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "neuraldrift.io.ai -- 21-upscale-4x-esrgan\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~3s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus.pth\nSize: 64MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
+        "text": "neuraldrift -- 21-upscale-4x-esrgan\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~3s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus.pth\nSize: 64MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuraldrift"
       },
       "widgets_values": [
-        "neuraldrift.io.ai -- 21-upscale-4x-esrgan\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~3s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus.pth\nSize: 64MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
+        "neuraldrift -- 21-upscale-4x-esrgan\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~3s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus.pth\nSize: 64MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuraldrift"
       ]
     }
   ],

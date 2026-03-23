@@ -187,7 +187,7 @@
   <text x="740" y="516" font-family="'JetBrains Mono',monospace" font-size="7.5" fill="rgba(0,229,255,0.45)" text-anchor="middle" letter-spacing="3.5">TRAIN · BUILD · MASTER AI</text>
 
   <!-- Center title -->
-  <text x="450" y="316" font-family="'Syne','Arial Black',sans-serif" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle" letter-spacing="-0.5">neuraldrift.io.ai — Logo Concepts</text>
+  <text x="450" y="316" font-family="'Syne','Arial Black',sans-serif" font-size="13" font-weight="700" fill="#e2e8f0" text-anchor="middle" letter-spacing="-0.5">neuraldrift — Logo Concepts</text>
   <text x="450" y="334" font-family="'JetBrains Mono',monospace" font-size="8" fill="#4a5568" text-anchor="middle" letter-spacing="2">4 DIRECTIONS · DARK THEME · SVG SCALABLE</text>
 
   <!-- Connector lines between cards (decorative) -->

@@ -216,10 +216,10 @@
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "neuraldrift.io.ai -- 42-sd15-pixel-art\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: euler | Scheduler: normal\nLaunch flags: --lowvram\nEst. time: ~2s per image\n\n-- Required Models --\nModel: deliberate_v6.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4823\nAlso needs: None -- text-to-image workflow\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
+        "text": "neuraldrift -- 42-sd15-pixel-art\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: euler | Scheduler: normal\nLaunch flags: --lowvram\nEst. time: ~2s per image\n\n-- Required Models --\nModel: deliberate_v6.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4823\nAlso needs: None -- text-to-image workflow\nCustom nodes: None -- core only\n\nneuraldrift"
       },
       "widgets_values": [
-        "neuraldrift.io.ai -- 42-sd15-pixel-art\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: euler | Scheduler: normal\nLaunch flags: --lowvram\nEst. time: ~2s per image\n\n-- Required Models --\nModel: deliberate_v6.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4823\nAlso needs: None -- text-to-image workflow\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
+        "neuraldrift -- 42-sd15-pixel-art\n\nHardware: 6GB -- GTX 1660 Compatible\nResolution: 512 x 512\nSteps: 20 | CFG: 7.5\nSampler: euler | Scheduler: normal\nLaunch flags: --lowvram\nEst. time: ~2s per image\n\n-- Required Models --\nModel: deliberate_v6.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4823\nAlso needs: None -- text-to-image workflow\nCustom nodes: None -- core only\n\nneuraldrift"
       ]
     }
   ],

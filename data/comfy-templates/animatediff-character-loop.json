@@ -154,7 +154,7 @@
       "inputs": [],
       "outputs": [],
       "properties": {},
-      "widgets_values": ["neuraldrift.io.ai — AnimateDiff Loop\n\nHardware: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nFrames: __FRAMES__\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__\nLoRA: __LORA_NAME__ @ __LORA_STRENGTH__\n\nRequired nodes:\n- ComfyUI-AnimateDiff-Evolved\n- ComfyUI-VideoHelperSuite\n\nExported by neuraldrift.io.ai"]
+      "widgets_values": ["neuraldrift — AnimateDiff Loop\n\nHardware: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nFrames: __FRAMES__\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__\nLoRA: __LORA_NAME__ @ __LORA_STRENGTH__\n\nRequired nodes:\n- ComfyUI-AnimateDiff-Evolved\n- ComfyUI-VideoHelperSuite\n\nExported by neuraldrift"]
     }
   ],
   "links": [

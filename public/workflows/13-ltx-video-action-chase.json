@@ -232,10 +232,10 @@
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "neuraldrift.io.ai -- 13-ltx-video-action-chase\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 1344\nFrames: 97 frames (~8s at 12fps)\nSteps: 25 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~47s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift.io.ai"
+        "text": "neuraldrift -- 13-ltx-video-action-chase\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 1344\nFrames: 97 frames (~8s at 12fps)\nSteps: 25 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~47s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift"
       },
       "widgets_values": [
-        "neuraldrift.io.ai -- 13-ltx-video-action-chase\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 1344\nFrames: 97 frames (~8s at 12fps)\nSteps: 25 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~47s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift.io.ai"
+        "neuraldrift -- 13-ltx-video-action-chase\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 1344\nFrames: 97 frames (~8s at 12fps)\nSteps: 25 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~47s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift"
       ]
     }
   ],
