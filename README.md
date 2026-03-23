@@ -1,4 +1,4 @@
-# neuraldrift.io
+# neuraldrift
 
 > The hub for building, training, and mastering AI systems.
 

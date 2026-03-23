@@ -11,7 +11,7 @@ const TICKER = [
   { icon: "🧠", label: "FLUX Dev/Schnell", desc: "Image models" },
   { icon: "📦", label: "6 LoRA Models", desc: "Ready to download" },
   { icon: "⚙️", label: "50 ComfyUI Workflows", desc: "Plug & play" },
-  { icon: "📧", label: "2,400+ Subscribers", desc: "Weekly drops" },
+  { icon: "📧", label: "15+ Subscribers", desc: "Weekly drops" },
   { icon: "🎯", label: "0 Ads", desc: "Just signal" },
 ];
 
@@ -249,7 +249,7 @@ export default function HomePage() {
         <div className="nh-nav-inner">
           <Link className="nh-logo" href="/">
             <span className="nh-logo-dot" />
-            neuraldrift.io<span style={{ color: "var(--amber)" }}>.ai</span>
+            neuraldrift<span style={{ color: "var(--amber)" }}>.ai</span>
           </Link>
           <div className="nh-nav-links">
             <Link href="/guides">Guides</Link>
@@ -418,7 +418,7 @@ export default function HomePage() {
                 />
               </div>
               <span className="nh-code-filename">
-                lora_train.py — neuraldrift.io Guide #047
+                lora_train.py — neuraldrift Guide #047
               </span>
               <span className="nh-code-badge">✓ RTX 5080 Verified</span>
             </div>
@@ -433,7 +433,7 @@ export default function HomePage() {
               <br />
               <br />
               <span className="nh-kw">from</span>{" "}
-              <span className="nh-var">neuraldrift.io</span>{" "}
+              <span className="nh-var">neuraldrift</span>{" "}
               <span className="nh-kw">import</span>{" "}
               <span className="nh-fn">LoRATrainer</span>
               <br />
@@ -683,7 +683,7 @@ export default function HomePage() {
             <div>
               <Link className="nh-logo" href="/">
                 <span className="nh-logo-dot" />
-                neuraldrift.io<span style={{ color: "var(--amber)" }}>.ai</span>
+                neuraldrift<span style={{ color: "var(--amber)" }}>.ai</span>
               </Link>
               <p>
                 Hardware-tuned AI workflow guides for builders running local

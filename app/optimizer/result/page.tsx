@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import ResultClient from "./ResultClient";
 
 export const metadata = {
-  title: "Your Personalized AI Workflow | neuraldrift.io",
+  title: "Your Personalized AI Workflow | neuraldrift",
   description:
     "Workflows matched and scored for your exact GPU VRAM and creative goal.",
 };

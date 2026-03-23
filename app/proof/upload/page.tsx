@@ -449,7 +449,7 @@ export default function ProofUploadPage() {
               display: "inline-block",
             }}
           />
-          neuraldrift.io<span style={{ color: "#f59e0b" }}>.ai</span>
+          neuraldrift<span style={{ color: "#f59e0b" }}>.ai</span>
         </Link>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <Link
@@ -505,7 +505,7 @@ export default function ProofUploadPage() {
               maxWidth: 560,
             }}
           >
-            Generated something with a neuraldrift.io workflow? Upload the
+            Generated something with a neuraldrift workflow? Upload the
             screenshot or video here. It goes live on the{" "}
             <Link
               href="/proof"
@@ -990,7 +990,7 @@ export default function ProofUploadPage() {
             style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}
           >
             {[
-              "1. Run any neuraldrift.io workflow in ComfyUI",
+              "1. Run any neuraldrift workflow in ComfyUI",
               "2. Save the output image or video from ComfyUI (right-click → Save Image)",
               "3. Come back here, select which workflow you used",
               "4. Drop the file, add optional GPU info and gen time",

@@ -1,4 +1,4 @@
-// neuraldrift.io Workflow Requirements
+// neuraldrift Workflow Requirements
 // Extracted from real workflow files + MarkdownNote nodes
 // Used by the Requirements Panel on workflow detail pages
 

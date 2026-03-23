@@ -36,9 +36,9 @@ export function Hero() {
       </h1>
 
       <p className="reveal mb-4 max-w-2xl text-xl font-light leading-relaxed text-muted">
-        neuraldrift.io is where AI creators build ComfyUI pipelines, train
-        custom LoRA models, curate datasets, and optimize everything for their
-        specific hardware — all in one place.
+        neuraldrift is where AI creators build ComfyUI pipelines, train custom
+        LoRA models, curate datasets, and optimize everything for their specific
+        hardware — all in one place.
       </p>
       <p className="reveal mb-10 max-w-xl font-mono text-sm text-muted/60">
         Not a cloud service. Not a subscription. A complete local AI production

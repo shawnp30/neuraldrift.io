@@ -195,7 +195,7 @@ export default function WorkflowDetailPage() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `neuraldrift.io_${id}_${selectedTier}.json`;
+      a.download = `neuraldrift_${id}_${selectedTier}.json`;
       a.click();
       URL.revokeObjectURL(url);
       setExported(true);

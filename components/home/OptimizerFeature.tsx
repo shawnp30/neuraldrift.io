@@ -76,9 +76,9 @@ export function OptimizerFeature() {
               Every time.
             </h2>
             <p className="mb-5 leading-relaxed text-muted">
-              The Optimizer is the engine behind neuraldrift.io. Tell it your
-              GPU — it scores every workflow on a 100-point scale across VRAM
-              fit, RAM, task suitability, and stability headroom.
+              The Optimizer is the engine behind neuraldrift. Tell it your GPU —
+              it scores every workflow on a 100-point scale across VRAM fit,
+              RAM, task suitability, and stability headroom.
             </p>
             <p className="mb-8 leading-relaxed text-muted">
               Every score comes with the exact settings optimized for your

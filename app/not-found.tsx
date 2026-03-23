@@ -16,7 +16,7 @@ export default function NotFound() {
         href="/"
         className="rounded bg-accent px-6 py-3 text-sm font-semibold text-black transition-opacity hover:opacity-85"
       >
-        Back to neuraldrift.io →
+        Back to neuraldrift →
       </Link>
     </div>
   );

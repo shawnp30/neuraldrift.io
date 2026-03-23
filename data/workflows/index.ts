@@ -1,5 +1,5 @@
 // ── Workflow Data Model ──────────────────────────────────────────────────────
-// This is the single source of truth for all workflows on neuraldrift.io.
+// This is the single source of truth for all workflows on neuraldrift.
 // Each workflow has full metadata, hardware profiles, required models,
 // configurable parameters, and a reference to its ComfyUI JSON template.
 

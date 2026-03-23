@@ -269,7 +269,7 @@ export default function ProofGalleryPage() {
               display: "inline-block",
             }}
           />
-          neuraldrift.io<span style={{ color: "#f59e0b" }}>.ai</span>
+          neuraldrift<span style={{ color: "#f59e0b" }}>.ai</span>
         </Link>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <Link
@@ -339,9 +339,9 @@ export default function ProofGalleryPage() {
             marginBottom: "2rem",
           }}
         >
-          Every image and video below was generated using a neuraldrift.io
-          workflow JSON in ComfyUI on real consumer hardware. Click any output
-          to see the workflow it came from and download the JSON.
+          Every image and video below was generated using a neuraldrift workflow
+          JSON in ComfyUI on real consumer hardware. Click any output to see the
+          workflow it came from and download the JSON.
         </p>
 
         {/* Stats */}
@@ -760,7 +760,7 @@ export default function ProofGalleryPage() {
                   marginBottom: 4,
                 }}
               >
-                Generated something with a neuraldrift.io workflow?
+                Generated something with a neuraldrift workflow?
               </div>
               <p
                 style={{

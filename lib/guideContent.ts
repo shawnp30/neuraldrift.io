@@ -138,7 +138,7 @@ export const GUIDE_CONTENT: GuideData[] = [
       {
         title: "Performance Benchmarks",
         content:
-          "These are real benchmark numbers from neuraldrift.io test hardware — not theoretical peaks.",
+          "These are real benchmark numbers from neuraldrift test hardware — not theoretical peaks.",
         table: {
           headers: [
             "GPU",
@@ -786,7 +786,7 @@ export const GUIDE_CONTENT: GuideData[] = [
       {
         title: "Performance Benchmarks",
         content:
-          "Real-world numbers from the neuraldrift.io test setup (RTX 5080 + RTX 3080 16GB):",
+          "Real-world numbers from the neuraldrift test setup (RTX 5080 + RTX 3080 16GB):",
         table: {
           headers: ["Task", "Single GPU", "Dual GPU", "Speedup"],
           rows: [

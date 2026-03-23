@@ -1,5 +1,5 @@
 // lib/workflowsData.ts
-// Metadata for all 50 neuraldrift.io ComfyUI workflows
+// Metadata for all 50 neuraldrift ComfyUI workflows
 // JSON files live in: public/workflows/{slug}.json
 
 export type WorkflowCategory =
@@ -899,7 +899,7 @@ export const WORKFLOWS: WorkflowEntry[] = [
     description:
       "Film grain analog portrait workflow. Side lighting, moody atmosphere, cinematic feel.",
     longDescription:
-      "The most cinematic portrait workflow in the neuraldrift.io library. Film grain and analog photography prompts simulate a 35mm film aesthetic. Side lighting for dramatic moody shadows. FLUX Dev with separate loaders for maximum quality. Pairs perfectly with the Fat Bigfoot and Slacker Alien LoRAs.",
+      "The most cinematic portrait workflow in the neuraldrift library. Film grain and analog photography prompts simulate a 35mm film aesthetic. Side lighting for dramatic moody shadows. FLUX Dev with separate loaders for maximum quality. Pairs perfectly with the Fat Bigfoot and Slacker Alien LoRAs.",
     category: "image",
     vram: "16GB",
     difficulty: "Intermediate",

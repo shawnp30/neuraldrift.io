@@ -1,5 +1,5 @@
 {
-  "description": "neuraldrift.io Phase 1 — Test Payloads (copy-paste into Postman, Insomnia, or curl)",
+  "description": "neuraldrift Phase 1 — Test Payloads (copy-paste into Postman, Insomnia, or curl)",
   "base_url": "http://localhost:5000",
 
   "tests": {

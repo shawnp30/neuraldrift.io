@@ -1,5 +1,5 @@
 """
-neuraldrift.io Fix-My-PC Engine
+neuraldrift Fix-My-PC Engine
 Diagnoses why a workflow won't run and produces exact, actionable fixes.
 Never says "not supported" — always gives a path forward.
 """

@@ -47,7 +47,7 @@ export function CodeFeature() {
             <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
             <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
             <span className="ml-2 text-xs tracking-wider text-muted">
-              lora_train.py — neuraldrift.io Guide #047
+              lora_train.py — neuraldrift Guide #047
             </span>
           </div>
           <div className="p-6 text-xs leading-loose">
@@ -56,7 +56,7 @@ export function CodeFeature() {
             </div>
             <div>
               <span className="text-[#a78bfa]">from</span>{" "}
-              <span className="text-accent">neuraldrift.io</span>{" "}
+              <span className="text-accent">neuraldrift</span>{" "}
               <span className="text-[#a78bfa]">import</span> LoRATrainer
             </div>
             <div>&nbsp;</div>

@@ -43,7 +43,7 @@ const GPU_TIERS = [
         wan21: "✗",
         lora: "✓",
         notes:
-          "neuraldrift.io primary test GPU. GDDR7 bandwidth close to H100. fp8 + fp4 native. All image/video workflows run clean.",
+          "neuraldrift primary test GPU. GDDR7 bandwidth close to H100. fp8 + fp4 native. All image/video workflows run clean.",
       },
     ],
   },
@@ -203,7 +203,7 @@ const GPU_TIERS = [
         wan21: "✗",
         lora: "✓",
         notes:
-          "neuraldrift.io secondary test GPU. Fantastic used value. Full FLUX Dev fp8, LTX Video cinematic, all AnimateDiff.",
+          "neuraldrift secondary test GPU. Fantastic used value. Full FLUX Dev fp8, LTX Video cinematic, all AnimateDiff.",
       },
       {
         name: "RTX 3080 10GB",
@@ -696,7 +696,7 @@ const MODELS = [
         steps: "20–25",
         requires: "ComfyUI-LTXVideo custom node + VideoHelperSuite",
         notes:
-          "Fastest local video model. 9:16 vertical format native. ~47s for 97 frames on RTX 5080. neuraldrift.io primary video model.",
+          "Fastest local video model. 9:16 vertical format native. ~47s for 97 frames on RTX 5080. neuraldrift primary video model.",
         best_for:
           "YouTube Shorts, TikTok, Instagram Reels, short cinematic clips",
       },
@@ -1094,7 +1094,7 @@ export default function GPUGuidePage() {
               display: "inline-block",
             }}
           />
-          neuraldrift.io<span style={{ color: "#f59e0b" }}>.ai</span>
+          neuraldrift<span style={{ color: "#f59e0b" }}>.ai</span>
         </Link>
         <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
           <Link

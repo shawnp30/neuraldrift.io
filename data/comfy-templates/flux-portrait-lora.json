@@ -138,7 +138,7 @@
       "inputs": [{"name": "images", "type": "IMAGE", "link": 9}],
       "outputs": [],
       "properties": {"Node name for S&R": "SaveImage"},
-      "widgets_values": ["neuraldrift.io_flux_portrait"]
+      "widgets_values": ["neuraldrift_flux_portrait"]
     },
     {
       "id": 11,
@@ -168,7 +168,7 @@
   ],
   "groups": [
     {
-      "title": "neuraldrift.io — FLUX Portrait Pipeline",
+      "title": "neuraldrift — FLUX Portrait Pipeline",
       "bounding": [0, 170, 1850, 750],
       "color": "#1a1530",
       "font_size": 24
