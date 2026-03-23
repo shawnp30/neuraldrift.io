@@ -7,8 +7,7 @@ import {
   type VramTier,
   type GoalType,
 } from '@/lib/workflowMatcher'
-import WorkflowCard from '@/components/optimizer/WorkflowCard'
-
+import WorkflowCard from '../../../components/optimizer/WorkflowCard'
 const GOAL_LABELS: Record<GoalType, string> = {
   video: 'AI Video',
   image: 'AI Images',
