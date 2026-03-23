@@ -5,14 +5,8 @@
     {
       "id": 1,
       "type": "LoadImage",
-      "pos": [
-        40,
-        40
-      ],
-      "size": [
-        315,
-        314
-      ],
+      "pos": [40, 40],
+      "size": [315, 314],
       "flags": {},
       "order": 0,
       "mode": 0,
@@ -21,9 +15,7 @@
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            1
-          ]
+          "links": [1]
         },
         {
           "name": "MASK",
@@ -34,22 +26,13 @@
       "properties": {
         "Node name for S&R": "LoadImage"
       },
-      "widgets_values": [
-        "example.png",
-        "image"
-      ]
+      "widgets_values": ["example.png", "image"]
     },
     {
       "id": 2,
       "type": "UpscaleModelLoader",
-      "pos": [
-        40,
-        400
-      ],
-      "size": [
-        315,
-        58
-      ],
+      "pos": [40, 400],
+      "size": [315, 58],
       "flags": {},
       "order": 1,
       "mode": 0,
@@ -58,29 +41,19 @@
         {
           "name": "UPSCALE_MODEL",
           "type": "UPSCALE_MODEL",
-          "links": [
-            2
-          ]
+          "links": [2]
         }
       ],
       "properties": {
         "Node name for S&R": "UpscaleModelLoader"
       },
-      "widgets_values": [
-        "RealESRGAN_x4plus_anime_6B.pth"
-      ]
+      "widgets_values": ["RealESRGAN_x4plus_anime_6B.pth"]
     },
     {
       "id": 3,
       "type": "ImageUpscaleWithModel",
-      "pos": [
-        400,
-        40
-      ],
-      "size": [
-        315,
-        46
-      ],
+      "pos": [400, 40],
+      "size": [315, 46],
       "flags": {},
       "order": 2,
       "mode": 0,
@@ -100,9 +73,7 @@
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            3
-          ]
+          "links": [3]
         }
       ],
       "properties": {
@@ -113,14 +84,8 @@
     {
       "id": 4,
       "type": "SaveImage",
-      "pos": [
-        760,
-        40
-      ],
-      "size": [
-        210,
-        270
-      ],
+      "pos": [760, 40],
+      "size": [210, 270],
       "flags": {},
       "order": 3,
       "mode": 0,
@@ -135,69 +100,37 @@
       "properties": {
         "Node name for S&R": "SaveImage"
       },
-      "widgets_values": [
-        "nh_upscale_anime"
-      ]
+      "widgets_values": ["nh_upscale_anime"]
     },
     {
       "id": 5,
       "type": "Note",
-      "pos": [
-        40,
-        498
-      ],
-      "size": [
-        540,
-        380
-      ],
+      "pos": [40, 498],
+      "size": [540, 380],
       "flags": {},
       "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "NeuralHub.ai -- 22-upscale-anime\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~2s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus_anime_6B.pth\nSize: 18MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuralhub.ai"
+        "text": "neuraldrift.io.ai -- 22-upscale-anime\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~2s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus_anime_6B.pth\nSize: 18MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
       },
       "widgets_values": [
-        "NeuralHub.ai -- 22-upscale-anime\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~2s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus_anime_6B.pth\nSize: 18MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuralhub.ai"
+        "neuraldrift.io.ai -- 22-upscale-anime\n\nHardware: 6GB -- Any GPU\nResolution: 4x input resolution\nLaunch flags: --gpu-only\nEst. time: ~2s per image\n\n-- Required Models --\nModel: RealESRGAN_x4plus_anime_6B.pth\nSize: 18MB\nPlace in: ComfyUI/models/upscale_models/\nDownload: https://github.com/xinntao/Real-ESRGAN/releases\nAlso needs: None -- no checkpoint required\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
       ]
     }
   ],
   "links": [
-    [
-      1,
-      1,
-      0,
-      3,
-      1,
-      "IMAGE"
-    ],
-    [
-      2,
-      2,
-      0,
-      3,
-      0,
-      "UPSCALE_MODEL"
-    ],
-    [
-      3,
-      3,
-      0,
-      4,
-      0,
-      "IMAGE"
-    ]
+    [1, 1, 0, 3, 1, "IMAGE"],
+    [2, 2, 0, 3, 0, "UPSCALE_MODEL"],
+    [3, 3, 0, 4, 0, "IMAGE"]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
       "scale": 0.7,
-      "offset": [
-        0,
-        0
-      ]
+      "offset": [0, 0]
     }
   },
   "version": 0.4

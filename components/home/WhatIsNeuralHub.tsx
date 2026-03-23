@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 
-export function WhatIsNeuralHub() {
+export function WhatIsneuraldrift.io() {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const o = new IntersectionObserver(
@@ -16,12 +16,12 @@ export function WhatIsNeuralHub() {
     <section ref={ref} className="py-24 px-10 max-w-7xl mx-auto">
       <div className="reveal grid grid-cols-2 gap-20 items-center">
         <div>
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// What is NeuralHub?</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// What is neuraldrift.io?</p>
           <h2 className="font-syne text-[clamp(2rem,3.5vw,3rem)] font-black tracking-tight mb-6 leading-tight">
             The place you go<br />before opening ComfyUI.
           </h2>
           <p className="text-muted leading-relaxed mb-5">
-            Most AI creators waste hours figuring out which model to use, what settings to dial in, which custom nodes to install, and why their GPU keeps running out of memory. NeuralHub eliminates all of that.
+            Most AI creators waste hours figuring out which model to use, what settings to dial in, which custom nodes to install, and why their GPU keeps running out of memory. neuraldrift.io eliminates all of that.
           </p>
           <p className="text-muted leading-relaxed mb-5">
             We built a system that knows your hardware. You tell us your GPU — we score every workflow against it, recommend the right settings, and export a ready-to-run ComfyUI JSON that loads and generates without any manual configuration.

@@ -200,7 +200,7 @@ export default function DatasetsPage() {
               ready to use.
             </h1>
             <p className="max-w-lg leading-relaxed text-muted">
-              Every LoRA on NeuralHub was trained on one of these datasets.
+              Every LoRA on neuraldrift.io was trained on one of these datasets.
               Curated, captioned, and structured for Kohya SS. Download and
               start training in minutes.
             </p>

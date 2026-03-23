@@ -1,5 +1,5 @@
 """
-NeuralHub.ai Backend — Phase 1 API
+neuraldrift.io.ai Backend — Phase 1 API
 Flask server powering the workflow intelligence system.
 
 Routes:

@@ -5,7 +5,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**.supabase.co" },
-      { protocol: "https", hostname: "neuralhub.ai" },
+      { protocol: "https", hostname: "neuraldrift.io.ai" },
     ],
   },
 };

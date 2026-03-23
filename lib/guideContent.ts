@@ -110,7 +110,11 @@ export const GUIDE_CONTENT: GuideData[] = [
             ["Launch flag", "--gpu-only --highvram", "Keeps everything on GPU"],
             ["VAE decode", "Standard", "Tiled not needed at 16GB"],
             ["Precision", "fp16", "Half the memory, minimal quality loss"],
-            ["Preview method", "latent2rgb", "Fast previews without full decode"],
+            [
+              "Preview method",
+              "latent2rgb",
+              "Fast previews without full decode",
+            ],
             ["Batch size", "1–4", "Batch 4 at 1024px uses ~14GB"],
           ],
         },
@@ -134,11 +138,21 @@ export const GUIDE_CONTENT: GuideData[] = [
       {
         title: "Performance Benchmarks",
         content:
-          "These are real benchmark numbers from NeuralHub test hardware — not theoretical peaks.",
+          "These are real benchmark numbers from neuraldrift.io test hardware — not theoretical peaks.",
         table: {
-          headers: ["GPU", "SDXL 1024px 20 steps", "FLUX Schnell 1024px", "LTX 8s clip 25 steps"],
+          headers: [
+            "GPU",
+            "SDXL 1024px 20 steps",
+            "FLUX Schnell 1024px",
+            "LTX 8s clip 25 steps",
+          ],
           rows: [
-            ["GTX 1660 Ti 6GB", "~45s", "~4m 10s (lowvram)", "N/A — insufficient VRAM"],
+            [
+              "GTX 1660 Ti 6GB",
+              "~45s",
+              "~4m 10s (lowvram)",
+              "N/A — insufficient VRAM",
+            ],
             ["RTX 3080 10GB", "~6s", "~38s", "~4m 20s"],
             ["RTX 3080 16GB", "~5s", "~30s", "~3m 15s"],
             ["RTX 5080 16GB", "~3.2s", "~22s", "~47s"],
@@ -152,14 +166,35 @@ export const GUIDE_CONTENT: GuideData[] = [
         table: {
           headers: ["Error", "Cause", "Fix"],
           rows: [
-            ["CUDA out of memory", "Model too large for VRAM", "Add --lowvram flag, reduce resolution, or enable tiled VAE"],
-            ["Module not found: torch", "Wrong Python env", "Run `pip install torch` again with correct py version"],
-            ["Model not found", "Wrong folder", "Check ComfyUI/models/checkpoints/ — file must be .safetensors"],
-            ["black/grey output", "Wrong VAE", "Load a dedicated VAE (sdxl_vae.safetensors) in the VAE node"],
-            ["Custom node error", "Node not installed", "ComfyUI Manager → Install Missing Custom Nodes"],
+            [
+              "CUDA out of memory",
+              "Model too large for VRAM",
+              "Add --lowvram flag, reduce resolution, or enable tiled VAE",
+            ],
+            [
+              "Module not found: torch",
+              "Wrong Python env",
+              "Run `pip install torch` again with correct py version",
+            ],
+            [
+              "Model not found",
+              "Wrong folder",
+              "Check ComfyUI/models/checkpoints/ — file must be .safetensors",
+            ],
+            [
+              "black/grey output",
+              "Wrong VAE",
+              "Load a dedicated VAE (sdxl_vae.safetensors) in the VAE node",
+            ],
+            [
+              "Custom node error",
+              "Node not installed",
+              "ComfyUI Manager → Install Missing Custom Nodes",
+            ],
           ],
         },
-        warning: "Never put models in the root ComfyUI folder. They must be in their correct subfolder: checkpoints, loras, vae, controlnet, etc.",
+        warning:
+          "Never put models in the root ComfyUI folder. They must be in their correct subfolder: checkpoints, loras, vae, controlnet, etc.",
       },
     ],
   },
@@ -185,10 +220,22 @@ export const GUIDE_CONTENT: GuideData[] = [
         table: {
           headers: ["Image Count", "Result", "Notes"],
           rows: [
-            ["10–15", "Weak", "Underfits — subject leaks into non-trigger prompts"],
+            [
+              "10–15",
+              "Weak",
+              "Underfits — subject leaks into non-trigger prompts",
+            ],
             ["20–40", "Good", "Sweet spot for most character/style LoRAs"],
-            ["40–80", "Excellent", "Best for complex styles or multi-pose characters"],
-            ["80+", "Diminishing returns", "Only needed for very complex concepts"],
+            [
+              "40–80",
+              "Excellent",
+              "Best for complex styles or multi-pose characters",
+            ],
+            [
+              "80+",
+              "Diminishing returns",
+              "Only needed for very complex concepts",
+            ],
           ],
         },
       },
@@ -220,9 +267,21 @@ export const GUIDE_CONTENT: GuideData[] = [
         table: {
           headers: ["Parameter", "Value", "Why"],
           rows: [
-            ["Base model", "flux1-dev.safetensors", "Dev = highest quality LoRAs"],
-            ["LoRA type", "Standard", "Simpler, faster than LyCORIS for characters"],
-            ["Network rank (dim)", "16", "Good balance — 32 for complex styles"],
+            [
+              "Base model",
+              "flux1-dev.safetensors",
+              "Dev = highest quality LoRAs",
+            ],
+            [
+              "LoRA type",
+              "Standard",
+              "Simpler, faster than LyCORIS for characters",
+            ],
+            [
+              "Network rank (dim)",
+              "16",
+              "Good balance — 32 for complex styles",
+            ],
             ["Network alpha", "8", "Half of rank is standard"],
             ["Learning rate", "0.0004", "Proven stable for FLUX"],
             ["LR scheduler", "cosine_with_restarts", "Prevents plateau"],
@@ -244,7 +303,8 @@ export const GUIDE_CONTENT: GuideData[] = [
         content:
           "Click Start Training in Kohya GUI. Watch the loss curve in the log. A good LoRA shows loss dropping steadily from ~0.15 to under 0.03 by epoch 10. If loss stalls above 0.05 by epoch 6, lower your learning rate to 0.0002.",
         tip: "Training time on RTX 5080 with 40 images × 10 repeats × 10 epochs = roughly 4 hours. Set a timer and check the loss plot every hour.",
-        warning: "If VRAM OOM occurs mid-training, add `--lowram` to your training args and reduce batch size to 1 if it isn't already.",
+        warning:
+          "If VRAM OOM occurs mid-training, add `--lowram` to your training args and reduce batch size to 1 if it isn't already.",
       },
       {
         title: "Step 6 — Evaluate Your LoRA",
@@ -258,10 +318,26 @@ export const GUIDE_CONTENT: GuideData[] = [
         table: {
           headers: ["Symptom", "Cause", "Fix"],
           rows: [
-            ["Subject doesn't appear", "Underfit / low strength", "Increase LoRA strength to 1.0, or train 5 more epochs"],
-            ["Face/body distorted", "Overfit", "Use epoch 5 checkpoint instead of final"],
-            ["Subject bleeds into non-trigger prompts", "Too many epochs or high LR", "Reduce epochs, lower LR to 0.0002"],
-            ["Loses base model quality", "Rank too high", "Drop network_dim from 32 → 16"],
+            [
+              "Subject doesn't appear",
+              "Underfit / low strength",
+              "Increase LoRA strength to 1.0, or train 5 more epochs",
+            ],
+            [
+              "Face/body distorted",
+              "Overfit",
+              "Use epoch 5 checkpoint instead of final",
+            ],
+            [
+              "Subject bleeds into non-trigger prompts",
+              "Too many epochs or high LR",
+              "Reduce epochs, lower LR to 0.0002",
+            ],
+            [
+              "Loses base model quality",
+              "Rank too high",
+              "Drop network_dim from 32 → 16",
+            ],
           ],
         },
       },
@@ -310,10 +386,30 @@ export const GUIDE_CONTENT: GuideData[] = [
         table: {
           headers: ["Node", "Parameter", "Value", "Notes"],
           rows: [
-            ["LTX Video Sampler", "Steps", "25", "Sweet spot — 20 = fast/grainy, 30 = slow/minimal gain"],
-            ["LTX Video Sampler", "CFG Scale", "3.5", "Higher CFG = more prompt-adherent but stiffer motion"],
-            ["LTX Video Sampler", "Motion Scale", "1.2", "1.0 = stable, 1.5+ = chaotic — 1.2 is cinematic"],
-            ["LTX Video Sampler", "Scheduler", "DPM++ 2M", "Best for action — smoother than Euler"],
+            [
+              "LTX Video Sampler",
+              "Steps",
+              "25",
+              "Sweet spot — 20 = fast/grainy, 30 = slow/minimal gain",
+            ],
+            [
+              "LTX Video Sampler",
+              "CFG Scale",
+              "3.5",
+              "Higher CFG = more prompt-adherent but stiffer motion",
+            ],
+            [
+              "LTX Video Sampler",
+              "Motion Scale",
+              "1.2",
+              "1.0 = stable, 1.5+ = chaotic — 1.2 is cinematic",
+            ],
+            [
+              "LTX Video Sampler",
+              "Scheduler",
+              "DPM++ 2M",
+              "Best for action — smoother than Euler",
+            ],
             ["Empty Latent Video", "Width", "768", "9:16 vertical format"],
             ["Empty Latent Video", "Height", "1344", "9:16 vertical format"],
             ["Empty Latent Video", "Frames", "97", "~8 seconds at 12fps"],
@@ -338,11 +434,36 @@ export const GUIDE_CONTENT: GuideData[] = [
         table: {
           headers: ["Clip", "Role", "Camera", "Motion Scale"],
           rows: [
-            ["Clip 1", "Establish — show the world", "Wide establishing, slow pan", "0.9"],
-            ["Clip 2", "Trigger — something happens", "Medium, slight push-in", "1.0"],
-            ["Clip 3", "Chase / escalation", "GoPro POV or tracking shot", "1.3"],
-            ["Clip 4", "Peak — maximum chaos", "Handheld shake, fast cut", "1.5"],
-            ["Clip 5", "Resolution / punchline", "Wide pull-out or freeze", "0.8"],
+            [
+              "Clip 1",
+              "Establish — show the world",
+              "Wide establishing, slow pan",
+              "0.9",
+            ],
+            [
+              "Clip 2",
+              "Trigger — something happens",
+              "Medium, slight push-in",
+              "1.0",
+            ],
+            [
+              "Clip 3",
+              "Chase / escalation",
+              "GoPro POV or tracking shot",
+              "1.3",
+            ],
+            [
+              "Clip 4",
+              "Peak — maximum chaos",
+              "Handheld shake, fast cut",
+              "1.5",
+            ],
+            [
+              "Clip 5",
+              "Resolution / punchline",
+              "Wide pull-out or freeze",
+              "0.8",
+            ],
           ],
         },
         tip: "Generate each clip at the same resolution and CFG. Vary only motion scale and camera description between clips. This keeps visual consistency across the arc.",
@@ -352,7 +473,14 @@ export const GUIDE_CONTENT: GuideData[] = [
         content:
           "After generation, apply these CapCut color grades to match the cinematic style:",
         table: {
-          headers: ["Style", "Brightness", "Contrast", "Saturation", "Color Temp", "Vignette"],
+          headers: [
+            "Style",
+            "Brightness",
+            "Contrast",
+            "Saturation",
+            "Color Temp",
+            "Vignette",
+          ],
           rows: [
             ["Cyberpunk Night", "-5", "+20", "+15", "-10 (cool)", "30"],
             ["Dusty Desert", "+5", "+15", "-10", "+15 (warm)", "20"],
@@ -367,11 +495,31 @@ export const GUIDE_CONTENT: GuideData[] = [
         table: {
           headers: ["Issue", "Cause", "Fix"],
           rows: [
-            ["Static / no motion", "Low motion scale or passive prompt", "Increase motion scale to 1.3+, add explicit motion verbs to prompt"],
-            ["Flickering between frames", "CFG too high", "Lower CFG from 3.5 → 2.5"],
-            ["Subject changes mid-clip", "Model hallucinating", "Add more subject description, reduce CFG"],
-            ["VRAM OOM on decode", "Frame count too high", "Enable tiled VAE decode, or reduce frames from 97 → 73"],
-            ["Blur / low quality", "Steps too low", "Increase steps from 20 → 25 minimum"],
+            [
+              "Static / no motion",
+              "Low motion scale or passive prompt",
+              "Increase motion scale to 1.3+, add explicit motion verbs to prompt",
+            ],
+            [
+              "Flickering between frames",
+              "CFG too high",
+              "Lower CFG from 3.5 → 2.5",
+            ],
+            [
+              "Subject changes mid-clip",
+              "Model hallucinating",
+              "Add more subject description, reduce CFG",
+            ],
+            [
+              "VRAM OOM on decode",
+              "Frame count too high",
+              "Enable tiled VAE decode, or reduce frames from 97 → 73",
+            ],
+            [
+              "Blur / low quality",
+              "Steps too low",
+              "Increase steps from 20 → 25 minimum",
+            ],
           ],
         },
       },
@@ -398,7 +546,11 @@ export const GUIDE_CONTENT: GuideData[] = [
         table: {
           headers: ["Subject Type", "Ideal Count", "Variety Needed"],
           rows: [
-            ["Single character (person/creature)", "30–50", "Pose, angle, background, lighting"],
+            [
+              "Single character (person/creature)",
+              "30–50",
+              "Pose, angle, background, lighting",
+            ],
             ["Art style", "40–80", "Multiple artists, subjects, colors"],
             ["Object / product", "20–30", "Multiple angles, contexts"],
             ["Concept / aesthetic", "50–100", "Wide range of examples"],
@@ -492,9 +644,21 @@ export const GUIDE_CONTENT: GuideData[] = [
         table: {
           headers: ["Model Type", "Motion Module", "Best For"],
           rows: [
-            ["SD1.5 based", "mm_sd_v15_v3.ckpt", "Smooth motion, anime, cartoon characters"],
-            ["SDXL based", "mm_sdxl_v10_beta.ckpt", "Higher resolution, photorealistic characters"],
-            ["Realistic Vision v5", "mm_sd_v15_v3.ckpt", "Realistic human characters on SD1.5"],
+            [
+              "SD1.5 based",
+              "mm_sd_v15_v3.ckpt",
+              "Smooth motion, anime, cartoon characters",
+            ],
+            [
+              "SDXL based",
+              "mm_sdxl_v10_beta.ckpt",
+              "Higher resolution, photorealistic characters",
+            ],
+            [
+              "Realistic Vision v5",
+              "mm_sd_v15_v3.ckpt",
+              "Realistic human characters on SD1.5",
+            ],
           ],
         },
       },
@@ -512,7 +676,11 @@ export const GUIDE_CONTENT: GuideData[] = [
             ["KSampler", "Sampler", "dpmpp_2m"],
             ["KSampler", "Scheduler", "karras"],
             ["Load LoRA", "Strength", "0.75–0.85"],
-            ["Empty Latent Image", "Resolution", "512×512 (SD1.5) or 768×768 (SDXL)"],
+            [
+              "Empty Latent Image",
+              "Resolution",
+              "512×512 (SD1.5) or 768×768 (SDXL)",
+            ],
           ],
         },
       },
@@ -556,15 +724,28 @@ export const GUIDE_CONTENT: GuideData[] = [
           headers: ["Setup", "Batch Speed", "Requirement"],
           rows: [
             ["Single RTX 5080 16GB", "Baseline (1x)", "Nothing extra"],
-            ["RTX 5080 + RTX 3080 (separate decode)", "~1.8x", "Two GPUs, PCIe lanes"],
-            ["RTX 5080 + RTX 3080 (model split)", "~2.2x", "Two GPUs, 16GB+ combined VRAM needed"],
-            ["RTX 5080 + laptop RTX 3080 16GB", "~1.6x", "Primary + secondary over PCIe or Thunderbolt"],
+            [
+              "RTX 5080 + RTX 3080 (separate decode)",
+              "~1.8x",
+              "Two GPUs, PCIe lanes",
+            ],
+            [
+              "RTX 5080 + RTX 3080 (model split)",
+              "~2.2x",
+              "Two GPUs, 16GB+ combined VRAM needed",
+            ],
+            [
+              "RTX 5080 + laptop RTX 3080 16GB",
+              "~1.6x",
+              "Primary + secondary over PCIe or Thunderbolt",
+            ],
           ],
         },
       },
       {
         title: "Step 1 — Verify Both GPUs Are Visible",
-        content: "Check that CUDA can see both devices before attempting any split:",
+        content:
+          "Check that CUDA can see both devices before attempting any split:",
         code: {
           filename: "check_gpus.py",
           language: "python",
@@ -604,7 +785,8 @@ export const GUIDE_CONTENT: GuideData[] = [
       },
       {
         title: "Performance Benchmarks",
-        content: "Real-world numbers from the NeuralHub test setup (RTX 5080 + RTX 3080 16GB):",
+        content:
+          "Real-world numbers from the neuraldrift.io test setup (RTX 5080 + RTX 3080 16GB):",
         table: {
           headers: ["Task", "Single GPU", "Dual GPU", "Speedup"],
           rows: [
@@ -614,7 +796,8 @@ export const GUIDE_CONTENT: GuideData[] = [
             ["AnimateDiff 24-frame clip", "~3m 12s", "~1m 58s", "1.6x"],
           ],
         },
-        warning: "PCIe bandwidth matters. Both GPUs should be on the primary PCIe x16 slots. Running one GPU through a PCIe x4 slot or a USB-C Thunderbolt dock will degrade performance significantly.",
+        warning:
+          "PCIe bandwidth matters. Both GPUs should be on the primary PCIe x16 slots. Running one GPU through a PCIe x4 slot or a USB-C Thunderbolt dock will degrade performance significantly.",
       },
     ],
   },

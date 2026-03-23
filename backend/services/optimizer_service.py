@@ -1,5 +1,5 @@
 """
-NeuralHub Optimizer Engine
+neuraldrift.io Optimizer Engine
 Selects the best performance profile and applies hardware-aware adjustments.
 Every change is documented with a reason — no silent modifications.
 """

@@ -33,11 +33,11 @@ function buildWorkflowJSON(
   const profile = (window as unknown as Record<string, unknown>).__wf_profile as Record<string, unknown> || {};
 
   const config = {
-    _neuralhub: {
+    _neuraldrift.io: {
       workflow_id: templateId,
       exported_at: new Date().toISOString(),
       hardware_tier: tier,
-      generator: "NeuralHub.ai Workflow Configurator",
+      generator: "neuraldrift.io.ai Workflow Configurator",
     },
     checkpoint: {
       ckpt_name: "__REPLACE_WITH_YOUR_MODEL__",
@@ -118,7 +118,7 @@ export default function WorkflowDetailPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `neuralhub_${workflow.id}_${selectedTier}.json`;
+    a.download = `neuraldrift.io_${workflow.id}_${selectedTier}.json`;
     a.click();
     URL.revokeObjectURL(url);
     setExported(true);

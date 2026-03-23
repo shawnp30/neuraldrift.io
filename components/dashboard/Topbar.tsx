@@ -15,18 +15,22 @@ export function Topbar() {
   const title = TITLES[path] || "Dashboard";
 
   return (
-    <header className="h-[52px] flex-shrink-0 bg-sidebar border-b border-border flex items-center justify-between px-6">
+    <header className="bg-sidebar flex h-[52px] flex-shrink-0 items-center justify-between border-b border-border px-6">
       <div>
-        <div className="font-syne font-bold text-sm text-white tracking-tight">{title}</div>
-        <div className="font-mono text-xs text-muted tracking-wider">NeuralHub.ai / workspace / {title.toLowerCase()}</div>
+        <div className="font-syne text-sm font-bold tracking-tight text-white">
+          {title}
+        </div>
+        <div className="font-mono text-xs tracking-wider text-muted">
+          neuraldrift.io.ai / workspace / {title.toLowerCase()}
+        </div>
       </div>
       <div className="flex items-center gap-3">
-        <button className="bg-accent/8 border border-accent/20 text-accent px-4 py-1.5 rounded font-mono text-xs tracking-wider hover:bg-accent/14 transition-colors">
+        <button className="bg-accent/8 hover:bg-accent/14 rounded border border-accent/20 px-4 py-1.5 font-mono text-xs tracking-wider text-accent transition-colors">
           + New Job
         </button>
-        <button className="w-8 h-8 bg-surface border border-border rounded-md flex items-center justify-center text-sm relative hover:border-accent/30 transition-colors">
+        <button className="relative flex h-8 w-8 items-center justify-center rounded-md border border-border bg-surface text-sm transition-colors hover:border-accent/30">
           🔔
-          <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-accent-orange rounded-full border border-sidebar" />
+          <span className="border-sidebar absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border bg-accent-orange" />
         </button>
       </div>
     </header>

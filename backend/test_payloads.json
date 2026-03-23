@@ -1,9 +1,8 @@
 {
-  "description": "NeuralHub Phase 1 — Test Payloads (copy-paste into Postman, Insomnia, or curl)",
+  "description": "neuraldrift.io Phase 1 — Test Payloads (copy-paste into Postman, Insomnia, or curl)",
   "base_url": "http://localhost:5000",
 
   "tests": {
-
     "1_health_check": {
       "method": "GET",
       "url": "/api/health",

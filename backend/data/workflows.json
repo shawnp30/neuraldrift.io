@@ -9,7 +9,7 @@
     "engine": "comfyui",
     "version": "1.0.0",
     "status": "stable",
-    "author": "NeuralHub",
+    "author": "neuraldrift.io",
     "tags": ["ltx2", "video", "cinematic", "action", "shorts"],
     "hardware_requirements": {
       "min_vram_gb": 12,
@@ -114,7 +114,7 @@
     "engine": "comfyui",
     "version": "1.0.0",
     "status": "stable",
-    "author": "NeuralHub",
+    "author": "neuraldrift.io",
     "tags": ["sdxl", "image", "batch", "concept-art", "illustration"],
     "hardware_requirements": {
       "min_vram_gb": 6,
@@ -199,7 +199,7 @@
     "engine": "comfyui",
     "version": "1.0.0",
     "status": "stable",
-    "author": "NeuralHub",
+    "author": "neuraldrift.io",
     "tags": ["flux", "portrait", "lora", "character", "high-quality"],
     "hardware_requirements": {
       "min_vram_gb": 10,
@@ -292,7 +292,7 @@
     "engine": "comfyui",
     "version": "1.0.0",
     "status": "stable",
-    "author": "NeuralHub",
+    "author": "neuraldrift.io",
     "tags": ["animatediff", "animation", "loop", "character", "sdxl"],
     "hardware_requirements": {
       "min_vram_gb": 8,
@@ -396,7 +396,7 @@
     "engine": "kohya",
     "version": "1.0.0",
     "status": "stable",
-    "author": "NeuralHub",
+    "author": "neuraldrift.io",
     "tags": ["flux", "lora", "training", "kohya", "fine-tuning"],
     "hardware_requirements": {
       "min_vram_gb": 12,
@@ -494,7 +494,7 @@
     "engine": "comfyui",
     "version": "1.0.0",
     "status": "stable",
-    "author": "NeuralHub",
+    "author": "neuraldrift.io",
     "tags": ["z-image", "turbo", "fast", "8-step", "portrait"],
     "hardware_requirements": {
       "min_vram_gb": 6,

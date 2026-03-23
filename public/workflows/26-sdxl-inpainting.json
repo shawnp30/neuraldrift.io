@@ -5,14 +5,8 @@
     {
       "id": 1,
       "type": "CheckpointLoaderSimple",
-      "pos": [
-        40,
-        40
-      ],
-      "size": [
-        315,
-        98
-      ],
+      "pos": [40, 40],
+      "size": [315, 98],
       "flags": {},
       "order": 0,
       "mode": 0,
@@ -21,45 +15,29 @@
         {
           "name": "MODEL",
           "type": "MODEL",
-          "links": [
-            1
-          ]
+          "links": [1]
         },
         {
           "name": "CLIP",
           "type": "CLIP",
-          "links": [
-            2,
-            3
-          ]
+          "links": [2, 3]
         },
         {
           "name": "VAE",
           "type": "VAE",
-          "links": [
-            8,
-            11
-          ]
+          "links": [8, 11]
         }
       ],
       "properties": {
         "Node name for S&R": "CheckpointLoaderSimple"
       },
-      "widgets_values": [
-        "sd_xl_base_1.0.safetensors"
-      ]
+      "widgets_values": ["sd_xl_base_1.0.safetensors"]
     },
     {
       "id": 2,
       "type": "CLIPTextEncode",
-      "pos": [
-        400,
-        40
-      ],
-      "size": [
-        422,
-        164
-      ],
+      "pos": [400, 40],
+      "size": [422, 164],
       "flags": {},
       "order": 1,
       "mode": 0,
@@ -74,9 +52,7 @@
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": [
-            4
-          ]
+          "links": [4]
         }
       ],
       "properties": {
@@ -89,14 +65,8 @@
     {
       "id": 3,
       "type": "CLIPTextEncode",
-      "pos": [
-        400,
-        230
-      ],
-      "size": [
-        422,
-        164
-      ],
+      "pos": [400, 230],
+      "size": [422, 164],
       "flags": {},
       "order": 2,
       "mode": 0,
@@ -111,29 +81,19 @@
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": [
-            5
-          ]
+          "links": [5]
         }
       ],
       "properties": {
         "Node name for S&R": "CLIPTextEncode"
       },
-      "widgets_values": [
-        "blurry, low quality, watermark, ugly, bad"
-      ]
+      "widgets_values": ["blurry, low quality, watermark, ugly, bad"]
     },
     {
       "id": 9,
       "type": "LoadImage",
-      "pos": [
-        40,
-        200
-      ],
-      "size": [
-        315,
-        314
-      ],
+      "pos": [40, 200],
+      "size": [315, 314],
       "flags": {},
       "order": 3,
       "mode": 0,
@@ -142,37 +102,24 @@
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            12
-          ]
+          "links": [12]
         },
         {
           "name": "MASK",
           "type": "MASK",
-          "links": [
-            13
-          ]
+          "links": [13]
         }
       ],
       "properties": {
         "Node name for S&R": "LoadImage"
       },
-      "widgets_values": [
-        "input_with_mask.png",
-        "image"
-      ]
+      "widgets_values": ["input_with_mask.png", "image"]
     },
     {
       "id": 11,
       "type": "VAEEncodeForInpaint",
-      "pos": [
-        400,
-        430
-      ],
-      "size": [
-        315,
-        82
-      ],
+      "pos": [400, 430],
+      "size": [315, 82],
       "flags": {},
       "order": 4,
       "mode": 0,
@@ -197,29 +144,19 @@
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": [
-            6
-          ]
+          "links": [6]
         }
       ],
       "properties": {
         "Node name for S&R": "VAEEncodeForInpaint"
       },
-      "widgets_values": [
-        6
-      ]
+      "widgets_values": [6]
     },
     {
       "id": 5,
       "type": "KSampler",
-      "pos": [
-        870,
-        40
-      ],
-      "size": [
-        315,
-        262
-      ],
+      "pos": [870, 40],
+      "size": [315, 262],
       "flags": {},
       "order": 5,
       "mode": 0,
@@ -249,35 +186,19 @@
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": [
-            7
-          ]
+          "links": [7]
         }
       ],
       "properties": {
         "Node name for S&R": "KSampler"
       },
-      "widgets_values": [
-        42,
-        "fixed",
-        20,
-        7.5,
-        "dpmpp_2m",
-        "karras",
-        1.0
-      ]
+      "widgets_values": [42, "fixed", 20, 7.5, "dpmpp_2m", "karras", 1.0]
     },
     {
       "id": 6,
       "type": "VAEDecode",
-      "pos": [
-        1230,
-        40
-      ],
-      "size": [
-        210,
-        46
-      ],
+      "pos": [1230, 40],
+      "size": [210, 46],
       "flags": {},
       "order": 6,
       "mode": 0,
@@ -297,9 +218,7 @@
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            14
-          ]
+          "links": [14]
         }
       ],
       "properties": {
@@ -310,14 +229,8 @@
     {
       "id": 7,
       "type": "SaveImage",
-      "pos": [
-        1480,
-        40
-      ],
-      "size": [
-        210,
-        270
-      ],
+      "pos": [1480, 40],
+      "size": [210, 270],
       "flags": {},
       "order": 7,
       "mode": 0,
@@ -332,141 +245,46 @@
       "properties": {
         "Node name for S&R": "SaveImage"
       },
-      "widgets_values": [
-        "nh_inpaint"
-      ]
+      "widgets_values": ["nh_inpaint"]
     },
     {
       "id": 12,
       "type": "Note",
-      "pos": [
-        40,
-        554
-      ],
-      "size": [
-        540,
-        380
-      ],
+      "pos": [40, 554],
+      "size": [540, 380],
       "flags": {},
       "order": 8,
       "mode": 0,
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "NeuralHub.ai -- 26-sdxl-inpainting\n\nHardware: 10GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input image + mask -- white = inpaint area\nCustom nodes: None -- core only\n\nneuralhub.ai"
+        "text": "neuraldrift.io.ai -- 26-sdxl-inpainting\n\nHardware: 10GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input image + mask -- white = inpaint area\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
       },
       "widgets_values": [
-        "NeuralHub.ai -- 26-sdxl-inpainting\n\nHardware: 10GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input image + mask -- white = inpaint area\nCustom nodes: None -- core only\n\nneuralhub.ai"
+        "neuraldrift.io.ai -- 26-sdxl-inpainting\n\nHardware: 10GB -- Standard Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~6s per image\n\n-- Required Models --\nModel: sd_xl_base_1.0.safetensors\nSize: 6.9GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0\nAlso needs: Input image + mask -- white = inpaint area\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
       ]
     }
   ],
   "links": [
-    [
-      1,
-      1,
-      0,
-      5,
-      0,
-      "MODEL"
-    ],
-    [
-      2,
-      1,
-      1,
-      2,
-      0,
-      "CLIP"
-    ],
-    [
-      3,
-      1,
-      1,
-      3,
-      0,
-      "CLIP"
-    ],
-    [
-      4,
-      2,
-      0,
-      5,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      5,
-      3,
-      0,
-      5,
-      2,
-      "CONDITIONING"
-    ],
-    [
-      6,
-      11,
-      0,
-      5,
-      3,
-      "LATENT"
-    ],
-    [
-      7,
-      5,
-      0,
-      6,
-      0,
-      "LATENT"
-    ],
-    [
-      8,
-      1,
-      2,
-      6,
-      1,
-      "VAE"
-    ],
-    [
-      11,
-      1,
-      2,
-      11,
-      1,
-      "VAE"
-    ],
-    [
-      12,
-      9,
-      0,
-      11,
-      0,
-      "IMAGE"
-    ],
-    [
-      13,
-      9,
-      1,
-      11,
-      2,
-      "MASK"
-    ],
-    [
-      14,
-      6,
-      0,
-      7,
-      0,
-      "IMAGE"
-    ]
+    [1, 1, 0, 5, 0, "MODEL"],
+    [2, 1, 1, 2, 0, "CLIP"],
+    [3, 1, 1, 3, 0, "CLIP"],
+    [4, 2, 0, 5, 1, "CONDITIONING"],
+    [5, 3, 0, 5, 2, "CONDITIONING"],
+    [6, 11, 0, 5, 3, "LATENT"],
+    [7, 5, 0, 6, 0, "LATENT"],
+    [8, 1, 2, 6, 1, "VAE"],
+    [11, 1, 2, 11, 1, "VAE"],
+    [12, 9, 0, 11, 0, "IMAGE"],
+    [13, 9, 1, 11, 2, "MASK"],
+    [14, 6, 0, 7, 0, "IMAGE"]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
       "scale": 0.7,
-      "offset": [
-        0,
-        0
-      ]
+      "offset": [0, 0]
     }
   },
   "version": 0.4

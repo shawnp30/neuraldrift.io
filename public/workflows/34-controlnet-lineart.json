@@ -5,14 +5,8 @@
     {
       "id": 1,
       "type": "CheckpointLoaderSimple",
-      "pos": [
-        40,
-        40
-      ],
-      "size": [
-        315,
-        98
-      ],
+      "pos": [40, 40],
+      "size": [315, 98],
       "flags": {},
       "order": 0,
       "mode": 0,
@@ -21,44 +15,29 @@
         {
           "name": "MODEL",
           "type": "MODEL",
-          "links": [
-            1
-          ]
+          "links": [1]
         },
         {
           "name": "CLIP",
           "type": "CLIP",
-          "links": [
-            2,
-            3
-          ]
+          "links": [2, 3]
         },
         {
           "name": "VAE",
           "type": "VAE",
-          "links": [
-            8
-          ]
+          "links": [8]
         }
       ],
       "properties": {
         "Node name for S&R": "CheckpointLoaderSimple"
       },
-      "widgets_values": [
-        "dreamshaper_8.safetensors"
-      ]
+      "widgets_values": ["dreamshaper_8.safetensors"]
     },
     {
       "id": 2,
       "type": "CLIPTextEncode",
-      "pos": [
-        400,
-        40
-      ],
-      "size": [
-        422,
-        164
-      ],
+      "pos": [400, 40],
+      "size": [422, 164],
       "flags": {},
       "order": 1,
       "mode": 0,
@@ -73,9 +52,7 @@
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": [
-            14
-          ]
+          "links": [14]
         }
       ],
       "properties": {
@@ -88,14 +65,8 @@
     {
       "id": 3,
       "type": "CLIPTextEncode",
-      "pos": [
-        400,
-        230
-      ],
-      "size": [
-        422,
-        164
-      ],
+      "pos": [400, 230],
+      "size": [422, 164],
       "flags": {},
       "order": 2,
       "mode": 0,
@@ -110,29 +81,19 @@
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": [
-            5
-          ]
+          "links": [5]
         }
       ],
       "properties": {
         "Node name for S&R": "CLIPTextEncode"
       },
-      "widgets_values": [
-        "blurry, low quality, bad anatomy, extra limbs"
-      ]
+      "widgets_values": ["blurry, low quality, bad anatomy, extra limbs"]
     },
     {
       "id": 9,
       "type": "LoadImage",
-      "pos": [
-        40,
-        200
-      ],
-      "size": [
-        315,
-        314
-      ],
+      "pos": [40, 200],
+      "size": [315, 314],
       "flags": {},
       "order": 3,
       "mode": 0,
@@ -141,9 +102,7 @@
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            12
-          ]
+          "links": [12]
         },
         {
           "name": "MASK",
@@ -154,22 +113,13 @@
       "properties": {
         "Node name for S&R": "LoadImage"
       },
-      "widgets_values": [
-        "control_input.png",
-        "image"
-      ]
+      "widgets_values": ["control_input.png", "image"]
     },
     {
       "id": 12,
       "type": "ControlNetLoader",
-      "pos": [
-        40,
-        560
-      ],
-      "size": [
-        315,
-        58
-      ],
+      "pos": [40, 560],
+      "size": [315, 58],
       "flags": {},
       "order": 4,
       "mode": 0,
@@ -178,29 +128,19 @@
         {
           "name": "CONTROL_NET",
           "type": "CONTROL_NET",
-          "links": [
-            15
-          ]
+          "links": [15]
         }
       ],
       "properties": {
         "Node name for S&R": "ControlNetLoader"
       },
-      "widgets_values": [
-        "control_v11p_sd15_lineart.pth"
-      ]
+      "widgets_values": ["control_v11p_sd15_lineart.pth"]
     },
     {
       "id": 13,
       "type": "ControlNetApplyAdvanced",
-      "pos": [
-        700,
-        40
-      ],
-      "size": [
-        315,
-        186
-      ],
+      "pos": [700, 40],
+      "size": [315, 186],
       "flags": {},
       "order": 5,
       "mode": 0,
@@ -230,38 +170,24 @@
         {
           "name": "positive",
           "type": "CONDITIONING",
-          "links": [
-            4
-          ]
+          "links": [4]
         },
         {
           "name": "negative",
           "type": "CONDITIONING",
-          "links": [
-            17
-          ]
+          "links": [17]
         }
       ],
       "properties": {
         "Node name for S&R": "ControlNetApplyAdvanced"
       },
-      "widgets_values": [
-        1.0,
-        0.0,
-        1.0
-      ]
+      "widgets_values": [1.0, 0.0, 1.0]
     },
     {
       "id": 4,
       "type": "EmptyLatentImage",
-      "pos": [
-        40,
-        700
-      ],
-      "size": [
-        315,
-        98
-      ],
+      "pos": [40, 700],
+      "size": [315, 98],
       "flags": {},
       "order": 6,
       "mode": 0,
@@ -270,31 +196,19 @@
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": [
-            6
-          ]
+          "links": [6]
         }
       ],
       "properties": {
         "Node name for S&R": "EmptyLatentImage"
       },
-      "widgets_values": [
-        512,
-        512,
-        1
-      ]
+      "widgets_values": [512, 512, 1]
     },
     {
       "id": 5,
       "type": "KSampler",
-      "pos": [
-        1060,
-        40
-      ],
-      "size": [
-        315,
-        262
-      ],
+      "pos": [1060, 40],
+      "size": [315, 262],
       "flags": {},
       "order": 7,
       "mode": 0,
@@ -324,35 +238,19 @@
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": [
-            7
-          ]
+          "links": [7]
         }
       ],
       "properties": {
         "Node name for S&R": "KSampler"
       },
-      "widgets_values": [
-        42,
-        "fixed",
-        25,
-        7.0,
-        "dpmpp_2m",
-        "karras",
-        1.0
-      ]
+      "widgets_values": [42, "fixed", 25, 7.0, "dpmpp_2m", "karras", 1.0]
     },
     {
       "id": 6,
       "type": "VAEDecode",
-      "pos": [
-        1420,
-        40
-      ],
-      "size": [
-        210,
-        46
-      ],
+      "pos": [1420, 40],
+      "size": [210, 46],
       "flags": {},
       "order": 8,
       "mode": 0,
@@ -372,9 +270,7 @@
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            16
-          ]
+          "links": [16]
         }
       ],
       "properties": {
@@ -385,14 +281,8 @@
     {
       "id": 7,
       "type": "SaveImage",
-      "pos": [
-        1670,
-        40
-      ],
-      "size": [
-        210,
-        270
-      ],
+      "pos": [1670, 40],
+      "size": [210, 270],
       "flags": {},
       "order": 9,
       "mode": 0,
@@ -407,149 +297,47 @@
       "properties": {
         "Node name for S&R": "SaveImage"
       },
-      "widgets_values": [
-        "nh_cn_lineart"
-      ]
+      "widgets_values": ["nh_cn_lineart"]
     },
     {
       "id": 14,
       "type": "Note",
-      "pos": [
-        40,
-        838
-      ],
-      "size": [
-        540,
-        380
-      ],
+      "pos": [40, 838],
+      "size": [540, 380],
       "flags": {},
       "order": 10,
       "mode": 0,
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "NeuralHub.ai -- 34-controlnet-lineart\n\nHardware: 8GB -- Standard Quality\nResolution: 512 x 512\nSteps: 25 | CFG: 7.0\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~4s per image\n\n-- Required Models --\nModel: dreamshaper_8.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4384\nAlso needs: control_v11p_sd15_lineart.pth in ComfyUI/models/controlnet/\nLine drawing as input image\nCustom nodes: None -- core only\n\nneuralhub.ai"
+        "text": "neuraldrift.io.ai -- 34-controlnet-lineart\n\nHardware: 8GB -- Standard Quality\nResolution: 512 x 512\nSteps: 25 | CFG: 7.0\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~4s per image\n\n-- Required Models --\nModel: dreamshaper_8.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4384\nAlso needs: control_v11p_sd15_lineart.pth in ComfyUI/models/controlnet/\nLine drawing as input image\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
       },
       "widgets_values": [
-        "NeuralHub.ai -- 34-controlnet-lineart\n\nHardware: 8GB -- Standard Quality\nResolution: 512 x 512\nSteps: 25 | CFG: 7.0\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~4s per image\n\n-- Required Models --\nModel: dreamshaper_8.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4384\nAlso needs: control_v11p_sd15_lineart.pth in ComfyUI/models/controlnet/\nLine drawing as input image\nCustom nodes: None -- core only\n\nneuralhub.ai"
+        "neuraldrift.io.ai -- 34-controlnet-lineart\n\nHardware: 8GB -- Standard Quality\nResolution: 512 x 512\nSteps: 25 | CFG: 7.0\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~4s per image\n\n-- Required Models --\nModel: dreamshaper_8.safetensors\nSize: 2.0GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4384\nAlso needs: control_v11p_sd15_lineart.pth in ComfyUI/models/controlnet/\nLine drawing as input image\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
       ]
     }
   ],
   "links": [
-    [
-      1,
-      1,
-      0,
-      5,
-      0,
-      "MODEL"
-    ],
-    [
-      2,
-      1,
-      1,
-      2,
-      0,
-      "CLIP"
-    ],
-    [
-      3,
-      1,
-      1,
-      3,
-      0,
-      "CLIP"
-    ],
-    [
-      4,
-      13,
-      0,
-      5,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      5,
-      3,
-      0,
-      13,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      6,
-      4,
-      0,
-      5,
-      3,
-      "LATENT"
-    ],
-    [
-      7,
-      5,
-      0,
-      6,
-      0,
-      "LATENT"
-    ],
-    [
-      8,
-      1,
-      2,
-      6,
-      1,
-      "VAE"
-    ],
-    [
-      12,
-      9,
-      0,
-      13,
-      3,
-      "IMAGE"
-    ],
-    [
-      14,
-      2,
-      0,
-      13,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      15,
-      12,
-      0,
-      13,
-      2,
-      "CONTROL_NET"
-    ],
-    [
-      16,
-      6,
-      0,
-      7,
-      0,
-      "IMAGE"
-    ],
-    [
-      17,
-      13,
-      1,
-      5,
-      2,
-      "CONDITIONING"
-    ]
+    [1, 1, 0, 5, 0, "MODEL"],
+    [2, 1, 1, 2, 0, "CLIP"],
+    [3, 1, 1, 3, 0, "CLIP"],
+    [4, 13, 0, 5, 1, "CONDITIONING"],
+    [5, 3, 0, 13, 1, "CONDITIONING"],
+    [6, 4, 0, 5, 3, "LATENT"],
+    [7, 5, 0, 6, 0, "LATENT"],
+    [8, 1, 2, 6, 1, "VAE"],
+    [12, 9, 0, 13, 3, "IMAGE"],
+    [14, 2, 0, 13, 0, "CONDITIONING"],
+    [15, 12, 0, 13, 2, "CONTROL_NET"],
+    [16, 6, 0, 7, 0, "IMAGE"],
+    [17, 13, 1, 5, 2, "CONDITIONING"]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
       "scale": 0.7,
-      "offset": [
-        0,
-        0
-      ]
+      "offset": [0, 0]
     }
   },
   "version": 0.4

@@ -1,5 +1,5 @@
 """
-NeuralHub Scoring Engine
+neuraldrift.io Scoring Engine
 Produces a 0-100 compatibility score for a workflow + hardware combination.
 Weighted across 7 dimensions — not fake, every point has a reason.
 """

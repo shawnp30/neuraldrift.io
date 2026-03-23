@@ -14,18 +14,23 @@ const LINKS = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border py-12 px-10 max-w-7xl mx-auto flex items-center justify-between">
+    <footer className="mx-auto flex max-w-7xl items-center justify-between border-t border-border px-10 py-12">
       <Logo />
       <ul className="flex gap-8">
         {LINKS.map((l) => (
           <li key={l.href}>
-            <Link href={l.href} className="font-mono text-xs text-muted hover:text-accent tracking-widest transition-colors uppercase">
+            <Link
+              href={l.href}
+              className="font-mono text-xs uppercase tracking-widest text-muted transition-colors hover:text-accent"
+            >
               {l.label}
             </Link>
           </li>
         ))}
       </ul>
-      <p className="font-mono text-xs text-muted tracking-widest">© {new Date().getFullYear()} NeuralHub.ai</p>
+      <p className="font-mono text-xs tracking-widest text-muted">
+        © {new Date().getFullYear()} neuraldrift.io.ai
+      </p>
     </footer>
   );
 }

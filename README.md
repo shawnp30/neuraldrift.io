@@ -3,6 +3,7 @@
 > The hub for building, training, and mastering AI systems.
 
 ## Stack
+
 - **Next.js 14** (App Router)
 - **Tailwind CSS** with custom design tokens
 - **Supabase** (auth + database)
@@ -42,11 +43,13 @@ types/            TypeScript interfaces
 ## Adding Content
 
 ### New Guide
+
 1. Create `content/guides/your-guide-slug.mdx`
 2. Add frontmatter: `title`, `description`, `difficulty`, `readTime`, `tag`
 3. Add to guide list in `components/home/GuidesPreview.tsx`
 
 ### New LoRA
+
 Insert into Supabase `loras` table or use the dashboard upload UI.
 
 ## Environment Variables
@@ -61,4 +64,4 @@ vercel deploy
 
 ---
 
-Built with NeuralHub.ai · ComputeAtlas Partner
+Built with neuraldrift.io.ai · ComputeAtlas Partner

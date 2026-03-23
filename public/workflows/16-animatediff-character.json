@@ -5,14 +5,8 @@
     {
       "id": 1,
       "type": "CheckpointLoaderSimple",
-      "pos": [
-        40,
-        40
-      ],
-      "size": [
-        315,
-        98
-      ],
+      "pos": [40, 40],
+      "size": [315, 98],
       "flags": {},
       "order": 0,
       "mode": 0,
@@ -21,44 +15,29 @@
         {
           "name": "MODEL",
           "type": "MODEL",
-          "links": [
-            10
-          ]
+          "links": [10]
         },
         {
           "name": "CLIP",
           "type": "CLIP",
-          "links": [
-            2,
-            3
-          ]
+          "links": [2, 3]
         },
         {
           "name": "VAE",
           "type": "VAE",
-          "links": [
-            8
-          ]
+          "links": [8]
         }
       ],
       "properties": {
         "Node name for S&R": "CheckpointLoaderSimple"
       },
-      "widgets_values": [
-        "realisticVisionV60B1_v60B1VAE.safetensors"
-      ]
+      "widgets_values": ["realisticVisionV60B1_v60B1VAE.safetensors"]
     },
     {
       "id": 10,
       "type": "ADE_AnimateDiffLoaderWithContext",
-      "pos": [
-        40,
-        180
-      ],
-      "size": [
-        315,
-        180
-      ],
+      "pos": [40, 180],
+      "size": [315, 180],
       "flags": {},
       "order": 1,
       "mode": 0,
@@ -73,33 +52,19 @@
         {
           "name": "MODEL",
           "type": "MODEL",
-          "links": [
-            1
-          ]
+          "links": [1]
         }
       ],
       "properties": {
         "Node name for S&R": "ADE_AnimateDiffLoaderWithContext"
       },
-      "widgets_values": [
-        "mm_sd_v15_v3.ckpt",
-        24,
-        "v2",
-        "flat",
-        null
-      ]
+      "widgets_values": ["mm_sd_v15_v3.ckpt", 24, "v2", "flat", null]
     },
     {
       "id": 2,
       "type": "CLIPTextEncode",
-      "pos": [
-        400,
-        40
-      ],
-      "size": [
-        422,
-        164
-      ],
+      "pos": [400, 40],
+      "size": [422, 164],
       "flags": {},
       "order": 2,
       "mode": 0,
@@ -114,9 +79,7 @@
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": [
-            4
-          ]
+          "links": [4]
         }
       ],
       "properties": {
@@ -129,14 +92,8 @@
     {
       "id": 3,
       "type": "CLIPTextEncode",
-      "pos": [
-        400,
-        230
-      ],
-      "size": [
-        422,
-        164
-      ],
+      "pos": [400, 230],
+      "size": [422, 164],
       "flags": {},
       "order": 3,
       "mode": 0,
@@ -151,29 +108,19 @@
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": [
-            5
-          ]
+          "links": [5]
         }
       ],
       "properties": {
         "Node name for S&R": "CLIPTextEncode"
       },
-      "widgets_values": [
-        "blurry, low quality, watermark, bad anatomy"
-      ]
+      "widgets_values": ["blurry, low quality, watermark, bad anatomy"]
     },
     {
       "id": 4,
       "type": "EmptyLatentImage",
-      "pos": [
-        40,
-        400
-      ],
-      "size": [
-        315,
-        98
-      ],
+      "pos": [40, 400],
+      "size": [315, 98],
       "flags": {},
       "order": 4,
       "mode": 0,
@@ -182,31 +129,19 @@
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": [
-            6
-          ]
+          "links": [6]
         }
       ],
       "properties": {
         "Node name for S&R": "EmptyLatentImage"
       },
-      "widgets_values": [
-        512,
-        512,
-        1
-      ]
+      "widgets_values": [512, 512, 1]
     },
     {
       "id": 5,
       "type": "KSampler",
-      "pos": [
-        870,
-        40
-      ],
-      "size": [
-        315,
-        262
-      ],
+      "pos": [870, 40],
+      "size": [315, 262],
       "flags": {},
       "order": 5,
       "mode": 0,
@@ -236,35 +171,19 @@
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": [
-            7
-          ]
+          "links": [7]
         }
       ],
       "properties": {
         "Node name for S&R": "KSampler"
       },
-      "widgets_values": [
-        1337,
-        "fixed",
-        25,
-        7.5,
-        "dpmpp_2m",
-        "karras",
-        1.0
-      ]
+      "widgets_values": [1337, "fixed", 25, 7.5, "dpmpp_2m", "karras", 1.0]
     },
     {
       "id": 6,
       "type": "VAEDecode",
-      "pos": [
-        1230,
-        40
-      ],
-      "size": [
-        210,
-        46
-      ],
+      "pos": [1230, 40],
+      "size": [210, 46],
       "flags": {},
       "order": 6,
       "mode": 0,
@@ -284,9 +203,7 @@
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            9
-          ]
+          "links": [9]
         }
       ],
       "properties": {
@@ -297,14 +214,8 @@
     {
       "id": 7,
       "type": "VHS_VideoCombine",
-      "pos": [
-        1480,
-        40
-      ],
-      "size": [
-        315,
-        200
-      ],
+      "pos": [1480, 40],
+      "size": [315, 200],
       "flags": {},
       "order": 7,
       "mode": 0,
@@ -319,130 +230,44 @@
       "properties": {
         "Node name for S&R": "VHS_VideoCombine"
       },
-      "widgets_values": [
-        8,
-        0,
-        "mp4",
-        "nh_animatediff_char",
-        true,
-        false
-      ]
+      "widgets_values": [8, 0, "mp4", "nh_animatediff_char", true, false]
     },
     {
       "id": 11,
       "type": "Note",
-      "pos": [
-        40,
-        538
-      ],
-      "size": [
-        540,
-        380
-      ],
+      "pos": [40, 538],
+      "size": [540, 380],
       "flags": {},
       "order": 8,
       "mode": 0,
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "NeuralHub.ai -- 16-animatediff-character\n\nHardware: 12GB -- Standard Quality\nResolution: 512 x 512\nFrames: 24 frames (3s at 8fps)\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~3min per clip\n\n-- Required Models --\nModel: realisticVisionV60B1_v60B1VAE.safetensors\nSize: 2.1GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4201\nAlso needs: mm_sd_v15_v3.ckpt (motion module) + character LoRA (loras/)\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuralhub.ai"
+        "text": "neuraldrift.io.ai -- 16-animatediff-character\n\nHardware: 12GB -- Standard Quality\nResolution: 512 x 512\nFrames: 24 frames (3s at 8fps)\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~3min per clip\n\n-- Required Models --\nModel: realisticVisionV60B1_v60B1VAE.safetensors\nSize: 2.1GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4201\nAlso needs: mm_sd_v15_v3.ckpt (motion module) + character LoRA (loras/)\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuraldrift.io.ai"
       },
       "widgets_values": [
-        "NeuralHub.ai -- 16-animatediff-character\n\nHardware: 12GB -- Standard Quality\nResolution: 512 x 512\nFrames: 24 frames (3s at 8fps)\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~3min per clip\n\n-- Required Models --\nModel: realisticVisionV60B1_v60B1VAE.safetensors\nSize: 2.1GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4201\nAlso needs: mm_sd_v15_v3.ckpt (motion module) + character LoRA (loras/)\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuralhub.ai"
+        "neuraldrift.io.ai -- 16-animatediff-character\n\nHardware: 12GB -- Standard Quality\nResolution: 512 x 512\nFrames: 24 frames (3s at 8fps)\nSteps: 25 | CFG: 7.5\nSampler: dpmpp_2m | Scheduler: karras\nLaunch flags: --gpu-only\nEst. time: ~3min per clip\n\n-- Required Models --\nModel: realisticVisionV60B1_v60B1VAE.safetensors\nSize: 2.1GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://civitai.com/models/4201\nAlso needs: mm_sd_v15_v3.ckpt (motion module) + character LoRA (loras/)\nCustom nodes: ComfyUI-AnimateDiff-Evolved + ComfyUI-VideoHelperSuite\n\nneuraldrift.io.ai"
       ]
     }
   ],
   "links": [
-    [
-      1,
-      10,
-      0,
-      5,
-      0,
-      "MODEL"
-    ],
-    [
-      2,
-      1,
-      1,
-      2,
-      0,
-      "CLIP"
-    ],
-    [
-      3,
-      1,
-      1,
-      3,
-      0,
-      "CLIP"
-    ],
-    [
-      4,
-      2,
-      0,
-      5,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      5,
-      3,
-      0,
-      5,
-      2,
-      "CONDITIONING"
-    ],
-    [
-      6,
-      4,
-      0,
-      5,
-      3,
-      "LATENT"
-    ],
-    [
-      7,
-      5,
-      0,
-      6,
-      0,
-      "LATENT"
-    ],
-    [
-      8,
-      1,
-      2,
-      6,
-      1,
-      "VAE"
-    ],
-    [
-      9,
-      6,
-      0,
-      7,
-      0,
-      "IMAGE"
-    ],
-    [
-      10,
-      1,
-      0,
-      10,
-      0,
-      "MODEL"
-    ]
+    [1, 10, 0, 5, 0, "MODEL"],
+    [2, 1, 1, 2, 0, "CLIP"],
+    [3, 1, 1, 3, 0, "CLIP"],
+    [4, 2, 0, 5, 1, "CONDITIONING"],
+    [5, 3, 0, 5, 2, "CONDITIONING"],
+    [6, 4, 0, 5, 3, "LATENT"],
+    [7, 5, 0, 6, 0, "LATENT"],
+    [8, 1, 2, 6, 1, "VAE"],
+    [9, 6, 0, 7, 0, "IMAGE"],
+    [10, 1, 0, 10, 0, "MODEL"]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
       "scale": 0.7,
-      "offset": [
-        0,
-        0
-      ]
+      "offset": [0, 0]
     }
   },
   "version": 0.4

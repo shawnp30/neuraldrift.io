@@ -23,16 +23,18 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "NeuralHub.ai — Train. Build. Master AI.",
-    template: "%s | NeuralHub.ai",
+    default: "neuraldrift.io.ai — Train. Build. Master AI.",
+    template: "%s | neuraldrift.io.ai",
   },
   description:
     "The hub for building, training, and mastering AI systems. LoRA creation, ComfyUI pipelines, datasets, and optimization — all in one place.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://neuralhub.ai"),
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "https://neuraldrift.io.ai"
+  ),
   openGraph: {
     type: "website",
-    siteName: "NeuralHub.ai",
-    images: [{ url: "/logo/neuralhub-og.png", width: 1200, height: 630 }],
+    siteName: "neuraldrift.io.ai",
+    images: [{ url: "/logo/neuraldrift.io-og.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
@@ -57,7 +59,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${syne.variable} ${jetbrainsMono.variable} ${dmSans.variable}`}>
+    <html
+      lang="en"
+      className={`${syne.variable} ${jetbrainsMono.variable} ${dmSans.variable}`}
+    >
       <body className="font-sans antialiased">
         {children}
         <Analytics />

@@ -1,4 +1,4 @@
-// NeuralHub Workflow Requirements
+// neuraldrift.io Workflow Requirements
 // Extracted from real workflow files + MarkdownNote nodes
 // Used by the Requirements Panel on workflow detail pages
 
@@ -9,7 +9,14 @@ export interface ModelRequirement {
   sizeGB: number;
   url: string;
   required: boolean;
-  type: "checkpoint" | "lora" | "vae" | "text_encoder" | "unet" | "upscaler" | "other";
+  type:
+    | "checkpoint"
+    | "lora"
+    | "vae"
+    | "text_encoder"
+    | "unet"
+    | "upscaler"
+    | "other";
   notes?: string;
 }
 
@@ -33,7 +40,6 @@ export interface WorkflowRequirements {
 }
 
 export const WORKFLOW_REQUIREMENTS: Record<string, WorkflowRequirements> = {
-
   "ltx-cinematic-chase": {
     vramMin: 16,
     vramRec: 24,
@@ -333,6 +339,8 @@ export const WORKFLOW_REQUIREMENTS: Record<string, WorkflowRequirements> = {
   },
 };
 
-export function getRequirements(workflowId: string): WorkflowRequirements | null {
+export function getRequirements(
+  workflowId: string
+): WorkflowRequirements | null {
   return WORKFLOW_REQUIREMENTS[workflowId] || null;
 }

@@ -141,7 +141,7 @@
       ],
       "outputs": [{"name": "Filenames", "type": "VHS_FILENAMES", "links": [], "slot_index": 0}],
       "properties": {"Node name for S&R": "VHS_VideoCombine"},
-      "widgets_values": [12, 1, "neuralhub_animatediff", "video/h264-mp4", true, "default", []]
+      "widgets_values": [12, 1, "neuraldrift.io_animatediff", "video/h264-mp4", true, "default", []]
     },
     {
       "id": 10,
@@ -154,7 +154,7 @@
       "inputs": [],
       "outputs": [],
       "properties": {},
-      "widgets_values": ["NeuralHub.ai — AnimateDiff Loop\n\nHardware: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nFrames: __FRAMES__\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__\nLoRA: __LORA_NAME__ @ __LORA_STRENGTH__\n\nRequired nodes:\n- ComfyUI-AnimateDiff-Evolved\n- ComfyUI-VideoHelperSuite\n\nExported by NeuralHub.ai"]
+      "widgets_values": ["neuraldrift.io.ai — AnimateDiff Loop\n\nHardware: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nFrames: __FRAMES__\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__\nLoRA: __LORA_NAME__ @ __LORA_STRENGTH__\n\nRequired nodes:\n- ComfyUI-AnimateDiff-Evolved\n- ComfyUI-VideoHelperSuite\n\nExported by neuraldrift.io.ai"]
     }
   ],
   "links": [
@@ -173,7 +173,7 @@
   ],
   "groups": [
     {
-      "title": "NeuralHub — AnimateDiff Loop Pipeline",
+      "title": "neuraldrift.io — AnimateDiff Loop Pipeline",
       "bounding": [0, 170, 2100, 720],
       "color": "#1a1520",
       "font_size": 24

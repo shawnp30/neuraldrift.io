@@ -1,883 +1,1109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NeuralHub.ai — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #07090f;
-    --sidebar: #0b0e17;
-    --surface: #0f1420;
-    --card: #111827;
-    --border: #1c2438;
-    --accent: #00e5ff;
-    --accent2: #7c3aed;
-    --accent3: #f97316;
-    --green: #10b981;
-    --text: #e2e8f0;
-    --muted: #4a5568;
-    --muted2: #64748b;
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  /* SIDEBAR */
-  .sidebar {
-    width: 220px;
-    flex-shrink: 0;
-    background: var(--sidebar);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    overflow-y: auto;
-  }
-
-  .sidebar-logo {
-    padding: 20px 20px 16px;
-    border-bottom: 1px solid var(--border);
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1rem;
-    color: #fff;
-    letter-spacing: -0.02em;
-    flex-shrink: 0;
-  }
-  .sidebar-logo span { color: var(--accent); }
-
-  .sidebar-section {
-    padding: 20px 12px 8px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.55rem;
-    color: var(--muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 12px;
-    border-radius: 6px;
-    margin: 1px 8px;
-    cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    font-size: 0.82rem;
-    color: var(--muted2);
-    text-decoration: none;
-  }
-  .sidebar-item:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-  .sidebar-item.active {
-    background: rgba(0,229,255,0.08);
-    color: var(--accent);
-    border: 1px solid rgba(0,229,255,0.12);
-  }
-
-  .sidebar-icon { font-size: 0.9rem; width: 18px; text-align: center; flex-shrink: 0; }
-
-  .sidebar-badge {
-    margin-left: auto;
-    background: var(--accent2);
-    color: #fff;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.55rem;
-    padding: 2px 7px;
-    border-radius: 100px;
-  }
-
-  .sidebar-bottom {
-    margin-top: auto;
-    padding: 16px;
-    border-top: 1px solid var(--border);
-  }
-
-  .user-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .user-avatar {
-    width: 32px; height: 32px;
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: #fff;
-    flex-shrink: 0;
-  }
-
-  .user-info { overflow: hidden; }
-  .user-name {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .user-plan {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    color: var(--accent);
-    letter-spacing: 0.05em;
-  }
-
-  /* MAIN */
-  .main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  /* TOPBAR */
-  .topbar {
-    height: 52px;
-    flex-shrink: 0;
-    background: var(--sidebar);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
-    gap: 16px;
-  }
-
-  .topbar-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #fff;
-    letter-spacing: -0.02em;
-  }
-
-  .topbar-breadcrumb {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-  }
-
-  .topbar-right {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .topbar-btn {
-    background: rgba(0,229,255,0.08);
-    border: 1px solid rgba(0,229,255,0.2);
-    color: var(--accent);
-    padding: 6px 16px;
-    border-radius: 4px;
-    font-size: 0.78rem;
-    cursor: pointer;
-    font-family: 'JetBrains Mono', monospace;
-    letter-spacing: 0.04em;
-    transition: background 0.2s;
-  }
-  .topbar-btn:hover { background: rgba(0,229,255,0.14); }
-
-  .notif {
-    width: 32px; height: 32px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    cursor: pointer;
-    position: relative;
-  }
-  .notif::after {
-    content: '';
-    position: absolute;
-    top: 6px; right: 6px;
-    width: 6px; height: 6px;
-    background: var(--accent3);
-    border-radius: 50%;
-    border: 1.5px solid var(--sidebar);
-  }
-
-  /* CONTENT */
-  .content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 28px 28px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  /* STATS ROW */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-
-  .stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-  }
-  .stat-card.c1::before { background: linear-gradient(90deg, var(--accent), transparent); }
-  .stat-card.c2::before { background: linear-gradient(90deg, var(--accent2), transparent); }
-  .stat-card.c3::before { background: linear-gradient(90deg, var(--green), transparent); }
-  .stat-card.c4::before { background: linear-gradient(90deg, var(--accent3), transparent); }
-
-  .stat-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  .stat-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .stat-icon { font-size: 1rem; }
-
-  .stat-value {
-    font-family: 'Syne', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #fff;
-    letter-spacing: -0.04em;
-    line-height: 1;
-  }
-
-  .stat-change {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-top: 6px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    letter-spacing: 0.05em;
-  }
-  .stat-change.up { color: var(--green); }
-  .stat-change.down { color: #ef4444; }
-
-  /* GRID TWO COL */
-  .grid-two {
-    display: grid;
-    grid-template-columns: 1fr 320px;
-    gap: 16px;
-  }
-
-  /* JOB QUEUE */
-  .panel {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  .panel-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .panel-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: -0.01em;
-  }
-
-  .panel-action {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--accent);
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    text-transform: uppercase;
-  }
-
-  /* JOB ITEMS */
-  .job-item {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-    cursor: pointer;
-  }
-  .job-item:last-child { border-bottom: none; }
-  .job-item:hover { background: rgba(255,255,255,0.02); }
-
-  .job-status {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  .js-running { background: var(--accent); box-shadow: 0 0 8px rgba(0,229,255,0.5); animation: pulse2 1.5s infinite; }
-  .js-queued { background: var(--muted); }
-  .js-done { background: var(--green); }
-  .js-error { background: #ef4444; }
-
-  @keyframes pulse2 {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .job-info { flex: 1; min-width: 0; }
-
-  .job-name {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .job-meta {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    color: var(--muted);
-    margin-top: 3px;
-    letter-spacing: 0.04em;
-  }
-
-  .job-progress-wrap { width: 80px; }
-
-  .job-progress-bar {
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 4px;
-  }
-
-  .job-progress-fill {
-    height: 100%;
-    border-radius: 2px;
-    transition: width 1s ease;
-  }
-  .fill-accent { background: var(--accent); }
-  .fill-green { background: var(--green); }
-  .fill-gray { background: var(--muted); }
-
-  .job-pct {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    color: var(--muted);
-    text-align: right;
-    letter-spacing: 0.04em;
-  }
-
-  /* GPU METER */
-  .gpu-panel { display: flex; flex-direction: column; }
-
-  .gpu-item {
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .gpu-item:last-child { border-bottom: none; }
-
-  .gpu-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-
-  .gpu-name {
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--text);
-  }
-
-  .gpu-pct {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.04em;
-  }
-
-  .gpu-bar {
-    height: 6px;
-    background: var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 6px;
-  }
-
-  .gpu-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.8s ease;
-  }
-
-  .gpu-sub {
-    display: flex;
-    gap: 16px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
-
-  /* MINI CHART (pure CSS sparkline) */
-  .sparkline {
-    display: flex;
-    align-items: flex-end;
-    gap: 3px;
-    height: 40px;
-    margin-top: 8px;
-  }
-  .spark-bar {
-    flex: 1;
-    border-radius: 2px 2px 0 0;
-    transition: height 0.5s ease;
-    min-height: 4px;
-  }
-
-  /* RECENT MODELS */
-  .model-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.15s;
-    cursor: pointer;
-  }
-  .model-item:hover { background: rgba(255,255,255,0.02); }
-  .model-item:last-child { border-bottom: none; }
-
-  .model-thumb {
-    width: 36px; height: 36px;
-    border-radius: 6px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-  }
-  .mt-1 { background: rgba(0,229,255,0.1); }
-  .mt-2 { background: rgba(124,58,237,0.1); }
-  .mt-3 { background: rgba(249,115,22,0.1); }
-  .mt-4 { background: rgba(16,185,129,0.1); }
-
-  .model-info { flex: 1; min-width: 0; }
-  .model-name {
-    font-size: 0.8rem;
-    font-weight: 500;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .model-sub {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.58rem;
-    color: var(--muted);
-    margin-top: 2px;
-    letter-spacing: 0.03em;
-  }
-
-  .model-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.55rem;
-    padding: 3px 8px;
-    border-radius: 2px;
-    letter-spacing: 0.06em;
-    flex-shrink: 0;
-  }
-  .tag-lora { background: rgba(0,229,255,0.08); color: var(--accent); }
-  .tag-base { background: rgba(124,58,237,0.08); color: #a78bfa; }
-  .tag-video { background: rgba(249,115,22,0.08); color: var(--accent3); }
-
-  /* ACTIVITY LOG */
-  .log-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 20px;
-    border-bottom: 1px solid var(--border);
-  }
-  .log-item:last-child { border-bottom: none; }
-
-  .log-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    margin-top: 5px;
-    flex-shrink: 0;
-  }
-
-  .log-text {
-    font-size: 0.76rem;
-    color: var(--muted2);
-    line-height: 1.4;
-    flex: 1;
-  }
-  .log-text strong { color: var(--text); font-weight: 500; }
-
-  .log-time {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.55rem;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-</style>
-</head>
-<body>
-
-<!-- SIDEBAR -->
-<div class="sidebar">
-  <div class="sidebar-logo">Neural<span>Hub</span>.ai</div>
-
-  <div class="sidebar-section">Workspace</div>
-  <a href="#" class="sidebar-item active">
-    <span class="sidebar-icon">⚡</span> Dashboard
-  </a>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">🔧</span> Job Queue
-    <span class="sidebar-badge">3</span>
-  </a>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">🧠</span> Models
-  </a>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">📦</span> Datasets
-  </a>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">⚙️</span> Pipelines
-  </a>
-
-  <div class="sidebar-section">Library</div>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">🔁</span> LoRA Library
-  </a>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">📋</span> Workflows
-  </a>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">📖</span> Guides
-  </a>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">🛠️</span> Tools
-  </a>
-
-  <div class="sidebar-section">Compute</div>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">🖥️</span> GPU Monitor
-  </a>
-  <a href="#" class="sidebar-item">
-    <span class="sidebar-icon">☁️</span> ComputeAtlas
-  </a>
-
-  <div class="sidebar-bottom">
-    <div class="user-row">
-      <div class="user-avatar">N</div>
-      <div class="user-info">
-        <div class="user-name">Neo</div>
-        <div class="user-plan">PRO PLAN</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div>
-      <div class="topbar-title">Dashboard</div>
-      <div class="topbar-breadcrumb">NeuralHub.ai / workspace / overview</div>
-    </div>
-    <div class="topbar-right">
-      <button class="topbar-btn">+ New Job</button>
-      <div class="notif">🔔</div>
-    </div>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="content">
-
-    <!-- STATS -->
-    <div class="stats-row">
-      <div class="stat-card c1">
-        <div class="stat-header">
-          <div class="stat-label">Active Jobs</div>
-          <div class="stat-icon">⚡</div>
-        </div>
-        <div class="stat-value">3</div>
-        <div class="stat-change up">↑ 2 from yesterday</div>
-      </div>
-      <div class="stat-card c2">
-        <div class="stat-header">
-          <div class="stat-label">LoRAs Trained</div>
-          <div class="stat-icon">🔧</div>
-        </div>
-        <div class="stat-value">14</div>
-        <div class="stat-change up">↑ +3 this week</div>
-      </div>
-      <div class="stat-card c3">
-        <div class="stat-header">
-          <div class="stat-label">Videos Generated</div>
-          <div class="stat-icon">🎬</div>
-        </div>
-        <div class="stat-value">247</div>
-        <div class="stat-change up">↑ 18% vs last week</div>
-      </div>
-      <div class="stat-card c4">
-        <div class="stat-header">
-          <div class="stat-label">VRAM Peak</div>
-          <div class="stat-icon">🖥️</div>
-        </div>
-        <div class="stat-value">14.2<span style="font-size:1rem;color:var(--muted)">GB</span></div>
-        <div class="stat-change down">↓ 16GB budget</div>
-      </div>
-    </div>
-
-    <!-- JOB QUEUE + GPU -->
-    <div class="grid-two">
-
-      <!-- JOB QUEUE -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Job Queue</div>
-          <div class="panel-action">View All →</div>
-        </div>
-        <div class="job-item">
-          <div class="job-status js-running"></div>
-          <div class="job-info">
-            <div class="job-name">FLUX LoRA — highway_ghost_v3</div>
-            <div class="job-meta">TRAINING · rank=32 · epoch 7/10 · RTX 5080</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>neuraldrift.io.ai — Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #07090f;
+        --sidebar: #0b0e17;
+        --surface: #0f1420;
+        --card: #111827;
+        --border: #1c2438;
+        --accent: #00e5ff;
+        --accent2: #7c3aed;
+        --accent3: #f97316;
+        --green: #10b981;
+        --text: #e2e8f0;
+        --muted: #4a5568;
+        --muted2: #64748b;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        width: 220px;
+        flex-shrink: 0;
+        background: var(--sidebar);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        overflow-y: auto;
+      }
+
+      .sidebar-logo {
+        padding: 20px 20px 16px;
+        border-bottom: 1px solid var(--border);
+        font-family: "Syne", sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+        color: #fff;
+        letter-spacing: -0.02em;
+        flex-shrink: 0;
+      }
+      .sidebar-logo span {
+        color: var(--accent);
+      }
+
+      .sidebar-section {
+        padding: 20px 12px 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.55rem;
+        color: var(--muted);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 12px;
+        border-radius: 6px;
+        margin: 1px 8px;
+        cursor: pointer;
+        transition:
+          background 0.15s,
+          color 0.15s;
+        font-size: 0.82rem;
+        color: var(--muted2);
+        text-decoration: none;
+      }
+      .sidebar-item:hover {
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+      }
+      .sidebar-item.active {
+        background: rgba(0, 229, 255, 0.08);
+        color: var(--accent);
+        border: 1px solid rgba(0, 229, 255, 0.12);
+      }
+
+      .sidebar-icon {
+        font-size: 0.9rem;
+        width: 18px;
+        text-align: center;
+        flex-shrink: 0;
+      }
+
+      .sidebar-badge {
+        margin-left: auto;
+        background: var(--accent2);
+        color: #fff;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.55rem;
+        padding: 2px 7px;
+        border-radius: 100px;
+      }
+
+      .sidebar-bottom {
+        margin-top: auto;
+        padding: 16px;
+        border-top: 1px solid var(--border);
+      }
+
+      .user-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        background: linear-gradient(135deg, var(--accent2), var(--accent));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #fff;
+        flex-shrink: 0;
+      }
+
+      .user-info {
+        overflow: hidden;
+      }
+      .user-name {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .user-plan {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.58rem;
+        color: var(--accent);
+        letter-spacing: 0.05em;
+      }
+
+      /* MAIN */
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* TOPBAR */
+      .topbar {
+        height: 52px;
+        flex-shrink: 0;
+        background: var(--sidebar);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        gap: 16px;
+      }
+
+      .topbar-title {
+        font-family: "Syne", sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        color: #fff;
+        letter-spacing: -0.02em;
+      }
+
+      .topbar-breadcrumb {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.65rem;
+        color: var(--muted);
+        letter-spacing: 0.05em;
+      }
+
+      .topbar-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .topbar-btn {
+        background: rgba(0, 229, 255, 0.08);
+        border: 1px solid rgba(0, 229, 255, 0.2);
+        color: var(--accent);
+        padding: 6px 16px;
+        border-radius: 4px;
+        font-size: 0.78rem;
+        cursor: pointer;
+        font-family: "JetBrains Mono", monospace;
+        letter-spacing: 0.04em;
+        transition: background 0.2s;
+      }
+      .topbar-btn:hover {
+        background: rgba(0, 229, 255, 0.14);
+      }
+
+      .notif {
+        width: 32px;
+        height: 32px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        cursor: pointer;
+        position: relative;
+      }
+      .notif::after {
+        content: "";
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        width: 6px;
+        height: 6px;
+        background: var(--accent3);
+        border-radius: 50%;
+        border: 1.5px solid var(--sidebar);
+      }
+
+      /* CONTENT */
+      .content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 28px 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      /* STATS ROW */
+      .stats-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+
+      .stat-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+      }
+      .stat-card.c1::before {
+        background: linear-gradient(90deg, var(--accent), transparent);
+      }
+      .stat-card.c2::before {
+        background: linear-gradient(90deg, var(--accent2), transparent);
+      }
+      .stat-card.c3::before {
+        background: linear-gradient(90deg, var(--green), transparent);
+      }
+      .stat-card.c4::before {
+        background: linear-gradient(90deg, var(--accent3), transparent);
+      }
+
+      .stat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+      }
+
+      .stat-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.6rem;
+        color: var(--muted);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .stat-icon {
+        font-size: 1rem;
+      }
+
+      .stat-value {
+        font-family: "Syne", sans-serif;
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.04em;
+        line-height: 1;
+      }
+
+      .stat-change {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 6px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.6rem;
+        letter-spacing: 0.05em;
+      }
+      .stat-change.up {
+        color: var(--green);
+      }
+      .stat-change.down {
+        color: #ef4444;
+      }
+
+      /* GRID TWO COL */
+      .grid-two {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 16px;
+      }
+
+      /* JOB QUEUE */
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .panel-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .panel-title {
+        font-family: "Syne", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #fff;
+        letter-spacing: -0.01em;
+      }
+
+      .panel-action {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.6rem;
+        color: var(--accent);
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        text-transform: uppercase;
+      }
+
+      /* JOB ITEMS */
+      .job-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+        cursor: pointer;
+      }
+      .job-item:last-child {
+        border-bottom: none;
+      }
+      .job-item:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .job-status {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .js-running {
+        background: var(--accent);
+        box-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
+        animation: pulse2 1.5s infinite;
+      }
+      .js-queued {
+        background: var(--muted);
+      }
+      .js-done {
+        background: var(--green);
+      }
+      .js-error {
+        background: #ef4444;
+      }
+
+      @keyframes pulse2 {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.4;
+        }
+      }
+
+      .job-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .job-name {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .job-meta {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.58rem;
+        color: var(--muted);
+        margin-top: 3px;
+        letter-spacing: 0.04em;
+      }
+
+      .job-progress-wrap {
+        width: 80px;
+      }
+
+      .job-progress-bar {
+        height: 3px;
+        background: var(--border);
+        border-radius: 2px;
+        overflow: hidden;
+        margin-bottom: 4px;
+      }
+
+      .job-progress-fill {
+        height: 100%;
+        border-radius: 2px;
+        transition: width 1s ease;
+      }
+      .fill-accent {
+        background: var(--accent);
+      }
+      .fill-green {
+        background: var(--green);
+      }
+      .fill-gray {
+        background: var(--muted);
+      }
+
+      .job-pct {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.58rem;
+        color: var(--muted);
+        text-align: right;
+        letter-spacing: 0.04em;
+      }
+
+      /* GPU METER */
+      .gpu-panel {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .gpu-item {
+        padding: 14px 20px;
+        border-bottom: 1px solid var(--border);
+      }
+      .gpu-item:last-child {
+        border-bottom: none;
+      }
+
+      .gpu-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .gpu-name {
+        font-size: 0.78rem;
+        font-weight: 500;
+        color: var(--text);
+      }
+
+      .gpu-pct {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.65rem;
+        letter-spacing: 0.04em;
+      }
+
+      .gpu-bar {
+        height: 6px;
+        background: var(--border);
+        border-radius: 3px;
+        overflow: hidden;
+        margin-bottom: 6px;
+      }
+
+      .gpu-fill {
+        height: 100%;
+        border-radius: 3px;
+        transition: width 0.8s ease;
+      }
+
+      .gpu-sub {
+        display: flex;
+        gap: 16px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.58rem;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+      }
+
+      /* MINI CHART (pure CSS sparkline) */
+      .sparkline {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 40px;
+        margin-top: 8px;
+      }
+      .spark-bar {
+        flex: 1;
+        border-radius: 2px 2px 0 0;
+        transition: height 0.5s ease;
+        min-height: 4px;
+      }
+
+      /* RECENT MODELS */
+      .model-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+        cursor: pointer;
+      }
+      .model-item:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .model-item:last-child {
+        border-bottom: none;
+      }
+
+      .model-thumb {
+        width: 36px;
+        height: 36px;
+        border-radius: 6px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+      }
+      .mt-1 {
+        background: rgba(0, 229, 255, 0.1);
+      }
+      .mt-2 {
+        background: rgba(124, 58, 237, 0.1);
+      }
+      .mt-3 {
+        background: rgba(249, 115, 22, 0.1);
+      }
+      .mt-4 {
+        background: rgba(16, 185, 129, 0.1);
+      }
+
+      .model-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .model-name {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .model-sub {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.58rem;
+        color: var(--muted);
+        margin-top: 2px;
+        letter-spacing: 0.03em;
+      }
+
+      .model-tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.55rem;
+        padding: 3px 8px;
+        border-radius: 2px;
+        letter-spacing: 0.06em;
+        flex-shrink: 0;
+      }
+      .tag-lora {
+        background: rgba(0, 229, 255, 0.08);
+        color: var(--accent);
+      }
+      .tag-base {
+        background: rgba(124, 58, 237, 0.08);
+        color: #a78bfa;
+      }
+      .tag-video {
+        background: rgba(249, 115, 22, 0.08);
+        color: var(--accent3);
+      }
+
+      /* ACTIVITY LOG */
+      .log-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 20px;
+        border-bottom: 1px solid var(--border);
+      }
+      .log-item:last-child {
+        border-bottom: none;
+      }
+
+      .log-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        margin-top: 5px;
+        flex-shrink: 0;
+      }
+
+      .log-text {
+        font-size: 0.76rem;
+        color: var(--muted2);
+        line-height: 1.4;
+        flex: 1;
+      }
+      .log-text strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+
+      .log-time {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.55rem;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        flex-shrink: 0;
+        margin-top: 2px;
+      }
+
+      /* SCROLLBAR */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-logo">Neural<span>Hub</span>.ai</div>
+
+      <div class="sidebar-section">Workspace</div>
+      <a href="#" class="sidebar-item active">
+        <span class="sidebar-icon">⚡</span> Dashboard
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">🔧</span> Job Queue
+        <span class="sidebar-badge">3</span>
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">🧠</span> Models
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">📦</span> Datasets
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">⚙️</span> Pipelines
+      </a>
+
+      <div class="sidebar-section">Library</div>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">🔁</span> LoRA Library
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">📋</span> Workflows
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">📖</span> Guides
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">🛠️</span> Tools
+      </a>
+
+      <div class="sidebar-section">Compute</div>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">🖥️</span> GPU Monitor
+      </a>
+      <a href="#" class="sidebar-item">
+        <span class="sidebar-icon">☁️</span> ComputeAtlas
+      </a>
+
+      <div class="sidebar-bottom">
+        <div class="user-row">
+          <div class="user-avatar">N</div>
+          <div class="user-info">
+            <div class="user-name">Neo</div>
+            <div class="user-plan">PRO PLAN</div>
           </div>
-          <div class="job-progress-wrap">
-            <div class="job-progress-bar"><div class="job-progress-fill fill-accent" style="width:68%"></div></div>
-            <div class="job-pct">68%</div>
-          </div>
-        </div>
-        <div class="job-item">
-          <div class="job-status js-running"></div>
-          <div class="job-info">
-            <div class="job-name">LTX Video — Desert Pursuit batch</div>
-            <div class="job-meta">INFERENCE · 12 frames · RTX 3080</div>
-          </div>
-          <div class="job-progress-wrap">
-            <div class="job-progress-bar"><div class="job-progress-fill fill-accent" style="width:41%"></div></div>
-            <div class="job-pct">41%</div>
-          </div>
-        </div>
-        <div class="job-item">
-          <div class="job-status js-queued"></div>
-          <div class="job-info">
-            <div class="job-name">Dataset caption — subway_breach_set</div>
-            <div class="job-meta">QUEUED · 1,240 images · WD14 tagger</div>
-          </div>
-          <div class="job-progress-wrap">
-            <div class="job-progress-bar"><div class="job-progress-fill fill-gray" style="width:0%"></div></div>
-            <div class="job-pct">—</div>
-          </div>
-        </div>
-        <div class="job-item">
-          <div class="job-status js-done"></div>
-          <div class="job-info">
-            <div class="job-name">AnimateDiff — fat_bigfoot_loop_v2</div>
-            <div class="job-meta">COMPLETE · 24 frames · 4m 11s</div>
-          </div>
-          <div class="job-progress-wrap">
-            <div class="job-progress-bar"><div class="job-progress-fill fill-green" style="width:100%"></div></div>
-            <div class="job-pct" style="color:var(--green)">✓</div>
-          </div>
-        </div>
-        <div class="job-item">
-          <div class="job-status js-done"></div>
-          <div class="job-info">
-            <div class="job-name">SDXL — slacker_alien_concept_sheet</div>
-            <div class="job-meta">COMPLETE · 8 images · 52s</div>
-          </div>
-          <div class="job-progress-wrap">
-            <div class="job-progress-bar"><div class="job-progress-fill fill-green" style="width:100%"></div></div>
-            <div class="job-pct" style="color:var(--green)">✓</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- GPU -->
-      <div class="panel gpu-panel">
-        <div class="panel-header">
-          <div class="panel-title">GPU Monitor</div>
-          <div class="panel-action">Details</div>
-        </div>
-        <div class="gpu-item">
-          <div class="gpu-row">
-            <div class="gpu-name">RTX 5080 · Primary</div>
-            <div class="gpu-pct" style="color:var(--accent)">87%</div>
-          </div>
-          <div class="gpu-bar"><div class="gpu-fill" style="width:87%; background: linear-gradient(90deg, var(--accent2), var(--accent))"></div></div>
-          <div class="gpu-sub"><span>VRAM 14.2/16GB</span><span>Temp 74°C</span><span>Util 87%</span></div>
-          <div class="sparkline">
-            <div class="spark-bar" style="height:30%;background:var(--accent);opacity:0.3"></div>
-            <div class="spark-bar" style="height:50%;background:var(--accent);opacity:0.4"></div>
-            <div class="spark-bar" style="height:40%;background:var(--accent);opacity:0.4"></div>
-            <div class="spark-bar" style="height:70%;background:var(--accent);opacity:0.5"></div>
-            <div class="spark-bar" style="height:65%;background:var(--accent);opacity:0.5"></div>
-            <div class="spark-bar" style="height:80%;background:var(--accent);opacity:0.6"></div>
-            <div class="spark-bar" style="height:75%;background:var(--accent);opacity:0.6"></div>
-            <div class="spark-bar" style="height:87%;background:var(--accent)"></div>
-          </div>
-        </div>
-        <div class="gpu-item">
-          <div class="gpu-row">
-            <div class="gpu-name">RTX 3080 · Laptop</div>
-            <div class="gpu-pct" style="color:var(--accent3)">62%</div>
-          </div>
-          <div class="gpu-bar"><div class="gpu-fill" style="width:62%; background: var(--accent3)"></div></div>
-          <div class="gpu-sub"><span>VRAM 9.9/16GB</span><span>Temp 68°C</span><span>Util 62%</span></div>
-        </div>
-        <div class="gpu-item">
-          <div class="gpu-row">
-            <div class="gpu-name">GTX 1660 Ti · Aux</div>
-            <div class="gpu-pct" style="color:var(--muted)">Idle</div>
-          </div>
-          <div class="gpu-bar"><div class="gpu-fill" style="width:4%; background: var(--muted)"></div></div>
-          <div class="gpu-sub"><span>VRAM 0.2/6GB</span><span>Temp 41°C</span><span>Util 4%</span></div>
         </div>
       </div>
     </div>
 
-    <!-- MODELS + ACTIVITY -->
-    <div class="grid-two">
-
-      <!-- RECENT MODELS -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Recent Models</div>
-          <div class="panel-action">Library →</div>
-        </div>
-        <div class="model-item">
-          <div class="model-thumb mt-1">🎬</div>
-          <div class="model-info">
-            <div class="model-name">highway_ghost_v3.safetensors</div>
-            <div class="model-sub">FLUX LoRA · rank 32 · 847MB · trained 2h ago</div>
+    <!-- MAIN -->
+    <div class="main">
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div>
+          <div class="topbar-title">Dashboard</div>
+          <div class="topbar-breadcrumb">
+            neuraldrift.io.ai / workspace / overview
           </div>
-          <span class="model-tag tag-lora">LORA</span>
         </div>
-        <div class="model-item">
-          <div class="model-thumb mt-2">👾</div>
-          <div class="model-info">
-            <div class="model-name">fat_bigfoot_character_v4</div>
-            <div class="model-sub">SDXL LoRA · rank 16 · 412MB · trained 6h ago</div>
-          </div>
-          <span class="model-tag tag-lora">LORA</span>
-        </div>
-        <div class="model-item">
-          <div class="model-thumb mt-3">🛸</div>
-          <div class="model-info">
-            <div class="model-name">slacker_alien_style_v2</div>
-            <div class="model-sub">SDXL LoRA · rank 16 · 398MB · trained yesterday</div>
-          </div>
-          <span class="model-tag tag-lora">LORA</span>
-        </div>
-        <div class="model-item">
-          <div class="model-thumb mt-1">⚡</div>
-          <div class="model-info">
-            <div class="model-name">ltx-video-2.3-distilled.gguf</div>
-            <div class="model-sub">Base Model · LTX Video · 8.4GB · downloaded 2d ago</div>
-          </div>
-          <span class="model-tag tag-video">VIDEO</span>
-        </div>
-        <div class="model-item">
-          <div class="model-thumb mt-2">🧠</div>
-          <div class="model-info">
-            <div class="model-name">flux1-dev-fp8.safetensors</div>
-            <div class="model-sub">Base Model · FLUX · 12.1GB · downloaded 3d ago</div>
-          </div>
-          <span class="model-tag tag-base">BASE</span>
+        <div class="topbar-right">
+          <button class="topbar-btn">+ New Job</button>
+          <div class="notif">🔔</div>
         </div>
       </div>
 
-      <!-- ACTIVITY LOG -->
-      <div class="panel">
-        <div class="panel-header">
-          <div class="panel-title">Activity Log</div>
-          <div class="panel-action">Clear</div>
+      <!-- CONTENT -->
+      <div class="content">
+        <!-- STATS -->
+        <div class="stats-row">
+          <div class="stat-card c1">
+            <div class="stat-header">
+              <div class="stat-label">Active Jobs</div>
+              <div class="stat-icon">⚡</div>
+            </div>
+            <div class="stat-value">3</div>
+            <div class="stat-change up">↑ 2 from yesterday</div>
+          </div>
+          <div class="stat-card c2">
+            <div class="stat-header">
+              <div class="stat-label">LoRAs Trained</div>
+              <div class="stat-icon">🔧</div>
+            </div>
+            <div class="stat-value">14</div>
+            <div class="stat-change up">↑ +3 this week</div>
+          </div>
+          <div class="stat-card c3">
+            <div class="stat-header">
+              <div class="stat-label">Videos Generated</div>
+              <div class="stat-icon">🎬</div>
+            </div>
+            <div class="stat-value">247</div>
+            <div class="stat-change up">↑ 18% vs last week</div>
+          </div>
+          <div class="stat-card c4">
+            <div class="stat-header">
+              <div class="stat-label">VRAM Peak</div>
+              <div class="stat-icon">🖥️</div>
+            </div>
+            <div class="stat-value">
+              14.2<span style="font-size: 1rem; color: var(--muted)">GB</span>
+            </div>
+            <div class="stat-change down">↓ 16GB budget</div>
+          </div>
         </div>
-        <div class="log-item">
-          <div class="log-dot" style="background:var(--green)"></div>
-          <div class="log-text"><strong>AnimateDiff job complete</strong> — fat_bigfoot_loop_v2 rendered 24 frames in 4m 11s</div>
-          <div class="log-time">4m ago</div>
+
+        <!-- JOB QUEUE + GPU -->
+        <div class="grid-two">
+          <!-- JOB QUEUE -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Job Queue</div>
+              <div class="panel-action">View All →</div>
+            </div>
+            <div class="job-item">
+              <div class="job-status js-running"></div>
+              <div class="job-info">
+                <div class="job-name">FLUX LoRA — highway_ghost_v3</div>
+                <div class="job-meta">
+                  TRAINING · rank=32 · epoch 7/10 · RTX 5080
+                </div>
+              </div>
+              <div class="job-progress-wrap">
+                <div class="job-progress-bar">
+                  <div
+                    class="job-progress-fill fill-accent"
+                    style="width: 68%"
+                  ></div>
+                </div>
+                <div class="job-pct">68%</div>
+              </div>
+            </div>
+            <div class="job-item">
+              <div class="job-status js-running"></div>
+              <div class="job-info">
+                <div class="job-name">LTX Video — Desert Pursuit batch</div>
+                <div class="job-meta">INFERENCE · 12 frames · RTX 3080</div>
+              </div>
+              <div class="job-progress-wrap">
+                <div class="job-progress-bar">
+                  <div
+                    class="job-progress-fill fill-accent"
+                    style="width: 41%"
+                  ></div>
+                </div>
+                <div class="job-pct">41%</div>
+              </div>
+            </div>
+            <div class="job-item">
+              <div class="job-status js-queued"></div>
+              <div class="job-info">
+                <div class="job-name">Dataset caption — subway_breach_set</div>
+                <div class="job-meta">QUEUED · 1,240 images · WD14 tagger</div>
+              </div>
+              <div class="job-progress-wrap">
+                <div class="job-progress-bar">
+                  <div
+                    class="job-progress-fill fill-gray"
+                    style="width: 0%"
+                  ></div>
+                </div>
+                <div class="job-pct">—</div>
+              </div>
+            </div>
+            <div class="job-item">
+              <div class="job-status js-done"></div>
+              <div class="job-info">
+                <div class="job-name">AnimateDiff — fat_bigfoot_loop_v2</div>
+                <div class="job-meta">COMPLETE · 24 frames · 4m 11s</div>
+              </div>
+              <div class="job-progress-wrap">
+                <div class="job-progress-bar">
+                  <div
+                    class="job-progress-fill fill-green"
+                    style="width: 100%"
+                  ></div>
+                </div>
+                <div class="job-pct" style="color: var(--green)">✓</div>
+              </div>
+            </div>
+            <div class="job-item">
+              <div class="job-status js-done"></div>
+              <div class="job-info">
+                <div class="job-name">SDXL — slacker_alien_concept_sheet</div>
+                <div class="job-meta">COMPLETE · 8 images · 52s</div>
+              </div>
+              <div class="job-progress-wrap">
+                <div class="job-progress-bar">
+                  <div
+                    class="job-progress-fill fill-green"
+                    style="width: 100%"
+                  ></div>
+                </div>
+                <div class="job-pct" style="color: var(--green)">✓</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- GPU -->
+          <div class="panel gpu-panel">
+            <div class="panel-header">
+              <div class="panel-title">GPU Monitor</div>
+              <div class="panel-action">Details</div>
+            </div>
+            <div class="gpu-item">
+              <div class="gpu-row">
+                <div class="gpu-name">RTX 5080 · Primary</div>
+                <div class="gpu-pct" style="color: var(--accent)">87%</div>
+              </div>
+              <div class="gpu-bar">
+                <div
+                  class="gpu-fill"
+                  style="
+                    width: 87%;
+                    background: linear-gradient(
+                      90deg,
+                      var(--accent2),
+                      var(--accent)
+                    );
+                  "
+                ></div>
+              </div>
+              <div class="gpu-sub">
+                <span>VRAM 14.2/16GB</span><span>Temp 74°C</span
+                ><span>Util 87%</span>
+              </div>
+              <div class="sparkline">
+                <div
+                  class="spark-bar"
+                  style="height: 30%; background: var(--accent); opacity: 0.3"
+                ></div>
+                <div
+                  class="spark-bar"
+                  style="height: 50%; background: var(--accent); opacity: 0.4"
+                ></div>
+                <div
+                  class="spark-bar"
+                  style="height: 40%; background: var(--accent); opacity: 0.4"
+                ></div>
+                <div
+                  class="spark-bar"
+                  style="height: 70%; background: var(--accent); opacity: 0.5"
+                ></div>
+                <div
+                  class="spark-bar"
+                  style="height: 65%; background: var(--accent); opacity: 0.5"
+                ></div>
+                <div
+                  class="spark-bar"
+                  style="height: 80%; background: var(--accent); opacity: 0.6"
+                ></div>
+                <div
+                  class="spark-bar"
+                  style="height: 75%; background: var(--accent); opacity: 0.6"
+                ></div>
+                <div
+                  class="spark-bar"
+                  style="height: 87%; background: var(--accent)"
+                ></div>
+              </div>
+            </div>
+            <div class="gpu-item">
+              <div class="gpu-row">
+                <div class="gpu-name">RTX 3080 · Laptop</div>
+                <div class="gpu-pct" style="color: var(--accent3)">62%</div>
+              </div>
+              <div class="gpu-bar">
+                <div
+                  class="gpu-fill"
+                  style="width: 62%; background: var(--accent3)"
+                ></div>
+              </div>
+              <div class="gpu-sub">
+                <span>VRAM 9.9/16GB</span><span>Temp 68°C</span
+                ><span>Util 62%</span>
+              </div>
+            </div>
+            <div class="gpu-item">
+              <div class="gpu-row">
+                <div class="gpu-name">GTX 1660 Ti · Aux</div>
+                <div class="gpu-pct" style="color: var(--muted)">Idle</div>
+              </div>
+              <div class="gpu-bar">
+                <div
+                  class="gpu-fill"
+                  style="width: 4%; background: var(--muted)"
+                ></div>
+              </div>
+              <div class="gpu-sub">
+                <span>VRAM 0.2/6GB</span><span>Temp 41°C</span
+                ><span>Util 4%</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="log-item">
-          <div class="log-dot" style="background:var(--accent)"></div>
-          <div class="log-text"><strong>Training resumed</strong> — highway_ghost_v3 continued from checkpoint epoch 6</div>
-          <div class="log-time">12m ago</div>
-        </div>
-        <div class="log-item">
-          <div class="log-dot" style="background:var(--accent3)"></div>
-          <div class="log-text">VRAM warning: <strong>RTX 5080</strong> peaked at 15.8GB during batch inference</div>
-          <div class="log-time">28m ago</div>
-        </div>
-        <div class="log-item">
-          <div class="log-dot" style="background:var(--green)"></div>
-          <div class="log-text"><strong>slacker_alien_style_v2</strong> exported to /output — 398MB .safetensors</div>
-          <div class="log-time">1h ago</div>
-        </div>
-        <div class="log-item">
-          <div class="log-dot" style="background:var(--accent2)"></div>
-          <div class="log-text">New ComfyUI workflow saved: <strong>desert_pursuit_ltx_v1</strong> — 14 nodes</div>
-          <div class="log-time">2h ago</div>
-        </div>
-        <div class="log-item">
-          <div class="log-dot" style="background:var(--muted)"></div>
-          <div class="log-text"><strong>Dataset upload</strong> — subway_breach_set: 1,240 images queued for captioning</div>
-          <div class="log-time">3h ago</div>
+
+        <!-- MODELS + ACTIVITY -->
+        <div class="grid-two">
+          <!-- RECENT MODELS -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Recent Models</div>
+              <div class="panel-action">Library →</div>
+            </div>
+            <div class="model-item">
+              <div class="model-thumb mt-1">🎬</div>
+              <div class="model-info">
+                <div class="model-name">highway_ghost_v3.safetensors</div>
+                <div class="model-sub">
+                  FLUX LoRA · rank 32 · 847MB · trained 2h ago
+                </div>
+              </div>
+              <span class="model-tag tag-lora">LORA</span>
+            </div>
+            <div class="model-item">
+              <div class="model-thumb mt-2">👾</div>
+              <div class="model-info">
+                <div class="model-name">fat_bigfoot_character_v4</div>
+                <div class="model-sub">
+                  SDXL LoRA · rank 16 · 412MB · trained 6h ago
+                </div>
+              </div>
+              <span class="model-tag tag-lora">LORA</span>
+            </div>
+            <div class="model-item">
+              <div class="model-thumb mt-3">🛸</div>
+              <div class="model-info">
+                <div class="model-name">slacker_alien_style_v2</div>
+                <div class="model-sub">
+                  SDXL LoRA · rank 16 · 398MB · trained yesterday
+                </div>
+              </div>
+              <span class="model-tag tag-lora">LORA</span>
+            </div>
+            <div class="model-item">
+              <div class="model-thumb mt-1">⚡</div>
+              <div class="model-info">
+                <div class="model-name">ltx-video-2.3-distilled.gguf</div>
+                <div class="model-sub">
+                  Base Model · LTX Video · 8.4GB · downloaded 2d ago
+                </div>
+              </div>
+              <span class="model-tag tag-video">VIDEO</span>
+            </div>
+            <div class="model-item">
+              <div class="model-thumb mt-2">🧠</div>
+              <div class="model-info">
+                <div class="model-name">flux1-dev-fp8.safetensors</div>
+                <div class="model-sub">
+                  Base Model · FLUX · 12.1GB · downloaded 3d ago
+                </div>
+              </div>
+              <span class="model-tag tag-base">BASE</span>
+            </div>
+          </div>
+
+          <!-- ACTIVITY LOG -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">Activity Log</div>
+              <div class="panel-action">Clear</div>
+            </div>
+            <div class="log-item">
+              <div class="log-dot" style="background: var(--green)"></div>
+              <div class="log-text">
+                <strong>AnimateDiff job complete</strong> — fat_bigfoot_loop_v2
+                rendered 24 frames in 4m 11s
+              </div>
+              <div class="log-time">4m ago</div>
+            </div>
+            <div class="log-item">
+              <div class="log-dot" style="background: var(--accent)"></div>
+              <div class="log-text">
+                <strong>Training resumed</strong> — highway_ghost_v3 continued
+                from checkpoint epoch 6
+              </div>
+              <div class="log-time">12m ago</div>
+            </div>
+            <div class="log-item">
+              <div class="log-dot" style="background: var(--accent3)"></div>
+              <div class="log-text">
+                VRAM warning: <strong>RTX 5080</strong> peaked at 15.8GB during
+                batch inference
+              </div>
+              <div class="log-time">28m ago</div>
+            </div>
+            <div class="log-item">
+              <div class="log-dot" style="background: var(--green)"></div>
+              <div class="log-text">
+                <strong>slacker_alien_style_v2</strong> exported to /output —
+                398MB .safetensors
+              </div>
+              <div class="log-time">1h ago</div>
+            </div>
+            <div class="log-item">
+              <div class="log-dot" style="background: var(--accent2)"></div>
+              <div class="log-text">
+                New ComfyUI workflow saved:
+                <strong>desert_pursuit_ltx_v1</strong> — 14 nodes
+              </div>
+              <div class="log-time">2h ago</div>
+            </div>
+            <div class="log-item">
+              <div class="log-dot" style="background: var(--muted)"></div>
+              <div class="log-text">
+                <strong>Dataset upload</strong> — subway_breach_set: 1,240
+                images queued for captioning
+              </div>
+              <div class="log-time">3h ago</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
-  </div>
-</div>
-
-</body>
+  </body>
 </html>

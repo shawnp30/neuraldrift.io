@@ -5,14 +5,8 @@
     {
       "id": 1,
       "type": "CheckpointLoaderSimple",
-      "pos": [
-        40,
-        40
-      ],
-      "size": [
-        315,
-        98
-      ],
+      "pos": [40, 40],
+      "size": [315, 98],
       "flags": {},
       "order": 0,
       "mode": 0,
@@ -21,43 +15,29 @@
         {
           "name": "MODEL",
           "type": "MODEL",
-          "links": [
-            10
-          ]
+          "links": [10]
         },
         {
           "name": "CLIP",
           "type": "CLIP",
-          "links": [
-            11
-          ]
+          "links": [11]
         },
         {
           "name": "VAE",
           "type": "VAE",
-          "links": [
-            8
-          ]
+          "links": [8]
         }
       ],
       "properties": {
         "Node name for S&R": "CheckpointLoaderSimple"
       },
-      "widgets_values": [
-        "flux1-dev-fp8.safetensors"
-      ]
+      "widgets_values": ["flux1-dev-fp8.safetensors"]
     },
     {
       "id": 10,
       "type": "LoraLoader",
-      "pos": [
-        40,
-        170
-      ],
-      "size": [
-        315,
-        126
-      ],
+      "pos": [40, 170],
+      "size": [315, 126],
       "flags": {},
       "order": 1,
       "mode": 0,
@@ -77,39 +57,24 @@
         {
           "name": "MODEL",
           "type": "MODEL",
-          "links": [
-            1
-          ]
+          "links": [1]
         },
         {
           "name": "CLIP",
           "type": "CLIP",
-          "links": [
-            2,
-            3
-          ]
+          "links": [2, 3]
         }
       ],
       "properties": {
         "Node name for S&R": "LoraLoader"
       },
-      "widgets_values": [
-        "slackeralien.safetensors",
-        0.75,
-        0.75
-      ]
+      "widgets_values": ["slackeralien.safetensors", 0.75, 0.75]
     },
     {
       "id": 2,
       "type": "CLIPTextEncode",
-      "pos": [
-        400,
-        40
-      ],
-      "size": [
-        422,
-        164
-      ],
+      "pos": [400, 40],
+      "size": [422, 164],
       "flags": {},
       "order": 2,
       "mode": 0,
@@ -124,9 +89,7 @@
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": [
-            4
-          ]
+          "links": [4]
         }
       ],
       "properties": {
@@ -139,14 +102,8 @@
     {
       "id": 3,
       "type": "CLIPTextEncode",
-      "pos": [
-        400,
-        230
-      ],
-      "size": [
-        422,
-        164
-      ],
+      "pos": [400, 230],
+      "size": [422, 164],
       "flags": {},
       "order": 3,
       "mode": 0,
@@ -161,29 +118,19 @@
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": [
-            5
-          ]
+          "links": [5]
         }
       ],
       "properties": {
         "Node name for S&R": "CLIPTextEncode"
       },
-      "widgets_values": [
-        "blurry, low quality, watermark"
-      ]
+      "widgets_values": ["blurry, low quality, watermark"]
     },
     {
       "id": 4,
       "type": "EmptyLatentImage",
-      "pos": [
-        40,
-        340
-      ],
-      "size": [
-        315,
-        98
-      ],
+      "pos": [40, 340],
+      "size": [315, 98],
       "flags": {},
       "order": 4,
       "mode": 0,
@@ -192,31 +139,19 @@
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": [
-            6
-          ]
+          "links": [6]
         }
       ],
       "properties": {
         "Node name for S&R": "EmptyLatentImage"
       },
-      "widgets_values": [
-        1024,
-        1024,
-        1
-      ]
+      "widgets_values": [1024, 1024, 1]
     },
     {
       "id": 5,
       "type": "KSampler",
-      "pos": [
-        870,
-        40
-      ],
-      "size": [
-        315,
-        262
-      ],
+      "pos": [870, 40],
+      "size": [315, 262],
       "flags": {},
       "order": 5,
       "mode": 0,
@@ -246,35 +181,19 @@
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": [
-            7
-          ]
+          "links": [7]
         }
       ],
       "properties": {
         "Node name for S&R": "KSampler"
       },
-      "widgets_values": [
-        42,
-        "fixed",
-        20,
-        3.5,
-        "euler",
-        "simple",
-        1.0
-      ]
+      "widgets_values": [42, "fixed", 20, 3.5, "euler", "simple", 1.0]
     },
     {
       "id": 6,
       "type": "VAEDecode",
-      "pos": [
-        1230,
-        40
-      ],
-      "size": [
-        210,
-        46
-      ],
+      "pos": [1230, 40],
+      "size": [210, 46],
       "flags": {},
       "order": 6,
       "mode": 0,
@@ -294,9 +213,7 @@
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            9
-          ]
+          "links": [9]
         }
       ],
       "properties": {
@@ -307,14 +224,8 @@
     {
       "id": 7,
       "type": "SaveImage",
-      "pos": [
-        1480,
-        40
-      ],
-      "size": [
-        210,
-        270
-      ],
+      "pos": [1480, 40],
+      "size": [210, 270],
       "flags": {},
       "order": 7,
       "mode": 0,
@@ -329,133 +240,45 @@
       "properties": {
         "Node name for S&R": "SaveImage"
       },
-      "widgets_values": [
-        "nh_alien_lora"
-      ]
+      "widgets_values": ["nh_alien_lora"]
     },
     {
       "id": 11,
       "type": "Note",
-      "pos": [
-        40,
-        478
-      ],
-      "size": [
-        540,
-        380
-      ],
+      "pos": [40, 478],
+      "size": [540, 380],
       "flags": {},
       "order": 8,
       "mode": 0,
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "NeuralHub.ai -- 46-flux-lora-slacker-alien\n\nHardware: 16GB -- High Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 3.5\nSampler: euler | Scheduler: simple\nLaunch flags: --gpu-only --highvram\nEst. time: ~22s per image\n\n-- Required Models --\nModel: flux1-dev-fp8.safetensors\nSize: 12GB (fp8)\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/Comfy-Org/flux1-dev\nAlso needs: slackeralien.safetensors in ComfyUI/models/loras/\nCustom nodes: None -- core only\n\nneuralhub.ai"
+        "text": "neuraldrift.io.ai -- 46-flux-lora-slacker-alien\n\nHardware: 16GB -- High Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 3.5\nSampler: euler | Scheduler: simple\nLaunch flags: --gpu-only --highvram\nEst. time: ~22s per image\n\n-- Required Models --\nModel: flux1-dev-fp8.safetensors\nSize: 12GB (fp8)\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/Comfy-Org/flux1-dev\nAlso needs: slackeralien.safetensors in ComfyUI/models/loras/\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
       },
       "widgets_values": [
-        "NeuralHub.ai -- 46-flux-lora-slacker-alien\n\nHardware: 16GB -- High Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 3.5\nSampler: euler | Scheduler: simple\nLaunch flags: --gpu-only --highvram\nEst. time: ~22s per image\n\n-- Required Models --\nModel: flux1-dev-fp8.safetensors\nSize: 12GB (fp8)\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/Comfy-Org/flux1-dev\nAlso needs: slackeralien.safetensors in ComfyUI/models/loras/\nCustom nodes: None -- core only\n\nneuralhub.ai"
+        "neuraldrift.io.ai -- 46-flux-lora-slacker-alien\n\nHardware: 16GB -- High Quality\nResolution: 1024 x 1024\nSteps: 20 | CFG: 3.5\nSampler: euler | Scheduler: simple\nLaunch flags: --gpu-only --highvram\nEst. time: ~22s per image\n\n-- Required Models --\nModel: flux1-dev-fp8.safetensors\nSize: 12GB (fp8)\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/Comfy-Org/flux1-dev\nAlso needs: slackeralien.safetensors in ComfyUI/models/loras/\nCustom nodes: None -- core only\n\nneuraldrift.io.ai"
       ]
     }
   ],
   "links": [
-    [
-      1,
-      10,
-      0,
-      5,
-      0,
-      "MODEL"
-    ],
-    [
-      2,
-      10,
-      1,
-      2,
-      0,
-      "CLIP"
-    ],
-    [
-      3,
-      10,
-      1,
-      3,
-      0,
-      "CLIP"
-    ],
-    [
-      4,
-      2,
-      0,
-      5,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      5,
-      3,
-      0,
-      5,
-      2,
-      "CONDITIONING"
-    ],
-    [
-      6,
-      4,
-      0,
-      5,
-      3,
-      "LATENT"
-    ],
-    [
-      7,
-      5,
-      0,
-      6,
-      0,
-      "LATENT"
-    ],
-    [
-      8,
-      1,
-      2,
-      6,
-      1,
-      "VAE"
-    ],
-    [
-      9,
-      6,
-      0,
-      7,
-      0,
-      "IMAGE"
-    ],
-    [
-      10,
-      1,
-      0,
-      10,
-      0,
-      "MODEL"
-    ],
-    [
-      11,
-      1,
-      1,
-      10,
-      1,
-      "CLIP"
-    ]
+    [1, 10, 0, 5, 0, "MODEL"],
+    [2, 10, 1, 2, 0, "CLIP"],
+    [3, 10, 1, 3, 0, "CLIP"],
+    [4, 2, 0, 5, 1, "CONDITIONING"],
+    [5, 3, 0, 5, 2, "CONDITIONING"],
+    [6, 4, 0, 5, 3, "LATENT"],
+    [7, 5, 0, 6, 0, "LATENT"],
+    [8, 1, 2, 6, 1, "VAE"],
+    [9, 6, 0, 7, 0, "IMAGE"],
+    [10, 1, 0, 10, 0, "MODEL"],
+    [11, 1, 1, 10, 1, "CLIP"]
   ],
   "groups": [],
   "config": {},
   "extra": {
     "ds": {
       "scale": 0.7,
-      "offset": [
-        0,
-        0
-      ]
+      "offset": [0, 0]
     }
   },
   "version": 0.4

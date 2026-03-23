@@ -1,4 +1,4 @@
-﻿// NeuralHub Workflow Export Engine v3
+﻿// neuraldrift.io Workflow Export Engine v3
 // Uses real ComfyUI workflow files as templates
 // Injects user-configured values into specific node widget_values by node ID
 
@@ -178,7 +178,7 @@ function buildValueMap(config: ExportConfig): Record<string, unknown> {
     batch_size: profile.batchSize,
     lora_name: String(params.lora_name || ""),
     lora_strength: Number(params.lora_strength ?? 0.8),
-    note: `NeuralHub.ai Export\nWorkflow: ${config.workflowId}\nHardware: ${config.hardwareTier} -- ${profile.label}\nResolution: ${profile.width}x${profile.height}\nSteps: ${profile.steps} | CFG: ${profile.cfg}\nFlags: ${profile.extraFlags.join(" ") || "none"}\nneuralhub.ai`,
+    note: `neuraldrift.io.ai Export\nWorkflow: ${config.workflowId}\nHardware: ${config.hardwareTier} -- ${profile.label}\nResolution: ${profile.width}x${profile.height}\nSteps: ${profile.steps} | CFG: ${profile.cfg}\nFlags: ${profile.extraFlags.join(" ") || "none"}\nneuraldrift.io.ai`,
   };
 }
 
@@ -224,14 +224,14 @@ export function exportWorkflow(config: ExportConfig): string {
     return { ...node, widgets_values: widgetValues };
   });
 
-  // Add NeuralHub metadata
+  // Add neuraldrift.io metadata
   workflow.extra = {
     ...(workflow.extra || {}),
-    neuralhub: {
+    neuraldrift.io: {
       workflow_id: workflowId,
       hardware_tier: hardwareTier,
       exported_at: new Date().toISOString(),
-      generated_by: "NeuralHub.ai",
+      generated_by: "neuraldrift.io.ai",
       launch_flags: profile.extraFlags.join(" "),
       estimated_time: profile.estimatedTime,
     },
