@@ -19,7 +19,7 @@ const TICKER = [
   { icon: "🎬", label: "LTX Video 2.3", desc: "Cinematic generation" },
   { icon: "🧠", label: "FLUX Dev/Schnell", desc: "Image models" },
   { icon: "📦", label: "6 LoRA Models", desc: "Ready to download" },
-  { icon: "⚙️", label: "6 ComfyUI Workflows", desc: "Plug & play" },
+  { icon: "⚙️", label: "50 ComfyUI Workflows", desc: "Plug & play" },
   { icon: "📧", label: "2,400+ Subscribers", desc: "Weekly drops" },
   { icon: "🎯", label: "0 Ads", desc: "Just signal" },
 ];
@@ -145,6 +145,7 @@ export default function HomePage() {
           <div className="nh-nav-links">
             <Link href="/guides">Guides</Link>
             <Link href="/workflows">Workflows</Link>
+            <Link href="/proof">Workflow Proof</Link>
             <Link href="/loras">LoRAs</Link>
             <Link href="/datasets">Datasets</Link>
             <Link href="/optimizer">Optimizer</Link>
