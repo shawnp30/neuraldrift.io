@@ -59,6 +59,20 @@ export default function PromptGeneratorPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleRandomize = () => {
+    const randomItem = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+    
+    setSubject(randomItem(SUGGESTIONS.subject));
+    setEnvironment(randomItem(SUGGESTIONS.environment));
+    setLighting(randomItem(OPTIONS.lighting));
+    setCamera(randomItem(OPTIONS.camera));
+    setStyle(randomItem(OPTIONS.style));
+    if (mode === "video") {
+      setAction(randomItem(SUGGESTIONS.action));
+      setMotion(randomItem(OPTIONS.motion));
+    }
+  };
+
   const handleExportJson = () => {
     const payload = {
       prompt: masterPrompt,
@@ -127,6 +141,14 @@ export default function PromptGeneratorPage() {
               <Video className="w-5 h-5" /> Video Mode
             </button>
           </div>
+
+          <button 
+            onClick={handleRandomize}
+            className="w-full py-4 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-400 hover:via-purple-400 hover:to-indigo-400 text-white font-[900] rounded-2xl transition-all shadow-[0_0_30px_rgba(236,72,153,0.3)] flex items-center justify-center gap-2 transform hover:scale-[1.01]"
+          >
+            <Sparkles className="w-5 h-5 animate-pulse" /> 
+            Surprise Me: Generate Instant Prompt
+          </button>
 
           <div className="bg-[#0f172a]/80 p-8 rounded-3xl border border-white/5 backdrop-blur-xl shadow-2xl space-y-8 relative">
             
