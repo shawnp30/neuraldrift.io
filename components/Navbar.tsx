@@ -137,23 +137,28 @@ export default function Navbar() {
           </div>
 
           {/* Center Links */}
-          <div className="hidden lg:flex flex-1 items-center justify-center gap-8">
+          <div className="hidden lg:flex flex-wrap flex-1 items-center justify-center gap-4 xl:gap-6 px-4">
             {[
               { name: 'Tutorials', href: '/tutorials' },
-              { name: 'Glossary', href: '/glossary' },
+              { name: 'Guides', href: '/guides' },
               { name: 'Hardware', href: '/hardware' },
+              { name: 'GPU Guide', href: '/gpu-guide' },
               { name: 'Workflows', href: '/workflows' },
               { name: 'LoRAs', href: '/loras' },
+              { name: 'Datasets', href: '/datasets' },
+              { name: 'Tools', href: '/tools' },
+              { name: 'Optimizer', href: '/optimizer' },
               { name: 'Proofs', href: '/proofs' },
               { name: 'Cloud Gens', href: '/cloud-generators' },
               { name: 'Prompt Gen', href: '/prompt-generator' },
+              { name: 'Admin', href: '/admin/upload-workflow' },
             ].map(link => (
               <a 
                 key={link.name} 
                 href={link.href}
-                className="group relative text-sm font-[700] tracking-wide text-zinc-300 hover:text-white transition-colors"
+                className="group relative text-[13px] xl:text-sm font-[700] tracking-wide text-zinc-300 hover:text-white transition-colors"
               >
-                <span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-0.5 block">
+                <span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-0.5 block whitespace-nowrap">
                   {link.name}
                 </span>
                 <span className="absolute -bottom-1 left-0 w-full h-[3px] rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 scale-x-0 origin-right transition-transform duration-300 ease-out group-hover:scale-x-100 group-hover:origin-left shadow-[0_0_8px_rgba(99,102,241,0.5)]" />
