@@ -3,7 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { MotionValue, useTransform } from 'framer-motion';
 
-const FRAME_COUNT = 120;
+const FRAME_COUNT = 288;
 const FRAME_START = 1;
 
 interface HeroCanvasProps {
@@ -24,7 +24,8 @@ export default function HeroCanvas({ scrollYProgress }: HeroCanvasProps) {
       let loaded = 0;
       for (let i = FRAME_START; i <= FRAME_COUNT; i++) {
         const img = new Image();
-        img.src = `/images/neuraldrift/hero/${i}.webp`;
+        const paddedIndex = i.toString().padStart(3, '0');
+        img.src = `/images/ezgif-frame-${paddedIndex}.jpg`;
         img.onload = () => {
           loaded++;
           setImagesLoaded(loaded);

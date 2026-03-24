@@ -3,6 +3,8 @@
 import Link from "next/link";
 import React from "react";
 import "./home.css";
+import Navbar from "../components/Navbar";
+import Hero from "../components/Hero";
 
 const TICKER = [
   { icon: "⚡", label: "RTX 5080", desc: "Primary test rig" },
@@ -232,7 +234,7 @@ function GPUSelector() {
           transition: "all 0.15s",
         }}
       >
-        Generate My Workflow →
+        Customize My Workflow →
       </button>
     </div>
   );
@@ -245,121 +247,8 @@ export default function HomePage() {
     <div className="nh-page">
       <div className="nh-noise" aria-hidden="true" />
 
-      <nav className="nh-nav">
-        <div className="nh-nav-inner">
-          <Link className="nh-logo" href="/">
-            <span className="nh-logo-dot" />
-            neuraldrift<span style={{ color: "var(--amber)" }}>.ai</span>
-          </Link>
-          <div className="nh-nav-links">
-            <Link href="/guides">Guides</Link>
-            <Link href="/workflows">Workflows</Link>
-            <Link href="/proof">Workflow Proof</Link>
-            <Link href="/loras">LoRAs</Link>
-            <Link href="/datasets">Datasets</Link>
-            <Link href="/optimizer">Optimizer</Link>
-            <Link href="/tools">Tools</Link>
-            <Link href="/gpu-guide">GPU Guide</Link>
-            <span className="nh-nav-badge">v2.3 LTX ✦ FLUX</span>
-          </div>
-          <Link className="nh-nav-cta" href="/optimizer">
-            Score My Hardware →
-          </Link>
-        </div>
-      </nav>
-
-      <section className="nh-hero" id="start">
-        <div className="nh-hero-grid" aria-hidden="true" />
-        <div className="nh-hero-radial" aria-hidden="true" />
-        <div className="nh-hero-inner">
-          <div className="nh-eyebrow">
-            <span className="nh-eyebrow-dot" />
-            Tested on RTX 5080 · FLUX + LTX Video 2.3 · Updated Weekly
-          </div>
-          <h1 className="nh-h1">
-            AI workflows
-            <br />
-            tuned for <span className="accent">your exact GPU.</span>
-            <br />
-            <span className="dim">
-              Create, Optimize, Download, and Utilize in minutes.
-            </span>
-          </h1>
-          <p className="nh-hero-sub">
-            No fluff. Every guide ready in minutes with{" "}
-            <strong>
-              working ComfyUI configs, real LoRA training scripts, and
-              benchmarked hardware settings
-            </strong>{" "}
-            — from RTX 3080 to 5090. Built by a creator running this stack
-            daily.
-          </p>
-          <div className="nh-hero-actions">
-            <Link className="nh-btn-primary" href="/guides">
-              Browse Guides <span>→</span>
-            </Link>
-            <Link className="nh-btn-secondary" href="/workflows">
-              Grab Free Workflows <span>↓</span>
-            </Link>
-          </div>
-
-          <GPUSelector />
-
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "1.5rem",
-              flexWrap: "wrap",
-              marginTop: "2rem",
-            }}
-          >
-            <div className="nh-avatars">
-              {[
-                { initials: "JD", bg: "#1a2a3a", fg: "#60a5fa" },
-                { initials: "MK", bg: "#1a2a1a", fg: "#22c55e" },
-                { initials: "RS", bg: "#2a1a1a", fg: "#ef4444" },
-                { initials: "TL", bg: "#2a2a1a", fg: "#f59e0b" },
-                { initials: "AP", bg: "#1a1a2a", fg: "#c084fc" },
-              ].map((a) => (
-                <div
-                  key={a.initials}
-                  className="nh-avatar"
-                  style={{ background: a.bg, color: a.fg }}
-                >
-                  {a.initials}
-                </div>
-              ))}
-              <span className="nh-avatar-count">+2,400 builders</span>
-            </div>
-            <div
-              style={{
-                fontSize: "0.82rem",
-                color: "var(--text-dim)",
-                fontFamily: "'JetBrains Mono', monospace",
-              }}
-            >
-              ⭐⭐⭐⭐⭐ &nbsp;&quot;Finally a site that shows real VRAM
-              numbers&quot;
-            </div>
-          </div>
-
-          <div className="nh-trust-strip">
-            <span className="nh-trust-label">Tested on:</span>
-            {[
-              "RTX 3080 16GB",
-              "RTX 4090 24GB",
-              "RTX 5080 16GB",
-              "RTX 5090 32GB",
-              "VRAM 8GB → 32GB",
-            ].map((gpu) => (
-              <span key={gpu} className="nh-trust-item">
-                {gpu}
-              </span>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Navbar />
+      <Hero />
 
       <div className="nh-ticker-bar" aria-hidden="true">
         <div className="nh-ticker-track">
@@ -683,7 +572,7 @@ export default function HomePage() {
             <div>
               <Link className="nh-logo" href="/">
                 <span className="nh-logo-dot" />
-                neuraldrift<span style={{ color: "var(--amber)" }}>.ai</span>
+                neuraldrift
               </Link>
               <p>
                 Hardware-tuned AI workflow guides for builders running local

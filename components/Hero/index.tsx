@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { useScroll } from 'framer-motion';
+import { useScroll, motion, useTransform } from 'framer-motion';
 import HeroCanvas from './HeroCanvas';
 import HeroTextOverlays from './HeroTextOverlays';
 import '../../styles/hero.css';
@@ -15,17 +15,20 @@ export default function Hero() {
     offset: ['start start', 'end end'],
   });
 
+  // Make the brain image drift down as the user scrolls
+  const canvasY = useTransform(scrollYProgress, [0, 1], ['0vh', '400vh']);
+
   return (
     <section ref={containerRef} className="relative h-[500vh] w-full bg-black">
       {/* Sticky container pins to the top for 100vh while section scrolls */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      <div className="sticky top-0 h-screen w-full">
         {/* Subtle background wave overlay */}
         <div className="absolute inset-0 hero-wave-overlay pointer-events-none z-0" />
         
         {/* Canvas for frame animation */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center">
+        <motion.div style={{ y: canvasY }} className="absolute inset-0 z-10 flex items-center justify-center">
           <HeroCanvas scrollYProgress={scrollYProgress} />
-        </div>
+        </motion.div>
 
         {/* Text Overlays in 4 corners */}
         <div className="absolute inset-0 z-20">
