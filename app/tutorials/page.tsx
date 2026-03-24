@@ -1,165 +1,150 @@
 "use client";
 
-import { useState } from "react";
-import Image from "next/image";
-import { PlayCircle, Search, BookOpen, Clock, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { PlayCircle, FileText, ArrowRight, DollarSign, Workflow, Clock } from "lucide-react";
 
-// Mock data for tutorials
-const VIDEO_TUTORIALS = [
-  { id: "tut-1", title: "Mastering ComfyUI for Production Workflows", category: "ComfyUI Basics", duration: "14:20", thumbnail: "/workflow-previews/wf-1.svg", tags: ["UI", "Nodes", "Setup"], level: "Beginner" },
-  { id: "tut-2", title: "Training Elite Character LoRAs with FLUX", category: "LoRA Training", duration: "22:45", thumbnail: "/workflow-previews/wf-2.svg", tags: ["FLUX", "Dataset", "Kohya"], level: "Advanced" },
-  { id: "tut-3", title: "Optimizing VRAM usage on 8GB Cards", category: "Optimization", duration: "18:10", thumbnail: "/workflow-previews/wf-3.svg", tags: ["VRAM", "Performance", "Tiled VAE"], level: "Intermediate" },
-  { id: "tut-4", title: "Advanced Inpainting & Outpainting Techniques", category: "Techniques", duration: "25:30", thumbnail: "/workflow-previews/wf-1.svg", tags: ["Inpainting", "ControlNet", "SDXL"], level: "Advanced" },
+const VIDEOS = [
+  {
+    id: "v=Xv3H1zH8D7k", // Replace with desired exact real YouTube ID if needed. Using a standard formatting structure.
+    videoId: "mD7_s4HhK8Q", 
+    title: "How to Make $10,000/mo with ComfyUI Automations",
+    duration: "18:45",
+    category: "Monetization",
+    description: "Deep dive into setting up passive income streams using SDXL workflows and Print-on-Demand APIs."
+  },
+  {
+    id: "v=Y9n3H2x4C1p",
+    videoId: "Bw8O2h0aFk8",
+    title: "Train Your First FLUX LoRA in 10 Minutes",
+    duration: "12:30",
+    category: "Technical Guide",
+    description: "Learn how to use Kohya_ss and ComfyUI to instantly clone a character's face with 12GB of VRAM."
+  }
 ];
 
-const TEXT_GUIDES = [
-  { id: "guide-1", title: "Getting Started with ComfyUI: Concepts & Nodes", category: "Fundamentals", readTime: "5 min read", description: "The ultimate beginner's guide to understanding node-based generation systems. We break down the absolute basics so you feel right at home.", tags: ["Beginner Friendly", "Concepts"], level: "Beginner" },
-  { id: "guide-2", title: "Mastering FLUX Generation: The Definitive Guide", category: "Deep Dive", readTime: "12 min read", description: "From prompt engineering to sampler selection, learn exactly how to get photorealistic results from the FLUX.1 models.", tags: ["FLUX", "Prompting"], level: "Intermediate" },
-  { id: "guide-3", title: "Dataset Preparation for Architectural LoRAs", category: "Training", readTime: "8 min read", description: "A comprehensive look into tagging, pairing, and curating your image datasets specifically for high-fidelity architectural rendering.", tags: ["LoRA", "Datasets"], level: "Advanced" },
-  { id: "guide-4", title: "Deforum & AnimateDiff: Motion Workflows Explained", category: "Video", readTime: "15 min read", description: "Step-by-step instructions for constructing complex, temporally consistent video animations inside ComfyUI.", tags: ["Animation", "Deforum"], level: "Advanced" },
+const GUIDES = [
+  {
+    slug: "monetizing-comfyui",
+    title: "Monetizing Your ComfyUI Workflows",
+    icon: <DollarSign className="w-5 h-5 text-amber-500" />,
+    color: "amber",
+    description: "How to turn a local ComfyUI instance into a high-margin digital business via Fiverr, POD, and digital assets."
+  },
+  {
+    slug: "stable-diffusion-basics",
+    title: "Stable Diffusion Basics: The Core Architecture",
+    icon: <Workflow className="w-5 h-5 text-sky-400" />,
+    color: "sky",
+    description: "The ultimate primer on Checkpoints, Nodes, KSamplers, and Latent Space for absolute beginners."
+  }
 ];
 
 export default function TutorialsPage() {
-  const [search, setSearch] = useState("");
-  const [activeTab, setActiveTab] = useState<"videos" | "guides">("videos");
-
-  const filterContent = (arr: any[]) => arr.filter((item) =>
-    item.title.toLowerCase().includes(search.toLowerCase()) ||
-    item.category.toLowerCase().includes(search.toLowerCase()) ||
-    item.tags.some((tag: string) => tag.toLowerCase().includes(search.toLowerCase()))
-  );
-
-  const filteredVideos = filterContent(VIDEO_TUTORIALS);
-  const filteredGuides = filterContent(TEXT_GUIDES);
-
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-50 pt-16">
+    <div className="min-h-screen bg-[#030712] text-slate-50 pt-32 pb-24 font-sans selection:bg-indigo-500/30">
       
-      {/* ── HEADER & SEARCH ───────────────────────────────────────────── */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 mb-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
-          
-          <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-[800] tracking-tight text-white mb-4 drop-shadow-xl">
-              Learning <span className="text-indigo-400">Center</span>
-            </h1>
-            <p className="text-lg md:text-xl font-[500] text-zinc-400 leading-relaxed">
-              Welcome home. Whether you're a complete beginner learning the absolute basics or an expert optimizing multi-node pipelines, we have comprehensive guides for you.
-            </p>
-          </div>
-
-          <div className="relative w-full md:max-w-md">
-            <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-              <Search className="w-5 h-5 text-indigo-400/70" />
-            </div>
-            <input
-              type="search"
-              placeholder="Search guides and videos..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full bg-[#0f172a]/60 border border-indigo-500/30 rounded-2xl py-4 pl-12 pr-6 text-white placeholder-zinc-500 focus:outline-none focus:border-indigo-400 focus:ring-1 focus:ring-indigo-400/50 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.2)] backdrop-blur-xl font-[600]"
-            />
-          </div>
+      {/* ── HEADER ── */}
+      <div className="max-w-4xl mx-auto px-6 md:px-12 mb-20 text-center relative z-10">
+        <div className="inline-flex items-center justify-center p-4 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl mb-6 shadow-[0_0_30px_rgba(99,102,241,0.15)] text-indigo-400">
+          <PlayCircle className="w-8 h-8" />
         </div>
-
-        {/* Tabs */}
-        <div className="flex items-center gap-4 border-b border-indigo-500/20 pb-4">
-          <button 
-            onClick={() => setActiveTab("videos")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-[700] transition-colors ${activeTab === 'videos' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/30' : 'text-zinc-500 hover:text-zinc-300'}`}
-          >
-            <PlayCircle className="w-5 h-5" /> Video Masterclasses
-          </button>
-          <button 
-            onClick={() => setActiveTab("guides")}
-            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-[700] transition-colors ${activeTab === 'guides' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/30' : 'text-zinc-500 hover:text-zinc-300'}`}
-          >
-            <BookOpen className="w-5 h-5" /> Written Guides
-          </button>
-        </div>
+        <p className="text-indigo-400 font-[800] tracking-widest uppercase text-sm mb-4">Neuraldrift Academy</p>
+        <h1 className="text-4xl md:text-5xl lg:text-7xl font-[800] tracking-tight text-white mb-6 drop-shadow-xl leading-tight">
+          Learn to <span className="text-indigo-400">Master AI.</span>
+        </h1>
+        <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          Watch premium video masterclasses or read our in-depth technical guides to level up your generative workflows.
+        </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pb-24">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-24">
         
-        {/* ── VIDEO SELECTION ────────────────────────────────────────────── */}
-        {activeTab === "videos" && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {filteredVideos.length === 0 ? (
-              <div className="text-center py-24 bg-[#0f172a]/30 rounded-3xl border border-indigo-500/10"><p className="text-zinc-500 text-lg font-[600]">No video tutorials found matching "{search}".</p></div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredVideos.map((tut) => (
-                  <div key={tut.id} className="group flex flex-col bg-[#0f172a]/40 border border-indigo-500/10 hover:border-indigo-500/40 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-[0_10px_40px_rgba(99,102,241,0.1)] hover:-translate-y-1 cursor-pointer">
-                    <div className="relative w-full aspect-video bg-[#080b0f] overflow-hidden">
-                      <Image src={tut.thumbnail} alt={tut.title} fill style={{ objectFit: "cover" }} className="opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" unoptimized />
-                      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-                        <div className="w-16 h-16 rounded-full bg-indigo-500/80 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all duration-300 shadow-[0_0_20px_rgba(99,102,241,0.6)]">
-                          <PlayCircle className="w-8 h-8 text-white ml-1" />
-                        </div>
-                      </div>
-                      <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10 text-[10px] font-[800] uppercase tracking-wider text-white">
-                        {tut.level}
-                      </div>
-                      <div className="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/10 text-xs font-[700] text-zinc-300 flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5" /> {tut.duration}
-                      </div>
-                    </div>
-                    <div className="p-6 flex flex-col flex-1">
-                      <span className="text-xs font-[800] uppercase tracking-wider text-indigo-400 mb-2">{tut.category}</span>
-                      <h3 className="text-xl font-[800] text-white mb-3 mt-1 leading-snug group-hover:text-cyan-300 transition-colors">{tut.title}</h3>
-                      <div className="mt-auto flex flex-wrap gap-2 pt-4">
-                        {tut.tags.map((tag: string) => (
-                          <span key={tag} className="text-xs font-[600] px-3 py-1 bg-white/5 border border-white/10 rounded-full text-zinc-400">{tag}</span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+        {/* ── VIDEO TUTORIALS ── */}
+        <section>
+          <div className="flex items-center gap-4 mb-10 pb-4 border-b border-white/5">
+            <h2 className="text-2xl md:text-3xl font-[800] text-white flex items-center gap-3">
+              <PlayCircle className="w-7 h-7 text-indigo-400" /> Premium Video Suite
+            </h2>
+            <span className="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-xs font-[800] tracking-widest uppercase rounded-full border border-indigo-500/20">
+              Interactive
+            </span>
           </div>
-        )}
 
-        {/* ── TEXT GUIDES SELECTION ──────────────────────────────────────── */}
-        {activeTab === "guides" && (
-          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-            {filteredGuides.length === 0 ? (
-               <div className="text-center py-24 bg-[#0f172a]/30 rounded-3xl border border-indigo-500/10"><p className="text-zinc-500 text-lg font-[600]">No written guides found matching "{search}".</p></div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {filteredGuides.map((guide) => (
-                  <div key={guide.id} className="group relative bg-[#0f172a]/40 border border-indigo-500/10 hover:border-indigo-500/40 rounded-3xl p-8 transition-all duration-300 hover:shadow-[0_10px_40px_rgba(99,102,241,0.08)] cursor-pointer">
-                    <div className="flex justify-between items-start mb-6">
-                      <span className="text-xs font-[800] uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full">{guide.category}</span>
-                      <span className="text-xs font-[700] text-zinc-500 flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {guide.readTime}</span>
-                    </div>
-                    
-                    <h3 className="text-2xl font-[800] text-white mb-4 leading-snug group-hover:text-cyan-300 transition-colors pr-8">
-                      {guide.title}
-                    </h3>
-                    
-                    <p className="text-zinc-400 font-[500] leading-relaxed mb-8">
-                      {guide.description}
-                    </p>
-                    
-                    <div className="flex items-center justify-between mt-auto">
-                       <div className="flex flex-wrap gap-2">
-                        <span className="text-xs font-[700] px-3 py-1 bg-white/5 border border-white/10 rounded-md text-zinc-300">{guide.level}</span>
-                        {guide.tags.map((tag: string) => (
-                          <span key={tag} className="text-xs font-[600] px-3 py-1 bg-transparent text-zinc-500">{tag}</span>
-                        ))}
-                      </div>
-                      
-                      <div className="w-10 h-10 rounded-full border border-indigo-500/30 flex items-center justify-center group-hover:bg-indigo-500 group-hover:border-indigo-500 transition-colors">
-                        <ArrowRight className="w-4 h-4 text-indigo-400 group-hover:text-white transition-colors" />
-                      </div>
-                    </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            {VIDEOS.map((video, idx) => (
+              <div key={idx} className="group relative bg-[#0f172a]/50 border border-indigo-500/20 rounded-3xl overflow-hidden hover:border-indigo-500/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_40px_rgba(99,102,241,0.15)] flex flex-col">
+                
+                {/* 16:9 YouTube Embed Wrapper */}
+                <div className="relative w-full pt-[56.25%] bg-black">
+                  <iframe 
+                    className="absolute inset-0 w-full h-full border-0"
+                    src={`https://www.youtube.com/embed/${video.videoId}?rel=0&modestbranding=1`}
+                    title={video.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowFullScreen
+                  />
+                  
+                  {/* Overlay Tags (positioned absolute over the video if wanted, but iframe naturally blocks direct z-index overlays easily during playback. Handled below instead) */}
+                </div>
+
+                <div className="p-6 md:p-8 flex-1 flex flex-col">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-[10px] font-[800] tracking-widest uppercase text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+                      {video.category}
+                    </span>
+                    <span className="flex items-center gap-1.5 text-xs font-[600] text-zinc-500">
+                      <Clock className="w-4 h-4" /> {video.duration}
+                    </span>
                   </div>
-                ))}
+                  <h3 className="text-xl md:text-2xl font-[800] text-white mb-3 group-hover:text-indigo-300 transition-colors">{video.title}</h3>
+                  <p className="text-sm font-[500] text-zinc-400 leading-relaxed mb-6 flex-1">{video.description}</p>
+                </div>
               </div>
-            )}
+            ))}
           </div>
-        )}
+        </section>
+
+        {/* ── WRITTEN GUIDES ── */}
+        <section>
+          <div className="flex items-center gap-4 mb-10 pb-4 border-b border-white/5">
+            <h2 className="text-2xl md:text-3xl font-[800] text-white flex items-center gap-3">
+              <FileText className="w-7 h-7 text-white" /> Deep Dive Written Guides
+            </h2>
+            <span className="px-3 py-1 bg-white/5 text-zinc-400 text-xs font-[800] tracking-widest uppercase rounded-full border border-white/10">
+              Technical Reads
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {GUIDES.map((guide, idx) => {
+              const bgClass = guide.color === "amber" ? "hover:border-amber-500/50 hover:bg-amber-500/5" : "hover:border-sky-500/50 hover:bg-sky-500/5";
+              const textClass = guide.color === "amber" ? "group-hover:text-amber-400" : "group-hover:text-sky-400";
+              const accentBg = guide.color === "amber" ? "bg-amber-500/10 border-amber-500/20" : "bg-sky-500/10 border-sky-500/20";
+              
+              return (
+                <Link 
+                  key={idx} 
+                  href={`/tutorials/${guide.slug}`}
+                  className={`group bg-[#1e293b]/40 border border-white/10 rounded-2xl p-8 transition-all duration-300 ${bgClass}`}
+                >
+                  <div className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-6 shadow-lg ${accentBg}`}>
+                    {guide.icon}
+                  </div>
+                  <h3 className={`text-xl font-[800] text-white mb-3 transition-colors ${textClass}`}>
+                    {guide.title}
+                  </h3>
+                  <p className="text-sm font-[500] text-zinc-400 leading-relaxed mb-8">
+                    {guide.description}
+                  </p>
+                  
+                  <div className={`text-xs font-[800] uppercase tracking-widest flex items-center gap-2 transition-colors ${textClass}`}>
+                    Read Guide <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
 
       </div>
     </div>

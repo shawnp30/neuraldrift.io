@@ -7,7 +7,7 @@ export function Logo({ size = "md" }: { size?: "sm" | "md" | "lg" }) {
   return (
     <Link href="/" className={`font-syne font-black tracking-tight ${sizes[size]} text-white flex items-center gap-2`}>
       <BrainCircuit size={iconSizes[size]} className="text-accent" />
-      <span>neural<span className="text-accent">drift</span></span>
+      <span>Neural<span className="text-accent">Drift</span></span>
     </Link>
   );
 }
