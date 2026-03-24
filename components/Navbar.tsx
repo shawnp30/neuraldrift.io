@@ -21,7 +21,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const audio = new Audio('/sounds/ComfyUI_00007.mp3');
+    const audio = new Audio('/sounds/lofi.mp3');
     audio.loop = true;
     audio.volume = 0;
     audio.autoplay = true;
