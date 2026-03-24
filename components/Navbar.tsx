@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Outfit } from 'next/font/google';
-import { AudioWaveform, Play, Pause, Music } from 'lucide-react';
+import { AudioWaveform, Play, Pause, Music, BrainCircuit } from 'lucide-react';
 import '../styles/hero.css';
 
 const outfit = Outfit({ subsets: ['latin'], weight: ['600', '800'] });
@@ -13,23 +13,19 @@ export default function Navbar() {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Scroll detection for blurring background
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Init
+    handleScroll(); 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Audio lifecycle
   useEffect(() => {
-    // 1. Initialize audio
     const audio = new Audio('/sounds/background-music.mp3');
     audio.loop = true;
-    audio.volume = 0; // Prepare for fade in
+    audio.volume = 0;
     audioRef.current = audio;
 
-    // 2. Autoplay attempt with soft fade
     const attemptAutoplay = async () => {
       try {
         await audio.play();
@@ -41,7 +37,6 @@ export default function Navbar() {
     };
     attemptAutoplay();
 
-    // 3. Cleanup on unmount (navigation to another page)
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
@@ -59,7 +54,7 @@ export default function Navbar() {
         clearInterval(fadeInterval);
         return;
       }
-      if (vol < 0.3) { // Soft max volume
+      if (vol < 0.3) {
         vol += 0.05;
         audioRef.current.volume = Math.min(vol, 0.3);
       } else {
@@ -102,80 +97,108 @@ export default function Navbar() {
   };
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled 
-          ? 'bg-black/60 backdrop-blur-md border-b border-white/5 py-4' 
-          : 'bg-transparent py-6'
-      } ${outfit.className}`}
-    >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-        
-        {/* Brand */}
-        <div className="flex items-center gap-2">
-          <a href="/" className="text-2xl font-[800] tracking-tight text-white flex items-center">
-            neural<span className="text-[#00E5FF]">drift</span>
-          </a>
-        </div>
-
-        {/* Right Actions */}
-        <div className="flex items-center gap-4 md:gap-8">
+    <div className="sticky top-0 left-0 right-0 z-50 w-full font-sans">
+      <motion.nav
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className={`w-full transition-all duration-300 ${
+          scrolled 
+            ? 'bg-[#030712]/80 backdrop-blur-xl border-b border-indigo-500/20 shadow-[0_4px_30px_rgba(99,102,241,0.05)] py-4' 
+            : 'bg-transparent py-6'
+        } ${outfit.className}`}
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between w-full relative z-10">
           
-          {/* Elegant Play/Pause Background Music Toggle */}
-          <button
-            onClick={toggleAudio}
-            aria-label={isPlaying ? "Pause background music" : "Play background music"}
-            className="group relative flex items-center justify-center w-10 h-10 rounded-full text-white/70 hover:text-[#00E5FF] hover:bg-white/5 transition-all focus:outline-none"
-          >
-            <AnimatePresence mode="wait">
-              {isPlaying ? (
-                <motion.div
-                  key="playing"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
-                  className="relative z-10"
-                >
-                  <AudioWaveform className="w-5 h-5 animate-pulse text-[#00E5FF]" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="paused"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  transition={{ duration: 0.2 }}
-                  className="relative z-10"
-                >
-                  <Music className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-            
-            {/* Soft pulse effect when playing */}
-            {isPlaying && (
-              <motion.div 
-                className="absolute inset-0 rounded-full border border-[#00E5FF]"
-                initial={{ scale: 1, opacity: 0.5 }}
-                animate={{ scale: 1.5, opacity: 0 }}
-                transition={{ repeat: Infinity, duration: 2, ease: "easeOut" }}
-              />
-            )}
-          </button>
+          {/* Brand/Logo (Left) */}
+          <div className="flex items-center gap-2">
+            <a href="/" className="text-2xl md:text-3xl font-[800] tracking-tight text-white flex items-center gap-2 group drop-shadow-md">
+              <div className="relative">
+                <BrainCircuit size={32} className="text-indigo-400 transition-transform duration-500 group-hover:rotate-12" />
+                <div className="absolute inset-0 blur-md bg-indigo-400/50 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+              <span className="hidden sm:inline">neural<span className="text-indigo-400">drift</span></span>
+            </a>
+          </div>
 
-          {/* Primary Navbar CTA */}
-          <a
-            href="#contact"
-            className="hidden md:flex px-5 py-2 text-sm font-[600] text-white bg-white/5 border border-white/10 hover:border-[#00E5FF] hover:bg-[#00E5FF]/10 rounded-full transition-all duration-300"
-          >
-            Contact
-          </a>
+          {/* Center Links */}
+          <div className="hidden lg:flex flex-1 items-center justify-center gap-8">
+            {[
+              { name: 'Tutorials', href: '/tutorials' },
+              { name: 'Glossary', href: '/glossary' },
+              { name: 'Hardware', href: '/hardware' },
+              { name: 'Workflows', href: '/workflows' },
+              { name: 'Proofs', href: '/proofs' },
+            ].map(link => (
+              <a 
+                key={link.name} 
+                href={link.href}
+                className="group relative text-sm font-[700] tracking-wide text-zinc-300 hover:text-white transition-colors"
+              >
+                <span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-0.5 block">
+                  {link.name}
+                </span>
+                <span className="absolute -bottom-1 left-0 w-full h-[3px] rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400 scale-x-0 origin-right transition-transform duration-300 ease-out group-hover:scale-x-100 group-hover:origin-left shadow-[0_0_8px_rgba(99,102,241,0.5)]" />
+              </a>
+            ))}
+          </div>
+
+          {/* Right Actions */}
+          <div className="flex items-center gap-6">
+            
+            {/* Elegant Play/Pause Background Music Toggle */}
+            <button
+              onClick={toggleAudio}
+              aria-label={isPlaying ? "Pause background music" : "Play background music"}
+              className="group relative flex items-center justify-center w-10 h-10 rounded-full text-white/70 hover:text-indigo-400 hover:bg-white/5 transition-all focus:outline-none"
+            >
+              <AnimatePresence mode="wait">
+                {isPlaying ? (
+                  <motion.div
+                    key="playing"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.2 }}
+                    className="relative z-10"
+                  >
+                    <AudioWaveform className="w-5 h-5 animate-pulse text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.8)]" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="paused"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.2 }}
+                    className="relative z-10"
+                  >
+                    <Music className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              
+              {/* Soft pulse effect when playing */}
+              {isPlaying && (
+                <motion.div 
+                  className="absolute inset-0 rounded-full border border-indigo-500/50"
+                  initial={{ scale: 1, opacity: 0.6 }}
+                  animate={{ scale: 1.5, opacity: 0 }}
+                  transition={{ repeat: Infinity, duration: 2, ease: "easeOut" }}
+                />
+              )}
+            </button>
+
+            {/* Primary Navbar CTA */}
+            <a
+              href="/contact"
+              className="hidden sm:flex px-6 py-2.5 text-xs uppercase tracking-widest font-[800] text-black bg-white hover:bg-indigo-400 hover:text-white rounded-full transition-all duration-300 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(129,140,248,0.4)]"
+            >
+              Contact
+            </a>
+          </div>
         </div>
-      </div>
-    </motion.nav>
+      </motion.nav>
+    </div>
   );
 }

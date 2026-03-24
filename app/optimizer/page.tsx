@@ -109,7 +109,7 @@ export default function OptimizerPage() {
 
   return (
     <>
-      <Navbar />
+
       <main className="pt-20 pb-20">
         {/* Header */}
         <div className="border-b border-border bg-gradient-to-b from-surface/50 to-transparent">

@@ -13,7 +13,7 @@ const TOOLS = [
 export default function ToolsPage() {
   return (
     <>
-      <Navbar />
+
       <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
         <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// Tools</p>
         <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">Builder Utilities.</h1>

@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Syne, JetBrains_Mono, DM_Sans } from "next/font/google";
+import { JetBrains_Mono, Outfit, Manrope } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
+import Navbar from "@/components/Navbar";
 import "@/styles/globals.css";
 
-const syne = Syne({
+const outfit = Outfit({
   subsets: ["latin"],
   weight: ["400", "600", "700", "800"],
-  variable: "--font-syne",
+  variable: "--font-syne", // Keeping css variable names to avoid breaking tailwind config temporarily
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -15,10 +16,10 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
 });
 
-const dmSans = DM_Sans({
+const manrope = Manrope({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-dm-sans",
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-dm-sans", // Keeping variable name same to avoid breaking tailwind
 });
 
 export const metadata: Metadata = {
@@ -61,10 +62,29 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${jetbrainsMono.variable} ${dmSans.variable}`}
+      className={`${outfit.variable} ${jetbrainsMono.variable} ${manrope.variable} scroll-smooth`}
     >
-      <body className="font-sans antialiased">
-        {children}
+      <body className="font-sans antialiased bg-[#030712] text-slate-50 min-h-screen relative overflow-x-hidden selection:bg-indigo-500/30">
+        
+        {/* Eccentric Ambient Global Background */}
+        <div className="fixed inset-0 z-[-1] pointer-events-none overflow-hidden select-none">
+          {/* Animated Tech Grid */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#818cf815_1px,transparent_1px),linear-gradient(to_bottom,#818cf815_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] mix-blend-screen" />
+          
+          {/* Asymmetrical Glowing Orbs */}
+          <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-indigo-500/10 blur-[130px] mix-blend-screen" />
+          <div className="absolute top-[40%] right-[-10%] w-[30vw] h-[50vw] rounded-full bg-cyan-500/5 blur-[150px] mix-blend-screen" />
+          <div className="absolute bottom-[-20%] left-[20%] w-[50vw] h-[30vw] rounded-full bg-violet-600/10 blur-[140px] mix-blend-screen" />
+        </div>
+
+        {/* Global Navigation Component */}
+        <Navbar />
+
+        {/* Page Content wrapped in main to ensure it clears the floating nav */}
+        <main className="relative z-10 pt-[100px]">
+          {children}
+        </main>
+        
         <Analytics />
       </body>
     </html>

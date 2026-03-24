@@ -23,7 +23,7 @@ const GUIDES = [
 export default function GuidesPage() {
   return (
     <>
-      <Navbar />
+
       <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
         <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// All Guides</p>
         <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">Build Smarter.</h1>

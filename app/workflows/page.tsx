@@ -163,13 +163,14 @@ export default function WorkflowsPage() {
               const previewSrc = `/workflow-previews/${wf.id}.svg`;
 
               return (
-                <Link
+                <div
                   key={wf.id}
-                  href={`/workflows/${wf.id}`}
-                  className="bg-card border border-border rounded-xl overflow-hidden block hover:-translate-y-0.5 transition-all duration-200 group hover:border-accent/25"
+                  className="bg-card border border-border rounded-xl overflow-hidden block hover:-translate-y-0.5 transition-all duration-200 group hover:border-accent/25 relative"
                 >
+                  <Link href={`/workflows/${wf.id}`} className="absolute inset-0 z-0" aria-label={`View ${wf.title}`} />
+                  
                   {/* ── Preview image ── */}
-                  <div className="relative w-full aspect-[4/3] bg-[#080b0f] overflow-hidden">
+                  <div className="relative w-full aspect-[4/3] bg-[#080b0f] overflow-hidden pointer-events-none">
                     <Image
                       src={previewSrc}
                       alt={`${wf.title} — example output`}
@@ -199,7 +200,7 @@ export default function WorkflowsPage() {
                   </div>
 
                   {/* ── Card body ── */}
-                  <div className="p-5">
+                  <div className="p-5 pointer-events-none">
                     {/* Category + VRAM row */}
                     <div className="flex items-center justify-between mb-3">
                       <span className={`font-mono text-[10px] px-2 py-0.5 rounded border ${CAT_COLORS[wf.category] ?? "text-muted border-border bg-surface"}`}>
@@ -238,8 +239,8 @@ export default function WorkflowsPage() {
                     </div>
 
                     {/* Footer row */}
-                    <div className="flex items-center justify-between pt-3 border-t border-border">
-                      <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between pt-3 border-t border-border pointer-events-auto relative z-10">
+                      <div className="flex items-center gap-2 pointer-events-none">
                         <span className={`font-mono text-[9px] px-1.5 py-0.5 rounded border ${DIFFICULTY_COLORS[wf.difficulty] ?? "text-muted border-border"}`}>
                           {wf.difficulty}
                         </span>
@@ -260,7 +261,7 @@ export default function WorkflowsPage() {
                       </a>
                     </div>
                   </div>
-                </Link>
+                </div>
               );
             })}
           </div>

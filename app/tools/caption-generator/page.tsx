@@ -179,7 +179,7 @@ export default function CaptionGeneratorPage() {
 
   return (
     <>
-      <Navbar />
+
       <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12">

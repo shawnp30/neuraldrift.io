@@ -11,16 +11,16 @@
    ============================================================ */
 
 :root {
-  --bg: #080b0f;
-  --bg2: #0d1117;
-  --bg3: #111820;
-  --amber: #1073f5;
-  --amber-glow: rgba(245, 158, 11, 0.12);
-  --border-subtle: rgba(255, 255, 255, 0.06);
-  --text: #d6e3f0;
-  --text-muted: #9aafc0;
-  --text-dim: #5a6a7a;
-  --green: #22c55e;
+  --bg: #030712;
+  --bg2: #0f172a;
+  --bg3: #1e293b;
+  --amber: #818cf8;
+  --amber-glow: rgba(129, 140, 248, 0.12);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --green: #10b981;
   --red: #ef4444;
   --blue: #38bdf8;
 }

@@ -1,43 +1,26 @@
 'use client';
 
-import { useRef } from 'react';
-import { useScroll, motion, useTransform } from 'framer-motion';
-import HeroCanvas from './HeroCanvas';
 import HeroTextOverlays from './HeroTextOverlays';
 import '../../styles/hero.css';
 
 export default function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Track scroll over the entire 500vh container
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  });
-
-  // Make the brain image drift down as the user scrolls
-  const canvasY = useTransform(scrollYProgress, [0, 1], ['0vh', '400vh']);
-
   return (
-    <section ref={containerRef} className="relative h-[500vh] w-full bg-black">
-      {/* Sticky container pins to the top for 100vh while section scrolls */}
-      <div className="sticky top-0 h-screen w-full">
-        {/* Subtle background wave overlay */}
-        <div className="absolute inset-0 hero-wave-overlay pointer-events-none z-0" />
-        
-        {/* Canvas for frame animation */}
-        <motion.div style={{ y: canvasY }} className="absolute inset-0 z-10 flex items-center justify-center">
-          <HeroCanvas scrollYProgress={scrollYProgress} />
-        </motion.div>
-
-        {/* Text Overlays in 4 corners */}
-        <div className="absolute inset-0 z-20">
-          <HeroTextOverlays scrollYProgress={scrollYProgress} />
-        </div>
-        
-        {/* Bottom gradient fade out */}
-        <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-30" />
+    <section className="relative h-screen w-full bg-[#0a0a0f] overflow-hidden">
+      {/* Subtle background wave overlay */}
+      <div className="absolute inset-0 hero-wave-overlay pointer-events-none z-0 opacity-40 mix-blend-screen" />
+      
+      {/* Background Graphic instead of Brain Animation */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center opacity-20 pointer-events-none">
+         <div className="w-[600px] sm:w-[800px] h-[600px] sm:h-[800px] rounded-full bg-indigo-600/20 blur-[120px]" />
       </div>
+
+      {/* Text Overlays animating in on load */}
+      <div className="absolute inset-0 z-20">
+        <HeroTextOverlays />
+      </div>
+      
+      {/* Bottom gradient fade out */}
+      <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-[#0a0a0f] to-transparent pointer-events-none z-30" />
     </section>
   );
 }

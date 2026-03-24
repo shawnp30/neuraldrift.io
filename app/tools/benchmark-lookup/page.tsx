@@ -532,7 +532,7 @@ export default function BenchmarkLookupPage() {
 
   return (
     <>
-      <Navbar />
+
       <main className="mx-auto max-w-7xl px-10 pb-20 pt-24">
         {/* Header */}
         <div className="mb-12">
