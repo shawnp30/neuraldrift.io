@@ -5,20 +5,20 @@ import { PlayCircle, FileText, ArrowRight, DollarSign, Workflow, Clock } from "l
 
 const VIDEOS = [
   {
-    id: "v=Xv3H1zH8D7k", // Replace with desired exact real YouTube ID if needed. Using a standard formatting structure.
-    videoId: "mD7_s4HhK8Q", 
-    title: "How to Make $10,000/mo with ComfyUI Automations",
-    duration: "18:45",
-    category: "Monetization",
-    description: "Deep dive into setting up passive income streams using SDXL workflows and Print-on-Demand APIs."
+    id: "v=Xv3H1zH8D7k",
+    videoId: "AbBcfjIYhTg", 
+    title: "ComfyUI Beginner Guide",
+    duration: "25:10",
+    category: "Masterclass",
+    description: "Deep dive into setup and basic node architecture by Olivio Sarikas. Perfect for those looking to understand the core engine before scaling."
   },
   {
     id: "v=Y9n3H2x4C1p",
-    videoId: "Bw8O2h0aFk8",
-    title: "Train Your First FLUX LoRA in 10 Minutes",
-    duration: "12:30",
+    videoId: "2XN2J3T-BFA",
+    title: "ComfyUI Advanced Latent Workflows",
+    duration: "34:20",
     category: "Technical Guide",
-    description: "Learn how to use Kohya_ss and ComfyUI to instantly clone a character's face with 12GB of VRAM."
+    description: "Learn how to push the boundaries of Latent noise injection and node manipulation from Latent Vision."
   }
 ];
 

@@ -10,7 +10,7 @@ export default function HeroTextOverlays() {
     <div className={`relative w-full h-full p-6 md:p-12 lg:p-24 flex flex-col items-center justify-center pt-32 ${outfit.className}`}>
       
       {/* ── MASSIVE CENTERED BRANDING ── */}
-      <div className="w-full max-w-5xl mx-auto text-center pointer-events-none z-20">
+      <div className="w-full max-w-5xl mx-auto flex flex-col items-center justify-center text-center pointer-events-none z-20">
         <motion.div
           initial={{ opacity: 0, y: 30, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}

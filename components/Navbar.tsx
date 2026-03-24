@@ -68,9 +68,9 @@ export default function Navbar() {
         clearInterval(fadeInterval);
         return;
       }
-      if (vol < 0.3) {
-        vol += 0.05;
-        audioRef.current.volume = Math.min(vol, 0.3);
+      if (vol < 0.2) {
+        vol += 0.02; // Slower, calmer fade
+        audioRef.current.volume = Math.min(vol, 0.2);
       } else {
         clearInterval(fadeInterval);
       }

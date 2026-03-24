@@ -127,7 +127,7 @@ function GPUSelector() {
 
   const handleGenerate = () => {
     if (!gpu || !goal) return;
-    window.location.href = `/optimizer/result?gpu=${gpu}&goal=${goal}`;
+    window.location.href = `/hardware?gpu=${gpu}&goal=${goal}`;
   };
 
   const btnBase: React.CSSProperties = {
@@ -260,23 +260,47 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* ── WHAT TO EXPECT ────────────────────────────────────────── */}
+      <section className="py-24 relative flex flex-col items-center justify-center text-center bg-[#080b0f] border-t border-white/5">
+        <div className="w-full max-w-6xl mx-auto px-6 flex flex-col items-center">
+          <p className="text-cyan-400 font-[800] tracking-widest uppercase text-sm mb-12">What to Expect</p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
+            <div className="bg-[#0f172a]/50 p-8 rounded-3xl border border-white/5 flex flex-col items-center text-center">
+              <span className="text-3xl mb-4">🖥️</span>
+              <h4 className="text-xl font-[800] text-white mb-2">Hardware Clarity</h4>
+              <p className="text-sm font-[500] text-zinc-400 leading-relaxed">Know exactly what models your specific GPU can run, without the guesswork.</p>
+            </div>
+            <div className="bg-[#0f172a]/50 p-8 rounded-3xl border border-white/5 flex flex-col items-center text-center">
+              <span className="text-3xl mb-4">🧠</span>
+              <h4 className="text-xl font-[800] text-white mb-2">Workflow Mastery</h4>
+              <p className="text-sm font-[500] text-zinc-400 leading-relaxed">Download pre-built architectures and learn exactly how KSamplers and Nodes connect.</p>
+            </div>
+            <div className="bg-[#0f172a]/50 p-8 rounded-3xl border border-white/5 flex flex-col items-center text-center">
+              <span className="text-3xl mb-4">☁️</span>
+              <h4 className="text-xl font-[800] text-white mb-2">Cloud Generation</h4>
+              <p className="text-sm font-[500] text-zinc-400 leading-relaxed">Extensive prompting guides for Sora, Veo 3, Midjourney, and Runway.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── THE MISSION ────────────────────────────────────────── */}
-      <section className="py-24 md:py-32 relative text-center">
-        <div className="max-w-4xl mx-auto px-6">
+      <section className="py-24 md:py-32 relative flex flex-col items-center justify-center text-center border-t border-white/5">
+        <div className="w-full max-w-4xl mx-auto px-6 flex flex-col items-center justify-center text-center">
           <p className="text-indigo-400 font-[800] tracking-widest uppercase text-sm mb-6">Our Mission</p>
-          <h2 className="text-4xl md:text-5xl font-[800] text-white leading-tight mb-8">
+          <h2 className="text-4xl md:text-5xl font-[800] text-white leading-tight mb-8 text-center mx-auto">
             ComfyUI is powerful, but chaotic. <br className="hidden md:block"/>
             <span className="text-zinc-500">We make it accessible.</span>
           </h2>
-          <p className="text-lg md:text-xl font-[500] text-zinc-400 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl font-[500] text-zinc-400 leading-relaxed max-w-2xl mx-auto text-center">
             Neuraldrift is dedicated to teaching you exactly how to structure your generative AI nodes. From understanding what Samplers do to picking the right GPU to run FLUX, we guide you from complete beginner to workflow architect.
           </p>
         </div>
       </section>
 
       {/* ── DIRECTIONAL FUNNELS ────────────────────────────────── */}
-      <section className="py-12 pb-32">
-        <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <section className="py-12 pb-32 flex flex-col items-center justify-center w-full">
+        <div className="w-full max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 place-content-center place-items-center">
           
           {/* Funnel 1: Learning */}
           <Link href="/tutorials" className="group flex flex-col items-center text-center p-10 rounded-3xl bg-[#0f172a]/30 border border-indigo-500/10 hover:border-indigo-500/40 hover:bg-[#0f172a]/60 transition-all duration-500 hover:-translate-y-2">
@@ -386,7 +410,7 @@ export default function HomePage() {
             <div className="nh-footer-col">
               <h4>Learn</h4>
               <Link href="/tutorials">Tutorials & Guides</Link>
-              <Link href="/glossary">AI Glossary</Link>
+              <Link href="/tutorials">AI Glossary</Link>
             </div>
             <div className="nh-footer-col">
               <h4>Downloads</h4>
@@ -397,7 +421,7 @@ export default function HomePage() {
               <h4>Tools & Meta</h4>
               <Link href="/hardware">Setup Rater</Link>
               <Link href="/proofs">Workflow Proofs</Link>
-              <Link href="/optimizer">Hardware Optimizer</Link>
+              <Link href="/hardware">Hardware Optimizer</Link>
               <a href="https://computeatlas.ai">ComputeAtlas.ai ↗</a>
             </div>
           </div>
