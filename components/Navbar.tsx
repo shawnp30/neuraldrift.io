@@ -21,9 +21,10 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    const audio = new Audio('/sounds/background-music.mp3');
+    const audio = new Audio('/sounds/ComfyUI_00007.mp3');
     audio.loop = true;
     audio.volume = 0;
+    audio.autoplay = true;
     audioRef.current = audio;
 
     const attemptAutoplay = async () => {
@@ -68,9 +69,9 @@ export default function Navbar() {
         clearInterval(fadeInterval);
         return;
       }
-      if (vol < 0.2) {
+      if (vol < 0.4) {
         vol += 0.02; // Slower, calmer fade
-        audioRef.current.volume = Math.min(vol, 0.2);
+        audioRef.current.volume = Math.min(vol, 0.4);
       } else {
         clearInterval(fadeInterval);
       }
