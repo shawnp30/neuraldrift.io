@@ -27,17 +27,31 @@ export default function Navbar() {
     audioRef.current = audio;
 
     const attemptAutoplay = async () => {
+      if (!audioRef.current || isPlaying) return;
       try {
-        await audio.play();
+        await audioRef.current.play();
         setIsPlaying(true);
         fadeInAudio();
+        // Cleanup listeners once successfully playing
+        document.removeEventListener('click', attemptAutoplay);
+        document.removeEventListener('keydown', attemptAutoplay);
+        document.removeEventListener('scroll', attemptAutoplay);
       } catch (err) {
-        console.log("Autoplay blocked by browser. User must interact to play audio.", err);
+        // Silently catch autoplay rejections
       }
     };
-    attemptAutoplay();
+
+    attemptAutoplay(); // Try immediately
+
+    // Attach to first interactions to bypass browser autoplay blocks globally
+    document.addEventListener('click', attemptAutoplay, { once: true });
+    document.addEventListener('keydown', attemptAutoplay, { once: true });
+    document.addEventListener('scroll', attemptAutoplay, { once: true });
 
     return () => {
+      document.removeEventListener('click', attemptAutoplay);
+      document.removeEventListener('keydown', attemptAutoplay);
+      document.removeEventListener('scroll', attemptAutoplay);
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.src = '';
@@ -128,7 +142,10 @@ export default function Navbar() {
               { name: 'Glossary', href: '/glossary' },
               { name: 'Hardware', href: '/hardware' },
               { name: 'Workflows', href: '/workflows' },
+              { name: 'LoRAs', href: '/loras' },
               { name: 'Proofs', href: '/proofs' },
+              { name: 'Cloud Gens', href: '/cloud-generators' },
+              { name: 'Prompt Gen', href: '/prompt-generator' },
             ].map(link => (
               <a 
                 key={link.name} 
