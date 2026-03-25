@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import React from "react";
-import "./home.css";
-import Hero from "../components/Hero";
+
+import { Hero } from "@/components/home/Hero";
+// or use HeroSection for the GPU selector version:
+import HeroSection from "@/components/home/HeroSection";
 import { BrainCircuit } from "lucide-react";
 
 const TICKER = [

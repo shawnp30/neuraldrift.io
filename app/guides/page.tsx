@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { Navbar } from "@/components/layout/Navbar";
+import Navbar from "@/components/layout/Navbar"; 
 import { Footer } from "@/components/layout/Footer";
 import type { Difficulty } from "@/types";
 

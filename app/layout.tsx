@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { JetBrains_Mono, Outfit, Manrope } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/layout/Navbar";
 import "@/styles/globals.css";
 
 const outfit = Outfit({

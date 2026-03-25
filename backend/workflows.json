@@ -113,9 +113,9 @@
         "size": [300, 100],
         "title": "Load Model Checkpoint",
         "outputs": [
-          {"name": "MODEL", "type": "MODEL", "links": [1]},
-          {"name": "CLIP", "type": "CLIP", "links": [2, 3]},
-          {"name": "VAE", "type": "VAE", "links": [4]}
+          { "name": "MODEL", "type": "MODEL", "links": [1] },
+          { "name": "CLIP", "type": "CLIP", "links": [2, 3] },
+          { "name": "VAE", "type": "VAE", "links": [4] }
         ],
         "widgets_values": ["ltx-2.3-22b-dev-fp8.safetensors"]
       },
@@ -125,13 +125,13 @@
         "pos": [400, 150],
         "size": [350, 150],
         "title": "Positive Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 2}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 2 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [5]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [5] }
         ],
-        "widgets_values": ["Cinematic action chase sequence, high speed pursuit, detailed environment, cinematic lighting"]
+        "widgets_values": [
+          "Cinematic action chase sequence, high speed pursuit, detailed environment, cinematic lighting"
+        ]
       },
       {
         "id": 3,
@@ -139,13 +139,13 @@
         "pos": [400, 350],
         "size": [350, 150],
         "title": "Negative Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 3}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 3 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [6]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [6] }
         ],
-        "widgets_values": ["low quality, blurry, distorted, artifacts, jittery motion"]
+        "widgets_values": [
+          "low quality, blurry, distorted, artifacts, jittery motion"
+        ]
       },
       {
         "id": 4,
@@ -154,14 +154,12 @@
         "size": [300, 260],
         "title": "LTX Video Sampler",
         "inputs": [
-          {"name": "model", "type": "MODEL", "link": 1},
-          {"name": "positive", "type": "CONDITIONING", "link": 5},
-          {"name": "negative", "type": "CONDITIONING", "link": 6},
-          {"name": "latent_image", "type": "LATENT", "link": 7}
+          { "name": "model", "type": "MODEL", "link": 1 },
+          { "name": "positive", "type": "CONDITIONING", "link": 5 },
+          { "name": "negative", "type": "CONDITIONING", "link": 6 },
+          { "name": "latent_image", "type": "LATENT", "link": 7 }
         ],
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [8]}
-        ],
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [8] }],
         "widgets_values": [999818348, "randomize", 25, 3.0, "euler", "beta", 1]
       },
       {
@@ -170,9 +168,7 @@
         "pos": [400, 550],
         "size": [300, 106],
         "title": "Empty Latent Video",
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [7]}
-        ],
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [7] }],
         "widgets_values": [768, 1024, 97, 1]
       },
       {
@@ -182,12 +178,10 @@
         "size": [210, 46],
         "title": "VAE Decode",
         "inputs": [
-          {"name": "samples", "type": "LATENT", "link": 8},
-          {"name": "vae", "type": "VAE", "link": 4}
+          { "name": "samples", "type": "LATENT", "link": 8 },
+          { "name": "vae", "type": "VAE", "link": 4 }
         ],
-        "outputs": [
-          {"name": "IMAGE", "type": "IMAGE", "links": []}
-        ]
+        "outputs": [{ "name": "IMAGE", "type": "IMAGE", "links": [] }]
       }
     ],
     "links": [
@@ -295,9 +289,9 @@
         "size": [300, 100],
         "title": "Load SDXL Checkpoint",
         "outputs": [
-          {"name": "MODEL", "type": "MODEL", "links": [1]},
-          {"name": "CLIP", "type": "CLIP", "links": [2, 3]},
-          {"name": "VAE", "type": "VAE", "links": [4]}
+          { "name": "MODEL", "type": "MODEL", "links": [1] },
+          { "name": "CLIP", "type": "CLIP", "links": [2, 3] },
+          { "name": "VAE", "type": "VAE", "links": [4] }
         ],
         "widgets_values": ["sd_xl_base_1.0.safetensors"]
       },
@@ -307,13 +301,13 @@
         "pos": [400, 150],
         "size": [350, 150],
         "title": "Positive Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 2}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 2 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [5]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [5] }
         ],
-        "widgets_values": ["Professional concept art, clean linework, multiple variations, illustration style, detailed"]
+        "widgets_values": [
+          "Professional concept art, clean linework, multiple variations, illustration style, detailed"
+        ]
       },
       {
         "id": 3,
@@ -321,11 +315,9 @@
         "pos": [400, 350],
         "size": [350, 150],
         "title": "Negative Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 3}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 3 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [6]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [6] }
         ],
         "widgets_values": ["blurry, low quality, distorted, artifacts"]
       },
@@ -336,15 +328,21 @@
         "size": [300, 260],
         "title": "KSampler (Batch Generation)",
         "inputs": [
-          {"name": "model", "type": "MODEL", "link": 1},
-          {"name": "positive", "type": "CONDITIONING", "link": 5},
-          {"name": "negative", "type": "CONDITIONING", "link": 6},
-          {"name": "latent_image", "type": "LATENT", "link": 7}
+          { "name": "model", "type": "MODEL", "link": 1 },
+          { "name": "positive", "type": "CONDITIONING", "link": 5 },
+          { "name": "negative", "type": "CONDITIONING", "link": 6 },
+          { "name": "latent_image", "type": "LATENT", "link": 7 }
         ],
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [8]}
-        ],
-        "widgets_values": [999818348, "randomize", 20, 7.0, "dpmpp_2m", "karras", 1]
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [8] }],
+        "widgets_values": [
+          999818348,
+          "randomize",
+          20,
+          7.0,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
       },
       {
         "id": 5,
@@ -352,9 +350,7 @@
         "pos": [400, 550],
         "size": [300, 106],
         "title": "Empty Latent Image (Resolution)",
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [7]}
-        ],
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [7] }],
         "widgets_values": [1024, 1024, 4]
       },
       {
@@ -364,12 +360,10 @@
         "size": [210, 46],
         "title": "VAE Decode",
         "inputs": [
-          {"name": "samples", "type": "LATENT", "link": 8},
-          {"name": "vae", "type": "VAE", "link": 4}
+          { "name": "samples", "type": "LATENT", "link": 8 },
+          { "name": "vae", "type": "VAE", "link": 4 }
         ],
-        "outputs": [
-          {"name": "IMAGE", "type": "IMAGE", "links": []}
-        ]
+        "outputs": [{ "name": "IMAGE", "type": "IMAGE", "links": [] }]
       }
     ],
     "links": [
@@ -485,9 +479,9 @@
         "size": [300, 100],
         "title": "Load FLUX Checkpoint",
         "outputs": [
-          {"name": "MODEL", "type": "MODEL", "links": [1]},
-          {"name": "CLIP", "type": "CLIP", "links": [2]},
-          {"name": "VAE", "type": "VAE", "links": [3]}
+          { "name": "MODEL", "type": "MODEL", "links": [1] },
+          { "name": "CLIP", "type": "CLIP", "links": [2] },
+          { "name": "VAE", "type": "VAE", "links": [3] }
         ],
         "widgets_values": ["flux1-dev-fp8.safetensors"]
       },
@@ -498,12 +492,12 @@
         "size": [300, 100],
         "title": "Load Portrait LoRA",
         "inputs": [
-          {"name": "model", "type": "MODEL", "link": 1},
-          {"name": "clip", "type": "CLIP", "link": 2}
+          { "name": "model", "type": "MODEL", "link": 1 },
+          { "name": "clip", "type": "CLIP", "link": 2 }
         ],
         "outputs": [
-          {"name": "MODEL", "type": "MODEL", "links": [4]},
-          {"name": "CLIP", "type": "CLIP", "links": [5]}
+          { "name": "MODEL", "type": "MODEL", "links": [4] },
+          { "name": "CLIP", "type": "CLIP", "links": [5] }
         ],
         "widgets_values": ["portrait_lora.safetensors", 1.0, 1.0]
       },
@@ -513,13 +507,13 @@
         "pos": [750, 100],
         "size": [350, 150],
         "title": "Positive Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 5}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 5 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [6]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [6] }
         ],
-        "widgets_values": ["Professional high-fidelity portrait, sharp detail, consistent character, studio lighting, beautiful"]
+        "widgets_values": [
+          "Professional high-fidelity portrait, sharp detail, consistent character, studio lighting, beautiful"
+        ]
       },
       {
         "id": 4,
@@ -527,13 +521,13 @@
         "pos": [750, 300],
         "size": [350, 150],
         "title": "Negative Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 5}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 5 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [7]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [7] }
         ],
-        "widgets_values": ["blurry, distorted, low quality, artifacts, bad anatomy"]
+        "widgets_values": [
+          "blurry, distorted, low quality, artifacts, bad anatomy"
+        ]
       },
       {
         "id": 5,
@@ -541,9 +535,7 @@
         "pos": [750, 500],
         "size": [300, 106],
         "title": "Empty Latent Image",
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [8]}
-        ],
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [8] }],
         "widgets_values": [1024, 1024, 1]
       },
       {
@@ -553,15 +545,21 @@
         "size": [300, 260],
         "title": "KSampler",
         "inputs": [
-          {"name": "model", "type": "MODEL", "link": 4},
-          {"name": "positive", "type": "CONDITIONING", "link": 6},
-          {"name": "negative", "type": "CONDITIONING", "link": 7},
-          {"name": "latent_image", "type": "LATENT", "link": 8}
+          { "name": "model", "type": "MODEL", "link": 4 },
+          { "name": "positive", "type": "CONDITIONING", "link": 6 },
+          { "name": "negative", "type": "CONDITIONING", "link": 7 },
+          { "name": "latent_image", "type": "LATENT", "link": 8 }
         ],
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [9]}
-        ],
-        "widgets_values": [999818348, "randomize", 20, 3.5, "euler", "simple", 1]
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [9] }],
+        "widgets_values": [
+          999818348,
+          "randomize",
+          20,
+          3.5,
+          "euler",
+          "simple",
+          1
+        ]
       },
       {
         "id": 7,
@@ -570,12 +568,10 @@
         "size": [210, 46],
         "title": "VAE Decode",
         "inputs": [
-          {"name": "samples", "type": "LATENT", "link": 9},
-          {"name": "vae", "type": "VAE", "link": 3}
+          { "name": "samples", "type": "LATENT", "link": 9 },
+          { "name": "vae", "type": "VAE", "link": 3 }
         ],
-        "outputs": [
-          {"name": "IMAGE", "type": "IMAGE", "links": []}
-        ]
+        "outputs": [{ "name": "IMAGE", "type": "IMAGE", "links": [] }]
       }
     ],
     "links": [
@@ -703,9 +699,9 @@
         "size": [300, 100],
         "title": "Load Model Checkpoint",
         "outputs": [
-          {"name": "MODEL", "type": "MODEL", "links": [1]},
-          {"name": "CLIP", "type": "CLIP", "links": [2, 3]},
-          {"name": "VAE", "type": "VAE", "links": [4]}
+          { "name": "MODEL", "type": "MODEL", "links": [1] },
+          { "name": "CLIP", "type": "CLIP", "links": [2, 3] },
+          { "name": "VAE", "type": "VAE", "links": [4] }
         ],
         "widgets_values": ["dreamshaperXL_v21TurboDPMSDE.safetensors"]
       },
@@ -716,7 +712,7 @@
         "size": [300, 100],
         "title": "Load Motion Module",
         "outputs": [
-          {"name": "MOTION_MODULE", "type": "MOTION_MODULE", "links": [5]}
+          { "name": "MOTION_MODULE", "type": "MOTION_MODULE", "links": [5] }
         ],
         "widgets_values": ["animatediff_v15_3.safetensors"]
       },
@@ -726,13 +722,13 @@
         "pos": [400, 150],
         "size": [350, 150],
         "title": "Positive Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 2}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 2 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [6]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [6] }
         ],
-        "widgets_values": ["Seamless looping character animation, smooth motion, consistent character rendering"]
+        "widgets_values": [
+          "Seamless looping character animation, smooth motion, consistent character rendering"
+        ]
       },
       {
         "id": 4,
@@ -740,13 +736,13 @@
         "pos": [400, 350],
         "size": [350, 150],
         "title": "Negative Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 3}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 3 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [7]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [7] }
         ],
-        "widgets_values": ["jittery, distorted, inconsistent, artifacts, blurry"]
+        "widgets_values": [
+          "jittery, distorted, inconsistent, artifacts, blurry"
+        ]
       },
       {
         "id": 5,
@@ -754,9 +750,7 @@
         "pos": [400, 550],
         "size": [300, 106],
         "title": "Empty Latent Image",
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [8]}
-        ],
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [8] }],
         "widgets_values": [512, 768, 32]
       },
       {
@@ -766,15 +760,21 @@
         "size": [300, 260],
         "title": "KSampler",
         "inputs": [
-          {"name": "model", "type": "MODEL", "link": 1},
-          {"name": "positive", "type": "CONDITIONING", "link": 6},
-          {"name": "negative", "type": "CONDITIONING", "link": 7},
-          {"name": "latent_image", "type": "LATENT", "link": 8}
+          { "name": "model", "type": "MODEL", "link": 1 },
+          { "name": "positive", "type": "CONDITIONING", "link": 6 },
+          { "name": "negative", "type": "CONDITIONING", "link": 7 },
+          { "name": "latent_image", "type": "LATENT", "link": 8 }
         ],
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [9]}
-        ],
-        "widgets_values": [999818348, "randomize", 20, 7.0, "dpmpp_2m", "karras", 1]
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [9] }],
+        "widgets_values": [
+          999818348,
+          "randomize",
+          20,
+          7.0,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
       },
       {
         "id": 7,
@@ -783,12 +783,10 @@
         "size": [300, 100],
         "title": "Apply AnimateDiff",
         "inputs": [
-          {"name": "model", "type": "MODEL", "link": 1},
-          {"name": "motion_module", "type": "MOTION_MODULE", "link": 5}
+          { "name": "model", "type": "MODEL", "link": 1 },
+          { "name": "motion_module", "type": "MOTION_MODULE", "link": 5 }
         ],
-        "outputs": [
-          {"name": "MODEL", "type": "MODEL", "links": []}
-        ]
+        "outputs": [{ "name": "MODEL", "type": "MODEL", "links": [] }]
       },
       {
         "id": 8,
@@ -797,12 +795,10 @@
         "size": [210, 46],
         "title": "VAE Decode",
         "inputs": [
-          {"name": "samples", "type": "LATENT", "link": 9},
-          {"name": "vae", "type": "VAE", "link": 4}
+          { "name": "samples", "type": "LATENT", "link": 9 },
+          { "name": "vae", "type": "VAE", "link": 4 }
         ],
-        "outputs": [
-          {"name": "IMAGE", "type": "IMAGE", "links": [10]}
-        ]
+        "outputs": [{ "name": "IMAGE", "type": "IMAGE", "links": [10] }]
       }
     ],
     "links": [
@@ -924,9 +920,7 @@
         "pos": [50, 200],
         "size": [300, 100],
         "title": "Load FLUX Checkpoint",
-        "outputs": [
-          {"name": "MODEL", "type": "MODEL", "links": [1]}
-        ],
+        "outputs": [{ "name": "MODEL", "type": "MODEL", "links": [1] }],
         "widgets_values": ["flux1-dev-fp8.safetensors"]
       },
       {
@@ -935,9 +929,7 @@
         "pos": [400, 250],
         "size": [300, 100],
         "title": "Load Training Dataset",
-        "outputs": [
-          {"name": "DATASET", "type": "DATASET", "links": [2]}
-        ],
+        "outputs": [{ "name": "DATASET", "type": "DATASET", "links": [2] }],
         "widgets_values": ["/path/to/training/dataset"]
       },
       {
@@ -947,13 +939,18 @@
         "size": [300, 200],
         "title": "Kohya Training Config",
         "inputs": [
-          {"name": "model", "type": "MODEL", "link": 1},
-          {"name": "dataset", "type": "DATASET", "link": 2}
+          { "name": "model", "type": "MODEL", "link": 1 },
+          { "name": "dataset", "type": "DATASET", "link": 2 }
         ],
-        "outputs": [
-          {"name": "CONFIG", "type": "CONFIG", "links": [3]}
-        ],
-        "widgets_values": [1000, "1e-4", 32, "cosine_with_restarts", "bf16", true]
+        "outputs": [{ "name": "CONFIG", "type": "CONFIG", "links": [3] }],
+        "widgets_values": [
+          1000,
+          "1e-4",
+          32,
+          "cosine_with_restarts",
+          "bf16",
+          true
+        ]
       },
       {
         "id": 4,
@@ -962,12 +959,10 @@
         "size": [300, 200],
         "title": "LoRA Training Loop",
         "inputs": [
-          {"name": "model", "type": "MODEL", "link": 1},
-          {"name": "config", "type": "CONFIG", "link": 3}
+          { "name": "model", "type": "MODEL", "link": 1 },
+          { "name": "config", "type": "CONFIG", "link": 3 }
         ],
-        "outputs": [
-          {"name": "LORA", "type": "LORA", "links": [4]}
-        ],
+        "outputs": [{ "name": "LORA", "type": "LORA", "links": [4] }],
         "widgets_values": []
       },
       {
@@ -976,11 +971,9 @@
         "pos": [1450, 150],
         "size": [300, 100],
         "title": "Evaluate LoRA",
-        "inputs": [
-          {"name": "lora", "type": "LORA", "link": 4}
-        ],
+        "inputs": [{ "name": "lora", "type": "LORA", "link": 4 }],
         "outputs": [
-          {"name": "EVAL_RESULTS", "type": "EVAL_RESULTS", "links": [5]}
+          { "name": "EVAL_RESULTS", "type": "EVAL_RESULTS", "links": [5] }
         ]
       }
     ],
@@ -1093,9 +1086,9 @@
         "size": [300, 100],
         "title": "Load Z-Image Turbo",
         "outputs": [
-          {"name": "MODEL", "type": "MODEL", "links": [1]},
-          {"name": "CLIP", "type": "CLIP", "links": [2]},
-          {"name": "VAE", "type": "VAE", "links": [3]}
+          { "name": "MODEL", "type": "MODEL", "links": [1] },
+          { "name": "CLIP", "type": "CLIP", "links": [2] },
+          { "name": "VAE", "type": "VAE", "links": [3] }
         ],
         "widgets_values": ["z_image_turbo_bf16.safetensors"]
       },
@@ -1105,13 +1098,13 @@
         "pos": [400, 150],
         "size": [350, 150],
         "title": "Positive Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 2}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 2 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [4]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [4] }
         ],
-        "widgets_values": ["Ultra-fast high-quality portrait, clean sharp detail, beautiful lighting"]
+        "widgets_values": [
+          "Ultra-fast high-quality portrait, clean sharp detail, beautiful lighting"
+        ]
       },
       {
         "id": 3,
@@ -1119,11 +1112,9 @@
         "pos": [400, 350],
         "size": [350, 150],
         "title": "Negative Prompt",
-        "inputs": [
-          {"name": "clip", "type": "CLIP", "link": 2}
-        ],
+        "inputs": [{ "name": "clip", "type": "CLIP", "link": 2 }],
         "outputs": [
-          {"name": "CONDITIONING", "type": "CONDITIONING", "links": [5]}
+          { "name": "CONDITIONING", "type": "CONDITIONING", "links": [5] }
         ],
         "widgets_values": ["blurry, low quality, distorted, artifacts"]
       },
@@ -1133,9 +1124,7 @@
         "pos": [400, 550],
         "size": [300, 106],
         "title": "Empty Latent Image",
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [6]}
-        ],
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [6] }],
         "widgets_values": [1024, 1024, 4]
       },
       {
@@ -1145,14 +1134,12 @@
         "size": [300, 260],
         "title": "KSampler (8-Step Turbo)",
         "inputs": [
-          {"name": "model", "type": "MODEL", "link": 1},
-          {"name": "positive", "type": "CONDITIONING", "link": 4},
-          {"name": "negative", "type": "CONDITIONING", "link": 5},
-          {"name": "latent_image", "type": "LATENT", "link": 6}
+          { "name": "model", "type": "MODEL", "link": 1 },
+          { "name": "positive", "type": "CONDITIONING", "link": 4 },
+          { "name": "negative", "type": "CONDITIONING", "link": 5 },
+          { "name": "latent_image", "type": "LATENT", "link": 6 }
         ],
-        "outputs": [
-          {"name": "LATENT", "type": "LATENT", "links": [7]}
-        ],
+        "outputs": [{ "name": "LATENT", "type": "LATENT", "links": [7] }],
         "widgets_values": [999818348, "randomize", 8, 1.0, "euler", "simple", 1]
       },
       {
@@ -1162,12 +1149,10 @@
         "size": [210, 46],
         "title": "VAE Decode",
         "inputs": [
-          {"name": "samples", "type": "LATENT", "link": 7},
-          {"name": "vae", "type": "VAE", "link": 3}
+          { "name": "samples", "type": "LATENT", "link": 7 },
+          { "name": "vae", "type": "VAE", "link": 3 }
         ],
-        "outputs": [
-          {"name": "IMAGE", "type": "IMAGE", "links": [8]}
-        ]
+        "outputs": [{ "name": "IMAGE", "type": "IMAGE", "links": [8] }]
       }
     ],
     "links": [

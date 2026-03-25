@@ -1,0 +1,37 @@
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="comfy-cloud-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0a0a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="comfy-cloud-accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:0.3" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="800" height="400" fill="url(#comfy-cloud-bg)"/>
+  
+  <!-- Grid pattern -->
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2a2a2a" stroke-width="1"/>
+  </pattern>
+  <rect width="800" height="400" fill="url(#grid)"/>
+  
+  <!-- Cloud icon -->
+  <g transform="translate(400, 200)">
+    <ellipse cx="-30" cy="0" rx="50" ry="40" fill="url(#comfy-cloud-accent)"/>
+    <ellipse cx="0" cy="-10" rx="60" ry="50" fill="url(#comfy-cloud-accent)"/>
+    <ellipse cx="30" cy="0" rx="50" ry="40" fill="url(#comfy-cloud-accent)"/>
+    <rect x="-80" y="0" width="160" height="40" fill="url(#comfy-cloud-accent)"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="400" y="320" font-family="Arial, sans-serif" font-size="36" font-weight="bold" fill="#06b6d4" text-anchor="middle">
+    Comfy Cloud
+  </text>
+  <text x="400" y="350" font-family="Arial, sans-serif" font-size="16" fill="#666" text-anchor="middle">
+    Official ComfyUI Cloud Platform
+  </text>
+</svg>
