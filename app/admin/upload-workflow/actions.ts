@@ -19,6 +19,7 @@ export async function uploadWorkflow(formData: FormData) {
     if (imageFile && imageFile.size > 0) {
       const blob = await put(`previews/${imageFile.name}`, imageFile, {
         access: 'public',
+        addRandomSuffix: true,
       });
       preview_image = blob.url;
     } else {
@@ -30,6 +31,7 @@ export async function uploadWorkflow(formData: FormData) {
     if (jsonFile && jsonFile.size > 0) {
       const blob = await put(`workflows/${jsonFile.name}`, jsonFile, {
         access: 'public',
+        addRandomSuffix: true,
       });
       download_url = blob.url;
     } else {

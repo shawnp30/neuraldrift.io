@@ -150,8 +150,8 @@ export default function SetupRaterPage() {
                   <div key={i} className="flex items-center gap-4 bg-[#080b0f]/50 p-4 rounded-2xl border border-white/5">
                     <div className="shrink-0">
                       {model.status === "perfect" && <CheckCircle className="w-5 h-5 text-green-400" />}
-                      {model.status === "ok" && <AlertTriangle className="w-5 h-5 text-amber-400" />}
-                      {model.status === "bad" && <XCircle className="w-5 h-5 text-red-400" />}
+                      {model.status === "ok" && <AlertTriangle className="w-5 h-5 text-cyan-400" />}
+                      {model.status === "bad" && <XCircle className="w-5 h-5 text-indigo-400" />}
                     </div>
                     <div className="flex-1">
                       <h4 className="text-white font-[700] text-sm">{model.name}</h4>

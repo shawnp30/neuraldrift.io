@@ -117,7 +117,7 @@ export default function CloudGeneratorsPage() {
                   </div>
                   
                   <div className="bg-black/40 border border-white/5 rounded-2xl p-5">
-                    <div className="flex items-center gap-2 text-amber-400 font-[800] text-sm uppercase tracking-widest mb-2">
+                    <div className="flex items-center gap-2 text-violet-400 font-[800] text-sm uppercase tracking-widest mb-2">
                       <Sparkles className="w-4 h-4" /> Best For
                     </div>
                     <p className="text-sm font-[600] text-zinc-300 leading-relaxed">{plat.bestFor}</p>
@@ -181,7 +181,7 @@ export default function CloudGeneratorsPage() {
                 <p className="text-sm font-[500] text-zinc-300 leading-relaxed">What is the subject doing? Use precise verbs. "Walking briskly", "staring intensely", "shattering into pieces".</p>
               </div>
               <div className="bg-black/40 border border-white/5 p-6 rounded-2xl">
-                <h3 className="text-amber-400 font-[800] uppercase tracking-widest text-xs mb-2 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-amber-500" /> 3. Camera / Format</h3>
+                <h3 className="text-violet-400 font-[800] uppercase tracking-widest text-xs mb-2 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-violet-500" /> 3. Camera / Format</h3>
                 <p className="text-sm font-[500] text-zinc-300 leading-relaxed">Dictate the view. "Medium shot", "macro photography", "drone tracking shot", "GoPro footage". This defines the spatial relationship.</p>
               </div>
             </div>

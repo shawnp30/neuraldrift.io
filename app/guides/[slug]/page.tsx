@@ -95,9 +95,19 @@ function renderMarkdown(content: string): string {
 }
 
 const ALL_GUIDES = [
+  { slug: "comfyui-complete-setup", title: "ComfyUI Complete Setup: RTX 5080 Edition", difficulty: "Beginner" as Difficulty, tag: "Image Gen", desc: "Install, configure, and benchmark your first ComfyUI workflow with optimal VRAM settings for RTX 5080 and other consumer GPUs." },
+  { slug: "custom-nodes", title: "How to Install, Update, and Fix Custom Nodes", difficulty: "Intermediate" as Difficulty, tag: "Guide", desc: "Master custom node management and troubleshooting" },
+  { slug: "gpu-errors", title: "Fixing GPU Errors, VRAM Issues, and CUDA Problems", difficulty: "Intermediate" as Difficulty, tag: "Guide", desc: "Solve CUDA not available, out of memory, and GPU detection issues" },
+  { slug: "installation", title: "How to Install ComfyUI Correctly", difficulty: "Beginner" as Difficulty, tag: "Guide", desc: "Complete installation guide for ComfyUI on Windows, Mac, and Linux. Portable and Desktop methods with troubleshooting." },
   { slug: "ltx-video-cinematic-action", title: "LTX Video 2.3: Cinematic Action", difficulty: "Advanced" as Difficulty, tag: "Video Gen", desc: "Build chase sequences with consistent motion." },
-  { slug: "train-flux-lora", title: "Train Your First FLUX LoRA", difficulty: "Intermediate" as Difficulty, tag: "LoRA Training", desc: "Full pipeline from dataset to deployment." },
-  { slug: "comfyui-complete-setup", title: "ComfyUI Complete Setup", difficulty: "Beginner" as Difficulty, tag: "Image Gen", desc: "Install and configure ComfyUI on Windows." },
+  { slug: "model-folders", title: "Where Every Model File Goes", difficulty: "Beginner" as Difficulty, tag: "Guide", desc: "Complete folder structure for checkpoints, LoRAs, VAEs, and ControlNet" },
+  { slug: "model-types", title: "Stable Diffusion Model Types Explained", difficulty: "Intermediate" as Difficulty, tag: "Guide", desc: "SD1.5 vs SDXL vs LCM vs Turbo vs Flux - which should you use?" },
+  { slug: "performance-optimization", title: "How to Optimize Performance on Any GPU", difficulty: "Intermediate" as Difficulty, tag: "Guide", desc: "GPU-tier specific optimization for 4GB to 24GB+ VRAM with step-by-step settings" },
+  { slug: "portable-vs-desktop", title: "Portable vs Desktop: Which Should You Choose?", difficulty: "Beginner" as Difficulty, tag: "Guide", desc: "Complete decision guide for installation methods" },
+  { slug: "train-flux-lora", title: "Train Your First FLUX LoRA in Under 6 Hours", difficulty: "Intermediate" as Difficulty, tag: "LoRA Training", desc: "Dataset prep, Kohya config, training loop, and quality evaluation from scratch. Tested on RTX 5080 and RTX 3080." },
+  { slug: "why-choose-desktop", title: "Why Choose ComfyUI Desktop Install", difficulty: "Advanced" as Difficulty, tag: "Guide", desc: "Deep dive into the power-user installation" },
+  { slug: "why-choose-portable", title: "Why Choose ComfyUI Portable Version", difficulty: "Beginner" as Difficulty, tag: "Guide", desc: "Deep dive into the beginner-friendly installation" },
+  { slug: "workflow-errors", title: "Understanding and Fixing Workflow Errors", difficulty: "Beginner" as Difficulty, tag: "Guide", desc: "Solve node not found, black images, and type mismatches" }
 ];
 
 export default function GuidePage({ params }: Props) {
@@ -366,5 +376,7 @@ export default function GuidePage({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-  return ["ltx-video-cinematic-action", "comfyui-complete-setup", "train-flux-lora"].map(slug => ({ slug }));
+  return [
+    "comfyui-complete-setup", "custom-nodes", "gpu-errors", "installation", "ltx-video-cinematic-action", "model-folders", "model-types", "performance-optimization", "portable-vs-desktop", "train-flux-lora", "why-choose-desktop", "why-choose-portable", "workflow-errors"
+  ].map(slug => ({ slug }));
 }

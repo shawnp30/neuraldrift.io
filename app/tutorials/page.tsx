@@ -22,22 +22,8 @@ const VIDEOS = [
   }
 ];
 
-const GUIDES = [
-  {
-    slug: "monetizing-comfyui",
-    title: "Monetizing Your ComfyUI Workflows",
-    icon: <DollarSign className="w-5 h-5 text-amber-500" />,
-    color: "amber",
-    description: "How to turn a local ComfyUI instance into a high-margin digital business via Fiverr, POD, and digital assets."
-  },
-  {
-    slug: "stable-diffusion-basics",
-    title: "Stable Diffusion Basics: The Core Architecture",
-    icon: <Workflow className="w-5 h-5 text-sky-400" />,
-    color: "sky",
-    description: "The ultimate primer on Checkpoints, Nodes, KSamplers, and Latent Space for absolute beginners."
-  }
-];
+// VIDEOS array remains... 
+// (Removing the GUIDES array that used to be here since they have their own /guides page now)
 
 export default function TutorialsPage() {
   return (
@@ -50,10 +36,11 @@ export default function TutorialsPage() {
         </div>
         <p className="text-indigo-400 font-[800] tracking-widest uppercase text-sm mb-4">Neuraldrift Academy</p>
         <h1 className="text-4xl md:text-5xl lg:text-7xl font-[800] tracking-tight text-white mb-6 drop-shadow-xl leading-tight">
-          Learn to <span className="text-indigo-400">Master AI.</span>
+          Academy <span className="text-indigo-400">Masterclass.</span>
         </h1>
         <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-          Watch premium video masterclasses or read our in-depth technical guides to level up your generative workflows.
+          Premium video-led education for mastering generative AI, workflow architecture, and monetization strategies. 
+          Looking for technical documentation? <Link href="/guides" className="text-indigo-400 hover:underline">Browse our Guides →</Link>
         </p>
       </div>
 
@@ -104,46 +91,18 @@ export default function TutorialsPage() {
           </div>
         </section>
 
-        {/* ── WRITTEN GUIDES ── */}
-        <section>
-          <div className="flex items-center gap-4 mb-10 pb-4 border-b border-white/5">
-            <h2 className="text-2xl md:text-3xl font-[800] text-white flex items-center gap-3">
-              <FileText className="w-7 h-7 text-white" /> Deep Dive Written Guides
-            </h2>
-            <span className="px-3 py-1 bg-white/5 text-zinc-400 text-xs font-[800] tracking-widest uppercase rounded-full border border-white/10">
-              Technical Reads
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {GUIDES.map((guide, idx) => {
-              const bgClass = guide.color === "amber" ? "hover:border-amber-500/50 hover:bg-amber-500/5" : "hover:border-sky-500/50 hover:bg-sky-500/5";
-              const textClass = guide.color === "amber" ? "group-hover:text-amber-400" : "group-hover:text-sky-400";
-              const accentBg = guide.color === "amber" ? "bg-amber-500/10 border-amber-500/20" : "bg-sky-500/10 border-sky-500/20";
-              
-              return (
-                <Link 
-                  key={idx} 
-                  href={`/tutorials/${guide.slug}`}
-                  className={`group bg-[#1e293b]/40 border border-white/10 rounded-2xl p-8 transition-all duration-300 ${bgClass}`}
-                >
-                  <div className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-6 shadow-lg ${accentBg}`}>
-                    {guide.icon}
-                  </div>
-                  <h3 className={`text-xl font-[800] text-white mb-3 transition-colors ${textClass}`}>
-                    {guide.title}
-                  </h3>
-                  <p className="text-sm font-[500] text-zinc-400 leading-relaxed mb-8">
-                    {guide.description}
-                  </p>
-                  
-                  <div className={`text-xs font-[800] uppercase tracking-widest flex items-center gap-2 transition-colors ${textClass}`}>
-                    Read Guide <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
+        {/* ── GUIDES CTA ── */}
+        <section className="bg-indigo-500/5 border border-indigo-500/10 rounded-[2rem] p-10 md:p-16 text-center">
+          <h2 className="text-3xl font-[800] text-white mb-4">Looking for Documentation?</h2>
+          <p className="text-zinc-400 max-w-xl mx-auto mb-10 text-lg">
+            Our technical guide library contains 13+ in-depth tutorials on installation, VRAM optimization, and custom node management.
+          </p>
+          <Link 
+            href="/guides"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-indigo-500 hover:bg-indigo-400 text-black font-[800] rounded-xl transition-all shadow-lg hover:shadow-indigo-500/20"
+          >
+            Visit Knowledge Base <ArrowRight className="w-5 h-5" />
+          </Link>
         </section>
 
       </div>

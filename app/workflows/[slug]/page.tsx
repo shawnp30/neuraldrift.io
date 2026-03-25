@@ -3,19 +3,29 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Download, ShieldCheck } from "lucide-react";
+import { MOCK_WORKFLOWS } from "@/lib/data/mockWorkflows";
 
 export const revalidate = 0;
 
 export default async function WorkflowDetail({ params }: { params: { slug: string } }) {
   const supabase = createClient();
-  const { data: workflow, error } = await supabase
+  
+  // Attempt to fetch from Supabase
+  const { data, error } = await supabase
     .from("workflows")
     .select("*")
     .eq("slug", params.slug)
     .single();
 
+  let workflow = data;
+
   if (error || !workflow) {
-    notFound();
+    // Fallback to MOCK_WORKFLOWS
+    const mockWorkflow = MOCK_WORKFLOWS.find((w) => w.slug === params.slug);
+    if (!mockWorkflow) {
+      notFound();
+    }
+    workflow = mockWorkflow;
   }
 
   return (

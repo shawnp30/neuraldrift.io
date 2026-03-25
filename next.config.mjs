@@ -1,4 +1,4 @@
-﻿/** @type {import("next").NextConfig} */
+/** @type {import("next").NextConfig} */
 const nextConfig = {
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
@@ -6,6 +6,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "**.supabase.co" },
       { protocol: "https", hostname: "neuraldrift" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
 };

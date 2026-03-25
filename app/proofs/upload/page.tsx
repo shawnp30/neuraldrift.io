@@ -125,9 +125,9 @@ export default function ProofUploadPage() {
       <div className="max-w-4xl mx-auto px-6 md:px-12">
         {/* ── HEADER ── */}
         <div className="mb-12 text-center">
-          <p className="text-amber-400 font-[800] tracking-widest uppercase text-sm mb-4">Verification Layer</p>
+          <p className="text-sky-400 font-[800] tracking-widest uppercase text-sm mb-4">Verification Layer</p>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-[800] tracking-tight text-white mb-6 drop-shadow-xl">
-            Upload Workflow <span className="text-amber-400">Proofs</span>
+            Upload Workflow <span className="text-sky-400">Proofs</span>
           </h1>
           <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed">
             Validate neuraldrift workflows by uploading raw, unedited outputs directly to the global database.
@@ -135,11 +135,11 @@ export default function ProofUploadPage() {
         </div>
 
         {/* ── SETUP NOTICE ── */}
-        <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6 mb-12 flex items-start gap-4">
-          <AlertCircle className="w-6 h-6 text-amber-500 shrink-0 mt-0.5" />
+        <div className="bg-sky-500/10 border border-sky-500/20 rounded-2xl p-6 mb-12 flex items-start gap-4">
+          <AlertCircle className="w-6 h-6 text-sky-500 shrink-0 mt-0.5" />
           <div>
-            <h4 className="font-[800] text-amber-500 mb-1">Developer Setup Required</h4>
-            <p className="text-amber-400/80 font-[500] text-sm leading-relaxed">
+            <h4 className="font-[800] text-sky-500 mb-1">Developer Setup Required</h4>
+            <p className="text-sky-400/80 font-[500] text-sm leading-relaxed">
               Uploads require `@vercel/blob` and a `BLOB_READ_WRITE_TOKEN` environment variable to function correctly. 
               Configure this in your Vercel Project Settings first.
             </p>
@@ -151,7 +151,7 @@ export default function ProofUploadPage() {
           
           {/* STEP 1 */}
           <div className="mb-10">
-            <label className="block text-amber-400 font-[800] text-xs uppercase tracking-widest mb-4">01 — Select Source Workflow</label>
+            <label className="block text-sky-400 font-[800] text-xs uppercase tracking-widest mb-4">01 — Select Source Workflow</label>
             <div className="flex flex-wrap gap-2 mb-4">
               {categories.map((cat) => (
                 <button
@@ -159,7 +159,7 @@ export default function ProofUploadPage() {
                   onClick={() => setCategoryFilter(cat)}
                   className={`px-4 py-1.5 rounded-lg text-xs font-[700] transition-all border ${
                     categoryFilter === cat 
-                      ? "bg-amber-500/20 text-amber-400 border-amber-500/30" 
+                      ? "bg-sky-500/20 text-sky-400 border-sky-500/30" 
                       : "bg-white/5 text-zinc-400 border-transparent hover:bg-white/10"
                   }`}
                 >
@@ -181,14 +181,14 @@ export default function ProofUploadPage() {
 
           {/* STEP 2 */}
           <div className="mb-10">
-            <label className="block text-amber-400 font-[800] text-xs uppercase tracking-widest mb-4">02 — Drop Media Payload</label>
+            <label className="block text-sky-400 font-[800] text-xs uppercase tracking-widest mb-4">02 — Drop Media Payload</label>
             <div
               onDrop={handleDrop}
               onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
               onDragLeave={() => setDragOver(false)}
               onClick={() => fileRef.current?.click()}
               className={`border-2 border-dashed rounded-2xl p-12 text-center cursor-pointer transition-all duration-300 ${
-                dragOver ? "border-amber-400 bg-amber-400/5 shadow-[0_0_30px_rgba(245,158,11,0.1)]" : "border-indigo-500/30 bg-black/20 hover:border-indigo-400 hover:bg-black/30"
+                dragOver ? "border-sky-400 bg-sky-400/5 shadow-[0_0_30px_rgba(56,189,248,0.1)]" : "border-indigo-500/30 bg-black/20 hover:border-indigo-400 hover:bg-black/30"
               }`}
             >
               {preview ? (
@@ -200,7 +200,7 @@ export default function ProofUploadPage() {
                     <img src={preview} alt="Preview" className="max-h-64 mx-auto rounded-xl shadow-lg border border-white/10" />
                   )}
                   <p className="mt-4 font-mono text-xs text-indigo-300/60">{file?.name} — {((file?.size || 0) / 1024 / 1024).toFixed(1)}MB</p>
-                  <p className="text-amber-400 font-[700] text-sm mt-2">Click to replace payload.</p>
+                  <p className="text-sky-400 font-[700] text-sm mt-2">Click to replace payload.</p>
                 </div>
               ) : (
                 <div>
@@ -217,17 +217,17 @@ export default function ProofUploadPage() {
           {/* STEP 3 & 4 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
             <div>
-              <label className="block text-amber-400 font-[800] text-xs uppercase tracking-widest mb-4">03 — Hardware Used</label>
+              <label className="block text-sky-400 font-[800] text-xs uppercase tracking-widest mb-4">03 — Hardware Used</label>
               <input value={gpuInfo} onChange={(e) => setGpuInfo(e.target.value)} placeholder="e.g. RTX 4090 24GB" className="w-full bg-black/40 border border-indigo-500/20 rounded-xl px-5 py-4 text-white font-[600] outline-none focus:border-indigo-400 transition-colors" />
             </div>
             <div>
-              <label className="block text-amber-400 font-[800] text-xs uppercase tracking-widest mb-4">04 — Gen Time</label>
+              <label className="block text-sky-400 font-[800] text-xs uppercase tracking-widest mb-4">04 — Gen Time</label>
               <input value={genTime} onChange={(e) => setGenTime(e.target.value)} placeholder="e.g. 14.5s" className="w-full bg-black/40 border border-indigo-500/20 rounded-xl px-5 py-4 text-white font-[600] outline-none focus:border-indigo-400 transition-colors" />
             </div>
           </div>
 
           <div className="mb-12">
-            <label className="block text-amber-400 font-[800] text-xs uppercase tracking-widest mb-4">05 — Metadata / Prompt Details</label>
+            <label className="block text-sky-400 font-[800] text-xs uppercase tracking-widest mb-4">05 — Metadata / Prompt Details</label>
             <textarea value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Share your exact prompt, settings, or any creative context..." className="w-full h-32 bg-black/40 border border-indigo-500/20 rounded-xl px-5 py-4 text-white font-[500] outline-none focus:border-indigo-400 transition-colors resize-none leading-relaxed" />
           </div>
 
@@ -240,7 +240,7 @@ export default function ProofUploadPage() {
           )}
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <button onClick={handleUpload} disabled={uploading} className="w-full sm:w-auto px-10 py-5 bg-amber-500 hover:bg-amber-400 text-black font-[800] rounded-xl transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)] disabled:opacity-50 flex items-center justify-center gap-2 text-lg">
+            <button onClick={handleUpload} disabled={uploading} className="w-full sm:w-auto px-10 py-5 bg-sky-500 hover:bg-sky-400 text-black font-[800] rounded-xl transition-all shadow-[0_0_20px_rgba(56,189,248,0.2)] disabled:opacity-50 flex items-center justify-center gap-2 text-lg">
               {uploading ? (
                 <>
                   <svg className="animate-spin h-5 w-5 text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>

@@ -9,12 +9,12 @@ export default function MonetizingComfyUIGuide() {
       
       {/* ── HEADER ── */}
       <div className="max-w-4xl mx-auto px-6 md:px-12 mb-20 text-center relative z-10">
-        <div className="inline-flex items-center justify-center p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl mb-6 shadow-[0_0_30px_rgba(245,158,11,0.15)] text-amber-500">
+        <div className="inline-flex items-center justify-center p-4 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl mb-6 shadow-[0_0_30px_rgba(99,102,241,0.15)] text-indigo-500">
           <DollarSign className="w-8 h-8" />
         </div>
-        <p className="text-amber-500 font-[800] tracking-widest uppercase text-sm mb-4">Masterclass Guide</p>
+        <p className="text-indigo-400 font-[800] tracking-widest uppercase text-sm mb-4">Masterclass Guide</p>
         <h1 className="text-4xl md:text-5xl lg:text-7xl font-[800] tracking-tight text-white mb-6 drop-shadow-xl leading-tight">
-          Monetize Your <br/><span className="text-amber-500">Workflows.</span>
+          Monetize Your <br/><span className="text-indigo-400">Workflows.</span>
         </h1>
         <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed">
           How to turn your local ComfyUI instance from a hobby into a high-margin digital business using Print-on-Demand, freelancing, and digital asset sales.
@@ -25,24 +25,24 @@ export default function MonetizingComfyUIGuide() {
         
         {/* ── SECTION 1 ── */}
         <div className="bg-[#0f172a]/80 border border-white/5 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden backdrop-blur-xl">
-          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-[100px] -mr-32 -mt-32 pointer-events-none" />
           
           <h2 className="text-2xl md:text-3xl font-[800] text-white mb-6 relative z-10 flex items-center gap-3">
-            <Presentation className="w-7 h-7 text-amber-500" /> 1. The Freelance Agency (Fiverr & Upwork)
+            <Presentation className="w-7 h-7 text-indigo-400" /> 1. The Freelance Agency (Fiverr & Upwork)
           </h2>
           <div className="space-y-6 relative z-10">
             <p className="text-zinc-300 font-[500] leading-relaxed text-lg">
               The highest immediate ROI for your ComfyUI skills is B2B (Business-to-Business) generation. Brands constantly need high-quality assets but lack the technical skills or hardware to run FLUX or SDXL locally.
             </p>
             <div className="bg-black/40 border border-white/5 p-6 rounded-2xl">
-              <h4 className="text-amber-500 font-[800] mb-3 uppercase tracking-widest text-xs">High-Demand Gigs</h4>
+              <h4 className="text-indigo-400 font-[800] mb-3 uppercase tracking-widest text-xs">High-Demand Gigs</h4>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <Target className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                  <Target className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
                   <p className="text-sm font-[500] text-zinc-300"><strong className="text-white">Product Photography Replacement:</strong> Train a LoRA on a client's specific product (e.g., a perfume bottle). Use ComfyUI to generate the product in impossible, high-end environments (glaciers, luxury marble bathrooms). Charge $50-$100 per final image.</p>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Target className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                  <Target className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
                   <p className="text-sm font-[500] text-zinc-300"><strong className="text-white">Consistent AI Influencers:</strong> Setup an IPAdapter + FaceID workflow to generate the exact same face in hundreds of different poses and outfits. Social media managers will pay retainers for consistent character content.</p>
                 </li>
               </ul>

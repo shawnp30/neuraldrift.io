@@ -139,19 +139,17 @@ export default function Navbar() {
           {/* Center Links */}
           <div className="hidden lg:flex flex-wrap flex-1 items-center justify-center gap-4 xl:gap-6 px-4">
             {[
-              { name: 'Tutorials', href: '/tutorials' },
+              { name: 'Academy', href: '/tutorials' },
               { name: 'Guides', href: '/guides' },
+              { name: 'Workflows', href: '/workflows' },
               { name: 'Hardware', href: '/hardware' },
               { name: 'GPU Guide', href: '/gpu-guide' },
-              { name: 'Workflows', href: '/workflows' },
-              { name: 'LoRAs', href: '/loras' },
-              { name: 'Datasets', href: '/datasets' },
-              { name: 'Tools', href: '/tools' },
+              { name: 'LoRA Training', href: '/loras' },
               { name: 'Optimizer', href: '/optimizer' },
               { name: 'Proofs', href: '/proofs' },
-              { name: 'Cloud Gens', href: '/cloud-generators' },
               { name: 'Prompt Gen', href: '/prompt-generator' },
-              { name: 'Admin', href: '/admin/upload-workflow' },
+              { name: 'Cloud Gens', href: '/cloud-generators' },
+              { name: 'User Uploads', href: '/admin/upload-workflow' },
             ].map(link => (
               <a 
                 key={link.name} 

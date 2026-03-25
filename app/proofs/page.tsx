@@ -16,7 +16,7 @@ const CATEGORIES = [
 const CATEGORY_COLORS: Record<string, string> = {
   Image: "text-green-400 bg-green-500/10 border-green-500/20",
   Video: "text-sky-400 bg-sky-500/10 border-sky-500/20",
-  Enhance: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+  Enhance: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
   ControlNet: "text-purple-400 bg-purple-500/10 border-purple-500/20",
   Specialty: "text-pink-400 bg-pink-500/10 border-pink-500/20",
 };
@@ -112,9 +112,9 @@ export default function ProofGalleryPage() {
 
       {/* ── HEADER ── */}
       <div className="max-w-6xl mx-auto px-6 md:px-12 mb-16 text-center">
-        <p className="text-amber-400 font-[800] tracking-widest uppercase text-sm mb-4">Community Proofs</p>
+        <p className="text-cyan-400 font-[800] tracking-widest uppercase text-sm mb-4">Community Proofs</p>
         <h1 className="text-4xl md:text-5xl lg:text-7xl font-[800] tracking-tight text-white mb-6 drop-shadow-xl">
-          Verified <span className="text-amber-400">Outputs.</span>
+          Verified <span className="text-cyan-400">Outputs.</span>
         </h1>
         <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-10">
           Every generation below was created using a Neuraldrift workflow JSON on consumer hardware.
@@ -123,14 +123,14 @@ export default function ProofGalleryPage() {
         {/* ── STATS & ACTIONS ── */}
         <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
           <div className="bg-[#0f172a]/50 border border-indigo-500/20 rounded-2xl px-6 py-4 backdrop-blur-md flex items-center gap-4">
-            <span className="text-3xl font-[800] text-amber-400">{items.length}</span>
+            <span className="text-3xl font-[800] text-cyan-400">{items.length}</span>
             <span className="text-sm font-[600] text-zinc-500 uppercase tracking-widest">Outputs</span>
           </div>
           <div className="bg-[#0f172a]/50 border border-indigo-500/20 rounded-2xl px-6 py-4 backdrop-blur-md flex items-center gap-4">
-            <span className="text-3xl font-[800] text-amber-400">{new Set(items.map((i) => i.workflowId)).size}</span>
+            <span className="text-3xl font-[800] text-cyan-400">{new Set(items.map((i) => i.workflowId)).size}</span>
             <span className="text-sm font-[600] text-zinc-500 uppercase tracking-widest">Workflows Proven</span>
           </div>
-          <Link href="/proofs/upload" className="bg-amber-500 text-black px-8 py-5 rounded-2xl font-[800] hover:bg-amber-400 transition-all shadow-[0_0_20px_rgba(245,158,11,0.2)] flex items-center gap-2">
+          <Link href="/proofs/upload" className="bg-cyan-500 text-black px-8 py-5 rounded-2xl font-[800] hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(34,211,238,0.2)] flex items-center gap-2">
             Upload Output <ExternalLink className="w-4 h-4" />
           </Link>
         </div>
@@ -143,7 +143,7 @@ export default function ProofGalleryPage() {
               onClick={() => setActiveCategory(cat)}
               className={`px-5 py-2.5 rounded-full text-sm font-[700] transition-all duration-300 border ${
                 activeCategory === cat 
-                  ? "bg-amber-500/10 border-amber-500/30 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)] scale-105" 
+                  ? "bg-cyan-500/10 border-cyan-500/30 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.15)] scale-105" 
                   : "bg-white/5 border-white/5 text-zinc-400 hover:bg-white/10 hover:text-white"
               }`}
             >
@@ -161,10 +161,10 @@ export default function ProofGalleryPage() {
         )}
 
         {!loading && error && (
-          <div className="bg-red-500/10 border border-red-500/20 rounded-3xl p-12 text-center max-w-2xl mx-auto shadow-2xl">
-            <p className="text-red-400 font-[700] mb-4 text-xl">{error}</p>
+          <div className="bg-rose-500/10 border border-rose-500/20 rounded-3xl p-12 text-center max-w-2xl mx-auto shadow-2xl">
+            <p className="text-rose-400 font-[700] mb-4 text-xl">{error}</p>
             <p className="text-zinc-400 font-[500] mb-8 leading-relaxed">Setup your Vercel Blob Database and provide the BLOB_READ_WRITE_TOKEN in your environment variables to enable global proofs.</p>
-            <Link href="/proofs/upload" className="bg-red-500 text-black px-8 py-4 rounded-xl font-[800] hover:bg-red-400 transition-colors shadow-[0_0_20px_rgba(239,68,68,0.3)] inline-block">Configure Storage</Link>
+            <Link href="/proofs/upload" className="bg-rose-500 text-black px-8 py-4 rounded-xl font-[800] hover:bg-rose-400 transition-colors shadow-[0_0_20px_rgba(244,63,94,0.3)] inline-block">Configure Storage</Link>
           </div>
         )}
 

@@ -13,11 +13,21 @@ export default function LorasGuidePage() {
         </div>
         <p className="text-emerald-400 font-[800] tracking-widest uppercase text-sm mb-4">Training Mastery</p>
         <h1 className="text-4xl md:text-5xl lg:text-7xl font-[800] tracking-tight text-white mb-6 drop-shadow-xl leading-tight">
-          Custom <span className="text-emerald-400">LoRAs.</span>
+          LoRA <span className="text-emerald-400">Training.</span>
         </h1>
-        <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-          Inject specific characters, objects, and art styles into massive AI models without retraining from scratch. Here is everything you need to know.
+        <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-12">
+          Inject specific characters, objects, and art styles into massive AI models without retraining from scratch.
         </p>
+
+        {/* Video Placeholder */}
+        <div className="w-full aspect-video bg-[#0f172a] border border-emerald-500/20 rounded-3xl overflow-hidden flex flex-col items-center justify-center relative group shadow-[0_0_50px_rgba(16,185,129,0.1)]">
+          <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-20 group-hover:opacity-30 transition-opacity blur-sm" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-transparent to-transparent" />
+          <div className="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center cursor-pointer shadow-[0_0_30px_rgba(16,185,129,0.5)] transform group-hover:scale-105 transition-all z-10">
+            <div className="w-0 h-0 border-t-[12px] border-t-transparent border-l-[20px] border-l-white border-b-[12px] border-b-transparent ml-2" />
+          </div>
+          <p className="mt-6 text-zinc-300 font-[600] z-10 tracking-wide">Watch: How to train your first LoRA in 5 minutes</p>
+        </div>
       </div>
 
       <div className="max-w-5xl mx-auto px-6 md:px-12 space-y-16">
@@ -87,7 +97,7 @@ export default function LorasGuidePage() {
 
           <div className="bg-[#0f172a]/50 border border-white/5 p-8 md:p-10 rounded-3xl backdrop-blur-md">
             <h2 className="text-xl md:text-2xl font-[800] text-white mb-6 flex items-center gap-3">
-              <Clock className="w-6 h-6 text-amber-400" /> Time Estimates
+              <Clock className="w-6 h-6 text-indigo-400" /> Time Estimates
             </h2>
             <p className="text-zinc-400 font-[500] mb-8 leading-relaxed">
               Training time scales exponentially based on your dataset size, the base model, and your GPU speed (e.g., RTX 3090 vs RTX 4090).
@@ -97,21 +107,21 @@ export default function LorasGuidePage() {
               <div className="p-5 bg-black/40 border border-white/5 rounded-xl">
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-[800] text-white">Quick Character (SDXL)</span>
-                  <span className="text-amber-400 font-mono text-xs uppercase tracking-widest">~30 Mins</span>
+                  <span className="text-indigo-400 font-mono text-xs uppercase tracking-widest">~30 Mins</span>
                 </div>
                 <p className="text-xs text-zinc-500 font-[500]">15 images, 1500 steps on an RTX 4090.</p>
               </div>
               <div className="p-5 bg-black/40 border border-white/5 rounded-xl">
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-[800] text-white">High-Quality Style (FLUX)</span>
-                  <span className="text-amber-400 font-mono text-xs uppercase tracking-widest">1 - 3 Hours</span>
+                  <span className="text-indigo-400 font-mono text-xs uppercase tracking-widest">1 - 3 Hours</span>
                 </div>
                 <p className="text-xs text-zinc-500 font-[500]">40 images, fp8 precision, 3000 steps on a 24GB GPU.</p>
               </div>
               <div className="p-5 bg-black/40 border border-white/5 rounded-xl">
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-[800] text-white">Massive Concept (FLUX)</span>
-                  <span className="text-red-400 font-mono text-xs uppercase tracking-widest">6+ Hours</span>
+                  <span className="text-sky-400 font-mono text-xs uppercase tracking-widest">6+ Hours</span>
                 </div>
                 <p className="text-xs text-zinc-500 font-[500]">100+ images, heavy regularization, intense learning rate.</p>
               </div>

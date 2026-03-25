@@ -6,6 +6,11 @@ export interface HardwareInput {
   vram_gb: number;
   ram_gb: number;
   storage_free_gb: number;
+  form_factor: "desktop" | "laptop";
+  cpu: string;
+  os: string;
+  python_version: string;
+  comfy_version: string;
   priority: "quality" | "speed" | "reliability" | "balanced";
 }
 
@@ -21,9 +26,12 @@ const GPU_PRESETS = [
   { label: "RTX 4080 (16GB)", gpu_name: "RTX 4080", vram_gb: 16 },
   { label: "RTX 4070 Ti (12GB)", gpu_name: "RTX 4070 Ti", vram_gb: 12 },
   { label: "RTX 4070 (12GB)", gpu_name: "RTX 4070", vram_gb: 12 },
+  { label: "RTX 4090 Laptop (16GB)", gpu_name: "RTX 4090 Laptop", vram_gb: 16 },
+  { label: "RTX 4080 Laptop (12GB)", gpu_name: "RTX 4080 Laptop", vram_gb: 12 },
   { label: "RTX 3090 (24GB)", gpu_name: "RTX 3090", vram_gb: 24 },
-  { label: "RTX 3080 16GB", gpu_name: "RTX 3080 16GB", vram_gb: 16 },
-  { label: "RTX 3080 10GB", gpu_name: "RTX 3080 10GB", vram_gb: 10 },
+  { label: "RTX 3080 16GB", gpu_name: "RTX 3080", vram_gb: 16 },
+  { label: "RTX 3080m (16GB Laptop)", gpu_name: "RTX 3080m", vram_gb: 16 },
+  { label: "RTX 3080m (8GB Laptop)", gpu_name: "RTX 3080m", vram_gb: 8 },
   { label: "RTX 3060 (12GB)", gpu_name: "RTX 3060", vram_gb: 12 },
   { label: "GTX 1660 Ti (6GB)", gpu_name: "GTX 1660 Ti", vram_gb: 6 },
   { label: "Custom...", gpu_name: "", vram_gb: 0 },
@@ -43,6 +51,11 @@ export function HardwareForm({ onSubmit, loading }: Props) {
     vram_gb: 16,
     ram_gb: 64,
     storage_free_gb: 500,
+    form_factor: "desktop",
+    cpu: "Intel i9",
+    os: "Windows 11",
+    python_version: "3.10",
+    comfy_version: "Latest",
     priority: "balanced",
   });
   const [isCustom, setIsCustom] = useState(false);
@@ -133,6 +146,60 @@ export function HardwareForm({ onSubmit, loading }: Props) {
           />
           <div className="flex justify-between font-mono text-xs text-muted mt-0.5">
             <span>0</span><span>500GB</span><span>2TB</span>
+          </div>
+        </div>
+
+        {/* System Rig Details */}
+        <div className="grid grid-cols-2 gap-4 border-t border-border pt-5">
+          <div className="col-span-2 mb-2">
+            <label className="font-mono text-[10px] text-accent tracking-widest uppercase block mb-3">Form Factor</label>
+            <div className="flex bg-surface border border-border rounded-lg overflow-hidden">
+              <button
+                onClick={() => setForm(prev => ({ ...prev, form_factor: "desktop" }))}
+                className={`flex-1 py-2.5 text-xs font-mono transition-colors ${form.form_factor === "desktop" ? "bg-accent/10 text-accent font-bold" : "text-muted hover:bg-white/5"}`}
+              >
+                Desktop Rig
+              </button>
+              <button
+                onClick={() => setForm(prev => ({ ...prev, form_factor: "laptop" }))}
+                className={`flex-1 py-2.5 text-xs font-mono transition-colors ${form.form_factor === "laptop" ? "bg-accent/10 text-accent font-bold" : "text-muted hover:bg-white/5"}`}
+              >
+                Laptop / Mobile
+              </button>
+            </div>
+          </div>
+          <div>
+            <label className="font-mono text-[10px] text-accent tracking-widest uppercase block mb-2">CPU</label>
+            <input 
+              type="text" value={form.cpu} onChange={e => setForm(prev => ({ ...prev, cpu: e.target.value }))}
+              placeholder="e.g. Ryzen 9"
+              className="w-full bg-surface border border-border rounded-lg px-3 py-2 text-sm text-text font-mono focus:outline-none focus:border-accent/50"
+            />
+          </div>
+          <div>
+            <label className="font-mono text-[10px] text-accent tracking-widest uppercase block mb-2">OS</label>
+            <select value={form.os} onChange={e => setForm(prev => ({ ...prev, os: e.target.value }))} className="w-full bg-surface border border-border rounded-lg px-3 py-2 text-sm text-text font-mono focus:outline-none focus:border-accent/50">
+              <option value="Windows 11">Windows 11</option>
+              <option value="Windows 10">Windows 10</option>
+              <option value="Linux (Ubuntu)">Linux (Ubuntu)</option>
+              <option value="macOS">macOS</option>
+            </select>
+          </div>
+          <div>
+            <label className="font-mono text-[10px] text-accent tracking-widest uppercase block mb-2">Python Ver</label>
+            <select value={form.python_version} onChange={e => setForm(prev => ({ ...prev, python_version: e.target.value }))} className="w-full bg-surface border border-border rounded-lg px-3 py-2 text-sm text-text font-mono focus:outline-none focus:border-accent/50">
+              <option value="3.10">3.10 (Recommended)</option>
+              <option value="3.11">3.11</option>
+              <option value="3.9">3.9</option>
+            </select>
+          </div>
+          <div>
+            <label className="font-mono text-[10px] text-accent tracking-widest uppercase block mb-2">ComfyUI Ver</label>
+            <input 
+              type="text" value={form.comfy_version} onChange={e => setForm(prev => ({ ...prev, comfy_version: e.target.value }))}
+              placeholder="Latest"
+              className="w-full bg-surface border border-border rounded-lg px-3 py-2 text-sm text-text font-mono focus:outline-none focus:border-accent/50"
+            />
           </div>
         </div>
 

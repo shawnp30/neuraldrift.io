@@ -3,6 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export const revalidate = 0; // Ensure fresh data from Supabase
 
+import { MOCK_WORKFLOWS } from "@/lib/data/mockWorkflows";
+
 export default async function WorkflowsPage() {
   const supabase = createClient();
   
@@ -11,6 +13,8 @@ export default async function WorkflowsPage() {
     .from("workflows")
     .select("*")
     .order("created_at", { ascending: false });
+
+  const displayWorkflows = workflows && workflows.length > 0 ? workflows : MOCK_WORKFLOWS;
 
   return (
     <div className="min-h-screen bg-[#030712] text-slate-50 pt-32 pb-32">
@@ -28,16 +32,9 @@ export default async function WorkflowsPage() {
 
       {/* GRID */}
       <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {workflows?.map((w: WorkflowMetadata) => (
+        {displayWorkflows.map((w: WorkflowMetadata) => (
           <WorkflowPreview key={w.id} workflow={w} />
         ))}
-        
-        {(!workflows || workflows.length === 0) && (
-          <div className="col-span-full py-32 text-center flex flex-col items-center">
-            <span className="text-4xl mb-4 opacity-50">☁️</span>
-            <p className="text-zinc-500 font-[600] text-sm">No workflows have been uploaded to the database yet.</p>
-          </div>
-        )}
       </div>
       
     </div>
