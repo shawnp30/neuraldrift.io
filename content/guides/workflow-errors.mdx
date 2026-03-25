@@ -1,0 +1,86 @@
+---
+title: 'Understanding and Fixing Workflow Errors'
+description: 'Solve node not found, black images, and type mismatches'
+category: 'Troubleshooting'
+readTime: '5 min'
+difficulty: 'Beginner'
+featured: false
+publishedAt: '2026-03-24'
+author: 'NeuralDrift'
+---
+
+
+**Solve the most common workflow loading and execution problems**
+
+---
+
+## Common Workflow Errors
+
+### Error: "Node not found in workflow"
+
+**Cause:** Missing custom node
+
+**Fix:**
+1. Install ComfyUI Manager
+2. Load workflow → Manager will show "Install Missing Nodes"
+3. Click install → Restart
+
+---
+
+### Error: "Input type mismatch"
+
+**Cause:** Wrong model type for workflow
+
+**Example:**
+- SDXL workflow + SD 1.5 checkpoint = fails
+
+**Fix:**
+Check workflow description for required model type
+
+**Quick reference:**
+- SD 1.5 workflows → Use SD 1.5 checkpoints
+- SDXL workflows → Use SDXL checkpoints  
+- Flux workflows → Use Flux models
+
+---
+
+### Error: Workflow loads but produces black images
+
+**Causes:**
+1. Wrong VAE
+2. Incompatible sampler
+3. Resolution too high
+
+**Fixes:**
+1. Add VAE Loader node with `vae-ft-mse-840000-ema-pruned.safetensors`
+2. Try different sampler (euler, dpm++ 2m)
+3. Reduce resolution to 512×512 (SD1.5) or 1024×1024 (SDXL)
+
+---
+
+### Error: "VRAM out of memory" mid-generation
+
+**Fix:**
+See [Guide 2: GPU Errors](./02-gpu-errors.md)
+
+Quick solution:
+- Reduce resolution
+- Add `--lowvram` flag
+- Install Tiled VAE node
+
+---
+
+## Workflow Best Practices
+
+1. **Always use .safetensors models** (safer than .ckpt)
+2. **Match LoRAs to base model version**
+3. **Save workflows frequently**
+4. **Test with default workflow first** before loading complex ones
+5. **Check custom nodes are installed** before importing workflows
+
+---
+
+## Related Guides
+- [Guide 3: Model Folders](./03-model-folders.md)
+- [Guide 4: Custom Nodes](./04-custom-nodes.md)
+- [Guide 6: Model Types](./06-model-types.md)

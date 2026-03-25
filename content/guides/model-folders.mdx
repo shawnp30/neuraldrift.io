@@ -1,0 +1,425 @@
+---
+title: 'Where Every Model File Goes'
+description: 'Complete folder structure for checkpoints, LoRAs, VAEs, and ControlNet'
+category: 'Setup'
+readTime: '7 min'
+difficulty: 'Beginner'
+featured: true
+publishedAt: '2026-03-24'
+author: 'NeuralDrift'
+---
+
+
+**The definitive folder structure guide for ComfyUI**
+
+---
+
+## Overview
+
+Model folder confusion is the #3 most common problem on Reddit. This guide shows you exactly where every file type belongs.
+
+**One simple rule:** Every model type has its own specific folder. Put files in the wrong place = ComfyUI won't see them.
+
+---
+
+## 📁 Complete Folder Structure
+
+```
+ComfyUI/
+└── models/
+    ├── checkpoints/          ← SD models (.safetensors, .ckpt)
+    ├── loras/               ← LoRA files (.safetensors)
+    ├── vae/                 ← VAE files (.safetensors, .pt)
+    ├── controlnet/          ← ControlNet models
+    ├── clip/                ← CLIP models
+    ├── clip_vision/         ← CLIP Vision models
+    ├── embeddings/          ← Textual Inversion embeddings (.pt, .safetensors)
+    ├── unet/                ← UNet models (Flux, newer architectures)
+    ├── upscale_models/      ← Upscaler models (ESRGAN, RealESRGAN)
+    ├── ipadapter/           ← IPAdapter models
+    ├── hypernetworks/       ← Hypernetwork files
+    ├── style_models/        ← Style transfer models
+    └── insightface/         ← Face restoration models
+```
+
+---
+
+## 🎯 Most Common Files & Where They Go
+
+### Checkpoints (Base Models)
+
+**File types:** `.safetensors`, `.ckpt`
+
+**Examples:**
+- `v1-5-pruned-emaonly.safetensors` (SD 1.5)
+- `sd_xl_base_1.0.safetensors` (SDXL)
+- `flux1-dev.safetensors` (Flux)
+
+**Location:**
+```
+ComfyUI/models/checkpoints/
+```
+
+**How to use:**
+Load with the "Load Checkpoint" node in ComfyUI
+
+---
+
+### LoRAs
+
+**File types:** `.safetensors`, `.pt`
+
+**Examples:**
+- `add_detail.safetensors`
+- `anime_style_lora.safetensors`
+- `photorealistic_face.safetensors`
+
+**Location:**
+```
+ComfyUI/models/loras/
+```
+
+**How to use:**
+Load with "Load LoRA" node
+
+**⚠️ Critical:** LoRAs MUST match your base model:
+- SD 1.5 LoRA → SD 1.5 checkpoint
+- SDXL LoRA → SDXL checkpoint
+- Flux LoRA → Flux checkpoint
+
+---
+
+### VAE Files
+
+**File types:** `.safetensors`, `.pt`
+
+**Examples:**
+- `vae-ft-mse-840000-ema-pruned.safetensors`
+- `sdxl_vae.safetensors`
+
+**Location:**
+```
+ComfyUI/models/vae/
+```
+
+**How to use:**
+Load with "VAE Loader" node → Connect to "VAE Decode"
+
+**When you need a VAE:**
+- Images look washed out, blurry, or have wrong colors
+- Using SDXL without built-in VAE
+- Workflow specifically requires external VAE
+
+---
+
+### ControlNet Models
+
+**File types:** `.safetensors`, `.pth`
+
+**Examples:**
+- `control_v11p_sd15_openpose.pth`
+- `diffusers_xl_canny_full.safetensors`
+
+**Location:**
+```
+ComfyUI/models/controlnet/
+```
+
+**How to use:**
+Load with "Load ControlNet Model" node
+
+**Note:** ControlNet models are also version-specific:
+- SD 1.5 ControlNet → SD 1.5 checkpoint
+- SDXL ControlNet → SDXL checkpoint
+
+---
+
+### Embeddings (Textual Inversion)
+
+**File types:** `.pt`, `.safetensors`
+
+**Examples:**
+- `bad-hands-5.pt`
+- `EasyNegative.safetensors`
+- `negative_hand.pt`
+
+**Location:**
+```
+ComfyUI/models/embeddings/
+```
+
+**How to use:**
+Just place files here. Use in prompts by filename (without extension):
+```
+beautiful landscape, (bad-hands-5:0.8)
+```
+
+---
+
+### Upscale Models
+
+**File types:** `.pth`, `.safetensors`
+
+**Examples:**
+- `RealESRGAN_x4plus.pth`
+- `4x-UltraSharp.pth`
+- `ESRGAN_4x.pth`
+
+**Location:**
+```
+ComfyUI/models/upscale_models/
+```
+
+**How to use:**
+Load with "Upscale Model Loader" node
+
+---
+
+### IPAdapter Models
+
+**File types:** `.safetensors`, `.bin`
+
+**Location:**
+```
+ComfyUI/models/ipadapter/
+```
+
+**Typical structure:**
+```
+ipadapter/
+├── ip-adapter_sd15.safetensors
+├── ip-adapter-plus_sd15.safetensors
+└── ip-adapter_sdxl.safetensors
+```
+
+---
+
+## 🔧 Organization Tips
+
+### Create Subfolders (Recommended)
+
+ComfyUI supports subfolders. Organize like this:
+
+```
+checkpoints/
+├── SD15/
+│   ├── realistic/
+│   │   └── realisticVision_v51.safetensors
+│   └── anime/
+│       └── anything-v5.safetensors
+└── SDXL/
+    └── base/
+        └── sd_xl_base_1.0.safetensors
+
+loras/
+├── SD15/
+│   ├── style/
+│   └── character/
+└── SDXL/
+    └── style/
+```
+
+**Why?**
+- Easier to find files
+- Prevents version mixing
+- Better performance (fewer files to scan per folder)
+
+---
+
+## 🚨 Common Folder Mistakes
+
+### ❌ Wrong: Putting LoRAs in checkpoints folder
+```
+checkpoints/
+└── my_lora.safetensors  ← WRONG
+```
+
+**Result:** LoRA won't load, or will crash workflow
+
+---
+
+### ❌ Wrong: Mixing SD 1.5 and SDXL in same folder without subfolders
+
+```
+checkpoints/
+├── sd15_model.safetensors
+└── sdxl_model.safetensors  ← Confusing
+```
+
+**Better:**
+```
+checkpoints/
+├── SD15/
+│   └── sd15_model.safetensors
+└── SDXL/
+    └── sdxl_model.safetensors
+```
+
+---
+
+### ❌ Wrong: Using OneDrive/Google Drive synced folders
+
+**Never put models in:**
+- OneDrive
+- Google Drive
+- Dropbox
+- iCloud Drive
+
+**Why?**
+- Cloud sync locks files
+- Causes loading errors
+- Extremely slow model loading
+
+---
+
+## 📥 How to Download Models
+
+### From Hugging Face
+
+1. Find the model page
+2. Click "Files and versions"
+3. Download `.safetensors` files
+4. Move to correct ComfyUI folder
+
+**Example URLs:**
+- SD 1.5: `https://huggingface.co/runwayml/stable-diffusion-v1-5`
+- SDXL: `https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0`
+
+---
+
+### From Civitai
+
+1. Find the model
+2. Click "Download"
+3. Choose `.safetensors` format (preferred over `.ckpt`)
+4. Move to correct folder
+
+**File size guide:**
+- SD 1.5 checkpoint: ~2-4 GB
+- SDXL checkpoint: ~6-7 GB
+- LoRA: 10-200 MB
+- ControlNet: 700 MB - 2.5 GB
+
+---
+
+## 🔍 Troubleshooting: "Model Not Found"
+
+### Model exists but ComfyUI doesn't see it?
+
+**Check:**
+
+1. **File is in correct folder**
+   - Checkpoints in `models/checkpoints/`
+   - LoRAs in `models/loras/`
+
+2. **File extension is correct**
+   - `.safetensors` or `.ckpt` (checkpoints)
+   - `.safetensors` or `.pt` (LoRAs, VAE, embeddings)
+
+3. **File isn't corrupted**
+   - Check file size matches expected
+   - Re-download if suspiciously small
+
+4. **Restart ComfyUI**
+   - Some folders need restart to refresh
+   - Press Ctrl+C in console, restart
+
+5. **Check file permissions**
+   - File isn't "Read Only"
+   - Folder isn't locked by cloud sync
+
+---
+
+## 🎯 Model Recommendations by Use Case
+
+### For Photorealism
+**Checkpoint:**
+```
+models/checkpoints/
+└── realisticVision_v51.safetensors
+```
+
+**LoRAs:**
+```
+models/loras/
+├── add_detail.safetensors
+└── photorealistic_lighting.safetensors
+```
+
+---
+
+### For Anime/Illustration
+**Checkpoint:**
+```
+models/checkpoints/
+└── anything-v5.safetensors
+```
+
+**LoRAs:**
+```
+models/loras/
+├── anime_lineart.safetensors
+└── studio_ghibli_style.safetensors
+```
+
+---
+
+### For ControlNet Workflows
+**Must have:**
+```
+models/controlnet/
+├── control_v11p_sd15_canny.pth
+├── control_v11p_sd15_openpose.pth
+└── control_v11p_sd15_depth.pth
+```
+
+---
+
+## 📊 Quick Reference Table
+
+| File Type | Extension | Folder | Average Size |
+|-----------|-----------|--------|--------------|
+| SD 1.5 Checkpoint | `.safetensors` | `checkpoints/` | 2-4 GB |
+| SDXL Checkpoint | `.safetensors` | `checkpoints/` | 6-7 GB |
+| LoRA | `.safetensors` | `loras/` | 10-200 MB |
+| VAE | `.safetensors` | `vae/` | 300-800 MB |
+| ControlNet | `.pth`, `.safetensors` | `controlnet/` | 700 MB - 2.5 GB |
+| Embedding | `.pt`, `.safetensors` | `embeddings/` | 5-100 KB |
+| Upscaler | `.pth` | `upscale_models/` | 15-65 MB |
+
+---
+
+## 💾 Managing Disk Space
+
+### Models take up massive space
+
+**Space-saving tips:**
+
+1. **Delete unused checkpoints**
+   - One SD 1.5 + One SDXL is often enough
+
+2. **Use pruned/EMA versions**
+   - Smaller file size, same quality
+   - Look for "pruned-emaonly" in filename
+
+3. **Store on external SSD**
+   - Symlink to external drive:
+   ```bash
+   mklink /D "C:\AI\ComfyUI\models\checkpoints" "E:\AI_Models\checkpoints"
+   ```
+
+4. **Use `.safetensors` instead of `.ckpt`**
+   - Often smaller
+   - Faster loading
+   - More secure
+
+---
+
+## 🆘 Still Can't Find Your Models?
+
+→ [Guide 5: Workflow Errors](./05-workflow-errors.md) (Node not found issues)  
+→ [Guide 9: Troubleshooting Assistant](./09-troubleshooting-assistant.md)
+
+---
+
+*Looking to optimize model loading speed? See [Guide 7: Performance Optimization](./07-performance-optimization.md)*

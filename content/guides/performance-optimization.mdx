@@ -1,0 +1,95 @@
+---
+title: 'How to Optimize Performance on Any GPU'
+description: 'GPU-tier specific optimization for 4GB to 24GB+ VRAM with step-by-step settings'
+category: 'Advanced'
+readTime: '8 min'
+difficulty: 'Intermediate'
+featured: false
+publishedAt: '2026-03-24'
+author: 'NeuralDrift'
+---
+
+# How to Optimize Performance on Any GPU
+
+**Complete optimization guide by VRAM tier**
+
+---
+
+## GPU Tier Optimization
+
+### Low VRAM (4-6GB): GTX 1660, RTX 3050, RTX 4050
+
+**Settings:**
+```bash
+python main.py --lowvram
+```
+
+**Recommendations:**
+- Use SD 1.5 ONLY
+- Max resolution: 512×512
+- Batch size: 1
+- Install Tiled VAE custom node
+- Steps: 20-25 max
+- Avoid SDXL completely
+
+---
+
+### Medium VRAM (8-12GB): RTX 3060, RTX 4060
+
+**Settings:**
+```bash
+python main.py --normalvram
+```
+
+**Recommendations:**
+- SDXL supported at 768×768
+- SD 1.5 at 768×768 or 1024×1024
+- Batch size: 1-2
+- Steps: 25-30
+- Use fp16 models when available
+
+---
+
+### High VRAM (16-24GB): RTX 4080, RTX 4090
+
+**Settings:**
+```bash
+python main.py --highvram
+```
+
+**Recommendations:**
+- SDXL at 1024×1024 or higher
+- Batch size: 2-4
+- Steps: 30-50
+- High-res upscaling supported
+- Video generation supported
+- Multiple model loading
+
+---
+
+## Speed Optimization Tips
+
+1. **Install xformers**
+   ```bash
+   pip install xformers
+   ```
+   +20-30% speed boost
+
+2. **Use NVIDIA GPU scheduling** (Windows)
+   - NVIDIA Control Panel → Manage 3D Settings
+   - Low Latency Mode: Ultra
+   - Power Management: Prefer Maximum Performance
+
+3. **Close background apps** during generation
+
+4. **Use SSD for model storage** (not HDD)
+
+5. **Keep drivers updated**
+
+---
+
+## Related Guides
+
+- [GPU and CUDA Errors](/guides/gpu-errors)
+- [Model Types Explained](/guides/model-types)
+- [Custom Nodes Management](/guides/custom-nodes)

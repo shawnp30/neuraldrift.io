@@ -1,0 +1,240 @@
+---
+title: 'Stable Diffusion Model Types Explained'
+description: 'SD1.5 vs SDXL vs LCM vs Turbo vs Flux - which should you use?'
+category: 'Advanced'
+readTime: '6 min'
+difficulty: 'Intermediate'
+featured: false
+publishedAt: '2026-03-24'
+author: 'NeuralDrift'
+---
+
+
+**SD 1.5 vs SDXL vs LCM vs Turbo vs Flux - Which should you use?**
+
+---
+
+## Overview
+
+Different Stable Diffusion architectures exist for different purposes. Using the wrong type causes errors, poor quality, or incompatibility.
+
+---
+
+## 🎨 SD 1.5 (Stable Diffusion 1.5)
+
+### Best For
+- Fast generation
+- Anime and stylized art
+- Low VRAM GPUs (4-8GB)
+- Beginners
+- Experimentation
+
+### Specifications
+- **Resolution:** 512×512 native (can upscale)
+- **VRAM:** 4GB minimum
+- **Speed:** Fast (10-20 sec per image on RTX 3060)
+- **File size:** 2-4 GB
+
+### When to Use
+- ✅ Learning ComfyUI
+- ✅ Quick iterations
+- ✅ Anime/cartoon styles
+- ✅ Low-end hardware
+- ✅ Large batch generation
+
+### When NOT to Use
+- ❌ Photorealistic commercial work
+- ❌ High-resolution output without upscaling
+- ❌ Fine detail requirements
+
+---
+
+## 🎨 SDXL (Stable Diffusion XL)
+
+### Best For
+- Photorealism
+- Commercial quality
+- High-detail images
+- Professional work
+
+### Specifications
+- **Resolution:** 1024×1024 native
+- **VRAM:** 8GB minimum, 12GB+ recommended
+- **Speed:** Slower (30-60 sec per image on RTX 3060)
+- **File size:** 6-7 GB
+
+### When to Use
+- ✅ Photorealistic images
+- ✅ Professional quality needed
+- ✅ High-resolution requirements
+- ✅ Commercial projects
+- ✅ Better text rendering
+
+### When NOT to Use
+- ❌ Low VRAM (< 8GB)
+- ❌ Need fast iteration
+- ❌ Anime/stylized preferred
+- ❌ Limited disk space
+
+---
+
+## ⚡ LCM (Latent Consistency Models)
+
+### Best For
+- Ultra-fast generation
+- Real-time previews
+- Rapid prototyping
+
+### Specifications
+- **Steps:** 2-8 (vs 20-50 normal)
+- **Speed:** 2-5 seconds per image
+- **Quality:** Lower than SD 1.5/SDXL
+
+### When to Use
+- ✅ Concept exploration
+- ✅ Quick drafts
+- ✅ Real-time generation
+- ✅ Testing compositions
+
+### When NOT to Use
+- ❌ Final quality images
+- ❌ Fine details needed
+- ❌ Professional work
+
+---
+
+## 🚀 Turbo Models
+
+### Best For
+- 1-step generation
+- Maximum speed
+- Experimentation
+
+### Specifications
+- **Steps:** 1-4
+- **Speed:** 1-3 seconds per image
+- **Quality:** Lowest, but usable
+
+### When to Use
+- ✅ Instant feedback
+- ✅ Composition testing
+- ✅ Live generation demos
+
+### When NOT to Use
+- ❌ Any final output
+- ❌ Client work
+- ❌ Detailed images
+
+---
+
+## 🌟 Flux
+
+### Best For
+- Cutting-edge quality
+- Best prompt following
+- State-of-art results
+
+### Specifications
+- **Resolution:** 1024×1024+
+- **VRAM:** 16GB minimum, 24GB+ recommended
+- **Speed:** Very slow (60-120 sec)
+- **File size:** 12-24 GB
+
+### When to Use
+- ✅ Maximum quality needed
+- ✅ Best prompt adherence
+- ✅ High-end hardware available
+- ✅ Complex compositions
+
+### When NOT to Use
+- ❌ Limited VRAM
+- ❌ Need fast iteration
+- ❌ Limited disk space
+- ❌ Custom nodes (compatibility still growing)
+
+---
+
+## 📊 Quick Comparison Table
+
+| Model | Quality | Speed | VRAM | Best Use |
+|-------|---------|-------|------|----------|
+| **SD 1.5** | Good | Fast | 4GB+ | Learning, anime |
+| **SDXL** | Excellent | Medium | 8GB+ | Professional, realism |
+| **LCM** | Fair | Very Fast | 4GB+ | Prototyping |
+| **Turbo** | Poor | Ultra Fast | 4GB+ | Testing |
+| **Flux** | Best | Slow | 16GB+ | Maximum quality |
+
+---
+
+## 🔧 Compatibility Guide
+
+### LoRAs
+- SD 1.5 LoRA → SD 1.5 checkpoint ONLY
+- SDXL LoRA → SDXL checkpoint ONLY
+- Flux LoRA → Flux checkpoint ONLY
+
+**Mixing = Errors or crashes**
+
+---
+
+### ControlNet
+- SD 1.5 ControlNet → SD 1.5 models
+- SDXL ControlNet → SDXL models
+
+---
+
+### VAE
+- Most SD 1.5 models: Need external VAE
+- SDXL: Usually has built-in VAE
+- Flux: Custom VAE handling
+
+---
+
+## 🎯 Recommended Starting Point
+
+### For Beginners
+**SD 1.5** - Learn workflow basics fast
+
+**Recommended checkpoint:**
+- `realisticVision_v51.safetensors` (realism)
+- `anything-v5.safetensors` (anime)
+
+---
+
+### For Intermediate Users
+**SDXL** - Professional quality
+
+**Recommended checkpoint:**
+- `sd_xl_base_1.0.safetensors`
+
+---
+
+### For Advanced Users
+**Flux** - Cutting edge
+
+**Requirement:**
+- RTX 4080 or better
+- 24GB+ VRAM
+
+---
+
+## 🆘 Model Loading Errors
+
+### "Model failed to load"
+**Cause:** Wrong model type for workflow
+
+**Fix:** Check workflow requirements, use matching model type
+
+---
+
+### "Unexpected key in state dict"
+**Cause:** Model architecture mismatch
+
+**Fix:** Verify exact model version needed (SD1.5 vs SDXL vs Flux)
+
+---
+
+## Related Guides
+- [Guide 3: Model Folders](./03-model-folders.md)
+- [Guide 5: Workflow Errors](./05-workflow-errors.md)
+- [Guide 7: Performance Optimization](./07-performance-optimization.md)

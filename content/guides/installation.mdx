@@ -1,0 +1,315 @@
+---
+title: 'How to Install ComfyUI Correctly'
+description: 'Complete installation guide for ComfyUI on Windows, Mac, and Linux. Portable and Desktop methods with troubleshooting.'
+category: 'Setup'
+readTime: '10 min'
+difficulty: 'Beginner'
+featured: true
+publishedAt: '2026-03-24'
+author: 'NeuralDrift'
+---
+
+# Guide 1: How to Install ComfyUI Correctly
+
+**Platform support: Windows | Mac (M1/M2/M3) | Linux**
+
+---
+
+## Overview
+
+This guide provides step-by-step installation instructions for ComfyUI across all major platforms. Follow the instructions for your operating system exactly to avoid common setup errors.
+
+**Estimated time:** 10-15 minutes
+
+---
+
+## 🪟 Windows Installation (Recommended for Beginners)
+
+### Method 1: Portable Version (Easiest)
+
+**Best for:** Beginners, plug-and-play users, anyone who wants zero setup
+
+#### Step 1: Download ComfyUI Portable
+
+1. Go to [ComfyUI GitHub Releases](https://github.com/comfyanonymous/ComfyUI/releases)
+2. Look for the latest release
+3. Download: **`ComfyUI_windows_portable_nvidia_cu121.7z`** (or latest CUDA version)
+
+#### Step 2: Extract the Archive
+
+1. Right-click the `.7z` file
+2. Extract to a simple path:
+   ```
+   C:/AI/ComfyUI
+   ```
+   
+**❌ Avoid paths with:**
+- Spaces (`C:\Program Files\ComfyUI`)
+- Special characters
+- Very long folder names
+- OneDrive/Cloud synced folders
+
+#### Step 3: Run ComfyUI
+
+1. Open the extracted folder
+2. Double-click: **`run_nvidia_gpu.bat`**
+3. Wait for the console window to finish loading
+4. Your browser will open automatically to: `http://127.0.0.1:8188`
+
+**✅ Success:** You should see the ComfyUI interface with a default workflow
+
+---
+
+### Method 2: Desktop Install (Advanced)
+
+**Best for:** Developers, power users, those wanting Git integration
+
+#### Prerequisites
+- Python 3.10 or 3.11 ([Download here](https://www.python.org/downloads/))
+- Git ([Download here](https://git-scm.com/downloads))
+- NVIDIA GPU drivers (latest)
+
+#### Step 1: Clone the Repository
+
+Open Command Prompt or PowerShell:
+
+```bash
+cd C:\AI
+git clone https://github.com/comfyanonymous/ComfyUI
+cd ComfyUI
+```
+
+#### Step 2: Install Dependencies
+
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install -r requirements.txt
+```
+
+**Note:** Replace `cu121` with your CUDA version if different
+
+#### Step 3: Run ComfyUI
+
+```bash
+python main.py
+```
+
+Browser will open to `http://127.0.0.1:8188`
+
+---
+
+## 🍎 Mac Installation (M1/M2/M3)
+
+### Step 1: Install Python
+
+Download Python 3.10 or 3.11 from [python.org](https://www.python.org/downloads/)
+
+Verify installation:
+```bash
+python3 --version
+```
+
+### Step 2: Clone ComfyUI
+
+Open Terminal:
+
+```bash
+cd ~/Documents
+git clone https://github.com/comfyanonymous/ComfyUI
+cd ComfyUI
+```
+
+### Step 3: Install Requirements
+
+```bash
+pip3 install -r requirements.txt
+```
+
+### Step 4: Run ComfyUI
+
+```bash
+python3 main.py --force-fp16
+```
+
+**For M1/M2/M3 optimization:**
+```bash
+python3 main.py --force-fp16 --highvram
+```
+
+Browser opens to `http://127.0.0.1:8188`
+
+---
+
+## 🐧 Linux Installation
+
+### Step 1: Update System Packages
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3 python3-pip git -y
+```
+
+### Step 2: Clone ComfyUI
+
+```bash
+cd ~
+git clone https://github.com/comfyanonymous/ComfyUI
+cd ComfyUI
+```
+
+### Step 3: Install CUDA (NVIDIA GPUs)
+
+Check CUDA version:
+```bash
+nvidia-smi
+```
+
+Install PyTorch with CUDA:
+```bash
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+
+### Step 4: Install Requirements
+
+```bash
+pip3 install -r requirements.txt
+```
+
+### Step 5: Run ComfyUI
+
+```bash
+python3 main.py
+```
+
+---
+
+## 🚨 Common Installation Errors
+
+### Error: "CUDA not available"
+
+**Cause:** PyTorch installed without CUDA support
+
+**Fix:**
+```bash
+pip uninstall torch torchvision torchaudio
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+
+---
+
+### Error: "ModuleNotFoundError: No module named 'torch'"
+
+**Cause:** PyTorch not installed
+
+**Fix:**
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+
+---
+
+### Error: "Access Denied" when running .bat file
+
+**Cause:** Windows security blocking execution
+
+**Fix:**
+1. Right-click `run_nvidia_gpu.bat`
+2. Properties → Unblock → Apply
+3. Run as Administrator
+
+---
+
+### Error: Browser doesn't open automatically
+
+**Manual access:**
+Open browser and go to: `http://127.0.0.1:8188`
+
+---
+
+### Error: "Port 8188 already in use"
+
+**Cause:** Another instance of ComfyUI is running
+
+**Fix:**
+```bash
+# Windows
+taskkill /F /IM python.exe
+
+# Mac/Linux
+killall python3
+```
+
+Or specify a different port:
+```bash
+python main.py --port 8189
+```
+
+---
+
+## ✅ Verify Installation
+
+After installation, verify ComfyUI is working:
+
+1. **Load default workflow** - Should load without errors
+2. **Check GPU detection:**
+   - Look at console output
+   - Should show: `Device: cuda` (NVIDIA) or `Device: mps` (Mac)
+3. **Generate a test image:**
+   - Use the default workflow
+   - Click "Queue Prompt"
+   - Image should generate successfully
+
+---
+
+## 📁 Folder Structure After Installation
+
+```
+ComfyUI/
+├── models/
+│   ├── checkpoints/     ← Put SD models here
+│   ├── loras/          ← Put LoRAs here
+│   ├── vae/            ← Put VAEs here
+│   ├── controlnet/     ← Put ControlNet models here
+│   └── embeddings/     ← Put embeddings here
+├── custom_nodes/       ← Install custom nodes here
+├── input/              ← Input images for workflows
+├── output/             ← Generated images save here
+└── ComfyUI/            ← Core application files
+```
+
+---
+
+## 🔄 Updating ComfyUI
+
+### Portable Version
+1. Download the latest portable release
+2. Extract to a new folder
+3. Copy your `models/` folder to the new installation
+4. Copy your `custom_nodes/` folder
+
+### Desktop Install
+```bash
+cd ComfyUI
+git pull
+pip install -r requirements.txt
+```
+
+---
+
+## 🎯 Next Steps
+
+1. **Download models** → See [Model Folders Guide](/guides/model-folders)
+2. **Install custom nodes** → See [Custom Nodes Guide](/guides/custom-nodes)
+3. **Optimize performance** → See [Performance Guide](/guides/performance-optimization)
+
+---
+
+## 🆘 Still Having Issues?
+
+→ See [Fix Missing Dependencies](/guides/fix-dependencies)  
+→ See [GPU and CUDA Errors](/guides/gpu-errors)  
+→ Use [Troubleshooting Assistant](/guides/troubleshooting-assistant)
+
+---
+
+*Need to decide between Portable and Desktop? See: [Installation Decision Guide](/guides/portable-vs-desktop)*

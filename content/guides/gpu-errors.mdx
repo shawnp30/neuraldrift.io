@@ -1,0 +1,395 @@
+---
+title: 'Fixing GPU Errors, VRAM Issues, and CUDA Problems'
+description: 'Solve CUDA not available, out of memory, and GPU detection issues'
+category: 'Troubleshooting'
+readTime: '8 min'
+difficulty: 'Intermediate'
+featured: true
+publishedAt: '2026-03-24'
+author: 'NeuralDrift'
+---
+
+
+**The complete solution guide for hardware and driver issues**
+
+---
+
+## Overview
+
+GPU and VRAM errors are the #2 most common problem in ComfyUI and Stable Diffusion (after installation issues). This guide solves every major GPU-related error reported on Reddit.
+
+---
+
+## 🔴 Error: "CUDA not available" or "Device: cpu"
+
+### Symptoms
+- Console shows `Device: cpu` instead of `Device: cuda`
+- Generation is extremely slow
+- Error message: "CUDA not available"
+
+### Root Cause
+PyTorch installed without CUDA support, or incorrect CUDA version
+
+### Solution
+
+#### Step 1: Check Your GPU
+
+**Windows:**
+```bash
+nvidia-smi
+```
+
+**Expected output:**
+```
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 535.xx       Driver Version: 535.xx       CUDA Version: 12.1     |
+```
+
+Note your **CUDA Version** (e.g., 12.1)
+
+#### Step 2: Reinstall PyTorch with CUDA
+
+**Uninstall current PyTorch:**
+```bash
+pip uninstall torch torchvision torchaudio
+```
+
+**Install correct CUDA version:**
+
+For CUDA 12.1:
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+
+For CUDA 11.8:
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
+
+#### Step 3: Verify
+
+Restart ComfyUI. Console should now show:
+```
+Device: cuda
+```
+
+---
+
+## 🔴 Error: "CUDA out of memory" (OOM)
+
+### Symptoms
+- Error: `RuntimeError: CUDA out of memory`
+- Generation crashes mid-process
+- Can't complete workflows that previously worked
+
+### Understanding VRAM
+
+| GPU | VRAM | What You Can Run |
+|-----|------|------------------|
+| GTX 1660 Ti | 6GB | SD 1.5 only, 512×512 max |
+| RTX 3060 | 12GB | SD 1.5 + SDXL, 768×768 |
+| RTX 3080 | 10GB | SDXL, 1024×1024 |
+| RTX 4090 | 24GB | Everything, high-res, video |
+
+### Solution 1: Reduce Image Resolution
+
+**Current workflow using 1024×1024?**
+
+Try:
+- 768×768 (SDXL)
+- 512×512 (SD 1.5)
+
+**How to change:**
+Find the "Empty Latent Image" node → Change `width` and `height`
+
+---
+
+### Solution 2: Enable Low VRAM Mode
+
+**For 4-8GB GPUs:**
+
+Run ComfyUI with:
+```bash
+python main.py --lowvram
+```
+
+**For very low VRAM (< 4GB):**
+```bash
+python main.py --novram
+```
+
+**Portable version:**
+Edit `run_nvidia_gpu.bat`, add `--lowvram`:
+```bat
+.\python_embeded\python.exe -s ComfyUI\main.py --lowvram
+```
+
+---
+
+### Solution 3: Use Tiled VAE
+
+Install **ComfyUI-TiledKSampler** custom node:
+
+1. Go to `ComfyUI/custom_nodes`
+2. Clone:
+   ```bash
+   git clone https://github.com/shiimizu/ComfyUI-TiledKSampler
+   ```
+3. Restart ComfyUI
+4. Replace VAE Decode node with **Tiled VAE Decode**
+
+**Result:** Reduces VRAM usage by ~40-60%
+
+---
+
+### Solution 4: Reduce Batch Size
+
+Find any node with `batch_size` → Set to `1`
+
+Example:
+```
+Batch Size: 4  →  Batch Size: 1
+```
+
+---
+
+### Solution 5: Use Lower Precision Models
+
+**SD 1.5 models:**
+- Use `fp16` versions instead of `fp32`
+- Half the VRAM usage
+
+**Where to find:**
+Model filename contains:
+- `fp16` ← Use this
+- `fp32` ← Avoid on low VRAM
+
+---
+
+## 🔴 Mac GPU Not Being Used (M1/M2/M3)
+
+### Symptoms
+- Generation extremely slow on Mac
+- Console shows `Device: cpu`
+- Activity Monitor shows low GPU usage
+
+### Solution
+
+**Force MPS (Metal Performance Shaders):**
+
+```bash
+python3 main.py --force-fp16
+```
+
+**For maximum performance:**
+```bash
+python3 main.py --force-fp16 --highvram
+```
+
+**Verify:**
+Console should show:
+```
+Device: mps
+```
+
+---
+
+## 🔴 Error: "RuntimeError: No CUDA GPUs are available"
+
+### Cause
+- GPU driver not installed
+- Driver outdated
+- GPU not detected by system
+
+### Solution
+
+#### Step 1: Update GPU Drivers
+
+**NVIDIA:**
+1. Go to [NVIDIA Driver Downloads](https://www.nvidia.com/download/index.aspx)
+2. Select your GPU model
+3. Download and install latest Game Ready or Studio driver
+
+**AMD (Linux):**
+```bash
+sudo apt install rocm-dkms rocm-libs
+```
+
+#### Step 2: Verify Driver
+
+**Windows/Linux:**
+```bash
+nvidia-smi
+```
+
+Should show your GPU and driver version
+
+#### Step 3: Restart
+
+Fully restart your computer after driver installation
+
+---
+
+## 🔴 Error: "Torch not compiled with CUDA enabled"
+
+### Cause
+PyTorch CPU-only version installed
+
+### Solution
+
+**Complete reinstall:**
+
+```bash
+pip uninstall torch torchvision torchaudio
+pip cache purge
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
+
+**Verify CUDA is available:**
+
+```python
+python -c "import torch; print(torch.cuda.is_available())"
+```
+
+**Expected output:** `True`
+
+---
+
+## 🔴 Black Images / Empty Output
+
+### Cause
+Often related to VAE or precision issues on certain GPUs
+
+### Solution 1: Change VAE
+
+1. Download `vae-ft-mse-840000-ema-pruned.safetensors`
+2. Place in `ComfyUI/models/vae/`
+3. In workflow, add "VAE Loader" node
+4. Connect to "VAE Decode"
+
+---
+
+### Solution 2: Force FP32 Precision
+
+```bash
+python main.py --force-fp32
+```
+
+**For Mac:**
+```bash
+python3 main.py --force-fp16 --force-fp32
+```
+
+---
+
+## 🔴 Very Slow Generation (Multiple Minutes Per Image)
+
+### Diagnostic Checklist
+
+1. **Is GPU being used?**
+   - Check console: Should say `Device: cuda` or `Device: mps`
+   - If says `Device: cpu` → See "CUDA not available" above
+
+2. **Is resolution too high for your GPU?**
+   - See VRAM table above
+   - Reduce resolution
+
+3. **Are you using too many steps?**
+   - 20-30 steps is usually enough
+   - Reduce from 50+ → 25
+
+4. **Is xformers enabled?**
+   ```bash
+   pip install xformers
+   ```
+
+5. **Too many upscale passes?**
+   - Remove or reduce upscaling nodes
+
+---
+
+## 🔴 Error: "CUDA error: device-side assert triggered"
+
+### Cause
+Usually model/LoRA incompatibility or corrupted model file
+
+### Solution
+
+1. **Remove all LoRAs from workflow**
+2. **Try different checkpoint**
+3. **Re-download suspected corrupt models**
+4. **Check model compatibility:**
+   - SD 1.5 LoRA → SD 1.5 checkpoint only
+   - SDXL LoRA → SDXL checkpoint only
+
+---
+
+## Performance Optimization Quick Reference
+
+### For 4-6GB VRAM (GTX 1660, RTX 3050)
+```bash
+python main.py --lowvram
+```
+- Use SD 1.5 only
+- Max 512×512 resolution
+- Install Tiled VAE
+- Batch size: 1
+
+---
+
+### For 8-12GB VRAM (RTX 3060, RTX 4060)
+```bash
+python main.py --normalvram
+```
+- SDXL supported at 768×768
+- SD 1.5 at 768×768
+- Batch size: 1-2
+
+---
+
+### For 16-24GB VRAM (RTX 4080, RTX 4090)
+```bash
+python main.py --highvram
+```
+- SDXL at 1024×1024+
+- High-resolution workflows
+- Batch size: 2-4
+- Video generation supported
+
+---
+
+## 🆘 Emergency Reset
+
+If nothing works:
+
+1. **Completely uninstall PyTorch:**
+   ```bash
+   pip uninstall torch torchvision torchaudio
+   pip cache purge
+   ```
+
+2. **Update GPU drivers** (see above)
+
+3. **Restart computer**
+
+4. **Fresh PyTorch install:**
+   ```bash
+   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+   ```
+
+5. **Verify:**
+   ```python
+   python -c "import torch; print(torch.cuda.is_available()); print(torch.version.cuda)"
+   ```
+
+---
+
+## 🎯 Related Guides
+
+- [Guide 7: Performance Optimization](./07-performance-optimization.md)
+- [Guide 8: Fix Missing Dependencies](./08-fix-dependencies.md)
+- [Guide 9: Troubleshooting Assistant](./09-troubleshooting-assistant.md)
+
+---
+
+*Still having GPU issues? Check the [Troubleshooting Assistant](./09-troubleshooting-assistant.md) for interactive diagnosis.*
