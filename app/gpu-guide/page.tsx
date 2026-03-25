@@ -1,2235 +1,971 @@
-// app/gpu-guide/page.tsx
-// GPU Compatibility Guide + Model Reference
-// Data sourced from: ComfyUI official GitHub wiki, NVIDIA RTX AI Garage,
-// Spheron benchmarks (March 2026), ComfyUI docs, community testing
+'use client';
 
-import Link from "next/link";
 
-// ─── DATA ─────────────────────────────────────────────────────────────────────
+import Link from 'next/link';
+import Image from 'next/image';
 
-const GPU_TIERS = [
-  // ── S TIER — NVIDIA (Ampere+) ───────────────────────────────────────────────
-  {
-    tier: "S",
-    tierLabel: "Best",
-    tierColor: "#22c55e",
-    brand: "NVIDIA",
-    arch: "Blackwell (50 series)",
-    precision: "fp16 · bf16 · fp8 · fp4",
-    gpus: [
-      {
-        name: "RTX 5090",
-        vram: "32GB",
-        price: "~$2,000",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Best consumer GPU. fp4 support = huge speed. 32GB handles everything except Wan 2.1 14B / HunyuanVideo in BF16.",
-      },
-      {
-        name: "RTX 5080",
-        vram: "16GB",
-        price: "~$1,000",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "neuraldrift primary test GPU. GDDR7 bandwidth close to H100. fp8 + fp4 native. All image/video workflows run clean.",
-      },
-    ],
-  },
-  {
-    tier: "S",
-    tierLabel: "Best",
-    tierColor: "#22c55e",
-    brand: "NVIDIA",
-    arch: "Ada Lovelace (40 series)",
-    precision: "fp16 · bf16 · fp8",
-    gpus: [
-      {
-        name: "RTX 4090",
-        vram: "24GB",
-        price: "~$1,600",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Best previous-gen. 24GB handles FLUX Dev BF16 + LoRA simultaneously. No fp4 but fp8 native. Speed close to 5080.",
-      },
-      {
-        name: "RTX 4080 Super",
-        vram: "16GB",
-        price: "~$900",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Same VRAM as 5080. fp8 native. Slightly slower but excellent price/performance ratio.",
-      },
-      {
-        name: "RTX 4070 Ti Super",
-        vram: "16GB",
-        price: "~$700",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "16GB at mid-range price. All LTX Video and AnimateDiff workflows. FLUX fp8 runs clean.",
-      },
-      {
-        name: "RTX 4070 Super",
-        vram: "12GB",
-        price: "~$500",
-        sdxl: "✓",
-        flux: "fp8",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "12GB is the FLUX fp8 sweet spot. LTX Video at 97 frames works. Tight on FLUX Dev BF16.",
-      },
-      {
-        name: "RTX 4070",
-        vram: "12GB",
-        price: "~$400",
-        sdxl: "✓",
-        flux: "fp8",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Same 12GB as 4070 Super, slightly slower. Solid all-rounder for content creators.",
-      },
-      {
-        name: "RTX 4060 Ti 16GB",
-        vram: "16GB",
-        price: "~$450",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Underrated. 16GB VRAM in a mid-range GPU. Slower GDDR6 bandwidth but runs full FLUX workflows.",
-      },
-      {
-        name: "RTX 4060 Ti 8GB",
-        vram: "8GB",
-        price: "~$280",
-        sdxl: "✓",
-        flux: "GGUF",
-        ltxVideo: "limited",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "8GB requires --lowvram for SDXL. FLUX GGUF Q5 works. AnimateDiff 16 frames at 512px. LTX 25 frames max.",
-      },
-      {
-        name: "RTX 4060",
-        vram: "8GB",
-        price: "~$250",
-        sdxl: "✓",
-        flux: "GGUF",
-        ltxVideo: "limited",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Entry Ada. Same VRAM situation as 4060 Ti 8GB. Use --lowvram + GGUF quantization.",
-      },
-    ],
-  },
-  {
-    tier: "S",
-    tierLabel: "Best",
-    tierColor: "#22c55e",
-    brand: "NVIDIA",
-    arch: "Ampere (30 series)",
-    precision: "fp16 · bf16",
-    gpus: [
-      {
-        name: "RTX 3090",
-        vram: "24GB",
-        price: "~$700 used",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Best used GPU value. 24GB + BF16 native. No fp8 hardware acceleration but software fp8 works fine.",
-      },
-      {
-        name: "RTX 3080 16GB",
-        vram: "16GB",
-        price: "~$350 used",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "neuraldrift secondary test GPU. Fantastic used value. Full FLUX Dev fp8, LTX Video cinematic, all AnimateDiff.",
-      },
-      {
-        name: "RTX 3080 10GB",
-        vram: "10GB",
-        price: "~$280 used",
-        sdxl: "✓",
-        flux: "fp8",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "10GB runs FLUX fp8 clean. LTX Video up to 73 frames. Solid used buy.",
-      },
-      {
-        name: "RTX 3070",
-        vram: "8GB",
-        price: "~$200 used",
-        sdxl: "✓",
-        flux: "GGUF",
-        ltxVideo: "limited",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "8GB needs --lowvram. FLUX GGUF Q4/Q5 only. AnimateDiff 16 frames. Tight but workable.",
-      },
-      {
-        name: "RTX 3060",
-        vram: "12GB",
-        price: "~$230 used",
-        sdxl: "✓",
-        flux: "fp8",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Budget hero. 12GB fits FLUX fp8 and LTX Video 25 frames. Slower CUDA cores but capable.",
-      },
-      {
-        name: "RTX 3060 Ti",
-        vram: "8GB",
-        price: "~$200 used",
-        sdxl: "✓",
-        flux: "GGUF",
-        ltxVideo: "limited",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Fast 8GB. Better than 3060 for speed but less VRAM. GGUF FLUX, SD1.5, SDXL 768px.",
-      },
-    ],
-  },
-  {
-    tier: "S",
-    tierLabel: "Best",
-    tierColor: "#22c55e",
-    brand: "NVIDIA",
-    arch: "Turing (20 series)",
-    precision: "fp16 only",
-    gpus: [
-      {
-        name: "RTX 2080 Ti",
-        vram: "11GB",
-        price: "~$200 used",
-        sdxl: "✓",
-        flux: "fp8 slow",
-        ltxVideo: "limited",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Still works. fp16 hardware, fp8 is software-only (slower). SDXL + AnimateDiff run fine. FLUX fp8 takes 2x longer.",
-      },
-      {
-        name: "RTX 2080 Super",
-        vram: "8GB",
-        price: "~$150 used",
-        sdxl: "✓",
-        flux: "GGUF slow",
-        ltxVideo: "✗",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "8GB Turing. SDXL 768px with --lowvram. AnimateDiff 16 frames. FLUX GGUF possible but slow.",
-      },
-      {
-        name: "RTX 2070 Super",
-        vram: "8GB",
-        price: "~$120 used",
-        sdxl: "✓",
-        flux: "GGUF slow",
-        ltxVideo: "✗",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes: "Same situation as 2080 Super. Works for basic SD workflows.",
-      },
-    ],
-  },
-  // ── A TIER — MOBILE / LAPTOP ──────────────────────────────────────────────────
-  {
-    tier: "A",
-    tierLabel: "Mobile",
-    tierColor: "#38bdf8",
-    brand: "NVIDIA",
-    arch: "Laptop GPUs (40 & 30 series)",
-    precision: "fp16 · bf16 (40 series)",
-    gpus: [
-      {
-        name: "RTX 4090 Laptop",
-        vram: "16GB",
-        price: "Expensive",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes: "Essentially an underclocked desktop 4080. Fantastic for AI work on the go.",
-      },
-      {
-        name: "RTX 4080 Laptop",
-        vram: "12GB",
-        price: "High",
-        sdxl: "✓",
-        flux: "fp8",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes: "12GB VRAM handles standard SDXL quickly and FLUX in fp8 mode well. Video is capped to shorter contexts.",
-      },
-      {
-        name: "RTX 3080M (16GB)",
-        vram: "16GB",
-        price: "~$1000 laptop",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes: "The 16GB variant is a hidden gem for budget laptop AI. Extremely capable.",
-      },
-      {
-        name: "RTX 3080M (8GB)",
-        vram: "8GB",
-        price: "~$800 laptop",
-        sdxl: "✓",
-        flux: "GGUF",
-        ltxVideo: "limited",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes: "The 8GB variant requires aggressive --lowvram settings. FLUX is heavily restricted to GGUF quantization.",
-      },
-      {
-        name: "RTX 4070 / 4060 Laptop",
-        vram: "8GB",
-        price: "Mid",
-        sdxl: "✓",
-        flux: "GGUF",
-        ltxVideo: "limited",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "slow",
-        notes: "Excellent 8GB entry point for modern laptops. Expect OOMs on large workflows, but handles SDXL perfectly.",
-      },
-      {
-        name: "RTX 3060 Mobile",
-        vram: "6GB",
-        price: "Budget",
-        sdxl: "slow",
-        flux: "very slow",
-        ltxVideo: "✗",
-        animatediff: "limited",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "very slow",
-        notes: "Bare minimum VRAM for 2026 workflows. Rely heavily on SD 1.5.",
-      },
-    ],
-  },
-  // ── C TIER — LEGACY ──────────────────────────────────────────────────────────
-  {
-    tier: "C",
-    tierLabel: "Legacy",
-    tierColor: "#eab308",
-    brand: "NVIDIA",
-    arch: "Pascal / Turing (10 & 16 series)",
-    precision: "fp32 / fp16",
-    gpus: [
-      {
-        name: "GTX 1080 Ti",
-        vram: "11GB",
-        price: "~$100 used",
-        sdxl: "slow",
-        flux: "very slow",
-        ltxVideo: "✗",
-        animatediff: "slow",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "slow",
-        notes:
-          "fp32 only. Old but has 11GB VRAM. It will render images but slowly. Lacks modern tensor cores. Functional for budget SD1.5/SDXL.",
-      },
-      {
-        name: "GTX 1080",
-        vram: "8GB",
-        price: "~$80 used",
-        sdxl: "very slow",
-        flux: "✗",
-        ltxVideo: "✗",
-        animatediff: "very slow",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "very slow",
-        notes:
-          "fp32 only. Functional but painful for modern models. Great for getting started on $0 budget with SD1.5.",
-      },
-      {
-        name: "GTX 1070 Ti / 1070",
-        vram: "8GB",
-        price: "~$60 used",
-        sdxl: "very slow",
-        flux: "✗",
-        ltxVideo: "✗",
-        animatediff: "very slow",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "very slow",
-        notes:
-          "Similar to 1080. It will create images, but expect 30-60+ seconds per generation even on basic models.",
-      },
-      {
-        name: "GTX 1660 Ti / 1660",
-        vram: "6GB",
-        price: "~$80 used",
-        sdxl: "SD1.5 only",
-        flux: "✗",
-        ltxVideo: "✗",
-        animatediff: "SD1.5 only",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "SD1.5 only",
-        notes:
-          "Turing architecture but missing tensor cores. 6GB makes it tough for SDXL, but fully capable of SD1.5 and basic LoRAs.",
-      },
-    ],
-  },
-  // ── B TIER — AMD ─────────────────────────────────────────────────────────────
-  {
-    tier: "B",
-    tierLabel: "Good (Linux)",
-    tierColor: "#f59e0b",
-    brand: "AMD",
-    arch: "RDNA 3/4 (7000/9000 series)",
-    precision: "fp16 · bf16 (ROCm Linux)",
-    gpus: [
-      {
-        name: "RX 9070 XT",
-        vram: "16GB",
-        price: "~$600",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "RDNA 4. 'A tier experience' per official ComfyUI wiki on latest ROCm. Linux only for full performance.",
-      },
-      {
-        name: "RX 7900 XTX",
-        vram: "24GB",
-        price: "~$700",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Best consumer AMD. 24GB on ROCm Linux nearly matches RTX 3090. Windows ROCm 20-30% slower.",
-      },
-      {
-        name: "RX 7900 XT",
-        vram: "20GB",
-        price: "~$500",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "20GB is excellent for AI. Linux ROCm highly recommended for this card.",
-      },
-      {
-        name: "RX 7800 XT",
-        vram: "16GB",
-        price: "~$380",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Value AMD option. 16GB on ROCm Linux performs well. Windows ROCm stable from 7000 series up.",
-      },
-    ],
-  },
-  // ── D TIER — MAC ─────────────────────────────────────────────────────────────
-  {
-    tier: "D",
-    tierLabel: "Slow",
-    tierColor: "#7a8a9a",
-    brand: "Apple Silicon",
-    arch: "M-series (Metal)",
-    precision: "fp32 · fp16 (no fp8)",
-    gpus: [
-      {
-        name: "M4 Max (128GB)",
-        vram: "128GB unified",
-        price: "~$4,000",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "✓",
-        hunyuan: "partial",
-        wan21: "partial",
-        lora: "✓",
-        notes:
-          "Massive unified memory fits everything. But no fp8 = slower than RTX 4080 for most workflows. macOS quirks break things regularly.",
-      },
-      {
-        name: "M3 Ultra (96GB)",
-        vram: "96GB unified",
-        price: "~$6,000",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "✓",
-        animatediff: "slow",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "Expensive and overkill for ComfyUI. No fp8 hardware means 2-5x slower than equivalent NVIDIA for diffusion.",
-      },
-      {
-        name: "M3 Max (48GB)",
-        vram: "48GB unified",
-        price: "~$3,500",
-        sdxl: "✓",
-        flux: "✓",
-        ltxVideo: "slow",
-        animatediff: "slow",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✓",
-        notes:
-          "SDXL and FLUX work but are slow. Many ops not properly GPU-accelerated on Metal.",
-      },
-      {
-        name: "M3 Pro / M3 (16–36GB)",
-        vram: "16–36GB unified",
-        price: "~$1,500–2,500",
-        sdxl: "✓",
-        flux: "fp16 slow",
-        ltxVideo: "✗",
-        animatediff: "very slow",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "slow",
-        notes:
-          "Functional for basic SDXL. Very slow for video. Better to use cloud for serious work on this hardware.",
-      },
-    ],
-  },
-  // ── F TIER ───────────────────────────────────────────────────────────────────
-  {
-    tier: "F",
-    tierLabel: "Don't Use",
-    tierColor: "#dc2626",
-    brand: "Qualcomm",
-    arch: "Snapdragon AI PC",
-    precision: "N/A",
-    gpus: [
-      {
-        name: "Snapdragon X Elite",
-        vram: "varies",
-        price: "varies",
-        sdxl: "✗",
-        flux: "✗",
-        ltxVideo: "✗",
-        animatediff: "✗",
-        hunyuan: "✗",
-        wan21: "✗",
-        lora: "✗",
-        notes:
-          "PyTorch does not work. ComfyUI will not run. Qualcomm has promised support for years — avoid entirely until proven.",
-      },
-    ],
-  },
-];
+import { useState, useEffect, useRef } from "react";
 
-// ── MODEL REFERENCE ────────────────────────────────────────────────────────────
-const MODELS = [
-  // IMAGE
-  {
-    category: "Image — Current Best",
-    color: "#22c55e",
-    entries: [
-      {
-        name: "FLUX.1 Dev",
-        type: "Diffusion (DiT)",
-        vram: "16GB (fp8) / 24GB (bf16)",
-        size: "23GB (bf16) / 12GB (fp8)",
-        folder: "models/diffusion_models/",
-        file: "flux1-dev.safetensors",
-        also: "OR models/checkpoints/ for single-file fp8 version",
-        source: "huggingface.co/black-forest-labs/FLUX.1-dev",
-        cfg: "1.0–3.5",
-        sampler: "euler / dpmpp_2m",
-        steps: "20–25",
-        requires:
-          "t5xxl_fp16.safetensors (text_encoders/) + clip_l.safetensors + ae.safetensors (vae/)",
-        notes:
-          "Best image quality model available locally. Non-commercial license. Use fp8 for 16GB cards.",
-        best_for:
-          "Portraits, photorealism, text in images, complex compositions",
-      },
-      {
-        name: "FLUX.1 Schnell",
-        type: "Diffusion (DiT) — Distilled",
-        vram: "12GB (fp8)",
-        size: "12GB (fp8 checkpoint)",
-        folder: "models/checkpoints/",
-        file: "flux1-schnell-fp8.safetensors",
-        also: "",
-        source: "huggingface.co/Comfy-Org/flux1-schnell",
-        cfg: "1.0",
-        sampler: "euler",
-        steps: "4",
-        requires: "Same CLIP/T5 encoders as Dev",
-        notes:
-          "4-step distilled model. Apache 2.0 license (commercial OK). Near Dev quality in ~6s on RTX 5080.",
-        best_for:
-          "Rapid prototyping, commercial use, high-throughput batch generation",
-      },
-      {
-        name: "FLUX.1 Kontext Dev",
-        type: "Diffusion (DiT) — Edit Model",
-        vram: "16GB (fp8)",
-        size: "12GB (fp8)",
-        folder: "models/diffusion_models/",
-        file: "flux1-kontext-dev.safetensors",
-        also: "",
-        source: "huggingface.co/black-forest-labs/FLUX.1-Kontext-dev",
-        cfg: "3.5",
-        sampler: "euler",
-        steps: "25",
-        requires: "t5xxl + clip_l + ae.safetensors",
-        notes:
-          "Image editing model — give it an image + instruction and it edits it. e.g. 'remove the person on the left'.",
-        best_for:
-          "Image editing, inpainting with text, style transfer with reference",
-      },
-      {
-        name: "SDXL Base 1.0",
-        type: "Latent Diffusion",
-        vram: "8GB+",
-        size: "6.9GB",
-        folder: "models/checkpoints/",
-        file: "sd_xl_base_1.0.safetensors",
-        also: "sd_xl_refiner_1.0.safetensors for optional refiner pass",
-        source: "huggingface.co/stabilityai/stable-diffusion-xl-base-1.0",
-        cfg: "7.0–7.5",
-        sampler: "dpmpp_2m",
-        steps: "25–30",
-        requires:
-          "Built-in CLIP. Optional: sdxl_vae.safetensors (models/vae/) for best colors",
-        notes:
-          "Workhorse model. Massive LoRA ecosystem on CivitAI. Works at 8GB with --normalvram.",
-        best_for:
-          "General use, LoRA training base, concept art, style transfer",
-      },
-      {
-        name: "SD 3.5 Large",
-        type: "MMDiT (Multimodal DiT)",
-        vram: "16GB (fp8)",
-        size: "8.9GB (fp8)",
-        folder: "models/checkpoints/",
-        file: "sd3.5_large_fp8_scaled.safetensors",
-        also: "",
-        source: "huggingface.co/stabilityai/stable-diffusion-3.5-large",
-        cfg: "4.5–7.0",
-        sampler: "dpmpp_2m",
-        steps: "28",
-        requires: "clip_g + clip_l + t5xxl text encoders",
-        notes:
-          "Latest Stability AI model. Better than SDXL for photorealism. Non-commercial license.",
-        best_for: "High quality photorealism when FLUX Dev is too slow",
-      },
-      {
-        name: "Stable Diffusion 1.5",
-        type: "Latent Diffusion (UNet)",
-        vram: "4GB (fp16)",
-        size: "2GB (fp16 pruned)",
-        folder: "models/checkpoints/",
-        file: "v1-5-pruned-emaonly.ckpt",
-        also: "",
-        source: "huggingface.co/stable-diffusion-v1-5",
-        cfg: "7.0–7.5",
-        sampler: "dpmpp_2m",
-        steps: "20",
-        requires: "Built-in CLIP encoder",
-        notes:
-          "Access to the largest LoRA ecosystem ever. GTX 1660 Ti compatible. Huge CivitAI library.",
-        best_for: "Anime, characters, legacy LoRA compatibility, 6GB GPU users",
-      },
-      {
-        name: "Qwen-Image 6B",
-        type: "DiT (Alibaba)",
-        vram: "12GB (fp8)",
-        size: "~8GB (fp8)",
-        folder: "models/diffusion_models/",
-        file: "qwen_image_6b_fp8.safetensors",
-        also: "",
-        source: "huggingface.co/Comfy-Org/Qwen-Image_ComfyUI",
-        cfg: "3.5",
-        sampler: "euler",
-        steps: "25",
-        requires: "qwen_image_text_encoder.safetensors",
-        notes:
-          "Alibaba's 6B model. Excellent for multilingual text rendering in images. Faster than FLUX on 16GB cards.",
-        best_for:
-          "Text in images, multilingual content, editing with natural language",
-      },
-    ],
-  },
-  // VIDEO
-  {
-    category: "Video — Current Best",
-    color: "#38bdf8",
-    entries: [
-      {
-        name: "LTX Video 2.3 (LTX-V)",
-        type: "Video DiT",
-        vram: "12GB (fp8) / 16GB (bf16)",
-        size: "9.7GB",
-        folder: "models/video_models/",
-        file: "ltx-video-2b-v0.9.5.safetensors",
-        also: "",
-        source: "huggingface.co/Lightricks/LTX-Video",
-        cfg: "3.0–4.0",
-        sampler: "dpmpp_2m",
-        steps: "20–25",
-        requires: "ComfyUI-LTXVideo custom node + VideoHelperSuite",
-        notes:
-          "Fastest local video model. 9:16 vertical format native. ~47s for 97 frames on RTX 5080. neuraldrift primary video model.",
-        best_for:
-          "YouTube Shorts, TikTok, Instagram Reels, short cinematic clips",
-      },
-      {
-        name: "Wan 2.1 T2V 14B",
-        type: "Video DiT (Alibaba)",
-        vram: "60–70GB (bf16) — needs H100/cloud",
-        size: "~28GB",
-        folder: "models/diffusion_models/",
-        file: "wan2.1_t2v_14B_bf16.safetensors",
-        also: "wan2.1_i2v_720p_14B_fp8 for image-to-video",
-        source: "huggingface.co/Wan-AI/Wan2.1-T2V-14B",
-        cfg: "6.0",
-        sampler: "dpmpp_2m",
-        steps: "50",
-        requires:
-          "umt5_xxl text encoder + wan_2.1_vae.safetensors + clip_vision_h.safetensors",
-        notes:
-          "Highest quality video model available locally. Requires 60GB+ VRAM in bf16. Use cloud (RunPod A100/H100) for local < 32GB.",
-        best_for:
-          "High-quality video, 720p generation, image-to-video conversion",
-      },
-      {
-        name: "Wan 2.1 T2V 1.3B",
-        type: "Video DiT (Alibaba) — Lite",
-        vram: "8–10GB",
-        size: "~3GB",
-        folder: "models/diffusion_models/",
-        file: "wan2.1_t2v_1.3B_bf16.safetensors",
-        also: "",
-        source: "huggingface.co/Wan-AI/Wan2.1-T2V-1.3B",
-        cfg: "5.0",
-        sampler: "dpmpp_2m",
-        steps: "30",
-        requires: "umt5_xxl (can use fp8 version) + wan_2.1_vae.safetensors",
-        notes:
-          "The 1.3B lite version fits on 8–10GB cards. Lower quality than 14B but accessible. Good for experimentation.",
-        best_for:
-          "Budget GPU video generation, quick previews before cloud renders",
-      },
-      {
-        name: "HunyuanVideo (13B)",
-        type: "Video DiT (Tencent)",
-        vram: "80GB+ (bf16) — H100 minimum",
-        size: "~26GB",
-        folder: "models/diffusion_models/",
-        file: "hunyuan_video_720_cfgdistill_fp8_e4m3fn.safetensors",
-        also: "",
-        source: "huggingface.co/tencent/HunyuanVideo",
-        cfg: "1.0 (distilled)",
-        sampler: "euler",
-        steps: "50",
-        requires: "llava_llama3 vision encoder + hunyuan_video_vae_bf16",
-        notes:
-          "Highest quality video model. 80GB+ in bf16. Use cloud only. RTX 5090 32GB can run fp8 with offloading but very slow.",
-        best_for: "Professional-grade video output, premium cloud renders",
-      },
-      {
-        name: "AnimateDiff v3 (SD1.5)",
-        type: "Motion Module for SD1.5",
-        vram: "8GB+",
-        size: "1.7GB",
-        folder: "custom_nodes/ComfyUI-AnimateDiff-Evolved/models/",
-        file: "mm_sd_v15_v3.ckpt",
-        also: "mm_sdxl_v10_beta.ckpt for SDXL",
-        source: "huggingface.co/guoyww/animatediff",
-        cfg: "7.0–8.0",
-        sampler: "dpmpp_2m",
-        steps: "20–25",
-        requires: "ComfyUI-AnimateDiff-Evolved + VideoHelperSuite",
-        notes:
-          "Converts any SD1.5/SDXL model into video. 8GB friendly. Massive LoRA compatibility for character consistency.",
-        best_for: "Looping social content, character animation, seamless loops",
-      },
-    ],
-  },
-  // UPSCALING
-  {
-    category: "Upscaling & Enhancement",
-    color: "#f59e0b",
-    entries: [
-      {
-        name: "RealESRGAN x4plus",
-        type: "Upscale Model (ESRGAN)",
-        vram: "2GB+",
-        size: "64MB",
-        folder: "models/upscale_models/",
-        file: "RealESRGAN_x4plus.pth",
-        also: "",
-        source: "github.com/xinntao/Real-ESRGAN/releases",
-        cfg: "N/A",
-        sampler: "N/A",
-        steps: "N/A",
-        requires: "Nothing extra — built into ComfyUI nodes",
-        notes:
-          "The standard 4x photorealistic upscaler. Runs on any GPU. Essential finishing step.",
-        best_for: "Photo upscaling, general 4x enhancement",
-      },
-      {
-        name: "RealESRGAN x4plus Anime",
-        type: "Upscale Model (ESRGAN)",
-        vram: "2GB+",
-        size: "18MB",
-        folder: "models/upscale_models/",
-        file: "RealESRGAN_x4plus_anime_6B.pth",
-        also: "",
-        source: "github.com/xinntao/Real-ESRGAN/releases",
-        cfg: "N/A",
-        sampler: "N/A",
-        steps: "N/A",
-        requires: "Nothing extra",
-        notes:
-          "Anime-optimized. 6-block architecture preserves flat colors and crisp linework.",
-        best_for: "Anime upscaling, illustration enhancement, line art",
-      },
-      {
-        name: "4x-UltraSharp",
-        type: "Upscale Model (SwinIR variant)",
-        vram: "2GB+",
-        size: "133MB",
-        folder: "models/upscale_models/",
-        file: "4x-UltraSharp.pth",
-        also: "",
-        source: "civitai.com (search: 4x-UltraSharp)",
-        cfg: "N/A",
-        sampler: "N/A",
-        steps: "N/A",
-        requires: "Nothing extra",
-        notes:
-          "Community favorite for photorealistic details. Often preferred over stock ESRGAN for faces.",
-        best_for: "Portrait sharpening, detail enhancement, face upscaling",
-      },
-    ],
-  },
-  // VAE
-  {
-    category: "VAEs (Required for most models)",
-    color: "#c084fc",
-    entries: [
-      {
-        name: "FLUX VAE (ae.safetensors)",
-        type: "VAE",
-        vram: "1GB",
-        size: "335MB",
-        folder: "models/vae/",
-        file: "ae.safetensors",
-        also: "",
-        source:
-          "huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/ae.safetensors",
-        cfg: "N/A",
-        sampler: "N/A",
-        steps: "N/A",
-        requires: "Required for all FLUX workflows",
-        notes:
-          "The only VAE for FLUX models. Single file, shared across Dev, Schnell, and Kontext.",
-        best_for: "All FLUX workflows",
-      },
-      {
-        name: "SDXL VAE (sdxl_vae)",
-        type: "VAE",
-        vram: "512MB",
-        size: "320MB",
-        folder: "models/vae/",
-        file: "sdxl_vae.safetensors",
-        also: "",
-        source: "huggingface.co/stabilityai/sdxl-vae",
-        cfg: "N/A",
-        sampler: "N/A",
-        steps: "N/A",
-        requires: "Optional but strongly recommended for SDXL",
-        notes:
-          "Fixes SDXL color shift issue with the baked-in VAE. Always use this for best SDXL colors.",
-        best_for: "All SDXL workflows",
-      },
-      {
-        name: "Wan VAE",
-        type: "VAE (Video)",
-        vram: "1GB",
-        size: "450MB",
-        folder: "models/vae/",
-        file: "wan_2.1_vae.safetensors",
-        also: "",
-        source: "huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged",
-        cfg: "N/A",
-        sampler: "N/A",
-        steps: "N/A",
-        requires: "Required for all Wan 2.1 video workflows",
-        notes:
-          "Required for Wan 2.1 video decode. Without it you get blank black video output.",
-        best_for: "Wan 2.1 video generation",
-      },
-    ],
-  },
-];
+// ─── COMPUTEATLAS AD COMPONENTS ───
 
-// ── CLOUD SERVICES ─────────────────────────────────────────────────────────────
-const CLOUD_SERVICES = [
+function ComputeAtlasBanner({ variant = "default" }) {
+  const [hovered, setHovered] = useState(false);
+  
+  if (variant === "upgrade") {
+    return (
+      <a
+        href="https://www.computeatlas.ai/recommended-builds"
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          display: "block", textDecoration: "none", marginBottom: 28,
+          padding: "20px 24px", borderRadius: 12,
+          background: hovered 
+            ? "linear-gradient(135deg, rgba(139,92,246,0.15), rgba(245,158,11,0.15))" 
+            : "linear-gradient(135deg, rgba(139,92,246,0.08), rgba(245,158,11,0.08))",
+          border: `1px solid ${hovered ? "rgba(139,92,246,0.35)" : "rgba(139,92,246,0.15)"}`,
+          transition: "all 0.3s",
+          transform: hovered ? "translateY(-1px)" : "none",
+          boxShadow: hovered ? "0 8px 32px rgba(139,92,246,0.12)" : "none",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+          <div style={{ 
+            width: 44, height: 44, borderRadius: 10, 
+            background: "linear-gradient(135deg, #8b5cf6, #f59e0b)", 
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 22, flexShrink: 0,
+          }}>⚡</div>
+          <div style={{ flex: 1, minWidth: 200 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+              <span style={{ fontSize: 16, fontWeight: 700, color: "#f0f0f0", fontFamily: "'Space Grotesk', sans-serif" }}>Ready to upgrade?</span>
+              <span style={{ 
+                padding: "2px 8px", borderRadius: 4, fontSize: 10, fontWeight: 700, 
+                background: "rgba(139,92,246,0.2)", color: "#a78bfa", 
+                fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.06em",
+              }}>PARTNER</span>
+            </div>
+            <p style={{ fontSize: 13, color: "#9ca3af", margin: 0, lineHeight: 1.5, fontFamily: "'Space Grotesk', sans-serif" }}>
+              ComputeAtlas.ai builds AI-optimized workstations purpose-built for ComfyUI, Flux, and LLM workflows. See recommended builds →
+            </p>
+          </div>
+          <div style={{ 
+            padding: "8px 16px", borderRadius: 8, 
+            background: hovered ? "rgba(139,92,246,0.25)" : "rgba(139,92,246,0.12)", 
+            color: "#a78bfa", fontSize: 13, fontWeight: 600, 
+            fontFamily: "'JetBrains Mono', monospace", transition: "all 0.2s",
+            whiteSpace: "nowrap",
+          }}>
+            View Builds
+          </div>
+        </div>
+      </a>
+    );
+  }
+
+  if (variant === "inline") {
+    return (
+      <a
+        href="https://www.computeatlas.ai"
+        target="_blank"
+        rel="noopener noreferrer"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        style={{
+          display: "block", textDecoration: "none", marginBottom: 48,
+          padding: "16px 20px", borderRadius: 10,
+          background: hovered ? "rgba(139,92,246,0.08)" : "rgba(139,92,246,0.04)",
+          border: `1px solid ${hovered ? "rgba(139,92,246,0.25)" : "rgba(139,92,246,0.1)"}`,
+          transition: "all 0.25s",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <span style={{ 
+            padding: "2px 8px", borderRadius: 4, fontSize: 10, fontWeight: 700, 
+            background: "rgba(139,92,246,0.15)", color: "#a78bfa", 
+            fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.06em",
+          }}>AD</span>
+          <span style={{ fontSize: 14, color: "#d1d5db", fontFamily: "'Space Grotesk', sans-serif" }}>
+            Need a full AI rig? <span style={{ color: "#a78bfa", fontWeight: 600 }}>ComputeAtlas.ai</span> — AI workstation builder with recommended builds, GPU comparison, and hardware estimator.
+          </span>
+        </div>
+      </a>
+    );
+  }
+
+  // variant === "hero" — big banner
+  return (
+    <a
+      href="https://www.computeatlas.ai"
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "block", textDecoration: "none", marginTop: 48, marginBottom: 16,
+        borderRadius: 16, overflow: "hidden", position: "relative",
+        background: "linear-gradient(135deg, #1a0a2e 0%, #0d1a2e 50%, #1a1a0d 100%)",
+        border: `1px solid ${hovered ? "rgba(139,92,246,0.4)" : "rgba(139,92,246,0.15)"}`,
+        transition: "all 0.3s",
+        transform: hovered ? "translateY(-2px)" : "none",
+        boxShadow: hovered ? "0 12px 48px rgba(139,92,246,0.15)" : "none",
+      }}
+    >
+      {/* Decorative grid */}
+      <div style={{
+        position: "absolute", inset: 0, opacity: 0.04,
+        backgroundImage: "linear-gradient(rgba(139,92,246,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(139,92,246,0.5) 1px, transparent 1px)",
+        backgroundSize: "40px 40px",
+      }} />
+      {/* Glow accents */}
+      <div style={{
+        position: "absolute", top: -40, right: -40, width: 200, height: 200,
+        background: "radial-gradient(circle, rgba(139,92,246,0.15), transparent 70%)",
+        borderRadius: "50%",
+      }} />
+      <div style={{
+        position: "absolute", bottom: -30, left: -30, width: 160, height: 160,
+        background: "radial-gradient(circle, rgba(245,158,11,0.1), transparent 70%)",
+        borderRadius: "50%",
+      }} />
+      
+      <div style={{ position: "relative", padding: "36px 32px", display: "flex", alignItems: "center", gap: 28, flexWrap: "wrap" }}>
+        <div style={{ flexShrink: 0 }}>
+          <div style={{
+            width: 72, height: 72, borderRadius: 16,
+            background: "linear-gradient(135deg, #8b5cf6, #6d28d9)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 36, boxShadow: "0 8px 24px rgba(139,92,246,0.3)",
+          }}>🖥️</div>
+        </div>
+        
+        <div style={{ flex: 1, minWidth: 240 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+            <span style={{ 
+              fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", 
+              color: "#a78bfa", fontFamily: "'JetBrains Mono', monospace",
+            }}>POWERED BY OUR PARTNER</span>
+          </div>
+          <h3 style={{ 
+            fontSize: 24, fontWeight: 700, color: "#f0f0f0", margin: "0 0 8px 0", 
+            fontFamily: "'Playfair Display', serif", lineHeight: 1.2,
+          }}>
+            Build Your AI Workstation
+          </h3>
+          <p style={{ fontSize: 14, color: "#9ca3af", margin: 0, lineHeight: 1.6, fontFamily: "'Space Grotesk', sans-serif", maxWidth: 440 }}>
+            ComputeAtlas.ai helps you spec the perfect AI rig. GPU builder, side-by-side comparison, VRAM estimator, and curated builds for every budget.
+          </p>
+          <div style={{ display: "flex", gap: 16, marginTop: 14, flexWrap: "wrap" }}>
+            {["AI Workstation Builder", "GPU Compare Tool", "Hardware Estimator", "Curated Builds"].map((f, i) => (
+              <span key={i} style={{
+                padding: "4px 10px", borderRadius: 6, fontSize: 11, fontWeight: 500,
+                background: "rgba(139,92,246,0.1)", color: "#c4b5fd",
+                fontFamily: "'JetBrains Mono', monospace",
+              }}>{f}</span>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ flexShrink: 0 }}>
+          <div style={{
+            padding: "12px 24px", borderRadius: 10,
+            background: hovered ? "linear-gradient(135deg, #8b5cf6, #7c3aed)" : "linear-gradient(135deg, #7c3aed, #6d28d9)",
+            color: "#fff", fontSize: 15, fontWeight: 700,
+            fontFamily: "'Space Grotesk', sans-serif",
+            boxShadow: hovered ? "0 4px 20px rgba(139,92,246,0.4)" : "0 2px 8px rgba(139,92,246,0.2)",
+            transition: "all 0.2s",
+          }}>
+            Explore ComputeAtlas →
+          </div>
+          <div style={{ textAlign: "center", marginTop: 6, fontSize: 11, color: "#6b7280", fontFamily: "'JetBrains Mono', monospace" }}>
+            computeatlas.ai
+          </div>
+        </div>
+      </div>
+    </a>
+  );
+}
+
+// ─── GPU DATABASE ───
+const GPU_DATA = {
+  // Desktop GPUs
+  "RTX 5090": { vram: 32, arch: "Blackwell", tier: "flagship", type: "desktop", tdp: 575, bus: "PCIe 5.0", msrp: "$1,999",
+    models: [
+      { name: "Flux.1 Dev", type: "Image Gen", notes: "Full model, no quantization needed. Fast batch generation." },
+      { name: "SDXL + LoRAs", type: "Image Gen", notes: "Multiple LoRAs stacked. Train custom LoRAs locally." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "High-res video at full quality. Extended clip lengths." },
+      { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Full 70B quantized fits. Fast inference." },
+      { name: "Whisper Large V3", type: "Audio", notes: "Real-time transcription with headroom to spare." },
+    ],
+    verdict: "The absolute beast. Nothing in consumer-land touches this. Run anything you want — full Flux, 70B LLMs quantized, video gen, multi-LoRA stacks. You have zero limitations for local AI work.",
+    canHandle: true,
+  },
+  "RTX 5080": { vram: 16, arch: "Blackwell", tier: "high-end", type: "desktop", tdp: 360, bus: "PCIe 5.0", msrp: "$999",
+    models: [
+      { name: "Flux.1 Dev (FP8)", type: "Image Gen", notes: "Runs great with FP8 quantization. Near-lossless quality." },
+      { name: "SDXL + LoRAs", type: "Image Gen", notes: "Comfortable with 2-3 LoRAs stacked." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "Short clips work well. Medium res recommended." },
+      { name: "Llama 3.1 8B", type: "LLM", notes: "Full precision. Blazing fast inference." },
+      { name: "Whisper Large V3", type: "Audio", notes: "No issues. Plenty of VRAM." },
+    ],
+    verdict: "Sweet spot for serious AI creators. 16GB VRAM handles Flux, SDXL, video gen, and 8B LLMs without breaking a sweat. You'll only hit walls on unquantized 70B+ models.",
+    canHandle: true,
+  },
+  "RTX 5070 Ti": { vram: 16, arch: "Blackwell", tier: "upper-mid", type: "desktop", tdp: 300, bus: "PCIe 5.0", msrp: "$749",
+    models: [
+      { name: "Flux.1 Dev (FP8)", type: "Image Gen", notes: "Solid performance with quantization." },
+      { name: "SDXL", type: "Image Gen", notes: "Great performance. LoRA stacking works." },
+      { name: "LTX Video Distilled", type: "Video Gen", notes: "Use distilled variant for best results." },
+      { name: "Llama 3.1 8B", type: "LLM", notes: "Full precision, good speed." },
+      { name: "Whisper Medium", type: "Audio", notes: "Recommended over Large for speed balance." },
+    ],
+    verdict: "Great mid-range AI card. Same 16GB as the 5080 means same model compatibility, just slightly slower throughput. Excellent value for ComfyUI workflows.",
+    canHandle: true,
+  },
+  "RTX 5070": { vram: 12, arch: "Blackwell", tier: "mid", type: "desktop", tdp: 250, bus: "PCIe 5.0", msrp: "$549",
+    models: [
+      { name: "SDXL", type: "Image Gen", notes: "Runs well. Avoid heavy LoRA stacks." },
+      { name: "Flux.1 Schnell (Q4)", type: "Image Gen", notes: "Needs aggressive quantization. Noticeable quality loss." },
+      { name: "SD 1.5", type: "Image Gen", notes: "Runs perfectly. Fast." },
+      { name: "Llama 3.1 8B (Q4)", type: "LLM", notes: "Quantized fits. Decent speed." },
+      { name: "Whisper Medium", type: "Audio", notes: "Works well within VRAM budget." },
+    ],
+    verdict: "12GB is workable but you'll feel the squeeze on newer models like Flux. SDXL is your sweet spot. Video gen will be limited. Consider cloud GPU for heavy jobs.",
+    canHandle: true,
+  },
+  "RTX 4090": { vram: 24, arch: "Ada Lovelace", tier: "flagship", type: "desktop", tdp: 450, bus: "PCIe 4.0", msrp: "$1,599",
+    models: [
+      { name: "Flux.1 Dev", type: "Image Gen", notes: "Runs at full FP16. Excellent speed." },
+      { name: "SDXL + LoRAs", type: "Image Gen", notes: "Stack LoRAs freely. Train them too." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "Handles full quality. Longer clips possible." },
+      { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Tight fit but works with 4-bit quantization." },
+      { name: "Whisper Large V3", type: "Audio", notes: "No issues whatsoever." },
+    ],
+    verdict: "Still the king for most AI creators. 24GB VRAM means Flux at full precision, video gen, and even 70B LLMs quantized. If you already own one, there's little reason to upgrade yet.",
+    canHandle: true,
+  },
+  "RTX 4080 Super": { vram: 16, arch: "Ada Lovelace", tier: "high-end", type: "desktop", tdp: 320, bus: "PCIe 4.0", msrp: "$999",
+    models: [
+      { name: "Flux.1 Dev (FP8)", type: "Image Gen", notes: "Good with quantization. Slightly slower than 4090." },
+      { name: "SDXL + LoRAs", type: "Image Gen", notes: "Handles 2-3 LoRAs comfortably." },
+      { name: "LTX Video Distilled", type: "Video Gen", notes: "Use distilled models. Short clips." },
+      { name: "Llama 3.1 8B", type: "LLM", notes: "Full precision. Fast." },
+      { name: "Whisper Large V3", type: "Audio", notes: "Fits fine." },
+    ],
+    verdict: "Solid 16GB card for AI work. Handles the core ComfyUI workflow — SDXL, Flux quantized, 8B LLMs. You'll want cloud for anything bigger than that.",
+    canHandle: true,
+  },
+  "RTX 4070 Ti Super": { vram: 16, arch: "Ada Lovelace", tier: "upper-mid", type: "desktop", tdp: 285, bus: "PCIe 4.0", msrp: "$799",
+    models: [
+      { name: "Flux.1 Dev (FP8)", type: "Image Gen", notes: "Works with quantization." },
+      { name: "SDXL", type: "Image Gen", notes: "Great performance." },
+      { name: "SD 1.5", type: "Image Gen", notes: "Blazing fast." },
+      { name: "Llama 3.1 8B", type: "LLM", notes: "Good inference speed." },
+      { name: "Whisper Medium", type: "Audio", notes: "Recommended for best speed/quality balance." },
+    ],
+    verdict: "16GB at a lower price point. Same model compatibility as 4080 Super, just with less compute throughput. Great value for ComfyUI-focused workflows.",
+    canHandle: true,
+  },
+  "RTX 4070": { vram: 12, arch: "Ada Lovelace", tier: "mid", type: "desktop", tdp: 200, bus: "PCIe 4.0", msrp: "$549",
+    models: [
+      { name: "SDXL", type: "Image Gen", notes: "Runs well at default settings." },
+      { name: "Flux.1 Schnell (Q4)", type: "Image Gen", notes: "Heavy quantization required. Quality trade-off." },
+      { name: "SD 1.5", type: "Image Gen", notes: "Perfect. Fast." },
+      { name: "Llama 3.1 8B (Q4)", type: "LLM", notes: "Quantized only." },
+    ],
+    verdict: "12GB is the minimum for modern AI gen. SDXL works, Flux needs heavy quantization. You can produce content but you'll hit VRAM walls on newer, larger models.",
+    canHandle: true,
+  },
+  "RTX 4060 Ti 16GB": { vram: 16, arch: "Ada Lovelace", tier: "mid", type: "desktop", tdp: 165, bus: "PCIe 4.0", msrp: "$449",
+    models: [
+      { name: "Flux.1 Dev (FP8)", type: "Image Gen", notes: "Fits in VRAM but generation is slow." },
+      { name: "SDXL", type: "Image Gen", notes: "Works. Slower than higher-tier cards." },
+      { name: "Llama 3.1 8B", type: "LLM", notes: "Full precision fits. Moderate speed." },
+    ],
+    verdict: "The 16GB version is surprisingly capable for the price. VRAM matches high-end cards — you just pay in generation speed. Budget-friendly entry into serious AI work.",
+    canHandle: true,
+  },
+  "RTX 4060 Ti 8GB": { vram: 8, arch: "Ada Lovelace", tier: "mid", type: "desktop", tdp: 160, bus: "PCIe 4.0", msrp: "$399",
+    models: [
+      { name: "SD 1.5", type: "Image Gen", notes: "Works fine." },
+      { name: "SDXL (optimized)", type: "Image Gen", notes: "Tight. Use --lowvram flags." },
+      { name: "Llama 3.1 8B (Q4)", type: "LLM", notes: "Heavily quantized only." },
+    ],
+    verdict: "8GB is getting tight for modern AI. SD 1.5 is comfortable, SDXL requires optimization tricks. Flux and video gen are essentially off the table. Consider cloud GPU for heavier work.",
+    canHandle: "limited",
+  },
+  "RTX 4060": { vram: 8, arch: "Ada Lovelace", tier: "entry", type: "desktop", tdp: 115, bus: "PCIe 4.0", msrp: "$299",
+    models: [
+      { name: "SD 1.5", type: "Image Gen", notes: "Primary use case. Works well." },
+      { name: "SDXL (optimized)", type: "Image Gen", notes: "Possible with --lowvram. Slow." },
+      { name: "Whisper Small", type: "Audio", notes: "Smaller model fits." },
+    ],
+    verdict: "Entry-level for AI. SD 1.5 is your main tool here. SDXL is possible but painful. Flux, video gen, and large LLMs need cloud compute. Good for learning the basics.",
+    canHandle: "limited",
+  },
+  "RTX 3090": { vram: 24, arch: "Ampere", tier: "flagship", type: "desktop", tdp: 350, bus: "PCIe 4.0", msrp: "$1,499 (launch)",
+    models: [
+      { name: "Flux.1 Dev", type: "Image Gen", notes: "24GB VRAM fits full model. Slower than 40-series but works." },
+      { name: "SDXL + LoRAs", type: "Image Gen", notes: "Comfortable. LoRA training possible." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "Works. Expect longer render times vs newer cards." },
+      { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Fits quantized. Slower inference." },
+    ],
+    verdict: "Still a powerhouse thanks to 24GB VRAM. Model compatibility matches the 4090 — you just wait longer. Excellent used-market value for AI creators on a budget.",
+    canHandle: true,
+  },
+  "RTX 3080 Ti": { vram: 12, arch: "Ampere", tier: "high-end", type: "desktop", tdp: 350, bus: "PCIe 4.0", msrp: "$1,199 (launch)",
+    models: [
+      { name: "SDXL", type: "Image Gen", notes: "Works at default settings." },
+      { name: "SD 1.5", type: "Image Gen", notes: "Fast and comfortable." },
+      { name: "Flux.1 Schnell (Q4)", type: "Image Gen", notes: "Heavy quantization needed." },
+      { name: "Llama 3.1 8B (Q4)", type: "LLM", notes: "Quantized fits." },
+    ],
+    verdict: "12GB holds it back from flagship territory. SDXL works, but Flux and video gen need quantization or cloud. Still useful for core ComfyUI workflows.",
+    canHandle: true,
+  },
+  "RTX 3080 16GB": { vram: 16, arch: "Ampere", tier: "high-end", type: "desktop/laptop", tdp: 320, bus: "PCIe 4.0", msrp: "Varies",
+    models: [
+      { name: "Flux.1 Dev (FP8)", type: "Image Gen", notes: "Quantized fits. Slower than 40-series." },
+      { name: "SDXL + LoRAs", type: "Image Gen", notes: "Comfortable with 2-3 LoRAs." },
+      { name: "Llama 3.1 8B", type: "LLM", notes: "Full precision. Moderate speed." },
+      { name: "Whisper Large V3", type: "Audio", notes: "Fits in VRAM." },
+    ],
+    verdict: "The 16GB variant is a hidden gem. Same VRAM as RTX 4080 Super means same model compatibility, just older architecture. Great for laptop AI rigs.",
+    canHandle: true,
+  },
+  "RTX 3080 10GB": { vram: 10, arch: "Ampere", tier: "high-end", type: "desktop", tdp: 320, bus: "PCIe 4.0", msrp: "$699 (launch)",
+    models: [
+      { name: "SDXL", type: "Image Gen", notes: "Tight but works." },
+      { name: "SD 1.5", type: "Image Gen", notes: "Comfortable." },
+      { name: "Llama 3.1 8B (Q4)", type: "LLM", notes: "Quantized fits." },
+    ],
+    verdict: "10GB is awkward — more than 8 but not enough for 16GB-class models. SDXL works, Flux doesn't realistically fit. Solid for SD 1.5 and basic workflows.",
+    canHandle: "limited",
+  },
+  "RTX 3070": { vram: 8, arch: "Ampere", tier: "mid", type: "desktop", tdp: 220, bus: "PCIe 4.0", msrp: "$499 (launch)",
+    models: [
+      { name: "SD 1.5", type: "Image Gen", notes: "Primary tool. Works well." },
+      { name: "SDXL (optimized)", type: "Image Gen", notes: "Tight. --lowvram flags needed." },
+    ],
+    verdict: "8GB Ampere. SD 1.5 is your home base. SDXL is possible with optimization. Modern models like Flux and video gen need cloud. Still useful for learning and lighter workflows.",
+    canHandle: "limited",
+  },
+  "RTX 3060 12GB": { vram: 12, arch: "Ampere", tier: "entry", type: "desktop", tdp: 170, bus: "PCIe 4.0", msrp: "$329 (launch)",
+    models: [
+      { name: "SDXL", type: "Image Gen", notes: "12GB VRAM is the saving grace. Works at defaults." },
+      { name: "SD 1.5", type: "Image Gen", notes: "Comfortable and fast enough." },
+      { name: "Flux.1 Schnell (Q4)", type: "Image Gen", notes: "Heavy quantization. Slow but functional." },
+      { name: "Llama 3.1 8B (Q4)", type: "LLM", notes: "Quantized fits." },
+    ],
+    verdict: "The budget AI card legend. 12GB VRAM punches way above its price class. SDXL works, even heavily quantized Flux is possible. Slow but surprisingly capable.",
+    canHandle: true,
+  },
+  "RTX 3060 Ti": { vram: 8, arch: "Ampere", tier: "mid", type: "desktop", tdp: 200, bus: "PCIe 4.0", msrp: "$399 (launch)",
+    models: [
+      { name: "SD 1.5", type: "Image Gen", notes: "Works great." },
+      { name: "SDXL (optimized)", type: "Image Gen", notes: "Tight. Use optimizations." },
+    ],
+    verdict: "Faster compute than the 3060 but only 8GB VRAM, which is the bottleneck for AI. Ironically less capable for AI than the cheaper 3060 12GB.",
+    canHandle: "limited",
+  },
+  "GTX 1660 Ti": { vram: 6, arch: "Turing", tier: "legacy", type: "desktop/laptop", tdp: 120, bus: "PCIe 3.0", msrp: "$279 (launch)",
+    models: [
+      { name: "SD 1.5 (optimized)", type: "Image Gen", notes: "Possible with --lowvram. Slow." },
+    ],
+    verdict: "6GB VRAM is below the practical minimum for most modern AI models. SD 1.5 with heavy optimization is about all you can do. Cloud GPU is strongly recommended for any real AI work.",
+    canHandle: "limited",
+  },
+  "GTX 1660 Super": { vram: 6, arch: "Turing", tier: "legacy", type: "desktop", tdp: 125, bus: "PCIe 3.0", msrp: "$229 (launch)",
+    models: [
+      { name: "SD 1.5 (optimized)", type: "Image Gen", notes: "Barely. Very slow." },
+    ],
+    verdict: "Same 6GB limitation as the 1660 Ti. You can technically run SD 1.5 but it's not a pleasant experience. Time to upgrade or use cloud compute.",
+    canHandle: "limited",
+  },
+  "GTX 1650": { vram: 4, arch: "Turing", tier: "legacy", type: "desktop/laptop", tdp: 75, bus: "PCIe 3.0", msrp: "$149 (launch)",
+    models: [],
+    verdict: "4GB VRAM cannot run modern AI generation models. Even SD 1.5 will struggle or fail. You need cloud GPU services (RunPod, Vast.ai) or a hardware upgrade to do AI generation.",
+    canHandle: false,
+  },
+  "GTX 1050 Ti": { vram: 4, arch: "Pascal", tier: "legacy", type: "desktop/laptop", tdp: 75, bus: "PCIe 3.0", msrp: "$139 (launch)",
+    models: [],
+    verdict: "Not viable for AI generation. 4GB VRAM and Pascal architecture are too old and too limited. Use cloud GPU services or upgrade your hardware.",
+    canHandle: false,
+  },
+  "Intel Arc A770": { vram: 16, arch: "Alchemist", tier: "mid", type: "desktop", tdp: 225, bus: "PCIe 4.0", msrp: "$349",
+    models: [
+      { name: "SD 1.5", type: "Image Gen", notes: "Works via DirectML or IPEX. Slower than equivalent NVIDIA." },
+      { name: "SDXL", type: "Image Gen", notes: "Possible but driver/software support is inconsistent." },
+    ],
+    verdict: "16GB VRAM is great on paper, but Intel GPU support in ComfyUI and most AI tools is still rough. You'll spend more time debugging drivers than generating. NVIDIA is strongly recommended for AI work.",
+    canHandle: "limited",
+  },
+  "RX 7900 XTX": { vram: 24, arch: "RDNA 3", tier: "flagship", type: "desktop", tdp: 355, bus: "PCIe 4.0", msrp: "$999",
+    models: [
+      { name: "SDXL", type: "Image Gen", notes: "Works via ROCm on Linux. Windows support is limited." },
+      { name: "SD 1.5", type: "Image Gen", notes: "Works with DirectML or ROCm." },
+      { name: "Flux.1 Dev", type: "Image Gen", notes: "24GB VRAM fits it. ROCm required." },
+    ],
+    verdict: "24GB VRAM is fantastic, but AMD GPU support in AI tools is a constant uphill battle. ROCm on Linux works decently. Windows is painful. If you're Linux-savvy, it's viable. Otherwise, NVIDIA saves you headaches.",
+    canHandle: "limited",
+  },
+  "RX 7800 XT": { vram: 16, arch: "RDNA 3", tier: "upper-mid", type: "desktop", tdp: 263, bus: "PCIe 4.0", msrp: "$499",
+    models: [
+      { name: "SDXL", type: "Image Gen", notes: "ROCm on Linux. Inconsistent on Windows." },
+      { name: "SD 1.5", type: "Image Gen", notes: "Works via DirectML." },
+    ],
+    verdict: "Same AMD software story — hardware is capable but the ecosystem fights you. 16GB VRAM would be great on an NVIDIA card. On AMD, expect to troubleshoot frequently.",
+    canHandle: "limited",
+  },
+  "Apple M1 (8GB)": { vram: 8, arch: "Apple Silicon", tier: "entry", type: "laptop", tdp: 20, bus: "Unified Memory", msrp: "Varies",
+    models: [
+      { name: "SD 1.5", type: "Image Gen", notes: "Works via MPS backend. Slow but functional." },
+    ],
+    verdict: "8GB unified memory is shared with the OS, leaving ~5-6GB for AI. SD 1.5 works slowly. SDXL and newer models don't realistically fit. Good for experimenting, not production.",
+    canHandle: "limited",
+  },
+  "Apple M2 Pro (16GB)": { vram: 16, arch: "Apple Silicon", tier: "mid", type: "laptop", tdp: 30, bus: "Unified Memory", msrp: "Varies",
+    models: [
+      { name: "SDXL", type: "Image Gen", notes: "Works via MPS. Slower than discrete GPU." },
+      { name: "SD 1.5", type: "Image Gen", notes: "Comfortable." },
+      { name: "Llama 3.1 8B", type: "LLM", notes: "MLX framework. Good for inference." },
+    ],
+    verdict: "16GB unified memory with Apple's MPS backend handles SDXL and smaller LLMs. Not as fast as NVIDIA but surprisingly capable for a laptop. MLX ecosystem is maturing.",
+    canHandle: true,
+  },
+  "Apple M3 Max (36GB)": { vram: 36, arch: "Apple Silicon", tier: "high-end", type: "laptop", tdp: 40, bus: "Unified Memory", msrp: "Varies",
+    models: [
+      { name: "Flux.1 Dev", type: "Image Gen", notes: "Fits in unified memory. MPS backend." },
+      { name: "SDXL + LoRAs", type: "Image Gen", notes: "Very comfortable." },
+      { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Via MLX. Fits in 36GB unified." },
+      { name: "Whisper Large V3", type: "Audio", notes: "No issues." },
+    ],
+    verdict: "36GB unified memory is a beast for Apple Silicon. Flux, large LLMs, SDXL — all fit. Slower than a 4090 per-generation but the model compatibility is incredible for a laptop.",
+    canHandle: true,
+  },
+  "Apple M4 Max (48GB)": { vram: 48, arch: "Apple Silicon", tier: "flagship", type: "laptop", tdp: 45, bus: "Unified Memory", msrp: "Varies",
+    models: [
+      { name: "Flux.1 Dev", type: "Image Gen", notes: "Plenty of room. Full quality." },
+      { name: "SDXL + LoRAs", type: "Image Gen", notes: "Stack whatever you want." },
+      { name: "Llama 3.3 70B", type: "LLM", notes: "Near full precision via MLX." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "Works via MPS. Slower but functional." },
+      { name: "Whisper Large V3", type: "Audio", notes: "No issues." },
+    ],
+    verdict: "48GB unified memory rivals workstation GPUs for model compatibility. The MLX ecosystem makes this a legitimate AI development machine. Slower than desktop NVIDIA but remarkably capable.",
+    canHandle: true,
+  },
+};
+
+const CPU_DATA = {
+  "Ryzen 9 9950X3D": { cores: 16, threads: 32, tier: "flagship", gen: "Zen 5", socket: "AM5", notes: "Top-tier. No CPU bottleneck for any AI workload. Fast model loading." },
+  "Ryzen 9 9950X": { cores: 16, threads: 32, tier: "flagship", gen: "Zen 5", socket: "AM5", notes: "Excellent. Handles multi-tasking during generation with ease." },
+  "Ryzen 9 9900X": { cores: 12, threads: 24, tier: "high-end", gen: "Zen 5", socket: "AM5", notes: "Great for AI workflows. No bottleneck with any consumer GPU." },
+  "Ryzen 7 9700X": { cores: 8, threads: 16, tier: "mid", gen: "Zen 5", socket: "AM5", notes: "Solid. Handles ComfyUI + browser + monitoring fine." },
+  "Ryzen 9 7950X3D": { cores: 16, threads: 32, tier: "flagship", gen: "Zen 4", socket: "AM5", notes: "Still top-tier. 3D V-Cache helps with some inference tasks." },
+  "Ryzen 9 7950X": { cores: 16, threads: 32, tier: "flagship", gen: "Zen 4", socket: "AM5", notes: "Excellent all-rounder for AI workstations." },
+  "Ryzen 7 7800X3D": { cores: 8, threads: 16, tier: "mid", gen: "Zen 4", socket: "AM5", notes: "Gaming-focused but handles AI fine. 8 cores is sufficient." },
+  "Ryzen 7 7700X": { cores: 8, threads: 16, tier: "mid", gen: "Zen 4", socket: "AM5", notes: "Good balance. No issues with AI generation workloads." },
+  "Ryzen 5 7600X": { cores: 6, threads: 12, tier: "entry", gen: "Zen 4", socket: "AM5", notes: "Budget-friendly. 6 cores is the minimum for comfortable AI multitasking." },
+  "Ryzen 9 5950X": { cores: 16, threads: 32, tier: "flagship", gen: "Zen 3", socket: "AM4", notes: "Still capable. No bottleneck for AI generation." },
+  "Ryzen 9 5900X": { cores: 12, threads: 24, tier: "high-end", gen: "Zen 3", socket: "AM4", notes: "Great. Plenty of headroom." },
+  "Ryzen 7 5800X": { cores: 8, threads: 16, tier: "mid", gen: "Zen 3", socket: "AM4", notes: "Solid choice. Handles ComfyUI workflows without issue." },
+  "Ryzen 5 5600X": { cores: 6, threads: 12, tier: "entry", gen: "Zen 3", socket: "AM4", notes: "Minimum viable for AI work. May lag during heavy multitasking." },
+  "Core i9-14900K": { cores: 24, threads: 32, tier: "flagship", gen: "Raptor Lake", socket: "LGA 1700", notes: "Powerful but check for microcode stability updates." },
+  "Core i9-13900K": { cores: 24, threads: 32, tier: "flagship", gen: "Raptor Lake", socket: "LGA 1700", notes: "Same performance tier. Ensure BIOS is updated." },
+  "Core i7-14700K": { cores: 20, threads: 28, tier: "high-end", gen: "Raptor Lake", socket: "LGA 1700", notes: "Excellent for AI. No bottleneck." },
+  "Core i7-13700K": { cores: 16, threads: 24, tier: "high-end", gen: "Raptor Lake", socket: "LGA 1700", notes: "Great balance of cores and speed." },
+  "Core i5-14600K": { cores: 14, threads: 20, tier: "mid", gen: "Raptor Lake", socket: "LGA 1700", notes: "Good mid-range. Handles AI fine." },
+  "Core i5-13600K": { cores: 14, threads: 20, tier: "mid", gen: "Raptor Lake", socket: "LGA 1700", notes: "Budget king for AI rigs." },
+  "Core i5-12400": { cores: 6, threads: 12, tier: "entry", gen: "Alder Lake", socket: "LGA 1700", notes: "Budget option. Functional but minimal multitasking headroom." },
+  "Core Ultra 9 285K": { cores: 24, threads: 24, tier: "flagship", gen: "Arrow Lake", socket: "LGA 1851", notes: "Latest Intel. Great for AI workstations." },
+  "Core Ultra 7 265K": { cores: 20, threads: 20, tier: "high-end", gen: "Arrow Lake", socket: "LGA 1851", notes: "Solid performer for AI workflows." },
+  "Apple M1": { cores: 8, threads: 8, tier: "entry", gen: "Apple Silicon", socket: "SoC", notes: "Unified architecture. Good for lightweight AI via MLX." },
+  "Apple M2 Pro": { cores: 12, threads: 12, tier: "mid", gen: "Apple Silicon", socket: "SoC", notes: "Capable. Handles ComfyUI on macOS." },
+  "Apple M3 Max": { cores: 16, threads: 16, tier: "high-end", gen: "Apple Silicon", socket: "SoC", notes: "Excellent for MLX-based AI workflows." },
+  "Apple M4 Max": { cores: 16, threads: 16, tier: "flagship", gen: "Apple Silicon", socket: "SoC", notes: "Best Apple Silicon for AI. MLX optimized." },
+};
+
+const RAM_OPTIONS = ["8 GB", "16 GB", "32 GB", "64 GB", "128 GB"];
+const RAM_NOTES = {
+  "8 GB": { viable: false, note: "8GB system RAM is not enough for AI generation. Your OS alone uses 3-4GB, leaving almost nothing for model loading and processing. Upgrade to at least 16GB, ideally 32GB." },
+  "16 GB": { viable: true, note: "Minimum viable. You can run AI tools but expect slowdowns if you have a browser, ComfyUI, and monitoring open simultaneously. 32GB is recommended." },
+  "32 GB": { viable: true, note: "Sweet spot for AI creators. Comfortable multitasking with ComfyUI, browser, Discord, and system monitoring all running. This is what we recommend." },
+  "64 GB": { viable: true, note: "Excellent. Run multiple AI tools simultaneously, keep large datasets in memory, and never worry about RAM. Great for serious workflows." },
+  "128 GB": { viable: true, note: "Overkill for most AI generation but useful if you're running local LLMs that offload to system RAM, or working with massive datasets." },
+};
+
+// ─── CLOUD PROVIDERS ───
+const CLOUD_PROVIDERS = [
   {
     name: "Comfy Cloud",
-    url: "comfy.org/cloud",
-    tagline: "Official ComfyUI cloud — run in browser, zero setup",
+    tag: "Official",
+    tagColor: "#10b981",
+    icon: "☁️",
+    subtitle: "Official ComfyUI Cloud Platform",
+    description: "Official ComfyUI cloud — run in browser, zero setup",
     pricing: "Pay-per-GPU-use (idle is free)",
-    gpu: "Server-grade (unspecified, managed)",
-    bestFor:
-      "Anyone who wants ComfyUI without any install. All models pre-loaded. Import own LoRAs on paid plans.",
-    verdict: "Best for absolute beginners or travel/secondary device use.",
-    badge: "Official",
-    badgeColor: "#22c55e",
-    models: "FLUX, SDXL, SD3.5, Wan 2.1, AnimateDiff, LoRAs",
+    gpus: "Server-grade (unspecified, managed)",
+    url: "https://comfycloud.com",
+    features: ["Zero setup", "Native ComfyUI", "Pay only when running"],
   },
   {
     name: "RunPod",
-    url: "runpod.io",
-    tagline: "GPU pods on demand — ComfyUI template, per-second billing",
+    tag: "Best Value",
+    tagColor: "#f59e0b",
+    icon: "🖥️",
+    subtitle: "GPU Pods on Demand",
+    description: "GPU pods on demand — ComfyUI template, per-second billing",
     pricing: "RTX 4090: ~$0.34/hr · A100 80GB: ~$1.89/hr · H100: ~$2.49/hr",
-    gpu: "RTX 4090 · A100 40/80GB · H100 · B200 · L40S",
-    bestFor:
-      "Developers and power users. Full control, custom nodes, any model. Run Wan 2.1 14B and HunyuanVideo on A100.",
-    verdict:
-      "Best for users who need cloud Wan 2.1 / HunyuanVideo on a budget. Use the ComfyUI template.",
-    badge: "Best Value",
-    badgeColor: "#f59e0b",
-    models: "Any — you install what you want",
+    gpus: "RTX 4090 · A100 40/80GB · H100 · B200 · L40S",
+    url: "https://runpod.io",
+    features: ["Per-second billing", "ComfyUI templates", "Serverless API"],
   },
   {
     name: "Vast.ai",
-    url: "vast.ai",
-    tagline: "Marketplace of rental GPUs — cheapest hourly rates",
+    tag: "Cheapest",
+    tagColor: "#06b6d4",
+    icon: "💰",
+    subtitle: "Cheapest GPU Marketplace",
+    description: "Marketplace of rental GPUs — cheapest hourly rates",
     pricing: "RTX 4090: ~$0.20–0.55/hr (varies by host)",
-    gpu: "RTX 4090 · A100 · 3090 · community GPUs",
-    bestFor:
-      "Budget users doing batch generation. Cheapest $/image on the market. Variable uptime.",
-    verdict:
-      "Lowest cost. Good for batch runs of 50–200 images. Less reliable than RunPod.",
-    badge: "Cheapest",
-    badgeColor: "#38bdf8",
-    models: "Any — you install what you want",
-  },
-  {
-    name: "RunComfy",
-    url: "runcomfy.com",
-    tagline: "Dedicated ComfyUI cloud — zero-setup, pre-built workflows",
-    pricing: "Subscription with GPU hour allotments",
-    gpu: "Managed (A10/L4 class)",
-    bestFor:
-      "Artists who want cloud ComfyUI with workflow library and no technical setup.",
-    verdict:
-      "Easiest cloud ComfyUI after Comfy Cloud. Good for creators who don't want to manage infrastructure.",
-    badge: "Easiest",
-    badgeColor: "#c084fc",
-    models: "FLUX, SDXL, AnimateDiff, LoRAs library",
-  },
-  {
-    name: "ThinkDiffusion",
-    url: "thinkdiffusion.com",
-    tagline: "Managed ComfyUI + educational content",
-    pricing: "Credits-based, ~$0.50–1.50/hr equivalent",
-    gpu: "Managed (A100/H100 class for video)",
-    bestFor:
-      "Learners and educators. Best documentation. 20% extra credits for community users.",
-    verdict: "Best for learning. Less flexible than RunPod but more guided.",
-    badge: "Best for Learning",
-    badgeColor: "#fb923c",
-    models: "FLUX, SDXL, Wan 2.1, AnimateDiff",
-  },
-  {
-    name: "Spheron Network",
-    url: "spheron.network",
-    tagline: "RTX 5090 cloud GPU — best $/image for image generation",
-    pricing: "RTX 5090: ~$0.76/hr · H100 PCIe: ~$2.01/hr",
-    gpu: "RTX 5090 · H100 PCIe",
-    bestFor:
-      "Image generation at scale. RTX 5090 delivers ~40% of H100 cost-per-image due to GDDR7 bandwidth.",
-    verdict:
-      "Best cost-per-image for SDXL/FLUX at scale. Use H100 only if you need Wan 2.1 14B.",
-    badge: "Best $/Image",
-    badgeColor: "#22c55e",
-    models: "Any — you provision",
+    gpus: "RTX 4090 · A100 · 3090 · community GPUs",
+    url: "https://vast.ai",
+    features: ["Community marketplace", "Lowest prices", "Flexible configs"],
   },
 ];
 
-// ─── LAUNCH FLAGS TABLE ────────────────────────────────────────────────────────
-const LAUNCH_FLAGS = [
-  {
-    vram: "32GB+ (RTX 5090, 3090, 4090)",
-    flag: "--gpu-only --highvram",
-    effect: "Everything in VRAM. Max speed. No offloading.",
-  },
-  {
-    vram: "16GB (RTX 5080, 4080, 3080 16GB)",
-    flag: "--gpu-only --highvram",
-    effect: "Keeps all models GPU-resident. Required for LTX Video cinematic.",
-  },
-  {
-    vram: "12GB (RTX 4070, 3060, 3080 10GB)",
-    flag: "--gpu-only",
-    effect:
-      "Default mode. Offloads text encoders when needed. FLUX fp8 + LTX 25fr works.",
-  },
-  {
-    vram: "10GB (RTX 3080 10GB)",
-    flag: "--gpu-only",
-    effect: "Same as 12GB. Tight for LTX Video. Reduce to 73 frames if OOM.",
-  },
-  {
-    vram: "8GB (RTX 4060, 3070, 2080)",
-    flag: "--lowvram",
-    effect:
-      "Aggressive model swapping. Slower. Use with FLUX GGUF, SDXL 768px, AnimateDiff 16fr.",
-  },
-  {
-    vram: "6GB (GTX 1660 Ti)",
-    flag: "--lowvram --dont-upcast-attention",
-    effect: "Maximum VRAM savings. SD 1.5 only. SDXL marginal. No video.",
-  },
-  {
-    vram: "CPU (no discrete GPU)",
-    flag: "--cpu",
-    effect:
-      "10–50x slower than GPU. Only for emergencies. SD 1.5 takes 10+ minutes per image.",
-  },
-];
+// ─── COMPONENTS ───
 
-// ─── COMPONENT ────────────────────────────────────────────────────────────────
-
-const TIER_BG: Record<string, string> = {
-  S: "rgba(34,197,94,0.06)",
-  B: "rgba(245,158,11,0.06)",
-  D: "rgba(122,138,154,0.06)",
-  AVOID: "rgba(239,68,68,0.06)",
-  F: "rgba(220,38,38,0.06)",
-};
-
-function Check({ val }: { val: string }) {
-  const color = val === "✓" ? "#22c55e" : val === "✗" ? "#ef4444" : "#f59e0b";
+function ChevronDown({ className }) {
   return (
-    <span
-      style={{
-        fontFamily: "var(--font-jetbrains-mono)",
-        fontSize: 11,
-        color,
-        whiteSpace: "nowrap",
-      }}
-    >
-      {val}
+    <svg className={className} viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+      <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function ExternalLink({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+      <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
+      <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
+    </svg>
+  );
+}
+
+function Dropdown({ label, options, value, onChange, placeholder }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  return (
+    <div ref={ref} style={{ position: "relative", flex: 1, minWidth: 220 }}>
+      <label style={{ display: "block", fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.08em", color: "#9ca3af", marginBottom: 6, fontFamily: "'JetBrains Mono', monospace" }}>{label}</label>
+      <button
+        onClick={() => setOpen(!open)}
+        style={{
+          width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+          padding: "12px 16px", background: "#1a1a2e", border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: 10, color: value ? "#f0f0f0" : "#6b7280", fontSize: 15, cursor: "pointer",
+          fontFamily: "'Space Grotesk', sans-serif", transition: "all 0.2s",
+          ...(open ? { borderColor: "#f59e0b", boxShadow: "0 0 0 2px rgba(245,158,11,0.15)" } : {}),
+        }}
+      >
+        <span>{value || placeholder}</span>
+        <ChevronDown style={{ transform: open ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.2s", opacity: 0.5 }} />
+      </button>
+      {open && (
+        <div style={{
+          position: "absolute", top: "100%", left: 0, right: 0, marginTop: 4, zIndex: 50,
+          background: "#1a1a2e", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 10,
+          maxHeight: 280, overflowY: "auto", boxShadow: "0 20px 60px rgba(0,0,0,0.5)",
+        }}>
+          {options.map((opt) => (
+            <button
+              key={opt}
+              onClick={() => { onChange(opt); setOpen(false); }}
+              style={{
+                width: "100%", textAlign: "left", padding: "10px 16px", border: "none",
+                background: opt === value ? "rgba(245,158,11,0.1)" : "transparent",
+                color: opt === value ? "#f59e0b" : "#d1d5db", fontSize: 14, cursor: "pointer",
+                fontFamily: "'Space Grotesk', sans-serif", transition: "background 0.15s",
+              }}
+              onMouseEnter={(e) => { if (opt !== value) e.target.style.background = "rgba(255,255,255,0.04)"; }}
+              onMouseLeave={(e) => { if (opt !== value) e.target.style.background = "transparent"; }}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function StatusBadge({ canHandle }) {
+  if (canHandle === true) return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 20, background: "rgba(16,185,129,0.12)", color: "#10b981", fontSize: 13, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>
+      <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#10b981" }}></span>
+      AI Ready
+    </span>
+  );
+  if (canHandle === "limited") return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 20, background: "rgba(245,158,11,0.12)", color: "#f59e0b", fontSize: 13, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>
+      <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#f59e0b" }}></span>
+      Limited
+    </span>
+  );
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 20, background: "rgba(239,68,68,0.12)", color: "#ef4444", fontSize: 13, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>
+      <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#ef4444" }}></span>
+      Not Viable
     </span>
   );
 }
 
-export default function GPUGuidePage() {
+function HardwareDetail({ gpu, cpu, ram, onBack }) {
+  const gpuData = GPU_DATA[gpu];
+  const cpuData = CPU_DATA[cpu];
+  const ramData = RAM_NOTES[ram];
+
   return (
-    <div
-      style={{
-        background: "#080b0f",
-        minHeight: "100vh",
-        color: "#e8edf2",
-        fontFamily: "var(--font-dm-sans), sans-serif",
+    <div style={{ animation: "fadeSlideIn 0.4s ease" }}>
+      <button onClick={onBack} style={{
+        display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, color: "#9ca3af", fontSize: 14,
+        cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif", marginBottom: 24, transition: "all 0.2s",
       }}
-    >
-      {/* Nav */}
-      <nav
-        style={{
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          padding: "0 2rem",
-          height: 60,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          background: "rgba(8,11,15,0.9)",
-          backdropFilter: "blur(20px)",
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-        }}
+      onMouseEnter={e => { e.target.style.borderColor = "#f59e0b"; e.target.style.color = "#f59e0b"; }}
+      onMouseLeave={e => { e.target.style.borderColor = "rgba(255,255,255,0.08)"; e.target.style.color = "#9ca3af"; }}
       >
-        <Link
-          href="/"
-          style={{
-            fontFamily: "var(--font-syne)",
-            fontWeight: 800,
-            fontSize: "1.1rem",
-            color: "#fff",
-            textDecoration: "none",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
-          <span
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: "#f59e0b",
-              display: "inline-block",
-            }}
-          />
-          neuraldrift<span style={{ color: "#f59e0b" }}>.ai</span>
-        </Link>
-        <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
-          <Link
-            href="/optimizer"
-            style={{
-              background: "#f59e0b",
-              color: "#000",
-              padding: "0.4rem 1rem",
-              borderRadius: 6,
-              fontWeight: 600,
-              fontSize: "0.8rem",
-              textDecoration: "none",
-            }}
-          >
-            Score My GPU →
-          </Link>
-        </div>
-      </nav>
+        ← Back to selector
+      </button>
 
-      {/* Hero */}
-      <section
-        style={{ padding: "4rem 2rem 3rem", maxWidth: 1200, margin: "0 auto" }}
-      >
-        <div
-          style={{
-            fontFamily: "var(--font-jetbrains-mono)",
-            fontSize: "0.7rem",
-            color: "#818cf8",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            marginBottom: "0.75rem",
-          }}
-        >
-          // GPU Compatibility Guide
+      {/* Header */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap", marginBottom: 12 }}>
+          <h2 style={{ fontSize: 32, fontWeight: 700, color: "#f0f0f0", margin: 0, fontFamily: "'Playfair Display', serif" }}>{gpu}</h2>
+          <StatusBadge canHandle={gpuData.canHandle} />
         </div>
-        <h1
-          style={{
-            fontFamily: "var(--font-syne)",
-            fontWeight: 800,
-            fontSize: "clamp(2rem, 5vw, 3.5rem)",
-            color: "#fff",
-            lineHeight: 1.1,
-            marginBottom: "1rem",
-          }}
-        >
-          Which GPUs work.
-          <br />
-          Which <span style={{ color: "#22d3ee" }}>don&apos;t.</span>
-          <br />
-          <span style={{ color: "#9aafc0" }}>And what to do about it.</span>
-        </h1>
-        <p
-          style={{
-            color: "#9aafc0",
-            fontSize: "1.05rem",
-            maxWidth: 620,
-            lineHeight: 1.8,
-            fontWeight: 300,
-            marginBottom: "1rem",
-          }}
-        >
-          Sourced directly from the{" "}
-          <a
-            href="https://github.com/comfyanonymous/ComfyUI/wiki/Which-GPU-should-I-buy-for-ComfyUI"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "#f59e0b", textDecoration: "none" }}
-          >
-            official ComfyUI GitHub wiki
-          </a>
-          , NVIDIA&apos;s RTX AI Garage benchmarks, and Spheron cloud benchmarks
-          from March 2026. Every number has a source.
-        </p>
-        {/* Quick verdict boxes */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "1rem",
-            marginTop: "2rem",
-          }}
-        >
-          {[
-            {
-              label: "Best budget build",
-              value: "RTX 3060 12GB ($230 used)",
-              color: "#22c55e",
-            },
-            {
-              label: "Best mid-range",
-              value: "RTX 4070 Super ($500)",
-              color: "#22c55e",
-            },
-            {
-              label: "Best all-rounder",
-              value: "RTX 5080 16GB ($1,000)",
-              color: "#f59e0b",
-            },
-            {
-              label: "Need Wan 2.1 / Hunyuan?",
-              value: "Use cloud (RunPod A100)",
-              color: "#38bdf8",
-            },
-          ].map((v) => (
-            <div
-              key={v.label}
-              style={{
-                background: "#0d1117",
-                border: "1px solid rgba(255,255,255,0.07)",
+        <div style={{ display: "flex", gap: 16, flexWrap: "wrap", fontSize: 13, color: "#6b7280", fontFamily: "'JetBrains Mono', monospace" }}>
+          <span>{gpuData.vram}GB VRAM</span>
+          <span>·</span>
+          <span>{gpuData.arch}</span>
+          <span>·</span>
+          <span>{gpuData.type}</span>
+          <span>·</span>
+          <span>{gpuData.tdp}W TDP</span>
+          {gpuData.msrp && <><span>·</span><span>{gpuData.msrp}</span></>}
+        </div>
+      </div>
+
+      {/* Verdict */}
+      <div style={{
+        padding: 24, borderRadius: 12, marginBottom: 28,
+        background: gpuData.canHandle === true ? "rgba(16,185,129,0.06)" : gpuData.canHandle === "limited" ? "rgba(245,158,11,0.06)" : "rgba(239,68,68,0.06)",
+        border: `1px solid ${gpuData.canHandle === true ? "rgba(16,185,129,0.15)" : gpuData.canHandle === "limited" ? "rgba(245,158,11,0.15)" : "rgba(239,68,68,0.15)"}`,
+      }}>
+        <h3 style={{ fontSize: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", color: gpuData.canHandle === true ? "#10b981" : gpuData.canHandle === "limited" ? "#f59e0b" : "#ef4444", marginBottom: 8, fontFamily: "'JetBrains Mono', monospace" }}>
+          {gpuData.canHandle === true ? "✓ Verdict: Go for it" : gpuData.canHandle === "limited" ? "⚠ Verdict: Proceed with caution" : "✕ Verdict: Not recommended"}
+        </h3>
+        <p style={{ fontSize: 15, lineHeight: 1.7, color: "#d1d5db", margin: 0, fontFamily: "'Space Grotesk', sans-serif" }}>{gpuData.verdict}</p>
+      </div>
+
+      {/* Models */}
+      {gpuData.models.length > 0 && (
+        <div style={{ marginBottom: 28 }}>
+          <h3 style={{ fontSize: 18, fontWeight: 600, color: "#f0f0f0", marginBottom: 16, fontFamily: "'Playfair Display', serif" }}>What you can run</h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {gpuData.models.map((m, i) => (
+              <div key={i} style={{
+                display: "flex", alignItems: "flex-start", gap: 16, padding: "14px 18px",
+                background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)",
                 borderRadius: 10,
-                padding: "1rem 1.25rem",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 11,
-                  color: "#5a6a7a",
-                  fontFamily: "var(--font-jetbrains-mono)",
-                  marginBottom: 4,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                }}
-              >
-                {v.label}
-              </div>
-              <div
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  color: v.color,
-                  fontFamily: "var(--font-syne)",
-                }}
-              >
-                {v.value}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* GPU Compatibility Table */}
-      <section
-        style={{ padding: "0 2rem 4rem", maxWidth: 1200, margin: "0 auto" }}
-      >
-        <div
-          style={{
-            fontFamily: "var(--font-jetbrains-mono)",
-            fontSize: "0.7rem",
-            color: "#f59e0b",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            marginBottom: "1.5rem",
-          }}
-        >
-          // GPU Tier List — Official ComfyUI Rankings
-        </div>
-
-        {GPU_TIERS.map((tier) => (
-          <div
-            key={`${tier.tier}-${tier.arch}`}
-            style={{
-              marginBottom: "2rem",
-              border: `1px solid rgba(255,255,255,0.07)`,
-              borderRadius: 12,
-              overflow: "hidden",
-            }}
-          >
-            {/* Tier header */}
-            <div
-              style={{
-                background: TIER_BG[tier.tier],
-                padding: "1rem 1.5rem",
-                borderBottom: "1px solid rgba(255,255,255,0.07)",
-                display: "flex",
-                alignItems: "center",
-                gap: "1rem",
-                flexWrap: "wrap",
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: "var(--font-syne)",
-                  fontWeight: 800,
-                  fontSize: "1.4rem",
-                  color: tier.tierColor,
-                  lineHeight: 1,
-                }}
-              >
-                {tier.tier}
-              </span>
-              <div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-syne)",
-                    fontWeight: 600,
-                    fontSize: "0.95rem",
-                    color: "#fff",
-                  }}
-                >
-                  {tier.brand} — {tier.arch}
+              }}>
+                <span style={{
+                  padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 600,
+                  fontFamily: "'JetBrains Mono', monospace", whiteSpace: "nowrap",
+                  background: m.type === "Image Gen" ? "rgba(168,85,247,0.12)" : m.type === "Video Gen" ? "rgba(59,130,246,0.12)" : m.type === "LLM" ? "rgba(16,185,129,0.12)" : "rgba(245,158,11,0.12)",
+                  color: m.type === "Image Gen" ? "#a855f7" : m.type === "Video Gen" ? "#3b82f6" : m.type === "LLM" ? "#10b981" : "#f59e0b",
+                }}>
+                  {m.type}
+                </span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600, color: "#f0f0f0", fontSize: 15, marginBottom: 3, fontFamily: "'Space Grotesk', sans-serif" }}>{m.name}</div>
+                  <div style={{ color: "#9ca3af", fontSize: 13, lineHeight: 1.5, fontFamily: "'Space Grotesk', sans-serif" }}>{m.notes}</div>
                 </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-jetbrains-mono)",
-                    fontSize: "0.7rem",
-                    color: "#5a6a7a",
-                    marginTop: 2,
-                  }}
-                >
-                  Precision: {tier.precision}
-                </div>
-              </div>
-              <span
-                style={{
-                  marginLeft: "auto",
-                  fontFamily: "var(--font-jetbrains-mono)",
-                  fontSize: 10,
-                  padding: "3px 10px",
-                  borderRadius: 4,
-                  background: `${tier.tierColor}18`,
-                  border: `1px solid ${tier.tierColor}30`,
-                  color: tier.tierColor,
-                }}
-              >
-                {tier.tierLabel}
-              </span>
-            </div>
-
-            {/* GPU rows */}
-            <div style={{ overflowX: "auto" }}>
-              <table
-                style={{
-                  width: "100%",
-                  borderCollapse: "collapse",
-                  fontSize: 12,
-                }}
-              >
-                <thead>
-                  <tr style={{ background: "#0d1117" }}>
-                    {[
-                      "GPU",
-                      "VRAM",
-                      "Price",
-                      "SDXL",
-                      "FLUX",
-                      "LTX Video",
-                      "AnimateDiff",
-                      "Hunyuan",
-                      "Wan 2.1",
-                      "LoRA Train",
-                      "Notes",
-                    ].map((h) => (
-                      <th
-                        key={h}
-                        style={{
-                          padding: "8px 12px",
-                          textAlign: "left",
-                          fontFamily: "var(--font-jetbrains-mono)",
-                          fontSize: 10,
-                          color: "#f59e0b",
-                          letterSpacing: "0.06em",
-                          textTransform: "uppercase",
-                          borderBottom: "1px solid rgba(255,255,255,0.06)",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {tier.gpus.map((gpu, i) => (
-                    <tr
-                      key={gpu.name}
-                      style={{
-                        background: i % 2 === 0 ? "#0d1117" : "#0a0e14",
-                      }}
-                    >
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          fontFamily: "var(--font-syne)",
-                          fontWeight: 600,
-                          color: "#e8edf2",
-                          whiteSpace: "nowrap",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        {gpu.name}
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          fontFamily: "var(--font-jetbrains-mono)",
-                          color: "#f59e0b",
-                          fontSize: 11,
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        {gpu.vram}
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          color: "#9aafc0",
-                          whiteSpace: "nowrap",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        {gpu.price}
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          textAlign: "center",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        <Check val={gpu.sdxl} />
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          textAlign: "center",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        <Check val={gpu.flux} />
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          textAlign: "center",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        <Check val={gpu.ltxVideo} />
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          textAlign: "center",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        <Check val={gpu.animatediff} />
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          textAlign: "center",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        <Check val={gpu.hunyuan} />
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          textAlign: "center",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        <Check val={gpu.wan21} />
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          textAlign: "center",
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                        }}
-                      >
-                        <Check val={gpu.lora} />
-                      </td>
-                      <td
-                        style={{
-                          padding: "9px 12px",
-                          color: "#7a8a9a",
-                          fontSize: 11,
-                          lineHeight: 1.5,
-                          borderBottom: "1px solid rgba(255,255,255,0.04)",
-                          maxWidth: 280,
-                        }}
-                      >
-                        {gpu.notes}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ))}
-
-        {/* Key note */}
-        <div
-          style={{
-            background: "rgba(245,158,11,0.06)",
-            border: "1px solid rgba(245,158,11,0.2)",
-            borderRadius: 10,
-            padding: "1.25rem 1.5rem",
-            marginBottom: "3rem",
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "var(--font-syne)",
-              fontWeight: 700,
-              color: "#fff",
-              marginBottom: "0.5rem",
-            }}
-          >
-            ⚠️ Wan 2.1 14B & HunyuanVideo require 60–80GB VRAM
-          </div>
-          <p
-            style={{
-              fontSize: "0.875rem",
-              color: "#9aafc0",
-              lineHeight: 1.7,
-              margin: 0,
-              fontWeight: 300,
-            }}
-          >
-            No consumer GPU — including the RTX 5090 32GB — can run these models
-            in bf16 natively. Your options: use the
-            <strong style={{ color: "#f59e0b" }}>
-              {" "}
-              Wan 2.1 1.3B lite model
-            </strong>{" "}
-            locally (8–10GB), or rent a{" "}
-            <strong style={{ color: "#f59e0b" }}>
-              RunPod A100 80GB (~$1.89/hr)
-            </strong>{" "}
-            for on-demand access. A 5-minute Wan 2.1 14B video generation costs
-            roughly $0.16 in cloud compute.
-          </p>
-        </div>
-      </section>
-
-      {/* Launch Flags */}
-      <section
-        style={{ padding: "0 2rem 4rem", maxWidth: 1200, margin: "0 auto" }}
-      >
-        <div
-          style={{
-            fontFamily: "var(--font-jetbrains-mono)",
-            fontSize: "0.7rem",
-            color: "#f59e0b",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            marginBottom: "1.5rem",
-          }}
-        >
-          // Launch Flags — Use the Right One for Your GPU
-        </div>
-        <div
-          style={{
-            overflowX: "auto",
-            borderRadius: 12,
-            border: "1px solid rgba(255,255,255,0.07)",
-          }}
-        >
-          <table
-            style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}
-          >
-            <thead>
-              <tr style={{ background: "#111820" }}>
-                {["GPU VRAM", "Launch Flag", "Effect"].map((h) => (
-                  <th
-                    key={h}
-                    style={{
-                      padding: "11px 16px",
-                      textAlign: "left",
-                      fontFamily: "var(--font-jetbrains-mono)",
-                      fontSize: 10,
-                      color: "#f59e0b",
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase",
-                      borderBottom: "1px solid rgba(255,255,255,0.08)",
-                    }}
-                  >
-                    {h}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {LAUNCH_FLAGS.map((row, i) => (
-                <tr
-                  key={row.vram}
-                  style={{ background: i % 2 === 0 ? "#0d1117" : "#0a0e14" }}
-                >
-                  <td
-                    style={{
-                      padding: "10px 16px",
-                      color: "#9aafc0",
-                      borderBottom: "1px solid rgba(255,255,255,0.04)",
-                      fontSize: 13,
-                    }}
-                  >
-                    {row.vram}
-                  </td>
-                  <td
-                    style={{
-                      padding: "10px 16px",
-                      borderBottom: "1px solid rgba(255,255,255,0.04)",
-                    }}
-                  >
-                    <code
-                      style={{
-                        fontFamily: "var(--font-jetbrains-mono)",
-                        fontSize: 12,
-                        color: "#f59e0b",
-                        background: "rgba(245,158,11,0.08)",
-                        padding: "2px 7px",
-                        borderRadius: 4,
-                      }}
-                    >
-                      {row.flag}
-                    </code>
-                  </td>
-                  <td
-                    style={{
-                      padding: "10px 16px",
-                      color: "#7a8a9a",
-                      fontSize: 12,
-                      borderBottom: "1px solid rgba(255,255,255,0.04)",
-                    }}
-                  >
-                    {row.effect}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* Model Reference */}
-      <section
-        style={{ padding: "0 2rem 4rem", maxWidth: 1200, margin: "0 auto" }}
-      >
-        <div
-          style={{
-            fontFamily: "var(--font-jetbrains-mono)",
-            fontSize: "0.7rem",
-            color: "#f59e0b",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            marginBottom: "0.75rem",
-          }}
-        >
-          // Model Reference — Exact Files, Folders, Settings
-        </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-syne)",
-            fontWeight: 700,
-            fontSize: "clamp(1.6rem, 3vw, 2.2rem)",
-            color: "#fff",
-            marginBottom: "0.75rem",
-          }}
-        >
-          Every model. Every detail. No guessing.
-        </h2>
-        <p
-          style={{
-            color: "#9aafc0",
-            fontSize: "1rem",
-            lineHeight: 1.7,
-            maxWidth: 600,
-            fontWeight: 300,
-            marginBottom: "2.5rem",
-          }}
-        >
-          Exact filenames, download sources, folder paths, and optimal ComfyUI
-          settings. Copy and paste into your setup.
-        </p>
-
-        {MODELS.map((group) => (
-          <div key={group.category} style={{ marginBottom: "2.5rem" }}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: "1rem",
-              }}
-            >
-              <div
-                style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: "50%",
-                  background: group.color,
-                  flexShrink: 0,
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "var(--font-syne)",
-                  fontWeight: 700,
-                  fontSize: "1rem",
-                  color: "#fff",
-                }}
-              >
-                {group.category}
-              </span>
-            </div>
-
-            {group.entries.map((m) => (
-              <div
-                key={m.name}
-                style={{
-                  background: "#0d1117",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                  borderRadius: 12,
-                  padding: "1.5rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: "0.5rem",
-                    alignItems: "center",
-                    marginBottom: "0.75rem",
-                  }}
-                >
-                  <h3
-                    style={{
-                      fontFamily: "var(--font-syne)",
-                      fontWeight: 700,
-                      fontSize: "1.05rem",
-                      color: "#fff",
-                      margin: 0,
-                    }}
-                  >
-                    {m.name}
-                  </h3>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-jetbrains-mono)",
-                      fontSize: 10,
-                      padding: "2px 8px",
-                      borderRadius: 4,
-                      background: `${group.color}18`,
-                      border: `1px solid ${group.color}30`,
-                      color: group.color,
-                    }}
-                  >
-                    {m.type}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-jetbrains-mono)",
-                      fontSize: 10,
-                      padding: "2px 8px",
-                      borderRadius: 4,
-                      background: "rgba(245,158,11,0.08)",
-                      border: "1px solid rgba(245,158,11,0.2)",
-                      color: "#f59e0b",
-                    }}
-                  >
-                    VRAM: {m.vram}
-                  </span>
-                  <span
-                    style={{
-                      fontFamily: "var(--font-jetbrains-mono)",
-                      fontSize: 10,
-                      padding: "2px 8px",
-                      borderRadius: 4,
-                      background: "rgba(255,255,255,0.04)",
-                      border: "1px solid rgba(255,255,255,0.08)",
-                      color: "#7a8a9a",
-                    }}
-                  >
-                    Size: {m.size}
-                  </span>
-                </div>
-
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                    gap: "0.75rem",
-                    marginBottom: "0.75rem",
-                  }}
-                >
-                  {[
-                    { label: "📁 Folder", val: m.folder },
-                    { label: "📄 File", val: m.file },
-                    { label: "🔗 Source", val: m.source },
-                    ...(m.requires
-                      ? [{ label: "🔗 Also needs", val: m.requires }]
-                      : []),
-                    ...(m.cfg !== "N/A"
-                      ? [
-                          { label: "⚙️ CFG", val: m.cfg },
-                          { label: "🎛️ Sampler", val: m.sampler },
-                          { label: "📊 Steps", val: m.steps },
-                        ]
-                      : []),
-                    { label: "🎯 Best for", val: m.best_for },
-                  ].map((row) => (
-                    <div
-                      key={row.label}
-                      style={{
-                        background: "#080b0f",
-                        borderRadius: 6,
-                        padding: "0.6rem 0.8rem",
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontFamily: "var(--font-jetbrains-mono)",
-                          fontSize: 10,
-                          color: "#5a6a7a",
-                          textTransform: "uppercase",
-                          letterSpacing: "0.06em",
-                          marginBottom: 3,
-                        }}
-                      >
-                        {row.label}
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: "var(--font-jetbrains-mono)",
-                          fontSize: 11,
-                          color: "#f59e0b",
-                          wordBreak: "break-all",
-                        }}
-                      >
-                        {row.val}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <p
-                  style={{
-                    fontSize: "0.875rem",
-                    color: "#9aafc0",
-                    lineHeight: 1.6,
-                    margin: 0,
-                    fontWeight: 300,
-                    borderTop: "1px solid rgba(255,255,255,0.05)",
-                    paddingTop: "0.75rem",
-                  }}
-                >
-                  {m.notes}
-                  {m.also && (
-                    <span
-                      style={{
-                        display: "block",
-                        marginTop: 4,
-                        color: "#7a8a9a",
-                        fontFamily: "var(--font-jetbrains-mono)",
-                        fontSize: 11,
-                      }}
-                    >
-                      // Also available: {m.also}
-                    </span>
-                  )}
-                </p>
               </div>
             ))}
           </div>
-        ))}
-      </section>
-
-      {/* Cloud Services */}
-      <section
-        style={{ padding: "0 2rem 5rem", maxWidth: 1200, margin: "0 auto" }}
-      >
-        <div
-          style={{
-            fontFamily: "var(--font-jetbrains-mono)",
-            fontSize: "0.7rem",
-            color: "#f59e0b",
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
-            marginBottom: "0.75rem",
-          }}
-        >
-          // Cloud ComfyUI — When Your GPU Isn&apos;t Enough
         </div>
-        <h2
-          style={{
-            fontFamily: "var(--font-syne)",
-            fontWeight: 700,
-            fontSize: "clamp(1.6rem, 3vw, 2.2rem)",
-            color: "#fff",
-            marginBottom: "0.75rem",
-          }}
-        >
-          No RTX 5090? Run it in the cloud.
-        </h2>
-        <p
-          style={{
-            color: "#9aafc0",
-            fontSize: "1rem",
-            lineHeight: 1.7,
-            maxWidth: 600,
-            fontWeight: 300,
-            marginBottom: "2rem",
-          }}
-        >
-          Wan 2.1 14B generates at 720p quality in 5 minutes on a RunPod A100
-          for $0.16. That same render would take 3+ hours with heavy offloading
-          on a 16GB local GPU.
-        </p>
+      )}
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))",
-            gap: "1.25rem",
-          }}
-        >
-          {CLOUD_SERVICES.map((svc) => (
-            <div
-              key={svc.name}
-              style={{
-                background: "#0d1117",
-                border: "1px solid rgba(255,255,255,0.07)",
-                borderRadius: 12,
-                padding: "1.5rem",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  marginBottom: "0.75rem",
-                }}
-              >
-                <h3
-                  style={{
-                    fontFamily: "var(--font-syne)",
-                    fontWeight: 700,
-                    fontSize: "1.05rem",
-                    color: "#fff",
-                    margin: 0,
-                  }}
-                >
-                  {svc.name}
-                </h3>
-                <span
-                  style={{
-                    fontFamily: "var(--font-jetbrains-mono)",
-                    fontSize: 10,
-                    padding: "2px 8px",
-                    borderRadius: 4,
-                    background: `${svc.badgeColor}18`,
-                    border: `1px solid ${svc.badgeColor}30`,
-                    color: svc.badgeColor,
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {svc.badge}
-                </span>
+      {gpuData.models.length === 0 && (
+        <div style={{
+          padding: 32, borderRadius: 12, background: "rgba(239,68,68,0.06)",
+          border: "1px solid rgba(239,68,68,0.12)", textAlign: "center", marginBottom: 28,
+        }}>
+          <div style={{ fontSize: 40, marginBottom: 12 }}>🚫</div>
+          <h3 style={{ color: "#ef4444", fontSize: 18, marginBottom: 8, fontFamily: "'Playfair Display', serif" }}>No viable AI models</h3>
+          <p style={{ color: "#9ca3af", fontSize: 14, maxWidth: 400, margin: "0 auto", lineHeight: 1.6, fontFamily: "'Space Grotesk', sans-serif" }}>
+            This GPU cannot run modern AI generation models. Check the cloud GPU section below for affordable alternatives.
+          </p>
+        </div>
+      )}
+
+      {/* CPU & RAM */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 28 }}>
+        <div style={{ padding: 20, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 10 }}>
+          <h4 style={{ fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", color: "#6b7280", marginBottom: 8, fontFamily: "'JetBrains Mono', monospace" }}>CPU: {cpu}</h4>
+          <div style={{ fontSize: 13, color: "#9ca3af", marginBottom: 6, fontFamily: "'JetBrains Mono', monospace" }}>{cpuData.cores} cores · {cpuData.threads} threads · {cpuData.gen}</div>
+          <p style={{ fontSize: 14, color: "#d1d5db", margin: 0, lineHeight: 1.6, fontFamily: "'Space Grotesk', sans-serif" }}>{cpuData.notes}</p>
+        </div>
+        <div style={{ padding: 20, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 10 }}>
+          <h4 style={{ fontSize: 12, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", color: "#6b7280", marginBottom: 8, fontFamily: "'JetBrains Mono', monospace" }}>RAM: {ram}</h4>
+          <span style={{
+            display: "inline-block", padding: "2px 8px", borderRadius: 4, fontSize: 11, fontWeight: 600, marginBottom: 8,
+            fontFamily: "'JetBrains Mono', monospace",
+            background: ramData.viable ? "rgba(16,185,129,0.12)" : "rgba(239,68,68,0.12)",
+            color: ramData.viable ? "#10b981" : "#ef4444",
+          }}>
+            {ramData.viable ? "Sufficient" : "Insufficient"}
+          </span>
+          <p style={{ fontSize: 14, color: "#d1d5db", margin: 0, lineHeight: 1.6, fontFamily: "'Space Grotesk', sans-serif" }}>{ramData.note}</p>
+        </div>
+      </div>
+
+      {/* If not viable, push cloud hard */}
+      {(gpuData.canHandle === false || !ramData.viable) && (
+        <div style={{
+          padding: 24, borderRadius: 12, background: "linear-gradient(135deg, rgba(245,158,11,0.08), rgba(59,130,246,0.08))",
+          border: "1px solid rgba(245,158,11,0.15)", marginBottom: 28,
+        }}>
+          <h3 style={{ fontSize: 16, fontWeight: 600, color: "#f59e0b", marginBottom: 8, fontFamily: "'Playfair Display', serif" }}>💡 Don't have the right hardware? Use cloud GPUs</h3>
+          <p style={{ color: "#d1d5db", fontSize: 14, margin: 0, lineHeight: 1.6, fontFamily: "'Space Grotesk', sans-serif" }}>
+            You don't need expensive hardware to create with AI. Cloud GPU services like RunPod and Vast.ai let you rent an RTX 4090 for as little as $0.20/hr. Check the providers below.
+          </p>
+        </div>
+      )}
+
+      {/* ComputeAtlas upgrade CTA — shown when hardware is limited or not viable */}
+      {(gpuData.canHandle === false || gpuData.canHandle === "limited") && (
+        <ComputeAtlasBanner variant="upgrade" />
+      )}
+    </div>
+  );
+}
+
+function CloudCard({ provider }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <a
+      href={provider.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        display: "block", textDecoration: "none", padding: 24,
+        background: hovered ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)",
+        border: `1px solid ${hovered ? "rgba(245,158,11,0.3)" : "rgba(255,255,255,0.06)"}`,
+        borderRadius: 14, transition: "all 0.25s", cursor: "pointer",
+        transform: hovered ? "translateY(-2px)" : "none",
+        boxShadow: hovered ? "0 8px 32px rgba(0,0,0,0.3)" : "none",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 16 }}>
+        <div style={{ fontSize: 36 }}>{provider.icon}</div>
+        <span style={{
+          padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: 600,
+          background: `${provider.tagColor}20`, color: provider.tagColor,
+          fontFamily: "'JetBrains Mono', monospace",
+        }}>
+          {provider.tag}
+        </span>
+      </div>
+      <h3 style={{ fontSize: 22, fontWeight: 700, color: "#f0f0f0", marginBottom: 4, fontFamily: "'Playfair Display', serif" }}>{provider.name}</h3>
+      <p style={{ fontSize: 13, color: "#6b7280", marginBottom: 14, fontFamily: "'Space Grotesk', sans-serif" }}>{provider.description}</p>
+      <div style={{ marginBottom: 8 }}>
+        <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", color: "#6b7280", marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>Pricing</div>
+        <div style={{ fontSize: 13, color: "#d1d5db", fontFamily: "'Space Grotesk', sans-serif" }}>{provider.pricing}</div>
+      </div>
+      <div style={{ marginBottom: 14 }}>
+        <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", color: "#6b7280", marginBottom: 4, fontFamily: "'JetBrains Mono', monospace" }}>GPUs</div>
+        <div style={{ fontSize: 13, color: "#d1d5db", fontFamily: "'Space Grotesk', sans-serif" }}>{provider.gpus}</div>
+      </div>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        {provider.features.map((f, i) => (
+          <span key={i} style={{
+            padding: "3px 10px", borderRadius: 6, fontSize: 11, fontWeight: 500,
+            background: "rgba(255,255,255,0.04)", color: "#9ca3af",
+            fontFamily: "'JetBrains Mono', monospace",
+          }}>
+            {f}
+          </span>
+        ))}
+      </div>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 16, color: hovered ? "#f59e0b" : "#6b7280", fontSize: 13, fontWeight: 600, transition: "color 0.2s", fontFamily: "'JetBrains Mono', monospace" }}>
+        Visit {provider.name} <ExternalLink />
+      </div>
+    </a>
+  );
+}
+
+// ─── MAIN ───
+export default function GPUComputePage() {
+  const [gpu, setGpu] = useState("");
+  const [cpu, setCpu] = useState("");
+  const [ram, setRam] = useState("");
+  const [showDetail, setShowDetail] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const canLookup = gpu && cpu && ram;
+
+  const handleLookup = () => {
+    if (canLookup) setShowDetail(true);
+  };
+
+  return (
+    <div style={{
+      minHeight: "100vh", background: "#0d0d1a", color: "#f0f0f0",
+      fontFamily: "'Space Grotesk', sans-serif",
+    }}>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulseGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+        * { box-sizing: border-box; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+      `}</style>
+
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: "48px 24px" }}>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: 48, animation: mounted ? "fadeSlideIn 0.5s ease" : "none" }}>
+          <div style={{
+            display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 16px",
+            background: "rgba(245,158,11,0.08)", border: "1px solid rgba(245,158,11,0.15)",
+            borderRadius: 20, marginBottom: 16,
+          }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#f59e0b", animation: "pulseGlow 2s ease infinite" }}></span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: "#f59e0b", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.04em" }}>GPU COMPUTE</span>
+          </div>
+          <h1 style={{ fontSize: 42, fontWeight: 700, marginBottom: 12, fontFamily: "'Playfair Display', serif", lineHeight: 1.1 }}>
+            Can your hardware<br />
+            <span style={{ color: "#f59e0b" }}>handle AI?</span>
+          </h1>
+          <p style={{ fontSize: 16, color: "#6b7280", maxWidth: 520, margin: "0 auto", lineHeight: 1.6 }}>
+            Select your GPU, CPU, and RAM below. We'll show you exactly what AI models your hardware can run — and what it can't.
+          </p>
+        </div>
+
+        {/* SECTION 1: Hardware Selector */}
+        {!showDetail ? (
+          <div style={{ animation: mounted ? "fadeSlideIn 0.6s ease" : "none" }}>
+            <div style={{
+              padding: 32, background: "rgba(255,255,255,0.02)",
+              border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, marginBottom: 48,
+            }}>
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 24 }}>
+                <Dropdown label="GPU" options={Object.keys(GPU_DATA)} value={gpu} onChange={setGpu} placeholder="Select your GPU" />
+                <Dropdown label="CPU" options={Object.keys(CPU_DATA)} value={cpu} onChange={setCpu} placeholder="Select your CPU" />
+                <Dropdown label="RAM" options={RAM_OPTIONS} value={ram} onChange={setRam} placeholder="Select RAM" />
               </div>
-              <p
+              <button
+                onClick={handleLookup}
+                disabled={!canLookup}
                 style={{
-                  fontSize: "0.875rem",
-                  color: "#9aafc0",
-                  lineHeight: 1.6,
-                  fontWeight: 300,
-                  marginBottom: "0.75rem",
+                  width: "100%", padding: "14px 24px",
+                  background: canLookup ? "linear-gradient(135deg, #f59e0b, #d97706)" : "rgba(255,255,255,0.04)",
+                  border: "none", borderRadius: 10, color: canLookup ? "#0d0d1a" : "#4b5563",
+                  fontSize: 16, fontWeight: 700, cursor: canLookup ? "pointer" : "not-allowed",
+                  fontFamily: "'Space Grotesk', sans-serif", transition: "all 0.2s",
+                  letterSpacing: "0.02em",
                 }}
               >
-                {svc.tagline}
-              </p>
+                {canLookup ? "→ Check my hardware" : "Select GPU, CPU, and RAM to continue"}
+              </button>
+            </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.4rem",
-                  marginBottom: "1rem",
-                }}
-              >
+            {/* Quick VRAM reference */}
+            <div style={{ marginBottom: 48 }}>
+              <h3 style={{ fontSize: 14, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.06em", color: "#6b7280", marginBottom: 16, fontFamily: "'JetBrains Mono', monospace" }}>Quick VRAM Reference</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
                 {[
-                  { k: "Pricing", v: svc.pricing },
-                  { k: "GPUs", v: svc.gpu },
-                  { k: "Models", v: svc.models },
-                ].map((r) => (
-                  <div
-                    key={r.k}
-                    style={{ display: "flex", gap: "0.5rem", fontSize: 12 }}
-                  >
-                    <span
-                      style={{
-                        color: "#5a6a7a",
-                        fontFamily: "var(--font-jetbrains-mono)",
-                        whiteSpace: "nowrap",
-                        minWidth: 56,
-                      }}
-                    >
-                      {r.k}:
-                    </span>
-                    <span style={{ color: "#9aafc0" }}>{r.v}</span>
+                  { vram: "4–6 GB", status: "🔴", label: "Not viable for modern AI" },
+                  { vram: "8 GB", status: "🟡", label: "SD 1.5 only. Very limited." },
+                  { vram: "10–12 GB", status: "🟡", label: "SDXL works. Flux is tight." },
+                  { vram: "16 GB", status: "🟢", label: "Sweet spot. Flux + SDXL." },
+                  { vram: "24+ GB", status: "🟢", label: "Run anything. Full models." },
+                ].map((r, i) => (
+                  <div key={i} style={{
+                    padding: "12px 16px", background: "rgba(255,255,255,0.02)",
+                    border: "1px solid rgba(255,255,255,0.06)", borderRadius: 8,
+                    display: "flex", alignItems: "center", gap: 10,
+                  }}>
+                    <span style={{ fontSize: 16 }}>{r.status}</span>
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: 14, color: "#f0f0f0", fontFamily: "'JetBrains Mono', monospace" }}>{r.vram}</div>
+                      <div style={{ fontSize: 12, color: "#6b7280", fontFamily: "'Space Grotesk', sans-serif" }}>{r.label}</div>
+                    </div>
                   </div>
                 ))}
               </div>
-
-              <div
-                style={{
-                  background: "#080b0f",
-                  borderRadius: 6,
-                  padding: "0.6rem 0.8rem",
-                  marginBottom: "1rem",
-                  flex: 1,
-                }}
-              >
-                <div
-                  style={{
-                    fontFamily: "var(--font-jetbrains-mono)",
-                    fontSize: 10,
-                    color: "#5a6a7a",
-                    marginBottom: 3,
-                  }}
-                >
-                  VERDICT
-                </div>
-                <p
-                  style={{
-                    fontSize: 12,
-                    color: "#e8edf2",
-                    margin: 0,
-                    lineHeight: 1.5,
-                  }}
-                >
-                  {svc.verdict}
-                </p>
-              </div>
-
-              <a
-                href={`https://${svc.url}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  background: "rgba(245,158,11,0.1)",
-                  border: "1px solid rgba(245,158,11,0.25)",
-                  color: "#f59e0b",
-                  fontFamily: "var(--font-jetbrains-mono)",
-                  fontSize: 11,
-                  padding: "7px 14px",
-                  borderRadius: 6,
-                  textDecoration: "none",
-                  textAlign: "center",
-                  display: "block",
-                  transition: "all 0.2s",
-                }}
-              >
-                Visit {svc.url} →
-              </a>
             </div>
-          ))}
-        </div>
 
-        {/* Upgrade path CTA */}
-        <div
-          style={{
-            marginTop: "3rem",
-            background:
-              "linear-gradient(135deg, rgba(245,158,11,0.05), transparent)",
-            border: "1px solid rgba(245,158,11,0.15)",
-            borderRadius: 16,
-            padding: "3rem",
-            textAlign: "center",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--font-syne)",
-              fontWeight: 700,
-              fontSize: "1.8rem",
-              color: "#fff",
-              marginBottom: "1rem",
-            }}
-          >
-            Not sure which GPU to buy?
-          </h2>
-          <p
-            style={{
-              color: "#9aafc0",
-              fontSize: "1rem",
-              lineHeight: 1.7,
-              maxWidth: 500,
-              margin: "0 auto 2rem",
-              fontWeight: 300,
-            }}
-          >
-            Our hardware partner ComputeAtlas.ai takes your workload — the
-            models you want to run, the resolution you need, your budget — and
-            outputs an exact parts list.
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: "1rem",
-              justifyContent: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <a
-              href="https://computeatlas.ai"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                background: "#f59e0b",
-                color: "#000",
-                padding: "0.85rem 2rem",
-                borderRadius: 8,
-                fontWeight: 700,
-                fontSize: "0.95rem",
-                textDecoration: "none",
-              }}
-            >
-              Plan Your AI Rig on ComputeAtlas →
-            </a>
-            <Link
-              href="/optimizer"
-              style={{
-                background: "transparent",
-                color: "#e8edf2",
-                border: "1px solid rgba(255,255,255,0.15)",
-                padding: "0.85rem 2rem",
-                borderRadius: 8,
-                fontWeight: 500,
-                fontSize: "0.95rem",
-                textDecoration: "none",
-              }}
-            >
-              Score My Current GPU
-            </Link>
+            {/* ComputeAtlas inline ad — shown on selector page */}
+            <ComputeAtlasBanner variant="inline" />
+          </div>
+        ) : (
+          <div style={{ marginBottom: 48 }}>
+            <HardwareDetail gpu={gpu} cpu={cpu} ram={ram} onBack={() => setShowDetail(false)} />
+          </div>
+        )}
+
+        {/* SECTION 2: Cloud GPU Providers */}
+        <div style={{ animation: mounted ? "fadeSlideIn 0.7s ease" : "none" }}>
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <h2 style={{ fontSize: 28, fontWeight: 700, color: "#f0f0f0", marginBottom: 8, fontFamily: "'Playfair Display', serif" }}>
+              No GPU? No problem.
+            </h2>
+            <p style={{ color: "#6b7280", fontSize: 15, maxWidth: 480, margin: "0 auto" }}>
+              Rent cloud GPUs by the second. Zero setup, pay only for what you use.
+            </p>
+            <div style={{ display: "flex", justifyContent: "center", gap: 24, marginTop: 14 }}>
+              {["Zero Setup", "Pay Per Second", "Scale on Demand"].map((t, i) => (
+                <span key={i} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: "#9ca3af" }}>
+                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#10b981" }}></span>
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 16 }}>
+            {CLOUD_PROVIDERS.map((p, i) => <CloudCard key={i} provider={p} />)}
           </div>
         </div>
-      </section>
+
+        {/* ComputeAtlas hero banner — always visible */}
+        <ComputeAtlasBanner variant="hero" />
+
+        {/* Footer note */}
+        <div style={{ textAlign: "center", marginTop: 48, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+          <p style={{ fontSize: 12, color: "#4b5563", fontFamily: "'JetBrains Mono', monospace" }}>
+            Prices and specs are approximate and subject to change. Last updated March 2026.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
