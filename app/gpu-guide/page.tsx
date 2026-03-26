@@ -828,6 +828,20 @@ export default function GPUComputePage() {
 
   useEffect(() => setMounted(true), []);
 
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+      @keyframes pulseGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+      * { box-sizing: border-box; }
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+    `;
+    document.head.appendChild(style);
+    return () => { document.head.removeChild(style); };
+  }, []);
+
   const canLookup = gpu && cpu && ram;
 
   const handleLookup = () => {
@@ -839,16 +853,6 @@ export default function GPUComputePage() {
       minHeight: "100vh", background: "#0d0d1a", color: "#f0f0f0",
       fontFamily: "'Space Grotesk', sans-serif",
     }}>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulseGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }
-        * { box-sizing: border-box; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
-      `}</style>
-
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "48px 24px" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: 48, animation: mounted ? "fadeSlideIn 0.5s ease" : "none" }}>

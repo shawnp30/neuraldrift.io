@@ -22,12 +22,12 @@ export default function GuideConversionCTA({
       </p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         {workflowId ? (
-          
+          <Link
             href={`/workflows/${workflowId}`}
             className="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition-all"
           >
             Download {workflowName} →
-          </a>
+          </Link>
         ) : (
           <Link
             href="/workflows/generate"

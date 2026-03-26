@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { AudioWaveform, Music, BrainCircuit, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import DualTicker from "@/components/DualTicker";
 
 
 // ─────────────────────────────────────────────────────────────────
@@ -227,8 +228,11 @@ export default function Navbar() {
   // ── Render ───────────────────────────────────────────────────
   return (
     <>
+      <div className="fixed top-0 left-0 right-0 z-[60] bg-black">
+        <DualTicker />
+      </div>
       <nav className={`
-        fixed top-0 left-0 right-0 z-50 w-full
+        fixed top-[40px] left-0 right-0 z-50 w-full
         transition-all duration-300
         ${scrolled
           ? 'bg-bg/85 backdrop-blur-xl border-b border-border py-3'
@@ -243,7 +247,7 @@ export default function Navbar() {
             className="flex items-center gap-2 group flex-shrink-0"
           >
             <div className="relative">
-              <BrainCircuit size={26} className="text-accent transition-transform duration-500 group-hover:rotate-12" />
+              <BrainCircuit size={30} className="text-accent transition-transform duration-500 group-hover:rotate-12" />
               <div className="absolute inset-0 blur-md bg-accent/40 opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
             <span className="hidden sm:inline font-syne text-xl font-black tracking-tight text-white">

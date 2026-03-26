@@ -8,16 +8,6 @@ import { Hero } from "@/components/home/Hero";
 import HeroSection from "@/components/home/HeroSection";
 import { BrainCircuit } from "lucide-react";
 
-const TICKER = [
-  { icon: "⚡", label: "RTX 5080", desc: "Primary test rig" },
-  { icon: "🔧", label: "ComfyUI", desc: "Workflow engine" },
-  { icon: "🎬", label: "LTX Video 2.3", desc: "Cinematic generation" },
-  { icon: "🧠", label: "FLUX Dev/Schnell", desc: "Image models" },
-  { icon: "📦", label: "6 LoRA Models", desc: "Ready to download" },
-  { icon: "⚙️", label: "50 ComfyUI Workflows", desc: "Plug & play" },
-  { icon: "📧", label: "15+ Subscribers", desc: "Weekly drops" },
-  { icon: "🎯", label: "0 Ads", desc: "Just signal" },
-];
 
 const PILLARS = [
   {
@@ -242,8 +232,8 @@ function GPUSelector() {
   );
 }
 
+
 export default function HomePage() {
-  const tickerItems = [...TICKER, ...TICKER];
 
   return (
     <div className="nh-page">
@@ -251,16 +241,6 @@ export default function HomePage() {
 
       <Hero />
 
-      <div className="nh-ticker-bar" aria-hidden="true">
-        <div className="nh-ticker-track">
-          {tickerItems.map((item, i) => (
-            <span key={i} className="nh-ticker-item">
-              <span className="nh-ticker-icon">{item.icon}</span>
-              <strong>{item.label}</strong> — {item.desc}
-            </span>
-          ))}
-        </div>
-      </div>
 
       {/* ── WHAT TO EXPECT ────────────────────────────────────────── */}
       <section className="py-24 relative flex flex-col items-center justify-center text-center bg-[#080b0f] border-t border-white/5">

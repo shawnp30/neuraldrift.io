@@ -21,7 +21,7 @@ const config: Config = {
         accent: {
           DEFAULT: "#00e5ff",
           purple: "#7c3aed",
-          orange: "#f97316",
+          
         },
         muted: "#4a5568",
       },
