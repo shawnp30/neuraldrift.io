@@ -111,9 +111,9 @@ export async function getWorkflowTree(
     if (!combinedMap.has(item.name)) {
       combinedMap.set(item.name, item);
     } else {
-      // If github has it, just make sure we prioritize those download URLs unless it's missing
+      // If local exists, always prioritize the local version for development (enables download attribute)
       const existing = combinedMap.get(item.name)!;
-      if (!existing.downloadUrl && item.downloadUrl) {
+      if (item.downloadUrl) {
         existing.downloadUrl = item.downloadUrl;
       }
     }
