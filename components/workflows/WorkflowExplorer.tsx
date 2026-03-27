@@ -116,26 +116,29 @@ export default function WorkflowExplorer({ initialTree }: WorkflowExplorerProps)
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-3">
-                  <a 
-                    href={selectedFile.downloadUrl} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-accent hover:bg-accent/90 text-black px-6 py-3 rounded-xl font-bold transition-all"
-                  >
-                    <Download className="w-4 h-4" />
-                    Download JSON
-                  </a>
-                  <a 
-                    href={`https://github.com/shawnp30/neuraldrift.io/blob/main/${selectedFile.path}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-6 py-3 rounded-xl font-bold transition-all border border-white/10"
-                  >
-                    <ExternalLink className="w-4 h-4" />
-                    View on GitHub
-                  </a>
-                </div>
+                  <div className="flex flex-wrap gap-3">
+                    <a 
+                      href={selectedFile.downloadUrl} 
+                      download={selectedFile.name}
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 bg-accent hover:bg-accent/90 text-black px-6 py-3 rounded-xl font-bold transition-all"
+                    >
+                      <Download className="w-4 h-4" />
+                      Download JSON
+                    </a>
+                    {selectedFile.downloadUrl?.startsWith("http") && (
+                      <a 
+                        href={`https://github.com/shawnp30/neuraldrift.io/blob/main/${selectedFile.path}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white px-6 py-3 rounded-xl font-bold transition-all border border-white/10"
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        View on GitHub
+                      </a>
+                    )}
+                  </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">

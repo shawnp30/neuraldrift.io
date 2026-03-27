@@ -32,9 +32,10 @@ const NAV = [
   {
     label: 'Tools',
     children: [
-      { name: 'Optimizer', href: '/optimizer', desc: 'Score your hardware setup' },
-      { name: 'Hardware',  href: '/hardware',  desc: 'VRAM & compatibility check' },
-      { name: 'Proofs',    href: '/proofs',    desc: 'Verified workflow outputs' },
+      { name: 'Optimizer', href: '/optimizer', desc: 'Hardware scoring' },
+      { name: 'Hardware',  href: '/hardware',  desc: 'Compatibility check' },
+      { name: 'Datasets',  href: '/datasets',  desc: 'Training repositories' },
+      { name: 'Proofs',    href: '/proofs',    desc: 'Verified outputs' },
     ],
   },
 ];

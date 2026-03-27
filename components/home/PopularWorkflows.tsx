@@ -9,31 +9,31 @@ const WORKFLOWS = [
     title: "Starter Diffusion Workflow",
     desc: "Optimized for 8GB VRAM cards using SD1.5.",
     category: "Image / Low VRAM",
-    href: "/workflows/starter-diffusion"
+    href: "/workflows/essential/the-essential-flux.json"
   },
   {
     title: "High-Detail Image Pipeline",
     desc: "Professional SDXL architecture with Hires. fix.",
     category: "Image / Pro",
-    href: "/workflows/z-image-turbo"
+    href: "/workflows/essential/high-res-pipeline.json"
   },
   {
     title: "Video Generation Flow",
     desc: "Cinematic motion using LTX-Video and AnimateDiff.",
     category: "Video / Animation",
-    href: "/workflows/ltx-gguf"
+    href: "/workflows/essential/animatediff.json"
   },
   {
     title: "LoRA Training Graph",
     desc: "Targeted concept extraction and character training.",
     category: "Training / Experimental",
-    href: "/workflows/lora-training-graph"
+    href: "/workflows/essential/dual-lora.json"
   },
   {
     title: "Audio Generation Flow",
     desc: "Stable Audio and AudioLDM integration for sound FX.",
     category: "Audio / Experimental",
-    href: "/workflows/audio-generation-flow"
+    href: "/workflows/essential/ultimate-upscaler.json"
   }
 ];
 
@@ -73,13 +73,14 @@ export const PopularWorkflows = () => {
                 <p className="text-sm text-zinc-400 font-[500] mb-8 leading-relaxed">
                   {wf.desc}
                 </p>
-                <Link 
+                <a 
                   href={wf.href} 
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-purple text-white font-[700] hover:scale-[1.02] transition-all"
+                  download={`${wf.title.toLowerCase().replace(/\s+/g, "-")}.json`}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-purple text-white font-[700] hover:scale-[1.02] transition-all cursor-pointer"
                 >
                   <Download size={18} />
                   Download
-                </Link>
+                </a>
               </div>
             </div>
           ))}

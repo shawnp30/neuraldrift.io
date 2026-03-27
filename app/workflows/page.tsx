@@ -1,5 +1,6 @@
 import { getWorkflowTree } from "@/lib/github";
 import WorkflowExplorer from "@/components/workflows/WorkflowExplorer";
+import EngineRoomAssistant from "@/components/workflows/EngineRoomAssistant";
 
 // Revalidate every hour to stay within GitHub API rate limits
 export const revalidate = 3600;
@@ -23,6 +24,9 @@ export default async function WorkflowsPage() {
 
       {/* EXPLORER */}
       <WorkflowExplorer initialTree={workflowTree} />
+
+      {/* AI CONCIERGE */}
+      <EngineRoomAssistant />
       
     </div>
   );
