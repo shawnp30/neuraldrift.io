@@ -1,5 +1,4 @@
 import Navbar from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import matter from "gray-matter";
@@ -118,11 +117,10 @@ export default function GuidePage({ params }: Props) {
       <>
         <Navbar />
         <main className="pt-24 pb-20 px-10 max-w-4xl mx-auto text-center">
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">404</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"404"}</p>
           <h1 className="font-syne text-4xl font-black text-white mb-4">Guide not found</h1>
           <Link href="/guides" className="text-accent hover:underline font-mono text-sm">← Back to guides</Link>
         </main>
-        <Footer />
       </>
     );
   }
@@ -349,7 +347,7 @@ export default function GuidePage({ params }: Props) {
 
               {/* ComputeAtlas CTA */}
               <div className="bg-gradient-to-br from-accent-purple/8 to-transparent border border-accent-purple/20 rounded-2xl p-5">
-                <p className="font-mono text-xs text-[#a78bfa] tracking-widest uppercase mb-2">Hardware</p>
+                <p className="font-mono text-xs text-[#a78bfa] tracking-widest uppercase mb-2">{"// Hardware"}</p>
                 <p className="text-sm text-muted leading-relaxed mb-4">Not sure your GPU can handle this? Plan your upgrade on ComputeAtlas.</p>
                 <a href="https://computeatlas.ai/ai-hardware-estimator" target="_blank" rel="noopener noreferrer"
                   className="block text-center font-mono text-xs text-[#a78bfa] border border-accent-purple/20 px-4 py-2.5 rounded-lg hover:bg-accent-purple/8 transition-colors tracking-wider">
@@ -359,7 +357,7 @@ export default function GuidePage({ params }: Props) {
 
               {/* Workflow CTA */}
               <div className="bg-gradient-to-br from-accent/5 to-transparent border border-accent/15 rounded-2xl p-5">
-                <p className="font-mono text-xs text-accent tracking-widest uppercase mb-2">Workflows</p>
+                <p className="font-mono text-xs text-accent tracking-widest uppercase mb-2">{"// Workflows"}</p>
                 <p className="text-sm text-muted leading-relaxed mb-4">Ready to run? Browse pre-configured ComfyUI workflows tuned for your hardware.</p>
                 <Link href="/workflows"
                   className="block text-center font-mono text-xs text-accent border border-accent/20 px-4 py-2.5 rounded-lg hover:bg-accent/8 transition-colors tracking-wider">
@@ -370,7 +368,6 @@ export default function GuidePage({ params }: Props) {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

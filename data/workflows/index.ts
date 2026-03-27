@@ -34,7 +34,15 @@ export interface HardwareProfile {
 
 export interface RequiredModel {
   name: string;
-  type: "checkpoint" | "lora" | "vae" | "controlnet" | "upscaler" | "motion";
+  type:
+    | "checkpoint"
+    | "checkpoint_gguf"
+    | "lora"
+    | "vae"
+    | "controlnet"
+    | "upscaler"
+    | "motion"
+    | "text_encoder";
   filename: string;
   sizeGB: number;
   downloadUrl: string;
@@ -896,6 +904,382 @@ export const WORKFLOWS: Workflow[] = [
     previewOutputs: [],
     createdAt: "2025-02-15",
     updatedAt: "2025-03-10",
+  },
+  {
+    id: "z-image-turbo",
+    version: "1.0.0",
+    title: "Z-Image Turbo (Quick Generation)",
+    tagline: "Ultra-fast generation in 8 steps using Z-Image Turbo",
+    description: "A highly optimized pipeline for near-instant image generation. Uses the Z-Image Turbo (Lumina2) architecture with Qwen text encoding. Perfect for rapid prototyping and high-volume iteration.",
+    purpose: "Provide the fastest possible high-quality image generation experience.",
+    whoItsFor: ["Prototypers", "Speed-focused artists", "Anyone wanting to see results in seconds"],
+    category: "Image",
+    difficulty: "Beginner",
+    tags: ["Turbo", "Fast", "Z-Image", "Lumina2", "Qwen"],
+    hardwareProfiles: {
+      "8gb": {
+        tier: "8gb",
+        label: "8GB Quick",
+        vram: "8GB",
+        gpuExamples: ["RTX 3070", "RTX 4060"],
+        width: 768,
+        height: 768,
+        steps: 8,
+        cfg: 1.0,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "simple",
+        batchSize: 1,
+        qualityNote: "Excellent speed, standard resolution.",
+        estimatedTime: "2-4s",
+        extraFlags: ["--lowvram"]
+      },
+      "12gb": {
+        tier: "12gb",
+        label: "12GB Balanced",
+        vram: "12GB",
+        gpuExamples: ["RTX 4070", "RTX 3060 12GB"],
+        width: 1024,
+        height: 1024,
+        steps: 8,
+        cfg: 1.0,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "simple",
+        batchSize: 1,
+        qualityNote: "High resolution at maximum speed.",
+        estimatedTime: "1-3s",
+        extraFlags: ["--lowvram"]
+      },
+      "16gb": {
+        tier: "16gb",
+        label: "16GB Performance",
+        vram: "16GB",
+        gpuExamples: ["RTX 5080", "RTX 4080"],
+        width: 1024,
+        height: 1024,
+        steps: 8,
+        cfg: 1.0,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "simple",
+        batchSize: 2,
+        qualityNote: "Batch generation at near-instant speeds.",
+        estimatedTime: "1-2s",
+        extraFlags: ["--gpu-only"]
+      },
+      "24gb": {
+        tier: "24gb",
+        label: "24GB Production",
+        vram: "24GB",
+        gpuExamples: ["RTX 4090"],
+        width: 1216,
+        height: 1216,
+        steps: 8,
+        cfg: 1.5,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "simple",
+        batchSize: 4,
+        qualityNote: "Large batches at ultra-high resolution.",
+        estimatedTime: "1s",
+        extraFlags: ["--gpu-only", "--highvram"]
+      }
+    },
+    requiredModels: [
+      {
+        name: "Z-Image Turbo BF16",
+        type: "checkpoint",
+        filename: "z_image_turbo_bf16.safetensors",
+        sizeGB: 6.2,
+        downloadUrl: "https://huggingface.co/Comfy-Org/z_image_turbo",
+        required: true
+      },
+      {
+        name: "Qwen 3 4B",
+        type: "checkpoint",
+        filename: "qwen_3_4b.safetensors",
+        sizeGB: 4.1,
+        downloadUrl: "https://huggingface.co/Comfy-Org/z_image_turbo",
+        required: true
+      }
+    ],
+    setupSteps: [
+      "Download Z-Image Turbo and Qwen 3 4B models",
+      "Place in ComfyUI/models/checkpoints/",
+      "Select your hardware profile",
+      "Enter your prompt",
+      "Export and load into ComfyUI"
+    ],
+    configurableParams: [
+      {
+        id: "positive_prompt",
+        label: "Prompt",
+        type: "text",
+        default: "Cinematic portrait of a cyberpunk robot in neon rain, intricate details, hyper-realistic, 8k",
+        description: "What you want to see.",
+        affects: "Text input"
+      },
+      {
+        id: "seed",
+        label: "Seed",
+        type: "number",
+        default: -1,
+        description: "Set to -1 for random.",
+        affects: "Randomness"
+      }
+    ],
+    troubleshooting: [],
+    templateFile: "z-image-turbo.json",
+    previewOutputs: [],
+    createdAt: "2025-03-20",
+    updatedAt: "2025-03-25",
+  },
+  {
+    id: "qwen-image",
+    version: "1.0.0",
+    title: "Qwen-Image 2.5 (Graphic Novel)",
+    tagline: "High-detail graphic novel and comic art using Qwen-Image 2.5",
+    description: "A specialized pipeline for generating complex, multi-panel comic and graphic novel art. Uses Qwen-Image-2512-Lightning-4steps for incredibly sharp linework and stylistic consistency.",
+    purpose: "Create professional-grade comic and graphic novel illustrations.",
+    whoItsFor: ["Comic artists", "Storytellers", "Dystopian/Cyberpunk illustrators"],
+    category: "Image",
+    difficulty: "Intermediate",
+    tags: ["Qwen", "Comic", "Graphic Novel", "4-Step", "Lightning"],
+    hardwareProfiles: {
+      "8gb": {
+        tier: "8gb",
+        label: "8GB Minimum",
+        vram: "8GB",
+        gpuExamples: ["RTX 3070", "RTX 4060"],
+        width: 512,
+        height: 512,
+        steps: 4,
+        cfg: 1.0,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "beta",
+        batchSize: 1,
+        qualityNote: "Functional but low resolution.",
+        estimatedTime: "2-4s",
+        extraFlags: ["--lowvram"]
+      },
+      "12gb": {
+        tier: "12gb",
+        label: "12GB Balanced",
+        vram: "12GB",
+        gpuExamples: ["RTX 4070", "RTX 3060 12GB"],
+        width: 1024,
+        height: 1024,
+        steps: 4,
+        cfg: 1.0,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "beta",
+        batchSize: 1,
+        qualityNote: "Excellent for quick panel sketches.",
+        estimatedTime: "2-5s",
+        extraFlags: ["--lowvram"]
+      },
+      "16gb": {
+        tier: "16gb",
+        label: "16GB Performance",
+        vram: "16GB",
+        gpuExamples: ["RTX 5080", "RTX 4080"],
+        width: 1024,
+        height: 1024,
+        steps: 8,
+        cfg: 1.5,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "beta",
+        batchSize: 1,
+        qualityNote: "Maximum detail and line sharpness.",
+        estimatedTime: "3-6s",
+        extraFlags: ["--gpu-only"]
+      },
+      "24gb": {
+        tier: "24gb",
+        label: "24GB Production",
+        vram: "24GB",
+        gpuExamples: ["RTX 4090"],
+        width: 1216,
+        height: 1216,
+        steps: 8,
+        cfg: 1.5,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "beta",
+        batchSize: 2,
+        qualityNote: "Batch processing multi-panel sequences.",
+        estimatedTime: "2s",
+        extraFlags: ["--gpu-only", "--highvram"]
+      }
+    },
+    requiredModels: [
+      {
+        name: "Qwen-Image GGUF",
+        type: "checkpoint_gguf",
+        filename: "qwen-image-2512-Q5_K_M.gguf",
+        sizeGB: 6.5,
+        downloadUrl: "https://huggingface.co/unsloth/Qwen-Image-2512-GGUF",
+        required: true
+      },
+      {
+        name: "Qwen2.5-VL-7B GGUF",
+        type: "text_encoder",
+        filename: "Qwen2.5-VL-7B-Instruct-UD-Q5_K_XL.gguf",
+        sizeGB: 5.2,
+        downloadUrl: "https://huggingface.co/unsloth/Qwen2.5-VL-7B-Instruct-GGUF",
+        required: true
+      }
+    ],
+    setupSteps: [
+      "Install ComfyUI-GGUF custom nodes",
+      "Download Qwen-Image GGUF model",
+      "Download Qwen2.5-VL text encoder",
+      "Configure your hardware profile",
+      "Enter your comic panel description",
+      "Export and load into ComfyUI"
+    ],
+    configurableParams: [
+      {
+        id: "positive_prompt",
+        label: "Comic Description",
+        type: "text",
+        default: "A full comic book page, gritty graphic novel art style, heavy ink outlines. Three panels split by white gutters.",
+        description: "Describe the panels and style.",
+        affects: "Image content"
+      }
+    ],
+    troubleshooting: [],
+    templateFile: "qwen-image.json",
+    previewOutputs: [],
+    createdAt: "2025-03-22",
+    updatedAt: "2025-03-25",
+  },
+  {
+    id: "ltx-gguf",
+    version: "1.0.0",
+    title: "LTX Video 2.0 (GGUF Optimized)",
+    tagline: "Hollywood-grade video on consumer hardware using LTX 2.0 GGUF",
+    description: "The most advanced LTX Video implementation, optimized for 12GB+ VRAM cards. Uses GGUF quantization for the 19B model and a specialized Subgraph for maximum temporal coherence.",
+    purpose: "Generate cinematic 720p/1080p video with consistent character motion.",
+    whoItsFor: ["Filmmakers", "Content creators", "Users with 16GB-24GB VRAM"],
+    category: "Video",
+    difficulty: "Advanced",
+    tags: ["LTX2", "GGUF", "Video", "Cinematic", "19B"],
+    hardwareProfiles: {
+      "8gb": {
+        tier: "8gb",
+        label: "8GB Experimental",
+        vram: "8GB",
+        gpuExamples: ["RTX 3070", "RTX 4060"],
+        width: 384,
+        height: 256,
+        steps: 15,
+        cfg: 2.5,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "beta",
+        batchSize: 1,
+        qualityNote: "Very low resolution, experimental use only.",
+        estimatedTime: "5-10m",
+        extraFlags: ["--lowvram", "--reserve-vram 2"]
+      },
+      "12gb": {
+        tier: "12gb",
+        label: "12GB Safe",
+        vram: "12GB",
+        gpuExamples: ["RTX 4070 Ti", "RTX 3060 12GB"],
+        width: 768,
+        height: 512,
+        steps: 20,
+        cfg: 3.0,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "beta",
+        batchSize: 1,
+        qualityNote: "Fast generation, standard resolution.",
+        estimatedTime: "2-5m",
+        extraFlags: ["--lowvram", "--reserve-vram 4"]
+      },
+      "16gb": {
+        tier: "16gb",
+        label: "16GB Balanced",
+        vram: "16GB",
+        gpuExamples: ["RTX 5080", "RTX 4080"],
+        width: 1024,
+        height: 768,
+        steps: 25,
+        cfg: 3.5,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "beta",
+        batchSize: 1,
+        qualityNote: "High-fidelity cinematic output.",
+        estimatedTime: "3-8m",
+        extraFlags: ["--gpu-only", "--reserve-vram 8"]
+      },
+      "24gb": {
+        tier: "24gb",
+        label: "24GB Production",
+        vram: "24GB",
+        gpuExamples: ["RTX 4090"],
+        width: 1216,
+        height: 1216,
+        steps: 30,
+        cfg: 4.0,
+        denoise: 1.0,
+        sampler: "euler",
+        scheduler: "beta",
+        batchSize: 1,
+        qualityNote: "Ultra-high resolution cinematic sequences.",
+        estimatedTime: "5-10m",
+        extraFlags: ["--gpu-only", "--highvram"]
+      }
+    },
+    requiredModels: [
+      {
+        name: "LTX-2 19B GGUF",
+        type: "checkpoint_gguf",
+        filename: "ltx-2-19b-distilled_Q8_0.gguf",
+        sizeGB: 19.5,
+        downloadUrl: "https://huggingface.co/Kijai/LTXV2_comfy",
+        required: true
+      },
+      {
+        name: "Gemma 3 12B IT FP8",
+        type: "text_encoder",
+        filename: "gemma_3_12B_it_fp8_e4m3fn.safetensors",
+        sizeGB: 12.0,
+        downloadUrl: "https://huggingface.co/GitMylo/LTX-2-comfy_gemma_fp8_e4m3fn",
+        required: true
+      }
+    ],
+    setupSteps: [
+      "Update ComfyUI to latest version",
+      "Install ComfyUI-GGUF and ComfyUI-VideoHelperSuite",
+      "Download LTX-2 GGUF and Gemma 3 text encoder",
+      "Place models in their respective directories",
+      "Enter your cinematic prompt",
+      "Export and load into ComfyUI"
+    ],
+    configurableParams: [
+      {
+        id: "positive_prompt",
+        label: "Cinematic Scene",
+        type: "text",
+        default: "Cinematic action shot of a knight standing in rain, sparks flying from armor, detailed environment, 4k",
+        description: "Describe the action and atmosphere.",
+        affects: "Video content"
+      }
+    ],
+    troubleshooting: [],
+    templateFile: "ltx-gguf.json",
+    previewOutputs: [],
+    createdAt: "2025-03-23",
+    updatedAt: "2025-03-25",
   },
 ];
 

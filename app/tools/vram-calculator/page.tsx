@@ -1,7 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 import Link from "next/link";
 
 // ── Data ────────────────────────────────────────────────────────────────────
@@ -193,7 +192,7 @@ export default function VRAMCalculatorPage() {
       <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12">
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// Tools</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Tools"}</p>
           <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">
             VRAM Calculator
           </h1>
@@ -474,7 +473,7 @@ export default function VRAMCalculatorPage() {
             {/* ComputeAtlas CTA if over 16GB */}
             {estimatedVRAM > 16 && (
               <div className="bg-gradient-to-br from-accent-purple/8 to-accent/5 border border-accent-purple/25 rounded-xl p-6">
-                <p className="font-mono text-xs text-[#a78bfa] tracking-widest uppercase mb-2">// Hardware Upgrade Path</p>
+                <p className="font-mono text-xs text-[#a78bfa] tracking-widest uppercase mb-2">{"// Hardware Upgrade Path"}</p>
                 <h3 className="font-syne text-xl font-black text-white mb-2">
                   Your rig needs {estimatedVRAM}GB — time to plan an upgrade.
                 </h3>
@@ -502,7 +501,6 @@ export default function VRAMCalculatorPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

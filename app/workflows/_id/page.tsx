@@ -2,8 +2,7 @@
 import { useState, useMemo } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 import {
   WORKFLOWS,
   type HardwareTier,
@@ -178,7 +177,6 @@ export default function WorkflowDetailPage() {
             ← Back to workflows
           </Link>
         </main>
-        <Footer />
       </>
     );
   }
@@ -444,7 +442,7 @@ export default function WorkflowDetailPage() {
 
               <div className="rounded-xl border border-accent-purple/15 bg-gradient-to-br from-accent-purple/5 to-transparent p-5">
                 <p className="mb-2 font-mono text-xs uppercase tracking-widest text-[#a78bfa]">
-                  // Hardware
+                  {"// Hardware"}
                 </p>
                 <p className="mb-3 text-sm leading-relaxed text-muted">
                   Not sure your rig can handle this? Plan your upgrade on
@@ -462,7 +460,6 @@ export default function WorkflowDetailPage() {
             </div>
           </div>
         </main>
-        <Footer />
       </>
     );
   }
@@ -571,7 +568,7 @@ export default function WorkflowDetailPage() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`rounded px-5 py-2 font-mono text-xs uppercase capitalize tracking-widest transition-colors ${activeTab === tab ? "border border-accent/15 bg-card text-accent" : "hover:text-text text-muted"}`}
+                  className={`rounded px-5 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${activeTab === tab ? "border border-accent/15 bg-card text-accent" : "hover:text-text text-muted"}`}
                 >
                   {tab}
                 </button>
@@ -663,10 +660,10 @@ export default function WorkflowDetailPage() {
                   </h2>
                   <div className="rounded-lg border border-border bg-surface p-4 font-mono text-xs leading-loose text-slate-300">
                     <div>
-                      <span className="text-muted">// {workflow.title}</span>
+                      <span className="text-muted">{"// "}{workflow.title}</span>
                     </div>
                     <div>
-                      <span className="text-muted">// Hardware:</span>{" "}
+                      <span className="text-muted">{"// Hardware:"}</span>{" "}
                       <span className="text-accent">
                         {selectedTier} — {profile.label}
                       </span>
@@ -739,13 +736,13 @@ export default function WorkflowDetailPage() {
                     )}
                     <div>&nbsp;</div>
                     <div>
-                      <span className="text-muted">// flags: </span>
+                      <span className="text-muted">{"// flags: "}</span>
                       <span className="text-accent">
                         {profile.extraFlags.join(" ") || "none"}
                       </span>
                     </div>
                     <div>
-                      <span className="text-muted">// time: </span>
+                      <span className="text-muted">{"// time: "}</span>
                       <span className="text-slate-400">
                         {profile.estimatedTime}
                       </span>

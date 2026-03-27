@@ -1,6 +1,5 @@
 "use client"
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 
 
 
@@ -191,7 +190,7 @@ export default function WorkflowCreatorPage() {
 
         {/* Header */}
         <div className="mb-16">
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// Workflow Creator</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Workflow Creator"}</p>
           <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">
             Build custom<br />ComfyUI workflows.
           </h1>
@@ -202,7 +201,7 @@ export default function WorkflowCreatorPage() {
 
         {/* NODE REFERENCE */}
         <div className="mb-20">
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-6">// Node Reference Guide</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Node Reference Guide"}</p>
           <h2 className="font-syne text-3xl font-black tracking-tight text-white mb-10">
             The standard node chain — explained.
           </h2>
@@ -288,7 +287,7 @@ export default function WorkflowCreatorPage() {
 
         {/* BUILD DEVLOGS */}
         <div>
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-6">// Build Dev Logs</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-6">{"// Build Dev Logs"}</p>
           <h2 className="font-syne text-3xl font-black tracking-tight text-white mb-10">
             Real builds, real iterations.
           </h2>
@@ -358,7 +357,6 @@ export default function WorkflowCreatorPage() {
         </div>
 
       </main>
-      <Footer />
     </>
   );
 }

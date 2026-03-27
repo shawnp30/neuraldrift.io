@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 
 export const metadata = { title: "Tools" };
 
@@ -15,7 +14,7 @@ export default function ToolsPage() {
     <>
 
       <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
-        <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// Tools</p>
+        <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Tools"}</p>
         <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">Builder Utilities.</h1>
         <p className="text-muted max-w-lg leading-relaxed mb-16">Free tools for AI builders — VRAM calculators, captioning, benchmarks.</p>
         <div className="grid grid-cols-3 gap-5">
@@ -28,7 +27,6 @@ export default function ToolsPage() {
           ))}
         </div>
       </main>
-      <Footer />
     </>
   );
 }

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import Navbar from "@/components/layout/Navbar"; 
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 import type { Difficulty } from "@/types";
 
 export const metadata = { title: "Guides" };
@@ -33,7 +32,7 @@ export default function GuidesPage() {
     <>
 
       <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
-        <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// All Guides</p>
+        <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// All Guides"}</p>
         <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">Knowledge Base.</h1>
         <p className="text-muted max-w-lg leading-relaxed mb-16">
           Practical, hardware-tested technical documentation for every stage of the AI stack. 
@@ -78,7 +77,6 @@ export default function GuidesPage() {
           </Link>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

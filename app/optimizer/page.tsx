@@ -1,7 +1,6 @@
 "use client";
 import { useState, useCallback } from "react";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 import { HardwareForm, type HardwareInput } from "@/components/optimizer/HardwareForm";
 import { CompatibilityBadge } from "@/components/optimizer/CompatibilityBadge";
 import { ScoreBar } from "@/components/optimizer/ScoreBar";
@@ -114,7 +113,7 @@ export default function OptimizerPage() {
         {/* Header */}
         <div className="border-b border-border bg-gradient-to-b from-surface/50 to-transparent">
           <div className="max-w-7xl mx-auto px-10 pt-10 pb-8">
-            <p className="font-mono text-xs text-accent tracking-widest uppercase mb-3">// Workflow Optimizer</p>
+            <p className="font-mono text-xs text-accent tracking-widest uppercase mb-3">{"// Workflow Optimizer"}</p>
             <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-3">
               Find the best workflow<br />for your hardware.
             </h1>
@@ -341,7 +340,6 @@ export default function OptimizerPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

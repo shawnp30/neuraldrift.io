@@ -2,8 +2,7 @@
 import { useState, useMemo } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 import {
   WORKFLOWS,
   type HardwareTier,
@@ -50,64 +49,54 @@ const DIFF_STYLES: Record<string, string> = {
 
 // ── Export Engine ─────────────────────────────────────────────────────────────
 function buildWorkflowJSON(
-  templateId: string,
+  template: string,
   tier: HardwareTier,
-  params: Record<string, string | number | boolean>,
-  workflow: ReturnType<(typeof WORKFLOWS)[0]["hardwareProfiles"]["8gb"]["tier"]>
+  userValues: Record<string, string | number | boolean>,
+  profile: any
 ): string {
-  // In production this would load the actual template JSON
-  // For now we produce a clean config object that ComfyUI can use
-  const profile =
-    ((window as unknown as Record<string, unknown>).__wf_profile as Record<
-      string,
-      unknown
-    >) || {};
+  if (!template) return "";
+  let result = template;
 
-  const config = {
-    _neuraldrift: {
-      workflow_id: templateId,
-      exported_at: new Date().toISOString(),
-      hardware_tier: tier,
-      generator: "neuraldrift Workflow Configurator",
-    },
-    checkpoint: {
-      ckpt_name: "__REPLACE_WITH_YOUR_MODEL__",
-    },
-    positive_prompt: params.positive_prompt || "",
-    negative_prompt: params.negative_prompt || "",
-    sampler: {
-      seed:
-        params.seed === -1
-          ? Math.floor(Math.random() * 9999999999)
-          : params.seed,
-      steps: profile.steps,
-      cfg: profile.cfg,
-      sampler_name: profile.sampler,
-      scheduler: profile.scheduler,
-      denoise: profile.denoise,
-    },
-    latent_image: {
-      width: profile.width,
-      height: profile.height,
-      batch_size: profile.batchSize,
-    },
-    ...(profile.frames !== undefined && {
-      video: {
-        frames: profile.frames,
-        motion_scale: params.motion_scale || profile.motionScale,
-      },
-    }),
-    ...(params.lora_enabled && {
-      lora: {
-        lora_name: params.lora_name || "your_lora.safetensors",
-        strength_model: params.lora_strength || 0.8,
-        strength_clip: params.lora_strength || 0.8,
-      },
-    }),
-    launch_flags: profile.extraFlags,
+  // Mapping of placeholders to values
+  const replacements: Record<string, any> = {
+    "__POSITIVE_PROMPT__": userValues.positive_prompt || "",
+    "__NEGATIVE_PROMPT__": userValues.negative_prompt || "",
+    "__STEPS__": profile?.steps || 20,
+    "__CFG__": profile?.cfg || 7.0,
+    "__DENOISE__": profile?.denoise || 1.0,
+    "__SAMPLER__": profile?.sampler || "euler",
+    "__SCHEDULER__": profile?.scheduler || "normal",
+    "__WIDTH__": profile?.width || 1024,
+    "__HEIGHT__": profile?.height || 1024,
+    "__BATCH_SIZE__": profile?.batchSize || 1,
+    "__SEED__": userValues.seed === -1 || userValues.seed === undefined 
+      ? Math.floor(Math.random() * 1000000000) 
+      : userValues.seed,
+    "__LORA_NAME__": userValues.lora_name || "character_lora.safetensors",
+    "__LORA_STRENGTH__": userValues.lora_strength || 0.8,
+    "__LORA_DISABLED__": userValues.lora_enabled === false,
+    "__FRAMES__": profile?.frames || 49,
+    "__MOTION_SCALE__": userValues.motion_scale || profile?.motionScale || 1.0,
+    "__HARDWARE_TIER__": tier.toUpperCase(),
   };
 
-  return JSON.stringify(config, null, 2);
+  // Perform replacements
+  Object.entries(replacements).forEach(([key, val]) => {
+    // We use a global regex or split/join to replace all occurrences
+    if (typeof val === "string") {
+      // Escape quotes in the user string to maintain JSON validity
+      const escaped = val.replace(/"/g, '\\"').replace(/\n/g, "\\n");
+      result = result.split(key).join(escaped);
+    } else if (typeof val === "boolean") {
+      // Booleans should be converted to true/false without quotes
+      result = result.split(key).join(String(val));
+    } else if (val !== undefined && val !== null) {
+      // Numbers and other types
+      result = result.split(key).join(String(val));
+    }
+  });
+
+  return result;
 }
 
 // ── Page Component ────────────────────────────────────────────────────────────
@@ -131,6 +120,7 @@ export default function WorkflowDetailPage() {
     return defaults;
   });
   const [exported, setExported] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const profile = useMemo(
@@ -156,32 +146,43 @@ export default function WorkflowDetailPage() {
             ← Back to workflows
           </Link>
         </main>
-        <Footer />
       </>
     );
   }
 
-  const handleExport = () => {
-    // Store profile for export engine
-    (window as unknown as Record<string, unknown>).__wf_profile = profile;
+  const handleExport = async () => {
+    try {
+      setExportError(null);
+      // 1. Fetch the actual template file from public
+      const response = await fetch(`/workflows/templates/${workflow.templateFile}`);
+      if (!response.ok) {
+        throw new Error(`Failed to load template: ${workflow.templateFile}`);
+      }
+      const templateJson = await response.text();
 
-    const json = buildWorkflowJSON(
-      workflow.id,
-      selectedTier,
-      paramValues,
-      profile as unknown as ReturnType<
-        (typeof WORKFLOWS)[0]["hardwareProfiles"]["8gb"]["tier"]
-      >
-    );
-    const blob = new Blob([json], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `neuraldrift_${workflow.id}_${selectedTier}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    setExported(true);
-    setTimeout(() => setExported(false), 3000);
+      // 2. Build the functional JSON by replacing placeholders
+      const finalJson = buildWorkflowJSON(
+        templateJson,
+        selectedTier,
+        paramValues,
+        profile
+      );
+
+      // 3. Trigger download
+      const blob = new Blob([finalJson], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `neuraldrift_${workflow.id}_${selectedTier}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      
+      setExported(true);
+      setTimeout(() => setExported(false), 3000);
+    } catch (err) {
+      console.error("Export Error:", err);
+      setExportError(err instanceof Error ? err.message : "Export failed");
+    }
   };
 
   const handleCopySettings = () => {
@@ -265,6 +266,11 @@ export default function WorkflowDetailPage() {
               </button>
             </div>
           </div>
+          {exportError && (
+            <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-xs font-mono">
+              Error: {exportError}
+            </div>
+          )}
         </div>
 
         <div className="mx-auto mt-8 grid max-w-7xl grid-cols-[1fr_340px] items-start gap-8 px-10">
@@ -278,7 +284,7 @@ export default function WorkflowDetailPage() {
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`rounded px-5 py-2 font-mono text-xs uppercase capitalize tracking-widest transition-colors ${
+                  className={`rounded px-5 py-2 font-mono text-xs uppercase tracking-widest transition-colors ${
                     activeTab === tab
                       ? "border border-accent/15 bg-card text-accent"
                       : "hover:text-text text-muted"
@@ -381,7 +387,7 @@ export default function WorkflowDetailPage() {
                   </h2>
                   <div className="rounded-lg border border-border bg-surface p-4 font-mono text-xs leading-loose text-slate-300">
                     <div>
-                      <span className="text-muted">// Hardware tier:</span>{" "}
+                      <span className="text-muted">{"// Hardware tier:"}</span>{" "}
                       <span className="text-accent">{selectedTier}</span>
                     </div>
                     <div>
@@ -680,6 +686,11 @@ export default function WorkflowDetailPage() {
               >
                 {exported ? "✓ Downloaded!" : "⬇ Download Workflow JSON"}
               </button>
+              {exportError && (
+                <p className="mt-2 text-[10px] font-mono text-red-400 text-center">
+                  {exportError}
+                </p>
+              )}
               <button
                 onClick={handleCopySettings}
                 className="hover:text-text mt-2 w-full rounded border border-border py-2.5 font-mono text-xs uppercase tracking-widest text-muted transition-colors hover:border-accent/20"
@@ -690,8 +701,8 @@ export default function WorkflowDetailPage() {
 
             {/* Need better hardware */}
             <div className="rounded-xl border border-accent-purple/15 bg-gradient-to-br from-accent-purple/5 to-transparent p-5">
-              <p className="mb-2 font-mono text-xs uppercase tracking-widest text-[#a78bfa]">
-                // Hardware
+              <p className="mb-2 font-mono text-xs tracking-widest text-[#a78bfa]">
+                {"// Hardware"}
               </p>
               <p className="mb-3 text-sm leading-relaxed text-muted">
                 Not sure if your rig can handle this workflow? Use ComputeAtlas
@@ -719,7 +730,6 @@ export default function WorkflowDetailPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

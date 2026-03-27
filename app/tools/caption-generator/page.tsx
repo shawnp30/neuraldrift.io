@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 
 type CaptionStyle = "wd14" | "natural" | "flux" | "training";
 
@@ -169,7 +168,7 @@ export default function CaptionGeneratorPage() {
     setTimeout(() => setCopied(false), 1500);
   };
 
-  const useTemplate = (prompt: string) => {
+  const applyTemplate = (prompt: string) => {
     if (mode === "single") {
       setInput(prompt);
     } else {
@@ -184,7 +183,7 @@ export default function CaptionGeneratorPage() {
         {/* Header */}
         <div className="mb-12">
           <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">
-            // Tools
+            {"// Tools"}
           </p>
           <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">
             Caption Generator
@@ -395,7 +394,7 @@ export default function CaptionGeneratorPage() {
                       {section.prompts.map((prompt) => (
                         <button
                           key={prompt}
-                          onClick={() => useTemplate(prompt)}
+                          onClick={() => applyTemplate(prompt)}
                           className="w-full text-left font-mono text-xs text-muted hover:text-accent hover:bg-accent/5 px-3 py-2.5 rounded-lg transition-colors leading-relaxed border border-transparent hover:border-accent/10"
                         >
                           + {prompt}
@@ -439,7 +438,6 @@ export default function CaptionGeneratorPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 import Link from "next/link";
 
 type DatasetType = "All" | "Character" | "Style" | "Concept" | "Video";
@@ -192,7 +191,7 @@ export default function DatasetsPage() {
         <div className="mb-12 flex items-end justify-between">
           <div>
             <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
-              // Dataset Library
+              {"// Dataset Library"}
             </p>
             <h1 className="mb-4 font-syne text-5xl font-black tracking-tight text-white">
               Training datasets,
@@ -411,7 +410,7 @@ export default function DatasetsPage() {
         {/* CTA — contribute */}
         <div className="mt-16 rounded-xl border border-accent/15 bg-gradient-to-br from-accent/5 to-transparent p-10 text-center">
           <p className="mb-3 font-mono text-xs uppercase tracking-widest text-accent">
-            // Coming Soon
+            {"// Coming Soon"}
           </p>
           <h2 className="mb-3 font-syne text-3xl font-black tracking-tight text-white">
             Community dataset uploads
@@ -428,7 +427,6 @@ export default function DatasetsPage() {
           </Link>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

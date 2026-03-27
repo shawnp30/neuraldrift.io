@@ -1,7 +1,6 @@
 "use client";
 import { useState, useMemo } from "react";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 import Link from "next/link";
 
 type Category = "All" | "Image" | "Video" | "Training";
@@ -537,7 +536,7 @@ export default function BenchmarkLookupPage() {
         {/* Header */}
         <div className="mb-12">
           <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
-            // Tools
+            {"// Tools"}
           </p>
           <h1 className="mb-4 font-syne text-5xl font-black tracking-tight text-white">
             GPU Benchmark Lookup
@@ -805,7 +804,7 @@ export default function BenchmarkLookupPage() {
           <div className="grid grid-cols-2">
             <div className="border-r border-accent-purple/15 p-10">
               <p className="mb-3 font-mono text-xs uppercase tracking-widest text-[#a78bfa]">
-                // Hardware Partner
+                {"// Hardware Partner"}
               </p>
               <h2 className="mb-3 font-syne text-3xl font-black tracking-tight text-white">
                 Benchmarks too slow
@@ -883,7 +882,6 @@ export default function BenchmarkLookupPage() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }
