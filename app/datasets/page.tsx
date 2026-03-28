@@ -9,7 +9,15 @@ import { Search } from "lucide-react";
 
 import { DynamicCTA } from "@/components/DynamicCTA";
 
-const DATASET_GENRES = ["Image", "Text", "Audio", "Video", "Multimodal"];
+const DATASET_GENRES = [
+  "text-to-image",
+  "stable-diffusion",
+  "diffusers",
+  "lora",
+  "flux",
+  "sdxl",
+  "text-to-video",
+];
 
 export default function DatasetsPage() {
   const [datasets, setDatasets] = useState<any[]>([]);
@@ -31,10 +39,18 @@ export default function DatasetsPage() {
   }, []);
 
   const filteredDatasets = datasets.filter((d: any) => {
-    const matchesGenre = activeGenre === "" || 
-                        d.tags?.some((t: string) => t.toLowerCase().includes(activeGenre.toLowerCase()));
-    const matchesSearch = d.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          d.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    const genre = activeGenre.toLowerCase();
+    const matchesGenre =
+      activeGenre === "" ||
+      d.tags?.some((t: string) => t.toLowerCase().includes(genre)) ||
+      d.pipeline_tag?.toLowerCase().includes(genre) ||
+      d.id.toLowerCase().includes(genre);
+    const query = searchQuery.toLowerCase();
+    const matchesSearch =
+      query === "" ||
+      d.id.toLowerCase().includes(query) ||
+      d.description?.toLowerCase().includes(query) ||
+      d.tags?.some((t: string) => t.toLowerCase().includes(query));
     return matchesGenre && matchesSearch;
   });
 
