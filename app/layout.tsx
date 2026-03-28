@@ -32,13 +32,17 @@ export const metadata: Metadata = {
     "The hub for building, training, and mastering AI systems. LoRA creation, ComfyUI pipelines, datasets, and optimization — all in one place.",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
       className={`${outfit.variable} ${jetbrainsMono.variable} ${manrope.variable} scroll-smooth`}
     >
-      <body className="font-sans antialiased bg-[#030712] text-slate-50 min-h-screen relative overflow-x-hidden selection:bg-indigo-500/30">
+      <body className="relative min-h-screen overflow-x-hidden bg-[#0d1117] font-sans text-slate-50 antialiased selection:bg-accent/30">
         <Background />
         <Navbar />
         <main className="relative z-10 pt-[140px]">{children}</main>

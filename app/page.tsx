@@ -10,6 +10,8 @@ import { HardwareComparison } from "@/components/home/HardwareComparison";
 import { SocialProof } from "@/components/home/SocialProof";
 import { DynamicCTA } from "@/components/DynamicCTA";
 
+import { ArchitectsSpotlight } from "@/components/home/ArchitectsSpotlight";
+
 export default function HomePage() {
   return (
     <div className="nh-page">
@@ -17,6 +19,9 @@ export default function HomePage() {
 
       {/* Phase 1: Hero */}
       <HomeHero />
+
+      {/* NEW: Featured Creator Spotlight */}
+      <ArchitectsSpotlight />
 
       {/* Phase 2: Value Prop */}
       <ValueProp />
@@ -37,8 +42,8 @@ export default function HomePage() {
       <SocialProof />
 
       {/* Phase 8: Final CTA */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pb-32">
-        <DynamicCTA 
+      <div className="mx-auto max-w-7xl px-6 pb-32 md:px-12">
+        <DynamicCTA
           title="Master the Architecture of Generative Intelligence."
           description="Don't just run models—understand them. Join the Neuraldrift Academy for premium video-led masterclasses on workflow stabilization and local training."
           ctaText="ENTER THE ACADEMY"

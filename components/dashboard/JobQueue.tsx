@@ -1,9 +1,28 @@
 const JOBS = [
-  { name: "FLUX LoRA — highway_ghost_v3", meta: "TRAINING · rank=32 · epoch 7/10 · RTX 5080", status: "running", progress: 68 },
-  { name: "LTX Video — Desert Pursuit batch", meta: "INFERENCE · 12 frames · RTX 3080", status: "running", progress: 41 },
-  { name: "Dataset caption — subway_breach_set", meta: "QUEUED · 1,240 images · WD14 tagger", status: "queued", progress: 0 },
-  { name: "AnimateDiff — fat_bigfoot_loop_v2", meta: "COMPLETE · 24 frames · 4m 11s", status: "done", progress: 100 },
-  { name: "SDXL — slacker_alien_concept_sheet", meta: "COMPLETE · 8 images · 52s", status: "done", progress: 100 },
+  {
+    name: "FLUX LoRA — highway_ghost_v3",
+    meta: "TRAINING · rank=32 · epoch 7/10 · RTX 5080",
+    status: "running",
+    progress: 68,
+  },
+  {
+    name: "LTX Video — Desert Pursuit batch",
+    meta: "INFERENCE · 12 frames · RTX 3080",
+    status: "running",
+    progress: 41,
+  },
+  {
+    name: "Dataset caption — subway_breach_set",
+    meta: "QUEUED · 1,240 images · WD14 tagger",
+    status: "queued",
+    progress: 0,
+  },
+  {
+    name: "SDXL — highway_ghost_style_preview",
+    meta: "COMPLETE · 8 images · 52s",
+    status: "done",
+    progress: 100,
+  },
 ];
 
 const STATUS_DOT: Record<string, string> = {
@@ -21,24 +40,44 @@ const BAR_COLOR: Record<string, string> = {
 
 export function JobQueue() {
   return (
-    <div className="bg-card border border-border rounded-lg overflow-hidden">
-      <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+    <div className="overflow-hidden rounded-lg border border-border bg-card">
+      <div className="flex items-center justify-between border-b border-border px-5 py-4">
         <h3 className="font-syne text-sm font-bold text-white">Job Queue</h3>
-        <button className="font-mono text-xs text-accent tracking-widest uppercase">View All →</button>
+        <button className="font-mono text-xs uppercase tracking-widest text-accent">
+          View All →
+        </button>
       </div>
       {JOBS.map((job) => (
-        <div key={job.name} className="flex items-center gap-3.5 px-5 py-3.5 border-b border-border last:border-b-0 hover:bg-white/2 transition-colors cursor-pointer">
-          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${STATUS_DOT[job.status]}`} />
-          <div className="flex-1 min-w-0">
-            <div className="text-sm text-text truncate font-medium">{job.name}</div>
-            <div className="font-mono text-xs text-muted mt-0.5 tracking-wider">{job.meta}</div>
+        <div
+          key={job.name}
+          className="hover:bg-white/2 flex cursor-pointer items-center gap-3.5 border-b border-border px-5 py-3.5 transition-colors last:border-b-0"
+        >
+          <div
+            className={`h-2 w-2 flex-shrink-0 rounded-full ${STATUS_DOT[job.status]}`}
+          />
+          <div className="min-w-0 flex-1">
+            <div className="text-text truncate text-sm font-medium">
+              {job.name}
+            </div>
+            <div className="mt-0.5 font-mono text-xs tracking-wider text-muted">
+              {job.meta}
+            </div>
           </div>
           <div className="w-20 flex-shrink-0">
-            <div className="h-0.5 bg-border rounded-full overflow-hidden mb-1">
-              <div className={`h-full rounded-full ${BAR_COLOR[job.status]}`} style={{ width: `${job.progress}%` }} />
+            <div className="mb-1 h-0.5 overflow-hidden rounded-full bg-border">
+              <div
+                className={`h-full rounded-full ${BAR_COLOR[job.status]}`}
+                style={{ width: `${job.progress}%` }}
+              />
             </div>
-            <div className={`font-mono text-xs text-right tracking-wide ${job.status === "done" ? "text-green-400" : "text-muted"}`}>
-              {job.status === "done" ? "✓" : job.status === "queued" ? "—" : `${job.progress}%`}
+            <div
+              className={`text-right font-mono text-xs tracking-wide ${job.status === "done" ? "text-green-400" : "text-muted"}`}
+            >
+              {job.status === "done"
+                ? "✓"
+                : job.status === "queued"
+                  ? "—"
+                  : `${job.progress}%`}
             </div>
           </div>
         </div>

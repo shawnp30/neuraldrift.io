@@ -3,17 +3,34 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 const LORAS = [
-  { id: "fat-bigfoot-v4", name: "Fat Bigfoot v4", type: "Character", base: "SDXL", trigger: "fatbigfoot", strength: "0.7–0.9", status: "Released", color: "text-[#00e5ff]" },
-  { id: "slacker-alien-v2", name: "Slacker Alien v2", type: "Character", base: "SDXL", trigger: "slackeralien", strength: "0.7–0.85", status: "Released", color: "text-[#00e5ff]" },
-  { id: "highway-ghost-v3", name: "Highway Ghost v3", type: "Style", base: "FLUX", trigger: "highwayghost", strength: "0.6–0.85", status: "Released", color: "text-[#a78bfa]" },
-  { id: "desert-pursuit-v1", name: "Desert Pursuit v1", type: "Style", base: "FLUX", trigger: "desertpursuit", strength: "0.65–0.85", status: "Beta", color: "text-[#a78bfa]" },
+  {
+    id: "highway-ghost-v3",
+    name: "Highway Ghost v3",
+    type: "Style",
+    base: "FLUX",
+    trigger: "highwayghost",
+    strength: "0.6–0.85",
+    status: "Released",
+    color: "text-[#a78bfa]",
+  },
+  {
+    id: "desert-pursuit-v1",
+    name: "Desert Pursuit v1",
+    type: "Style",
+    base: "FLUX",
+    trigger: "desertpursuit",
+    strength: "0.65–0.85",
+    status: "Beta",
+    color: "text-[#a78bfa]",
+  },
 ];
 
 export function LoRAsPreview() {
   const ref = useRef<HTMLElement>(null);
   useEffect(() => {
     const o = new IntersectionObserver(
-      (e) => e.forEach((x) => x.isIntersecting && x.target.classList.add("visible")),
+      (e) =>
+        e.forEach((x) => x.isIntersecting && x.target.classList.add("visible")),
       { threshold: 0.1 }
     );
     ref.current?.querySelectorAll(".reveal").forEach((el) => o.observe(el));
@@ -21,44 +38,78 @@ export function LoRAsPreview() {
   }, []);
 
   return (
-    <section ref={ref} className="py-24 px-10 max-w-7xl mx-auto">
-      <div className="reveal grid grid-cols-[1fr_480px] gap-16 items-start">
+    <section ref={ref} className="mx-auto max-w-7xl px-10 py-24">
+      <div className="reveal grid grid-cols-[1fr_480px] items-start gap-16">
         <div>
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// LoRA Library</p>
-          <h2 className="font-syne text-[clamp(2rem,3.5vw,3rem)] font-black tracking-tight mb-4 leading-tight">
-            Custom-trained models<br />with full training specs.
+          <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
+            {"// Model Library"}
+          </p>
+          <h2 className="mb-4 font-syne text-[clamp(2rem,3.5vw,3rem)] font-black leading-tight tracking-tight">
+            Neural architecture hub
+            <br />
+            optimized for local AI.
           </h2>
-          <p className="text-muted leading-relaxed mb-5">
-            Every LoRA was trained from scratch — not downloaded and rehosted. Character LoRAs, style LoRAs, concept LoRAs. Each includes the trigger word, strength range, dataset size, epoch count, and training hardware.
+          <p className="mb-5 leading-relaxed text-muted">
+            A comprehensive collection of verified models—from FLUX adapters to
+            foundation weights. Each architecture includes precision specs, vRAM
+            requirements, and optimized deployment JSONs.
           </p>
-          <p className="text-muted leading-relaxed mb-8">
-            The linked datasets are also available — if you want to retrain, extend, or build on an existing model, the original training data is downloadable.
+          <p className="mb-8 leading-relaxed text-muted">
+            Seamlessly integrated with our Training Studio and Datasets Hub,
+            allowing you to tune, extend, or build on existing nodes with
+            verified precision.
           </p>
-          <Link href="/loras" className="inline-block bg-accent/10 text-accent border border-accent/20 px-6 py-3 rounded font-mono text-xs tracking-widest uppercase hover:bg-accent/15 transition-colors">
-            Browse All LoRAs →
+          <Link
+            href="/models"
+            className="inline-block rounded border border-accent/20 bg-accent/10 px-6 py-3 font-mono text-xs uppercase tracking-widest text-accent transition-colors hover:bg-accent/15"
+          >
+            Browse Model Library →
           </Link>
         </div>
 
         <div className="space-y-3">
-          {LORAS.map(l => (
-            <div key={l.id} className="bg-card border border-border rounded-xl p-5 grid grid-cols-[1fr_auto] gap-4 items-center hover:border-accent/20 transition-colors">
+          {LORAS.map((l) => (
+            <div
+              key={l.id}
+              className="grid grid-cols-[1fr_auto] items-center gap-4 rounded-xl border border-border bg-card p-5 transition-colors hover:border-accent/20"
+            >
               <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <span className={`font-mono text-xs px-1.5 py-0.5 rounded text-xs tracking-wide ${l.type === "Character" ? "bg-[rgba(0,229,255,0.08)] text-[#00e5ff]" : "bg-[rgba(124,58,237,0.08)] text-[#a78bfa]"}`}>{l.type}</span>
-                  <span className="font-mono text-xs bg-white/5 text-muted px-1.5 py-0.5 rounded">{l.base}</span>
-                  <span className={`font-mono text-xs ${l.status === "Released" ? "text-[#10b981]" : "text-[#f97316]"}`}>● {l.status}</span>
+                <div className="mb-2 flex items-center gap-2">
+                  <span
+                    className={`rounded px-1.5 py-0.5 font-mono text-xs tracking-wide ${l.type === "Character" ? "bg-[rgba(0,229,255,0.08)] text-[#00e5ff]" : "bg-[rgba(124,58,237,0.08)] text-[#a78bfa]"}`}
+                  >
+                    {l.type}
+                  </span>
+                  <span className="rounded bg-white/5 px-1.5 py-0.5 font-mono text-xs text-muted">
+                    {l.base}
+                  </span>
+                  <span
+                    className={`font-mono text-xs ${l.status === "Released" ? "text-[#10b981]" : "text-[#f97316]"}`}
+                  >
+                    ● {l.status}
+                  </span>
                 </div>
-                <div className="font-syne text-sm font-bold text-white mb-1">{l.name}</div>
-                <div className="font-mono text-xs text-muted">Trigger: <span className="text-accent">{l.trigger}</span> · Strength: {l.strength}</div>
+                <div className="mb-1 font-syne text-sm font-bold text-white">
+                  {l.name}
+                </div>
+                <div className="font-mono text-xs text-muted">
+                  Trigger: <span className="text-accent">{l.trigger}</span> ·
+                  Strength: {l.strength}
+                </div>
               </div>
-              <Link href="/loras" className="font-mono text-xs text-muted hover:text-accent transition-colors whitespace-nowrap">
+              <Link
+                href="/models"
+                className="whitespace-nowrap font-mono text-xs text-muted transition-colors hover:text-accent"
+              >
                 View →
               </Link>
             </div>
           ))}
-          <Link href="/loras"
-            className="block text-center border border-dashed border-border text-muted font-mono text-xs py-3 rounded-xl hover:border-accent/20 hover:text-accent transition-colors">
-            + 2 more models
+          <Link
+            href="/models"
+            className="block rounded-xl border border-dashed border-border py-3 text-center font-mono text-xs text-muted transition-colors hover:border-accent/20 hover:text-accent"
+          >
+            Explore All Models →
           </Link>
         </div>
       </div>

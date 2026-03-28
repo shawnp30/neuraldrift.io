@@ -1,14 +1,13 @@
-"use client"
+"use client";
 import Navbar from "@/components/layout/Navbar";
-
-
 
 const NODES = [
   {
     step: 1,
     name: "Load Checkpoint",
     node: "CheckpointLoaderSimple",
-    purpose: "Loads the base model into memory. This is always your first node.",
+    purpose:
+      "Loads the base model into memory. This is always your first node.",
     inputs: ["ckpt_name: your model filename"],
     outputs: ["MODEL", "CLIP", "VAE"],
     notes: "Use FP8 versions for 16GB VRAM. FP16 for 24GB+.",
@@ -18,10 +17,18 @@ const NODES = [
     step: 2,
     name: "Load LoRA (optional)",
     node: "LoraLoader",
-    purpose: "Injects your LoRA weights into the base model. Skip if not using a LoRA.",
-    inputs: ["MODEL (from checkpoint)", "CLIP (from checkpoint)", "lora_name", "strength_model", "strength_clip"],
+    purpose:
+      "Injects your LoRA weights into the base model. Skip if not using a LoRA.",
+    inputs: [
+      "MODEL (from checkpoint)",
+      "CLIP (from checkpoint)",
+      "lora_name",
+      "strength_model",
+      "strength_clip",
+    ],
     outputs: ["MODEL", "CLIP"],
-    notes: "Start at 0.8 strength. Go higher for stronger character lock, lower for subtle style.",
+    notes:
+      "Start at 0.8 strength. Go higher for stronger character lock, lower for subtle style.",
     settings: {
       strength_model: "0.6–1.0",
       strength_clip: "0.6–1.0",
@@ -31,10 +38,12 @@ const NODES = [
     step: 3,
     name: "CLIP Text Encode (Positive)",
     node: "CLIPTextEncode",
-    purpose: "Encodes your positive prompt into a format the model understands.",
+    purpose:
+      "Encodes your positive prompt into a format the model understands.",
     inputs: ["CLIP (from checkpoint or LoRA)", "text: your prompt"],
     outputs: ["CONDITIONING"],
-    notes: "For FLUX: keep prompts descriptive and natural language. For SDXL: use comma-separated tags.",
+    notes:
+      "For FLUX: keep prompts descriptive and natural language. For SDXL: use comma-separated tags.",
     settings: null,
   },
   {
@@ -44,17 +53,20 @@ const NODES = [
     purpose: "Tells the model what to avoid generating.",
     inputs: ["CLIP", "text: negative prompt"],
     outputs: ["CONDITIONING"],
-    notes: "For FLUX: negative prompts have less effect. For SDXL: use detailed negative prompts.",
+    notes:
+      "For FLUX: negative prompts have less effect. For SDXL: use detailed negative prompts.",
     settings: null,
   },
   {
     step: 5,
     name: "Empty Latent Image",
     node: "EmptyLatentImage",
-    purpose: "Creates a blank canvas in latent space at your target resolution.",
+    purpose:
+      "Creates a blank canvas in latent space at your target resolution.",
     inputs: ["width", "height", "batch_size"],
     outputs: ["LATENT"],
-    notes: "SDXL: 1024x1024. LTX Video: 768x512 (landscape) or 512x768 (vertical). Always use multiples of 64.",
+    notes:
+      "SDXL: 1024x1024. LTX Video: 768x512 (landscape) or 512x768 (vertical). Always use multiples of 64.",
     settings: {
       width: "512–2048",
       height: "512–2048",
@@ -65,8 +77,14 @@ const NODES = [
     step: 6,
     name: "KSampler",
     node: "KSampler",
-    purpose: "The core generation node. This is where denoising happens — the model iteratively refines the latent.",
-    inputs: ["MODEL", "positive CONDITIONING", "negative CONDITIONING", "LATENT"],
+    purpose:
+      "The core generation node. This is where denoising happens — the model iteratively refines the latent.",
+    inputs: [
+      "MODEL",
+      "positive CONDITIONING",
+      "negative CONDITIONING",
+      "LATENT",
+    ],
     outputs: ["LATENT"],
     notes: "This node has the most impact on output quality and speed.",
     settings: {
@@ -85,7 +103,8 @@ const NODES = [
     purpose: "Converts the latent output back into a viewable image.",
     inputs: ["LATENT (from KSampler)", "VAE (from checkpoint)"],
     outputs: ["IMAGE"],
-    notes: "If you see color artifacts, your VAE is mismatched. Download the correct VAE for your model.",
+    notes:
+      "If you see color artifacts, your VAE is mismatched. Download the correct VAE for your model.",
     settings: null,
   },
   {
@@ -95,7 +114,8 @@ const NODES = [
     purpose: "Saves the final image to disk.",
     inputs: ["IMAGE (from VAE Decode)", "filename_prefix"],
     outputs: ["Saved file"],
-    notes: "Files save to ComfyUI/output/ by default. Use subfolders: 'flux/portrait_' for organization.",
+    notes:
+      "Files save to ComfyUI/output/ by default. Use subfolders: 'flux/portrait_' for organization.",
     settings: {
       filename_prefix: "ComfyUI or custom prefix",
     },
@@ -110,28 +130,35 @@ const BUILDS = [
     statusColor: "text-[#10b981]",
     date: "March 2025",
     model: "LTX Video 2.3",
-    description: "A first-person motorcycle chase sequence built for YouTube Shorts. Developed over 3 sessions, 47 test renders.",
+    description:
+      "A first-person motorcycle chase sequence built for YouTube Shorts. Developed over 3 sessions, 47 test renders.",
     devlog: [
       {
         session: 1,
         title: "Initial concept and prompt testing",
-        notes: "Started with wide establishing shots. CFG 3.0 was too static — bumped motion scale to 1.3. Realized 97 frames was the sweet spot for ~4 second clips on RTX 5080. First frame conditioning between clips was the key breakthrough for continuity.",
+        notes:
+          "Started with wide establishing shots. CFG 3.0 was too static — bumped motion scale to 1.3. Realized 97 frames was the sweet spot for ~4 second clips on RTX 5080. First frame conditioning between clips was the key breakthrough for continuity.",
         iterations: 12,
-        breakthrough: "First frame conditioning eliminates character drift between clips",
+        breakthrough:
+          "First frame conditioning eliminates character drift between clips",
       },
       {
         session: 2,
         title: "Camera movement refinement",
-        notes: "Low tracking shot language wasn't working consistently. Added 'camera mounted to car hood' style descriptions. Motion blur in the prompt helped a lot. Switched scheduler from karras to beta — much smoother motion.",
+        notes:
+          "Low tracking shot language wasn't working consistently. Added 'camera mounted to car hood' style descriptions. Motion blur in the prompt helped a lot. Switched scheduler from karras to beta — much smoother motion.",
         iterations: 22,
-        breakthrough: "Scheduler switch to beta eliminated stuttery motion artifacts",
+        breakthrough:
+          "Scheduler switch to beta eliminated stuttery motion artifacts",
       },
       {
         session: 3,
         title: "Assembly and color grade",
-        notes: "Assembled 5 clips in CapCut. Added Cinematic LUT at 60%. The crossfade between clips 3 and 4 needed to be 4 frames minimum — anything less showed a hard cut. Final video: 14 seconds, exported 1080p.",
+        notes:
+          "Assembled 5 clips in CapCut. Added Cinematic LUT at 60%. The crossfade between clips 3 and 4 needed to be 4 frames minimum — anything less showed a hard cut. Final video: 14 seconds, exported 1080p.",
         iterations: 13,
-        breakthrough: "4-frame crossfade hides the transition artifacts completely",
+        breakthrough:
+          "4-frame crossfade hides the transition artifacts completely",
       },
     ],
     finalConfig: {
@@ -145,94 +172,81 @@ const BUILDS = [
       motionScale: 1.3,
     },
   },
-  {
-    id: "fat-bigfoot-loop",
-    title: "Fat Bigfoot GoPro Loop — AnimateDiff Build",
-    status: "Complete",
-    statusColor: "text-[#10b981]",
-    date: "March 2025",
-    model: "AnimateDiff + SDXL",
-    description: "Seamless looping animation for the Fat Bigfoot character. Stoner chaos energy in a forest setting. Built for Instagram Reels loop format.",
-    devlog: [
-      {
-        session: 1,
-        title: "Character LoRA testing",
-        notes: "Fat Bigfoot LoRA at 0.9 was too dominant — broke the background. Dropped to 0.75. Fisheye lens simulation in the prompt worked better than expected. The key phrase was 'handheld shaky GoPro footage' for the right movement feel.",
-        iterations: 8,
-        breakthrough: "LoRA at 0.75 keeps character without breaking environment",
-      },
-      {
-        session: 2,
-        title: "Loop seamlessness",
-        notes: "AnimateDiff default 16 frames didn't loop cleanly. Switched to 24 frames with context_length 16. Added the loop conditioning node. Had to match first and last frame manually in CapCut — added 2 frame crossfade.",
-        iterations: 19,
-        breakthrough: "24 frames + context_length 16 creates clean loop point",
-      },
-    ],
-    finalConfig: {
-      steps: 20,
-      cfg: 7.0,
-      denoise: 1.0,
-      sampler: "dpmpp_2m",
-      scheduler: "karras",
-      resolution: "512x512",
-      frames: 24,
-      motionScale: 1.0,
-    },
-  },
 ];
 
 export default function WorkflowCreatorPage() {
   return (
     <>
-
-      <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
-
+      <main className="mx-auto max-w-7xl px-10 pb-20 pt-24">
         {/* Header */}
         <div className="mb-16">
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Workflow Creator"}</p>
-          <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">
-            Build custom<br />ComfyUI workflows.
+          <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
+            {"// Workflow Creator"}
+          </p>
+          <h1 className="mb-4 font-syne text-5xl font-black tracking-tight text-white">
+            Build custom
+            <br />
+            ComfyUI workflows.
           </h1>
-          <p className="text-muted max-w-xl leading-relaxed">
-            Node-by-node breakdowns of every workflow in the library. Includes dev logs, iteration notes, and the exact settings that worked.
+          <p className="max-w-xl leading-relaxed text-muted">
+            Node-by-node breakdowns of every workflow in the library. Includes
+            dev logs, iteration notes, and the exact settings that worked.
           </p>
         </div>
 
         {/* NODE REFERENCE */}
         <div className="mb-20">
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Node Reference Guide"}</p>
-          <h2 className="font-syne text-3xl font-black tracking-tight text-white mb-10">
+          <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
+            {"// Node Reference Guide"}
+          </p>
+          <h2 className="mb-10 font-syne text-3xl font-black tracking-tight text-white">
             The standard node chain — explained.
           </h2>
 
           <div className="space-y-4">
             {NODES.map((node) => (
-              <div key={node.step} className="bg-card border border-border rounded-xl overflow-hidden">
+              <div
+                key={node.step}
+                className="overflow-hidden rounded-xl border border-border bg-card"
+              >
                 <div className="grid grid-cols-[72px_1fr]">
                   {/* Step number */}
-                  <div className="bg-surface border-r border-border flex items-center justify-center">
-                    <span className="font-syne text-2xl font-black text-accent">0{node.step}</span>
+                  <div className="flex items-center justify-center border-r border-border bg-surface">
+                    <span className="font-syne text-2xl font-black text-accent">
+                      0{node.step}
+                    </span>
                   </div>
 
                   <div className="p-6">
-                    <div className="flex items-start justify-between mb-3">
+                    <div className="mb-3 flex items-start justify-between">
                       <div>
-                        <h3 className="font-syne text-base font-bold text-white">{node.name}</h3>
-                        <p className="font-mono text-xs text-accent/60 tracking-wide mt-0.5">{node.node}</p>
+                        <h3 className="font-syne text-base font-bold text-white">
+                          {node.name}
+                        </h3>
+                        <p className="mt-0.5 font-mono text-xs tracking-wide text-accent/60">
+                          {node.node}
+                        </p>
                       </div>
                     </div>
 
-                    <p className="text-sm text-muted leading-relaxed mb-4">{node.purpose}</p>
+                    <p className="mb-4 text-sm leading-relaxed text-muted">
+                      {node.purpose}
+                    </p>
 
                     <div className="grid grid-cols-3 gap-4">
                       {/* Inputs */}
                       <div>
-                        <p className="font-mono text-xs text-muted tracking-widest uppercase mb-2">Inputs</p>
+                        <p className="mb-2 font-mono text-xs uppercase tracking-widest text-muted">
+                          Inputs
+                        </p>
                         <ul className="space-y-1">
                           {node.inputs.map((input, i) => (
-                            <li key={i} className="font-mono text-xs text-slate-400 flex items-start gap-1.5">
-                              <span className="text-accent mt-0.5">→</span> {input}
+                            <li
+                              key={i}
+                              className="flex items-start gap-1.5 font-mono text-xs text-slate-400"
+                            >
+                              <span className="mt-0.5 text-accent">→</span>{" "}
+                              {input}
                             </li>
                           ))}
                         </ul>
@@ -240,10 +254,15 @@ export default function WorkflowCreatorPage() {
 
                       {/* Outputs */}
                       <div>
-                        <p className="font-mono text-xs text-muted tracking-widest uppercase mb-2">Outputs</p>
+                        <p className="mb-2 font-mono text-xs uppercase tracking-widest text-muted">
+                          Outputs
+                        </p>
                         <ul className="space-y-1">
                           {node.outputs.map((output, i) => (
-                            <li key={i} className="font-mono text-xs text-[#a3e635] flex items-start gap-1.5">
+                            <li
+                              key={i}
+                              className="flex items-start gap-1.5 font-mono text-xs text-[#a3e635]"
+                            >
                               <span className="mt-0.5">←</span> {output}
                             </li>
                           ))}
@@ -254,7 +273,9 @@ export default function WorkflowCreatorPage() {
                       <div>
                         {node.settings ? (
                           <>
-                            <p className="font-mono text-xs text-muted tracking-widest uppercase mb-2">Key Settings</p>
+                            <p className="mb-2 font-mono text-xs uppercase tracking-widest text-muted">
+                              Key Settings
+                            </p>
                             <div className="space-y-1">
                               {Object.entries(node.settings).map(([k, v]) => (
                                 <div key={k} className="font-mono text-xs">
@@ -266,16 +287,22 @@ export default function WorkflowCreatorPage() {
                           </>
                         ) : (
                           <>
-                            <p className="font-mono text-xs text-muted tracking-widest uppercase mb-2">Notes</p>
-                            <p className="font-mono text-xs text-slate-400 leading-relaxed">{node.notes}</p>
+                            <p className="mb-2 font-mono text-xs uppercase tracking-widest text-muted">
+                              Notes
+                            </p>
+                            <p className="font-mono text-xs leading-relaxed text-slate-400">
+                              {node.notes}
+                            </p>
                           </>
                         )}
                       </div>
                     </div>
 
                     {node.settings && (
-                      <div className="mt-3 pt-3 border-t border-border">
-                        <p className="font-mono text-xs text-slate-400 leading-relaxed">{node.notes}</p>
+                      <div className="mt-3 border-t border-border pt-3">
+                        <p className="font-mono text-xs leading-relaxed text-slate-400">
+                          {node.notes}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -287,49 +314,75 @@ export default function WorkflowCreatorPage() {
 
         {/* BUILD DEVLOGS */}
         <div>
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-6">{"// Build Dev Logs"}</p>
-          <h2 className="font-syne text-3xl font-black tracking-tight text-white mb-10">
+          <p className="mb-6 font-mono text-xs uppercase tracking-widest text-accent">
+            {"// Build Dev Logs"}
+          </p>
+          <h2 className="mb-10 font-syne text-3xl font-black tracking-tight text-white">
             Real builds, real iterations.
           </h2>
 
           <div className="space-y-8">
             {BUILDS.map((build) => (
-              <div key={build.id} className="bg-card border border-border rounded-xl overflow-hidden">
+              <div
+                key={build.id}
+                className="overflow-hidden rounded-xl border border-border bg-card"
+              >
                 {/* Build header */}
-                <div className="p-8 border-b border-border">
+                <div className="border-b border-border p-8">
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className={`font-mono text-xs tracking-widest uppercase ${build.statusColor}`}>
+                      <div className="mb-3 flex items-center gap-3">
+                        <span
+                          className={`font-mono text-xs uppercase tracking-widest ${build.statusColor}`}
+                        >
                           ● {build.status}
                         </span>
-                        <span className="font-mono text-xs text-muted tracking-wide">{build.date}</span>
-                        <span className="font-mono text-xs bg-accent/8 text-accent px-2 py-0.5 rounded tracking-wide">
+                        <span className="font-mono text-xs tracking-wide text-muted">
+                          {build.date}
+                        </span>
+                        <span className="bg-accent/8 rounded px-2 py-0.5 font-mono text-xs tracking-wide text-accent">
                           {build.model}
                         </span>
                       </div>
-                      <h3 className="font-syne text-2xl font-bold text-white tracking-tight mb-2">{build.title}</h3>
-                      <p className="text-sm text-muted leading-relaxed max-w-2xl">{build.description}</p>
+                      <h3 className="mb-2 font-syne text-2xl font-bold tracking-tight text-white">
+                        {build.title}
+                      </h3>
+                      <p className="max-w-2xl text-sm leading-relaxed text-muted">
+                        {build.description}
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-[1fr_280px]">
                   {/* Dev log sessions */}
-                  <div className="p-8 border-r border-border">
-                    <p className="font-mono text-xs text-muted tracking-widest uppercase mb-6">Session Log</p>
+                  <div className="border-r border-border p-8">
+                    <p className="mb-6 font-mono text-xs uppercase tracking-widest text-muted">
+                      Session Log
+                    </p>
                     <div className="space-y-6">
                       {build.devlog.map((session) => (
-                        <div key={session.session} className="relative pl-6 border-l border-border">
-                          <div className="absolute -left-1.5 top-1 w-3 h-3 rounded-full bg-accent/20 border border-accent/40" />
+                        <div
+                          key={session.session}
+                          className="relative border-l border-border pl-6"
+                        >
+                          <div className="absolute -left-1.5 top-1 h-3 w-3 rounded-full border border-accent/40 bg-accent/20" />
                           <div className="mb-1 flex items-center gap-3">
-                            <span className="font-mono text-xs text-accent tracking-wider">Session {session.session}</span>
-                            <span className="font-mono text-xs text-muted">{session.iterations} renders</span>
+                            <span className="font-mono text-xs tracking-wider text-accent">
+                              Session {session.session}
+                            </span>
+                            <span className="font-mono text-xs text-muted">
+                              {session.iterations} renders
+                            </span>
                           </div>
-                          <h4 className="font-syne text-sm font-bold text-white mb-2">{session.title}</h4>
-                          <p className="text-xs text-muted leading-relaxed mb-3">{session.notes}</p>
-                          <div className="bg-[#a3e635]/5 border border-[#a3e635]/15 rounded p-3">
-                            <p className="font-mono text-xs text-[#a3e635] leading-relaxed">
+                          <h4 className="mb-2 font-syne text-sm font-bold text-white">
+                            {session.title}
+                          </h4>
+                          <p className="mb-3 text-xs leading-relaxed text-muted">
+                            {session.notes}
+                          </p>
+                          <div className="rounded border border-[#a3e635]/15 bg-[#a3e635]/5 p-3">
+                            <p className="font-mono text-xs leading-relaxed text-[#a3e635]">
                               💡 {session.breakthrough}
                             </p>
                           </div>
@@ -340,11 +393,15 @@ export default function WorkflowCreatorPage() {
 
                   {/* Final config */}
                   <div className="p-8">
-                    <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">Final Config</p>
-                    <div className="bg-surface border border-border rounded-lg p-4 font-mono text-xs space-y-2">
+                    <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
+                      Final Config
+                    </p>
+                    <div className="space-y-2 rounded-lg border border-border bg-surface p-4 font-mono text-xs">
                       {Object.entries(build.finalConfig).map(([k, v]) => (
                         <div key={k} className="flex justify-between">
-                          <span className="text-muted capitalize">{k.replace(/([A-Z])/g, ' $1').trim()}</span>
+                          <span className="capitalize text-muted">
+                            {k.replace(/([A-Z])/g, " $1").trim()}
+                          </span>
                           <span className="text-accent">{v}</span>
                         </div>
                       ))}
@@ -355,9 +412,7 @@ export default function WorkflowCreatorPage() {
             ))}
           </div>
         </div>
-
       </main>
     </>
   );
 }
-

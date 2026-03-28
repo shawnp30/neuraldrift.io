@@ -13,7 +13,6 @@ const WORKFLOW_TITLES: Record<string, string> = {
   "04-sdxl-portrait": "SDXL Portrait Studio",
   "05-sdxl-turbo-fast": "SDXL Turbo — 1-Step",
   "06-sd15-classic": "SD 1.5 Classic",
-  "07-flux-lora-character": "FLUX Dev + Character LoRA",
   "08-sdxl-lora-style": "SDXL + Style LoRA",
   "09-sdxl-landscape": "SDXL Landscape & Nature",
   "10-sd15-anime": "SD 1.5 Anime (AnythingV5)",
@@ -22,7 +21,6 @@ const WORKFLOW_TITLES: Record<string, string> = {
   "13-ltx-video-action-chase": "LTX Video — Action Chase",
   "14-ltx-video-fast-draft": "LTX Video — Fast Draft",
   "15-animatediff-simple": "AnimateDiff Simple Loop",
-  "16-animatediff-character": "AnimateDiff Character Walk",
   "17-animatediff-loop": "AnimateDiff Seamless Loop",
   "18-animatediff-landscape": "AnimateDiff Landscape Timelapse",
   "19-animatediff-product": "AnimateDiff 360 Product Spin",
@@ -52,7 +50,6 @@ const WORKFLOW_TITLES: Record<string, string> = {
   "43-sdxl-fashion-design": "SDXL Fashion Design",
   "44-flux-food-photography": "FLUX Food Photography",
   "45-sdxl-sci-fi-scene": "SDXL Sci-Fi Environment",
-  "46-flux-lora-slacker-alien": "FLUX + Slacker Alien LoRA",
   "47-sdxl-abstract-art": "SDXL Abstract Art",
   "48-flux-wildlife-photo": "FLUX Wildlife Photography",
   "49-sdxl-night-city": "SDXL Night City Aerial",
@@ -65,7 +62,7 @@ export async function GET() {
   try {
     const { blobs } = await list({ prefix: "proof/" });
 
-    const items = blobs.map(blob => {
+    const items = blobs.map((blob) => {
       // Extract workflowId from filename: proof/01-flux-dev-t2i-1234567890.jpg
       const filename = blob.pathname.replace("proof/", "");
       // Match the workflow ID pattern (e.g. "01-flux-dev-t2i")
@@ -85,12 +82,18 @@ export async function GET() {
     });
 
     // Sort newest first
-    items.sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime());
+    items.sort(
+      (a, b) =>
+        new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime()
+    );
 
     return NextResponse.json({ items, total: items.length });
   } catch (error) {
     return NextResponse.json(
-      { error: "Could not list uploads. Check BLOB_READ_WRITE_TOKEN env var.", items: [] },
+      {
+        error: "Could not list uploads. Check BLOB_READ_WRITE_TOKEN env var.",
+        items: [],
+      },
       { status: 500 }
     );
   }

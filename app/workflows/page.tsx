@@ -10,16 +10,22 @@ export default async function WorkflowsPage() {
   const workflowTree = await getWorkflowTree();
 
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-50 pt-32 pb-32">
-      
+    <div className="min-h-screen bg-[#030712] pb-32 pt-32 text-slate-50">
       {/* HEADER */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-16 text-center">
-        <p className="text-indigo-400 font-[800] text-xs tracking-widest uppercase mb-4">Architecture Library</p>
-        <h1 className="text-4xl md:text-5xl lg:text-7xl font-[900] tracking-tight text-white mb-6 drop-shadow-xl">
-          Dynamic <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Workflows.</span>
+      <div className="mx-auto mb-16 max-w-7xl px-6 text-center lg:px-12">
+        <p className="mb-4 text-xs font-[800] uppercase tracking-widest text-indigo-400">
+          Architecture Library
+        </p>
+        <h1 className="mb-6 text-4xl font-[900] tracking-tight text-white drop-shadow-xl md:text-5xl lg:text-7xl">
+          Dynamic{" "}
+          <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+            Workflows.
+          </span>
         </h1>
-        <p className="text-sm md:text-base font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-          Synced directly with our GitHub repository. Browse the folder structure, verify optimizations, and download JSON files directly into your local ComfyUI environment.
+        <p className="mx-auto max-w-2xl text-sm font-[500] leading-relaxed text-zinc-300 md:text-base">
+          Synced directly with our GitHub repository. Browse the folder
+          structure, verify optimizations, and download JSON files directly into
+          your local ComfyUI environment.
         </p>
       </div>
 
@@ -27,8 +33,8 @@ export default async function WorkflowsPage() {
       <WorkflowExplorer initialTree={workflowTree} />
 
       {/* CTA SECTION */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 mt-32 mb-32">
-        <DynamicCTA 
+      <div className="mx-auto mb-32 mt-32 max-w-7xl px-6 lg:px-12">
+        <DynamicCTA
           title="Is Your Hardware Ready for These Workflows?"
           description="High-end workflows require optimized VRAM management. Use our Setup Rater to see exactly how your GPU stacks up against the latest model architectures."
           ctaText="RATE MY SETUP"
@@ -40,7 +46,6 @@ export default async function WorkflowsPage() {
 
       {/* AI CONCIERGE */}
       <EngineRoomAssistant />
-      
     </div>
   );
 }

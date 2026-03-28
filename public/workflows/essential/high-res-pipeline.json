@@ -1,56 +1,109 @@
 {
-  "last_node_id": 8,
-  "last_link_id": 6,
+  "last_node_id": 12,
+  "last_link_id": 14,
   "nodes": [
     {
       "id": 1,
       "type": "CheckpointLoaderSimple",
-      "pos": [
-        40,
-        40
-      ],
-      "size": [
-        315,
-        98
-      ],
+      "pos": [40, 40],
+      "size": [315, 98],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
       "outputs": [
         {
           "name": "MODEL",
           "type": "MODEL",
-          "links": [
-            1
-          ]
+          "links": [1, 10]
         },
         {
           "name": "CLIP",
           "type": "CLIP",
-          "links": [
-            2
-          ]
+          "links": [2, 3]
         },
         {
           "name": "VAE",
           "type": "VAE",
-          "links": [
-            3
-          ]
+          "links": [9, 13]
         }
       ],
-      "widgets_values": [
-        "sdxl_base.safetensors"
-      ]
+      "widgets_values": ["sdxl_base.safetensors"]
+    },
+    {
+      "id": 3,
+      "type": "CLIPTextEncode",
+      "pos": [400, 40],
+      "size": [422, 164],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [4, 11]
+        }
+      ],
+      "widgets_values": ["high detail cinematic photograph, sharp focus, 8k"]
+    },
+    {
+      "id": 5,
+      "type": "CLIPTextEncode",
+      "pos": [400, 230],
+      "size": [422, 164],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [5, 12]
+        }
+      ],
+      "widgets_values": ["blurry, low quality, watermark, text"]
+    },
+    {
+      "id": 6,
+      "type": "EmptyLatentImage",
+      "pos": [40, 310],
+      "size": [315, 98],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [6]
+        }
+      ],
+      "widgets_values": [1024, 1024, 1]
     },
     {
       "id": 2,
       "type": "KSampler",
-      "pos": [
-        870,
-        40
-      ],
-      "size": [
-        315,
-        262
-      ],
+      "pos": [870, 40],
+      "size": [315, 262],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
       "inputs": [
         {
           "name": "model",
@@ -77,99 +130,142 @@
         {
           "name": "LATENT",
           "type": "LATENT",
-          "links": [
-            7
-          ]
+          "links": [7]
         }
-      ]
+      ],
+      "widgets_values": [42, "fixed", 20, 7.0, "euler", "normal", 1.0],
+      "title": "KSampler (Base)"
     },
     {
-      "id": 3,
-      "type": "CLIPTextEncode",
-      "pos": [
-        400,
-        40
-      ],
-      "size": [
-        422,
-        164
-      ],
+      "id": 8,
+      "type": "LatentUpscale",
+      "pos": [1230, 40],
+      "size": [315, 130],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
       "inputs": [
         {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 2
+          "name": "samples",
+          "type": "LATENT",
+          "link": 7
         }
       ],
       "outputs": [
         {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            4
-          ]
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [8]
         }
-      ]
+      ],
+      "widgets_values": ["nearest-exact", 2048, 2048, "disabled"],
+      "title": "Upscale Latent (2x)"
     },
     {
-      "id": 4,
-      "type": "UltimateSDUpscale",
-      "pos": [
-        1230,
-        40
-      ],
-      "size": [
-        315,
-        200
-      ],
+      "id": 9,
+      "type": "KSampler",
+      "pos": [1590, 40],
+      "size": [315, 262],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
       "inputs": [
         {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 8
+          "name": "model",
+          "type": "MODEL",
+          "link": 10
         },
         {
-          "name": "upscale_by",
-          "type": "FLOAT",
-          "link": 0
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 11
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 12
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [14]
+        }
+      ],
+      "widgets_values": [42, "fixed", 10, 7.0, "euler", "normal", 0.35],
+      "title": "KSampler (Hi-Res Refine)"
+    },
+    {
+      "id": 10,
+      "type": "VAEDecode",
+      "pos": [1950, 40],
+      "size": [210, 46],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 14
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 13
         }
       ],
       "outputs": [
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "links": [
-            9
-          ]
+          "links": [15]
         }
       ]
+    },
+    {
+      "id": 11,
+      "type": "SaveImage",
+      "pos": [2200, 40],
+      "size": [210, 270],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 15
+        }
+      ],
+      "widgets_values": ["high_res_output"]
     }
   ],
   "links": [
-    [
-      1,
-      1,
-      0,
-      2,
-      0,
-      "MODEL"
-    ],
-    [
-      2,
-      1,
-      1,
-      3,
-      0,
-      "CLIP"
-    ],
-    [
-      4,
-      3,
-      0,
-      2,
-      1,
-      "CONDITIONING"
-    ]
+    [1, 1, 0, 2, 0, "MODEL"],
+    [2, 1, 1, 3, 0, "CLIP"],
+    [3, 1, 1, 5, 0, "CLIP"],
+    [4, 3, 0, 2, 1, "CONDITIONING"],
+    [5, 5, 0, 2, 2, "CONDITIONING"],
+    [6, 6, 0, 2, 3, "LATENT"],
+    [7, 2, 0, 8, 0, "LATENT"],
+    [8, 8, 0, 9, 3, "LATENT"],
+    [9, 1, 2, 10, 1, "VAE"],
+    [10, 1, 0, 9, 0, "MODEL"],
+    [11, 3, 0, 9, 1, "CONDITIONING"],
+    [12, 5, 0, 9, 2, "CONDITIONING"],
+    [13, 1, 2, 10, 1, "VAE"],
+    [14, 9, 0, 10, 0, "LATENT"],
+    [15, 10, 0, 11, 0, "IMAGE"]
   ],
+  "groups": [],
+  "config": {},
+  "extra": {},
   "version": 0.4
 }

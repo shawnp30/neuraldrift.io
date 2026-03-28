@@ -140,25 +140,6 @@ export const WORKFLOWS: WorkflowEntry[] = [
     featured: true,
   },
   {
-    id: "07-flux-lora-character",
-    title: "FLUX Dev + Character LoRA",
-    description:
-      "FLUX Dev with LoRA injection for consistent character generation. Pre-loaded for Fat Bigfoot.",
-    longDescription:
-      "Injects a character LoRA (strength 0.8) into the FLUX Dev pipeline. Pre-configured for Fat Bigfoot but drop any FLUX-compatible LoRA in the LoraLoader node. Includes trigger word documentation in the node title. Covers forest, suburban, and neutral backgrounds.",
-    category: "image",
-    vram: "16GB",
-    difficulty: "Intermediate",
-    model: "flux1-dev-fp8.safetensors",
-    version: "v1.0",
-    customNodes: [],
-    genTime: "~25s on RTX 5080",
-    resolution: "1024×1024",
-    tags: ["FLUX", "LoRA", "character", "Fat Bigfoot", "16GB"],
-    featured: true,
-    tutorialSlug: "train-flux-lora",
-  },
-  {
     id: "08-sdxl-lora-style",
     title: "SDXL + Style LoRA",
     description:
@@ -300,25 +281,6 @@ export const WORKFLOWS: WorkflowEntry[] = [
     genTime: "~45s on RTX 5080",
     resolution: "512×512",
     tags: ["AnimateDiff", "loop", "SD1.5", "8GB", "beginner"],
-    featured: true,
-    tutorialSlug: "animatediff-character-consistency",
-  },
-  {
-    id: "16-animatediff-character",
-    title: "AnimateDiff Character Walk",
-    description:
-      "Character LoRA + AnimateDiff for consistent animated characters. Fat Bigfoot pre-loaded.",
-    longDescription:
-      "AnimateDiff with LoRA injection for character-consistent video. Uses ADE_AnimateDiffLoaderWithContext with 24 frames for longer clips. LoRA strength 0.75 balances character fidelity with natural motion. Pre-loaded with Fat Bigfoot trigger prompts.",
-    category: "video",
-    vram: "12GB",
-    difficulty: "Intermediate",
-    model: "realisticVisionV60B1_v60B1VAE.safetensors",
-    version: "v2.0",
-    customNodes: ["ComfyUI-AnimateDiff-Evolved", "ComfyUI-VideoHelperSuite"],
-    genTime: "~3m on RTX 5080",
-    resolution: "512×512",
-    tags: ["AnimateDiff", "character", "LoRA", "Fat Bigfoot", "12GB"],
     featured: true,
     tutorialSlug: "animatediff-character-consistency",
   },
@@ -825,24 +787,6 @@ export const WORKFLOWS: WorkflowEntry[] = [
     tags: ["sci-fi", "environment", "SDXL", "cinematic", "8GB"],
   },
   {
-    id: "46-flux-lora-slacker-alien",
-    title: "FLUX + Slacker Alien LoRA",
-    description:
-      "Slacker Alien character generation with FLUX Dev. Strength 0.75, suburban settings.",
-    longDescription:
-      "Slacker Alien character LoRA injected into FLUX Dev pipeline. Pale green chubby alien in cargo shorts — consistent deadpan character across all generations. Strength 0.75 for character identity while maintaining photorealism. Suburban settings pre-loaded for the comedic contrast.",
-    category: "image",
-    vram: "16GB",
-    difficulty: "Intermediate",
-    model: "flux1-dev-fp8.safetensors",
-    version: "v1.0",
-    customNodes: [],
-    genTime: "~22s on RTX 5080",
-    resolution: "1024×1024",
-    tags: ["FLUX", "LoRA", "Slacker Alien", "character", "16GB"],
-    featured: true,
-  },
-  {
     id: "47-sdxl-abstract-art",
     title: "SDXL Abstract Art",
     description:
@@ -899,7 +843,7 @@ export const WORKFLOWS: WorkflowEntry[] = [
     description:
       "Film grain analog portrait workflow. Side lighting, moody atmosphere, cinematic feel.",
     longDescription:
-      "The most cinematic portrait workflow in the neuraldrift library. Film grain and analog photography prompts simulate a 35mm film aesthetic. Side lighting for dramatic moody shadows. FLUX Dev with separate loaders for maximum quality. Pairs perfectly with the Fat Bigfoot and Slacker Alien LoRAs.",
+      "The most cinematic portrait workflow in the neuraldrift library. Film grain and analog photography prompts simulate a 35mm film aesthetic. Side lighting for dramatic moody shadows. FLUX Dev with separate loaders for maximum quality. Optimized for photorealistic character studies.",
     category: "image",
     vram: "16GB",
     difficulty: "Intermediate",
