@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { PlayCircle, FileText, ArrowRight, DollarSign, Workflow, Clock } from "lucide-react";
 
+import { DynamicCTA } from "@/components/DynamicCTA";
+
 const VIDEOS = [
   {
     id: "v=Xv3H1zH8D7k",
@@ -92,18 +94,16 @@ export default function TutorialsPage() {
         </section>
 
         {/* ── GUIDES CTA ── */}
-        <section className="bg-indigo-500/5 border border-indigo-500/10 rounded-[2rem] p-10 md:p-16 text-center">
-          <h2 className="text-3xl font-[800] text-white mb-4">Looking for Documentation?</h2>
-          <p className="text-zinc-400 max-w-xl mx-auto mb-10 text-lg">
-            Our technical guide library contains 13+ in-depth tutorials on installation, VRAM optimization, and custom node management.
-          </p>
-          <Link 
-            href="/guides"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-indigo-500 hover:bg-indigo-400 text-black font-[800] rounded-xl transition-all shadow-lg hover:shadow-indigo-500/20"
-          >
-            Visit Knowledge Base <ArrowRight className="w-5 h-5" />
-          </Link>
-        </section>
+        <div className="mt-20">
+          <DynamicCTA 
+            title="Download Professional Workflows."
+            description="Our technical guide library is only the beginning. Visit the Architecture Library to download verified JSON files directly into your local ComfyUI environment."
+            ctaText="BROWSE WORKFLOWS"
+            ctaHref="/workflows"
+            variant="cyan"
+            tag="// Architecture Library"
+          />
+        </div>
 
       </div>
     </div>

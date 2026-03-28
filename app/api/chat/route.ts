@@ -31,7 +31,13 @@ export async function POST(req: Request) {
     if (!apiKey) throw new Error("GOOGLE_AI_API_KEY is not defined.");
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const { message, history } = await req.json();
+    const { message, history, userHardware } = await req.json();
+
+    const hardwareContext = userHardware && userHardware !== "unknown" 
+      ? `\n\n[USER HARDWARE PROFILE: The operator is running ${userHardware} VRAM. Prioritize recommendations that fit this tier.]`
+      : `\n\n[USER HARDWARE PROFILE: Unknown. If relevant, ask the operator about their VRAM to provide better guidance.]`;
+
+    const finalSystemPrompt = SYSTEM_PROMPT + hardwareContext;
 
     // Try multiple model identifiers discovered via REST API.
     const modelsToTry = ["gemini-2.0-flash", "gemini-flash-latest", "gemini-pro-latest"];
@@ -41,8 +47,7 @@ export async function POST(req: Request) {
       try {
         const model = genAI.getGenerativeModel({ 
           model: modelName,
-          // All these newer models support systemInstruction
-          systemInstruction: SYSTEM_PROMPT 
+          systemInstruction: finalSystemPrompt 
         });
 
         const chat = model.startChat({

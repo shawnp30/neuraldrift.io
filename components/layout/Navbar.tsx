@@ -108,7 +108,7 @@ function Dropdown({
         absolute top-full left-1/2 -translate-x-1/2 mt-4 z-50
         w-56 rounded-xl border border-border bg-surface
         shadow-[0_20px_60px_rgba(0,0,0,0.6)]
-        transition-all duration-200
+        transition-all duration-260
         ${isOpen
           ? 'opacity-100 translate-y-0 pointer-events-auto'
           : 'opacity-0 translate-y-2 pointer-events-none'}

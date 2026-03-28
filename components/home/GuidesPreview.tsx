@@ -3,12 +3,12 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 const GUIDES = [
+  { slug: "comfyui-deployment-guide", difficulty: "Intermediate", title: "ComfyUI Deployment Guide: Local to Production", desc: "Master the full lifecycle of ComfyUI deployment from local setup to cloud APIs.", time: "18 min", tag: "Deployment" },
+  { slug: "ai-workflow-setup-guide", difficulty: "Advanced", title: "AI Workflow Setup Guide: Node Architectures", desc: "Build scalable, modular AI architectures in ComfyUI for production systems.", time: "22 min", tag: "Workflows" },
   { slug: "comfyui-complete-setup", difficulty: "Beginner", title: "ComfyUI Complete Setup: RTX 5080 Edition", desc: "Install, configure, and benchmark your first ComfyUI workflow with optimal VRAM settings.", time: "12 min", tag: "Image Gen" },
   { slug: "train-flux-lora", difficulty: "Intermediate", title: "Train Your First FLUX LoRA in Under 6 Hours", desc: "Dataset prep, Kohya config, training loop, and quality evaluation from scratch.", time: "28 min", tag: "LoRA Training" },
   { slug: "ltx-video-cinematic-action", difficulty: "Advanced", title: "LTX Video 2.3: Cinematic Action Sequences", desc: "Build chase and action scenes with consistent motion, camera lock, and temporal coherence.", time: "35 min", tag: "Video Gen" },
-  { slug: "dataset-curation-captioning", difficulty: "Beginner", title: "Dataset Curation: Captioning at Scale", desc: "Auto-caption 1000+ images with WD14 tagger and build clean training data fast.", time: "15 min", tag: "Datasets" },
-  { slug: "animatediff-character-consistency", difficulty: "Intermediate", title: "AnimateDiff + LoRA Character Consistency", desc: "Lock a character across frames with motion modules and custom LoRA injection.", time: "22 min", tag: "Animation" },
-  { slug: "multi-gpu-inference", difficulty: "Advanced", title: "Multi-GPU Inference: 3x Speed, Same VRAM", desc: "Route compute across RTX workstation + laptop for parallel batch inference.", time: "40 min", tag: "Optimization" },
+  { slug: "ai_article_with_images", difficulty: "Advanced", title: "The State of Generative AI: From Legacy to Spatial Control", desc: "Deep dive into generative AI architectures and the shift towards spatial control.", time: "15 min", tag: "Guide" },
 ];
 
 const DIFF_STYLES: Record<string, string> = {
@@ -30,7 +30,7 @@ export function GuidesPreview() {
 
   return (
     <section ref={ref} className="py-24 px-10 max-w-7xl mx-auto">
-      <p className="reveal font-mono text-xs text-accent tracking-widest uppercase mb-4">// Latest Guides</p>
+      <p className="reveal font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Latest Guides"}</p>
       <h2 className="reveal font-syne text-[clamp(1.8rem,3.5vw,3rem)] font-black tracking-tight mb-12">
         Start with the essentials.
       </h2>

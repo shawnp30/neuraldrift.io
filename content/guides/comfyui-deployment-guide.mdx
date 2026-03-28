@@ -1,0 +1,201 @@
+---
+title: "ComfyUI Deployment Guide: From Local to Production"
+description: "Master the full lifecycle of ComfyUI deployment—from local GPU setup to production-ready cloud APIs on RunPod, Modal, and Docker."
+difficulty: "Intermediate"
+readTime: "18 min"
+tag: "Deployment"
+publishedAt: "2024-03-27"
+---
+
+---
+
+**In this guide you will learn:**
+- Set up a clean local development environment using standard repository paths
+- Build and bundle complex workflows for deployment
+- Deploy ComfyUI to cloud providers like RunPod, Modal, and Replicate
+- Integrate CI/CD pipelines with GitHub Actions for automated updates
+- Secure and monitor production-level AI endpoints
+
+![Cloud Deployment](https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop)
+
+# ComfyUI Deployment Guide: From Local to Production
+
+Deploying ComfyUI isn't just about running a script—it's about building a robust, repeatable infrastructure for AI generation. Whether you're building a private creative studio or a public-facing API, this guide covers the engineering required to move from experimental workflows to production power.
+
+:::stats
+:::stat 16GB+ | Recommended VRAM
+:::stat 18 min | Reading Time
+:::stat Docker | Scale Method
+:::stat Production | Readiness
+:::
+
+## 1 — Overview
+
+ComfyUI is the most efficient interface for professional AI generation due to its **stateless execution** model. Unlike heavy UIs, ComfyUI can be run as a headless API, allowing you to trigger complex workflows (Image, Video, Audio) via JSON requests.
+
+### Benefits of Deployment
+- **Scalability**: Run multiple nodes to handle high batch volumes.
+- **Portability**: Move workflows between local machines and cloud GPUs in seconds.
+- **Independence**: Decouple the creative process (workflow building) from the inference process (scaling).
+
+---
+
+## 2 — Prerequisites
+
+Before deploying, ensure your environment matches the production target:
+
+- **Python 3.10.x**: Essential for custom node compatibility.
+- **NVIDIA GPU Drivers**: Latest CUDA 12.1+ supported drivers.
+- **Git**: For version control and dependency management.
+- **Repo Structure**: We recommend the following standard layout (available in this repository):
+
+```text
+/models/        # Checkpoints, VAEs, LoRAs
+/workflows/     # Final-built workflow JSONs
+/custom_nodes/  # Extensions and custom nodes
+/scripts/       # Deployment and setup scripts
+```
+
+---
+
+## 3 — Local Installation
+
+Standardize your local setup to ensure "it just works" when moving to the cloud.
+
+```bash
+# Clone the base system
+git clone https://github.com/comfyanonymous/ComfyUI.git
+cd ComfyUI
+
+# Install core dependencies
+python -m venv venv
+source venv/bin/activate  # 或 .\venv\Scripts\activate
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install -r requirements.txt
+```
+
+:::tip Use Symbolic Links
+For large model files, use `mklink` (Windows) or `ln -s` (Linux) to point `models/` to a shared drive. This prevents duplicating multi-GB checkpoints across your repo.
+:::
+
+---
+
+## 4 — Custom Node Installation
+
+Most workflows require custom nodes. We recommend managing these specifically via the `custom_nodes/` folder.
+
+1. **Manual Install**: Clone the node repo directly into `custom_nodes/`.
+2. **Manager Install**: Use the ComfyUI Manager (cloned into `custom_nodes/`) for one-click updates.
+
+```bash
+# Example: Adding Manager manually
+cd custom_nodes
+git clone https://github.com/ltdrdata/ComfyUI-Manager
+pip install -r ComfyUI-Manager/requirements.txt
+```
+
+---
+
+## 5 — Packaging Workflows
+
+To deploy a workflow, you must export it as an **API-formatted JSON**.
+
+1. In ComfyUI, enable "Dev mode" in settings.
+2. Click "Save (API Format)".
+3. Store this file in `/workflows/` in your repository.
+
+:::warning Regular Save vs API Format
+A standard "Save" includes UI metadata like node positions. The "API Format" removes this, making it significantly smaller and faster for headless execution.
+:::
+
+---
+
+## 6 — Deployment Options
+
+### Local Server
+Run with `--listen` to accept requests from your local network.
+```bash
+python main.py --listen 0.0.0.0 --port 8188
+```
+
+### Cloud Deployment
+- **Docker**: Containerize the entire environment for Kubernetes or AWS.
+- **RunPod / Lambda**: Best for manual scaling and long-running GPU sessions.
+- **Modal**: Ideal for "serverless" deployments—pay only for the seconds you generate.
+
+---
+
+## 7 — Running Production APIs
+
+Once deployed, interact with ComfyUI via the `/prompt` endpoint. Your request body should contain the JSON from `/workflows/`.
+
+```bash
+# Example API health check
+curl http://your-gpu-ip:8188/history
+```
+
+:::note Securing Access
+Always run ComfyUI behind a reverse proxy (like Nginx) or a VPN. Do not expose port 8188 directly to the public internet.
+:::
+
+---
+
+## 8 — CI/CD Integration
+
+Use GitHub Actions to keep your production server synced with your repository.
+
+**Example Pipeline Logic:**
+1. Push new model to `models/` or workflow to `workflows/`.
+2. GitHub Action triggers a webhook.
+3. Server executes a `git pull` and restarts the ComfyUI service.
+
+```yaml
+# Simplified GitHub Action snippet
+name: Deploy ComfyUI
+on: [push]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Server Pull
+        run: curl -X POST https://your-deploy-webhook.com/sync
+```
+
+---
+
+## 9 — Monitoring & Logging
+
+Production deployments require visibility into GPU usage and error rates.
+
+- **NVIDIA SMI**: Monitor VRAM usage (`nvidia-smi -l 1`).
+- **Standard Logs**: Capture `stdout` to a file in `/scripts/logs/`.
+- **Latency Tracking**: Measure the time between `/prompt` submission and file output.
+
+---
+
+## 10 — Troubleshooting
+
+:::warning Avoid "OOM" Errors
+If your API returns a 500 error during generation, check the console for "Out of Memory". Reduce your resolution or use a lower-bit quantized model (GGUF).
+:::
+
+**Common Node Errors:**
+- `ImportError`: Ensure you've run `pip install -r requirements.txt` inside the specific custom node's folder.
+- `Node not found`: Verify the folder name in `custom_nodes/` matches exactly.
+
+---
+
+## 11 — Next Steps
+
+- **Add Models**: Populate `/models/checkpoints/` with FLUX or SDXL models.
+- **Share**: Use `/scripts/export_env.sh` to share your exact environment with teammates.
+- **Scale**: Integrate with our [Hardware Estimator](https://computeatlas.ai/ai-hardware-estimator) to find the best cloud GPU for your budget.
+
+---
+
+## References
+- [Official ComfyUI Docs](https://docs.comfy.org)
+- [BlackMORE Ops Setup Guide](https://www.blackmoreops.com/2025/09/03/comfyui-setup-guide-complete-installation-tutorial/)
+- [DiffHub Installation](https://www.diffhub.io/guides/comfyui-installation-guide)
+- [ComfyUI-Deploy Extension](https://www.runcomfy.com/comfyui-nodes/comfyui-deploy)
+- [RunPod Blog](https://blog.runpod.io/tag/comfyui/)

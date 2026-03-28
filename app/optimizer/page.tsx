@@ -6,6 +6,7 @@ import { CompatibilityBadge } from "@/components/optimizer/CompatibilityBadge";
 import { ScoreBar } from "@/components/optimizer/ScoreBar";
 import { FixMyPcButton } from "@/components/optimizer/FixMyPcButton";
 import Link from "next/link";
+import { DynamicCTA } from "@/components/DynamicCTA";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -338,6 +339,17 @@ export default function OptimizerPage() {
               )}
             </div>
           </div>
+        </div>
+        {/* CTA SECTION */}
+        <div className="mt-20">
+          <DynamicCTA 
+            title="Dive Deeper into the Documentation."
+            description="Our optimizer is just one tool in the stack. Explore our comprehensive guides to master VRAM management, node optimization, and professional scaling."
+            ctaText="BROWSE THE GUIDES"
+            ctaHref="/guides"
+            variant="amber"
+            tag="// Knowledge Base"
+          />
         </div>
       </main>
     </>

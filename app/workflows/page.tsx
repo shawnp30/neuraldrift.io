@@ -1,6 +1,7 @@
 import { getWorkflowTree } from "@/lib/github";
 import WorkflowExplorer from "@/components/workflows/WorkflowExplorer";
 import EngineRoomAssistant from "@/components/workflows/EngineRoomAssistant";
+import { DynamicCTA } from "@/components/DynamicCTA";
 
 // Revalidate every hour to stay within GitHub API rate limits
 export const revalidate = 3600;
@@ -24,6 +25,18 @@ export default async function WorkflowsPage() {
 
       {/* EXPLORER */}
       <WorkflowExplorer initialTree={workflowTree} />
+
+      {/* CTA SECTION */}
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 mt-32 mb-32">
+        <DynamicCTA 
+          title="Is Your Hardware Ready for These Workflows?"
+          description="High-end workflows require optimized VRAM management. Use our Setup Rater to see exactly how your GPU stacks up against the latest model architectures."
+          ctaText="RATE MY SETUP"
+          ctaHref="/hardware"
+          variant="amber"
+          tag="// Rig Verification"
+        />
+      </div>
 
       {/* AI CONCIERGE */}
       <EngineRoomAssistant />

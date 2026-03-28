@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Cpu, Zap, Settings, CheckCircle, AlertTriangle, XCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { DynamicCTA } from "@/components/DynamicCTA";
 
 type VRAMTier = "8GB" | "12GB" | "16GB" | "24GB";
 
@@ -63,6 +64,21 @@ const VRAM_CAPABILITIES = {
 export default function SetupRaterPage() {
   const [selectedVRAM, setSelectedVRAM] = useState<VRAMTier>("16GB");
 
+  // Load from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("neuraldrift_vram") as VRAMTier;
+    if (saved && ["8GB", "12GB", "16GB", "24GB"].includes(saved)) {
+      setSelectedVRAM(saved);
+    }
+  }, []);
+
+  // Save to localStorage on change
+  useEffect(() => {
+    localStorage.setItem("neuraldrift_vram", selectedVRAM);
+    // Dispatch custom event for persistent cross-tab/component syncing
+    window.dispatchEvent(new Event("vram_update"));
+  }, [selectedVRAM]);
+
   const currentCaps = VRAM_CAPABILITIES[selectedVRAM];
 
   return (
@@ -77,7 +93,7 @@ export default function SetupRaterPage() {
           Setup <span className="text-cyan-400">Rater</span>
         </h1>
         <p className="text-lg md:text-xl font-[500] text-zinc-400 leading-relaxed mx-auto">
-          Generative AI is entirely bound by <span className="text-white font-[700]">VRAM (Video RAM)</span>. Select your GPU's VRAM below to instantly see exactly what models and workflows you can comfortably run, and what you're missing out on.
+          Generative AI is entirely bound by <span className="text-white font-[700]">VRAM (Video RAM)</span>. Select your GPU&apos;s VRAM below to instantly see exactly what models and workflows you can comfortably run, and what you&apos;re missing out on.
         </p>
       </div>
 
@@ -109,7 +125,7 @@ export default function SetupRaterPage() {
             <div className="mt-8 pt-8 border-t border-indigo-500/10">
               <h4 className="text-sm font-[700] text-white mb-2">Not sure what you have?</h4>
               <p className="text-sm text-zinc-500 font-[500] leading-relaxed">
-                Open Task Manager (Windows) {`>`} Performance tab {`>`} GPU. Look at the "Dedicated GPU memory" value.
+                Open Task Manager (Windows) {`>`} Performance tab {`>`} GPU. Look at the &quot;Dedicated GPU memory&quot; value.
               </p>
             </div>
           </div>
@@ -175,7 +191,18 @@ export default function SetupRaterPage() {
 
           </div>
         </div>
+      </div>
 
+      {/* CTA SECTION */}
+      <div className="max-w-5xl mx-auto px-6 md:px-12 pb-32">
+        <DynamicCTA 
+          title="Find the Right Models for Your Rig."
+          description="Every GPU has a sweet spot. Now that you know your rating, browse our curated LoRA library to find models verified for your specific VRAM tier."
+          ctaText="BROWSE MODEL LIBRARY"
+          ctaHref="/loras"
+          variant="emerald"
+          tag="// Model Synergy"
+        />
       </div>
     </div>
   );

@@ -106,7 +106,9 @@ const ALL_GUIDES = [
   { slug: "train-flux-lora", title: "Train Your First FLUX LoRA in Under 6 Hours", difficulty: "Intermediate" as Difficulty, tag: "LoRA Training", desc: "Dataset prep, Kohya config, training loop, and quality evaluation from scratch. Tested on RTX 5080 and RTX 3080." },
   { slug: "why-choose-desktop", title: "Why Choose ComfyUI Desktop Install", difficulty: "Advanced" as Difficulty, tag: "Guide", desc: "Deep dive into the power-user installation" },
   { slug: "why-choose-portable", title: "Why Choose ComfyUI Portable Version", difficulty: "Beginner" as Difficulty, tag: "Guide", desc: "Deep dive into the beginner-friendly installation" },
-  { slug: "workflow-errors", title: "Understanding and Fixing Workflow Errors", difficulty: "Beginner" as Difficulty, tag: "Guide", desc: "Solve node not found, black images, and type mismatches" }
+  { slug: "workflow-errors", title: "Understanding and Fixing Workflow Errors", difficulty: "Beginner" as Difficulty, tag: "Guide", desc: "Solve node not found, black images, and type mismatches" },
+  { slug: "ai_article_with_images", title: "The State of Generative AI: From Legacy Architectures to Spatial Control", difficulty: "Advanced" as Difficulty, tag: "Guide", desc: "Deep dive into the power-user installation" }
+
 ];
 
 export default function GuidePage({ params }: Props) {
@@ -374,6 +376,6 @@ export default function GuidePage({ params }: Props) {
 
 export async function generateStaticParams() {
   return [
-    "comfyui-complete-setup", "custom-nodes", "gpu-errors", "installation", "ltx-video-cinematic-action", "model-folders", "model-types", "performance-optimization", "portable-vs-desktop", "train-flux-lora", "why-choose-desktop", "why-choose-portable", "workflow-errors"
+    "comfyui-complete-setup", "custom-nodes", "gpu-errors", "installation", "ltx-video-cinematic-action", "model-folders", "model-types", "performance-optimization", "portable-vs-desktop", "train-flux-lora", "why-choose-desktop", "why-choose-portable", "workflow-errors", "ai_article_with_images", "comfyui-deployment-guide", "ai-workflow-setup-guide"
   ].map(slug => ({ slug }));
 }

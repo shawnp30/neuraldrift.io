@@ -32,6 +32,19 @@ export default function EngineRoomAssistant() {
     }
   }, [messages]);
 
+  const [userHardware, setUserHardware] = useState<string>("unknown");
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      const vram = localStorage.getItem("neuraldrift_vram");
+      if (vram) setUserHardware(vram);
+    };
+
+    handleUpdate();
+    window.addEventListener("vram_update", handleUpdate);
+    return () => window.removeEventListener("vram_update", handleUpdate);
+  }, []);
+
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
 
@@ -50,7 +63,8 @@ export default function EngineRoomAssistant() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           message: inputValue,
-          history: messages 
+          history: messages,
+          userHardware // <── Added hardware context
         }),
       });
 

@@ -64,4 +64,9 @@ vercel deploy
 
 ---
 
+## Developer Setup Required
+
+> [!IMPORTANT]
+> Uploads require `@vercel/blob` and a `BLOB_READ_WRITE_TOKEN` environment variable to function correctly. Configure this in your Vercel Project Settings first.
+
 Built with neuraldrift · ComputeAtlas Partner

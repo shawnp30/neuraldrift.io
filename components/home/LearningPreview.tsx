@@ -7,17 +7,17 @@ import { GraduationCap, Trophy, Wrench, Cpu } from "lucide-react";
 const CARDS = [
   {
     icon: < GraduationCap size={20} className="text-accent-cyan" />,
-    title: "ComfyUI for Beginners",
+    title: "ComfyUI Deployment Guide",
     cta: "Read Guide",
-    href: "/tutorials",
-    desc: "The essential foundations of node-based generation."
+    href: "/guides/comfyui-deployment-guide",
+    desc: "Master the full lifecycle of ComfyUI deployment from local to cloud."
   },
   {
     icon: < Trophy size={20} className="text-accent-purple" />,
-    title: "Advanced Workflow Optimization",
+    title: "Workflow Setup Guide",
     cta: "Read Guide",
-    href: "/tutorials",
-    desc: "Tune your pipelines for maximum speed and quality."
+    href: "/guides/ai-workflow-setup-guide",
+    desc: "Architect scalable, modular AI systems for production environments."
   },
   {
     icon: < Wrench size={20} className="text-accent-cyan" />,

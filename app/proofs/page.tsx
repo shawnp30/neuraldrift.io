@@ -2,7 +2,17 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ExternalLink, Video } from "lucide-react";
+import { 
+  ExternalLink, 
+  Video, 
+  Download, 
+  Maximize2, 
+  ShieldCheck, 
+  CheckCircle2, 
+  PlusCircle,
+  Clock
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const CATEGORIES = [
   "All",
@@ -14,7 +24,7 @@ const CATEGORIES = [
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
-  Image: "text-green-400 bg-green-500/10 border-green-500/20",
+  Image: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
   Video: "text-sky-400 bg-sky-500/10 border-sky-500/20",
   Enhance: "text-indigo-400 bg-indigo-500/10 border-indigo-500/20",
   ControlNet: "text-purple-400 bg-purple-500/10 border-purple-500/20",
@@ -66,7 +76,7 @@ export default function ProofGalleryPage() {
         if (data.items) setItems(data.items);
         else if (data.error) setError(data.error);
       })
-      .catch(() => setError("Could not load gallery. API may not be set up yet."))
+      .catch(() => setError("Could not load gallery. System configuration required."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -75,151 +85,230 @@ export default function ProofGalleryPage() {
     : items.filter((i) => WORKFLOW_CATEGORIES[i.workflowId] === activeCategory);
 
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-50 pt-16 font-sans pb-24">
+    <div className="min-h-screen bg-[#030712] text-slate-50 pt-32 font-sans pb-32 overflow-hidden">
       
       {/* ── LIGHTBOX ── */}
-      {lightbox && (
-        <div 
-          onClick={() => setLightbox(null)}
-          className="fixed inset-0 bg-black/95 z-[999] p-4 md:p-12 flex items-center justify-center cursor-zoom-out backdrop-blur-xl"
-        >
-          <div className="max-w-5xl w-full cursor-default" onClick={(e) => e.stopPropagation()}>
-            {lightbox.type?.startsWith("video/") ? (
-              <video src={lightbox.url} controls autoPlay className="w-full rounded-2xl max-h-[80vh] object-contain shadow-2xl bg-black" />
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={lightbox.url} alt={lightbox.workflowTitle} className="w-full rounded-2xl max-h-[80vh] object-contain shadow-2xl bg-black" />
-            )}
-            
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 bg-[#0f172a]/80 p-6 rounded-2xl border border-indigo-500/20 backdrop-blur-md">
-              <div>
-                <h3 className="text-xl md:text-2xl font-[800] text-white">{lightbox.workflowTitle}</h3>
-                {lightbox.caption && <p className="text-zinc-400 font-[500] mt-2 text-sm max-w-2xl leading-relaxed">{lightbox.caption}</p>}
-                <p className="text-xs text-indigo-400/60 font-mono mt-3 uppercase tracking-widest">{new Date(lightbox.uploadedAt).toLocaleString()}</p>
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightbox(null)}
+            className="fixed inset-0 bg-black/95 z-[999] p-4 md:p-12 flex items-center justify-center cursor-zoom-out backdrop-blur-3xl"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="max-w-6xl w-full cursor-default" 
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative group/lb rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl bg-black">
+                {lightbox.type?.startsWith("video/") ? (
+                  <video src={lightbox.url} controls autoPlay className="w-full max-h-[75vh] object-contain" />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={lightbox.url} alt={lightbox.workflowTitle} className="w-full max-h-[75vh] object-contain" />
+                )}
               </div>
-              <div className="flex items-center gap-4">
-                <a href={`/workflows/${lightbox.workflowId}.json`} download className="px-6 py-3 bg-indigo-500/20 text-indigo-400 font-[700] rounded-xl hover:bg-indigo-500/30 hover:text-indigo-300 transition-colors border border-indigo-500/30 flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4" /> Download JSON
-                </a>
-                <button onClick={() => setLightbox(null)} className="px-6 py-3 bg-white/5 text-white font-[600] rounded-xl hover:bg-white/10 transition-colors">
-                  Close
-                </button>
+              
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="md:col-span-8 bg-white/[0.03] border border-white/10 p-10 rounded-[2.5rem] backdrop-blur-xl">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-[10px] font-black text-indigo-400 uppercase tracking-widest">Verified Output</span>
+                    <span className="text-zinc-600 font-mono text-[10px] uppercase tracking-widest">{new Date(lightbox.uploadedAt).toLocaleDateString()}</span>
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-[900] text-white mb-6 leading-tight font-syne">{lightbox.workflowTitle}</h3>
+                  {lightbox.caption && <p className="text-zinc-400 font-[500] text-lg max-w-3xl leading-relaxed">{lightbox.caption}</p>}
+                </div>
+                
+                <div className="md:col-span-4 flex flex-col gap-4">
+                  <a 
+                    href={`/workflows/${lightbox.workflowId}.json`} 
+                    download 
+                    className="flex-1 flex flex-col items-center justify-center gap-3 bg-indigo-500 hover:bg-indigo-400 text-black p-8 rounded-[2.5rem] transition-all transform hover:-translate-y-1 shadow-[0_20px_40px_rgba(99,102,241,0.3)] group"
+                  >
+                    <Download className="w-8 h-8 group-hover:scale-110 transition-transform" />
+                    <span className="font-black text-sm uppercase tracking-widest">GET JSON</span>
+                  </a>
+                  <button 
+                    onClick={() => setLightbox(null)} 
+                    className="py-6 bg-white/5 border border-white/10 text-white font-bold rounded-[2.5rem] hover:bg-white/10 transition-all uppercase tracking-widest text-xs"
+                  >
+                    Close Terminal
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ── HEADER ── */}
-      <div className="max-w-6xl mx-auto px-6 md:px-12 mb-16 text-center">
-        <p className="text-cyan-400 font-[800] tracking-widest uppercase text-sm mb-4">Community Proofs</p>
-        <h1 className="text-4xl md:text-5xl lg:text-7xl font-[800] tracking-tight text-white mb-6 drop-shadow-xl">
-          Verified <span className="text-cyan-400">Outputs.</span>
-        </h1>
-        <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed mb-10">
-          Every generation below was created using a Neuraldrift workflow JSON on consumer hardware.
-        </p>
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-12 mb-24">
+        <div className="flex flex-col lg:flex-row items-end justify-between gap-12">
+          <div className="max-w-3xl">
+            <p className="text-indigo-400 font-black tracking-[0.3em] uppercase text-xs mb-6 flex items-center gap-3">
+              <ShieldCheck className="w-5 h-5" /> Operational Sovereignty
+            </p>
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-[900] tracking-tighter text-white mb-8 leading-[0.9] font-syne">
+              Architectural <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-cyan-400">Proofs.</span>
+            </h1>
+            <p className="text-xl md:text-2xl font-[500] text-zinc-500 leading-relaxed max-w-2xl">
+              Verified generations from the Neuraldrift community. Every item below includes a verified, ready-to-download ComfyUI architecture.
+            </p>
+          </div>
 
-        {/* ── STATS & ACTIONS ── */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
-          <div className="bg-[#0f172a]/50 border border-indigo-500/20 rounded-2xl px-6 py-4 backdrop-blur-md flex items-center gap-4">
-            <span className="text-3xl font-[800] text-cyan-400">{items.length}</span>
-            <span className="text-sm font-[600] text-zinc-500 uppercase tracking-widest">Outputs</span>
+          <div className="flex flex-wrap items-center gap-4">
+             <div className="bg-white/[0.02] border border-white/5 rounded-[2rem] px-8 py-6 backdrop-blur-md flex flex-col">
+              <span className="text-4xl font-black text-white leading-none mb-1">{items.length}</span>
+              <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Active Proofs</span>
+            </div>
+            <Link href="/proofs/upload" className="group h-[88px] px-10 bg-white text-black rounded-[2rem] font-black hover:bg-indigo-400 transition-all shadow-2xl flex items-center gap-3">
+              UPLOAD OUTPUT <PlusCircle className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+            </Link>
           </div>
-          <div className="bg-[#0f172a]/50 border border-indigo-500/20 rounded-2xl px-6 py-4 backdrop-blur-md flex items-center gap-4">
-            <span className="text-3xl font-[800] text-cyan-400">{new Set(items.map((i) => i.workflowId)).size}</span>
-            <span className="text-sm font-[600] text-zinc-500 uppercase tracking-widest">Workflows Proven</span>
-          </div>
-          <Link href="/proofs/upload" className="bg-cyan-500 text-black px-8 py-5 rounded-2xl font-[800] hover:bg-cyan-400 transition-all shadow-[0_0_20px_rgba(34,211,238,0.2)] flex items-center gap-2">
-            Upload Output <ExternalLink className="w-4 h-4" />
-          </Link>
         </div>
 
-        {/* ── FILTER TABS ── */}
-        <div className="flex flex-wrap items-center justify-center gap-3">
+        {/* ── CATEGORY BAR ── */}
+        <div className="mt-16 flex flex-wrap items-center gap-3">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-5 py-2.5 rounded-full text-sm font-[700] transition-all duration-300 border ${
+              className={`px-8 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 border ${
                 activeCategory === cat 
-                  ? "bg-cyan-500/10 border-cyan-500/30 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.15)] scale-105" 
-                  : "bg-white/5 border-white/5 text-zinc-400 hover:bg-white/10 hover:text-white"
+                  ? "bg-indigo-500/10 border-indigo-500/30 text-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.1)] scale-105" 
+                  : "bg-white/[0.02] border-white/5 text-zinc-500 hover:border-white/20 hover:text-zinc-300"
               }`}
             >
-              {cat} <span className="opacity-50 ml-1 text-xs">({cat === "All" ? items.length : items.filter((i) => WORKFLOW_CATEGORIES[i.workflowId] === cat).length})</span>
+              {cat} <span className="opacity-30 ml-2 font-mono">/{cat === "All" ? items.length : items.filter((i) => WORKFLOW_CATEGORIES[i.workflowId] === cat).length}</span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* ── MASONRY GALLERY ── */}
-      <div className="max-w-7xl mx-auto px-6 md:px-12">
+      {/* ── THE GRID ── */}
+      <div className="max-w-[1600px] mx-auto px-6 lg:px-12">
         
         {loading && (
-          <div className="text-center py-24 text-zinc-500 font-mono text-sm uppercase tracking-widest animate-pulse">Loading gallery database...</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="bg-white/[0.02] border border-white/5 rounded-[2.5rem] h-[400px] animate-pulse" />
+            ))}
+          </div>
         )}
 
         {!loading && error && (
-          <div className="bg-rose-500/10 border border-rose-500/20 rounded-3xl p-12 text-center max-w-2xl mx-auto shadow-2xl">
-            <p className="text-rose-400 font-[700] mb-4 text-xl">{error}</p>
-            <p className="text-zinc-400 font-[500] mb-8 leading-relaxed">Setup your Vercel Blob Database and provide the BLOB_READ_WRITE_TOKEN in your environment variables to enable global proofs.</p>
-            <Link href="/proofs/upload" className="bg-rose-500 text-black px-8 py-4 rounded-xl font-[800] hover:bg-rose-400 transition-colors shadow-[0_0_20px_rgba(244,63,94,0.3)] inline-block">Configure Storage</Link>
+          <div className="bg-rose-500/5 border border-rose-500/10 rounded-[3rem] p-16 md:p-24 text-center max-w-4xl mx-auto shadow-2xl">
+            <h3 className="text-3xl font-black text-rose-400 mb-6 font-syne tracking-tight">System Configuration Error</h3>
+            <p className="text-zinc-400 font-medium mb-12 text-lg leading-relaxed max-w-2xl mx-auto">
+              The Engine Room requires a valid <code className="bg-rose-500/10 px-2 py-0.5 rounded text-rose-300">BLOB_READ_WRITE_TOKEN</code> to access the global proof database.
+            </p>
+            <Link href="/proofs/upload" className="bg-white text-black px-10 py-5 rounded-2xl font-black hover:bg-rose-400 transition-colors inline-flex items-center gap-2 uppercase tracking-widest text-xs">
+              Configure Protocol <ExternalLink className="w-4 h-4" />
+            </Link>
           </div>
         )}
 
         {!loading && !error && filtered.length === 0 && (
-          <div className="text-center py-24 bg-white/[0.02] border border-white/5 rounded-3xl max-w-3xl mx-auto">
-            <div className="text-6xl mb-6 opacity-40">📸</div>
-            <h3 className="text-2xl font-[800] text-white mb-3">No Outputs Found</h3>
-            <p className="text-zinc-500 font-[500] mb-8 max-w-md mx-auto leading-relaxed">No community uploads exist for this category yet. Be the first to verify a workflow!</p>
-            <Link href="/proofs/upload" className="bg-white/10 hover:bg-white/20 text-white font-[700] px-8 py-4 rounded-xl transition-all border border-white/10 inline-block shadow-lg">Upload First Output</Link>
+          <div className="text-center py-40 bg-white/[0.02] border border-white/5 rounded-[4rem] max-w-5xl mx-auto px-12">
+             <div className="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-10 border border-white/10">
+              <Clock className="w-10 h-10 text-zinc-600" />
+            </div>
+            <h3 className="text-4xl font-black text-white mb-6 font-syne">Database Empty</h3>
+            <p className="text-zinc-500 font-medium mb-12 max-w-md mx-auto leading-relaxed text-lg">
+              There are no architectural proofs verified in the <span className="text-white">{activeCategory}</span> sector yet.
+            </p>
+            <Link href="/proofs/upload" className="bg-indigo-500 text-black px-10 py-5 rounded-2xl font-black hover:bg-indigo-400 transition-all uppercase tracking-widest text-xs">
+              Initialize First Proof
+            </Link>
           </div>
         )}
 
         {!loading && !error && filtered.length > 0 && (
-          <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6">
-            {filtered.map((item, i) => {
-              const category = WORKFLOW_CATEGORIES[item.workflowId] || "Image";
-              const catClasses = CATEGORY_COLORS[category] || "text-zinc-400 bg-zinc-500/10 border-zinc-500/20";
+          <div className="columns-1 md:columns-2 lg:columns-3 xl:columns-4 gap-8 space-y-8">
+            <AnimatePresence mode="popLayout">
+              {filtered.map((item, i) => {
+                const category = WORKFLOW_CATEGORIES[item.workflowId] || "Image";
+                const catClasses = CATEGORY_COLORS[category] || "text-zinc-500 bg-white/5 border-white/10";
 
-              return (
-                <div 
-                  key={i} 
-                  onClick={() => setLightbox(item)}
-                  className="break-inside-avoid bg-[#0f172a]/40 border border-indigo-500/10 rounded-2xl overflow-hidden group cursor-zoom-in hover:border-indigo-500/40 transition-all duration-500 relative shadow-xl hover:shadow-[0_10px_40px_rgba(99,102,241,0.1)]"
-                >
-                  <div className="relative overflow-hidden bg-black/60 aspect-auto">
-                    {item.type?.startsWith("video/") ? (
-                      <video src={item.url} muted loop onMouseEnter={(e) => (e.target as HTMLVideoElement).play()} onMouseLeave={(e) => (e.target as HTMLVideoElement).pause()} className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
-                    ) : (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.url} alt={item.workflowTitle} loading="lazy" className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700" />
-                    )}
-                    
-                    {item.type?.startsWith("video/") && (
-                      <div className="absolute top-4 left-4 bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-lg text-[10px] font-[800] tracking-widest text-white border border-white/10 flex items-center gap-1.5 shadow-lg">
-                        <Video className="w-3.5 h-3.5 text-sky-400" /> VIDEO
+                return (
+                  <motion.div 
+                    layout
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    key={item.pathname} 
+                    onClick={() => setLightbox(item)}
+                    className="break-inside-avoid relative group cursor-zoom-in rounded-[2.5rem] overflow-hidden border border-white/5 bg-[#0f172a]/40 backdrop-blur-sm transition-all duration-500 hover:border-indigo-500/30 hover:shadow-[0_20px_60px_rgba(99,102,241,0.15)]"
+                  >
+                    <div className="relative overflow-hidden bg-black/60">
+                      {item.type?.startsWith("video/") ? (
+                        <video 
+                          src={item.url} 
+                          muted 
+                          loop 
+                          onMouseEnter={(e) => (e.target as HTMLVideoElement).play()} 
+                          onMouseLeave={(e) => (e.target as HTMLVideoElement).pause()} 
+                          className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-110" 
+                        />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img 
+                          src={item.url} 
+                          alt={item.workflowTitle} 
+                          loading="lazy" 
+                          className="w-full h-auto object-cover transition-transform duration-1000 group-hover:scale-110" 
+                        />
+                      )}
+
+                      {/* HOVER OVERLAY */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <div className="flex gap-3 mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-75">
+                          <button className="flex-1 py-4 bg-white text-black rounded-2xl font-black text-[10px] tracking-widest uppercase flex items-center justify-center gap-2 hover:bg-indigo-400">
+                             <Maximize2 className="w-3.5 h-3.5" /> Inspect
+                          </button>
+                        </div>
                       </div>
-                    )}
-                  </div>
 
-                  <div className="p-6">
-                    <span className={`inline-block px-2.5 py-1 rounded text-[10px] font-[800] tracking-widest uppercase border mb-4 shadow-sm ${catClasses}`}>
-                      {category}
-                    </span>
-                    <h3 className="text-base font-[800] text-white leading-snug mb-3 group-hover:text-indigo-400 transition-colors">{item.workflowTitle}</h3>
-                    {item.caption && <p className="text-sm text-zinc-400 font-[500] line-clamp-3 leading-relaxed mb-5">{item.caption}</p>}
-                    
-                    <div className="flex items-center justify-between mt-auto">
-                      <a href={`/workflows/${item.workflowId}.json`} download onClick={(e) => e.stopPropagation()} className="px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/20 rounded-xl text-xs font-[800] tracking-wide transition-all shadow-sm flex items-center gap-1.5 group-hover:bg-indigo-500 group-hover:text-white group-hover:border-indigo-500">
-                        Get JSON <ExternalLink className="w-3.5 h-3.5" />
-                      </a>
+                      {/* TYPE INDICATORS */}
+                      <div className="absolute top-6 left-6 pointer-events-none">
+                        {item.type?.startsWith("video/") ? (
+                          <div className="bg-black/80 backdrop-blur-xl px-4 py-2 rounded-xl text-[8px] font-black tracking-[0.2em] text-white border border-white/10 flex items-center gap-2 shadow-2xl">
+                            <Video className="w-3 h-3 text-sky-400" /> VIDEO PROOF
+                          </div>
+                        ) : (
+                          <div className="bg-black/80 backdrop-blur-xl px-4 py-2 rounded-xl text-[8px] font-black tracking-[0.2em] text-white border border-white/10 flex items-center gap-2 shadow-2xl">
+                            <CheckCircle2 className="w-3 h-3 text-emerald-400" /> VERIFIED
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
+
+                    <div className="p-8">
+                      <span className={`inline-block px-3 py-1 rounded-lg text-[9px] font-black tracking-widest uppercase border mb-6 ${catClasses}`}>
+                        {category}
+                      </span>
+                      <h3 className="text-xl font-[900] text-white leading-[1.2] mb-4 group-hover:text-indigo-400 transition-colors font-syne">{item.workflowTitle}</h3>
+                      {item.caption && <p className="text-zinc-500 font-medium text-sm line-clamp-2 leading-relaxed mb-6 group-hover:text-zinc-400 transition-colors">{item.caption}</p>}
+                      
+                      <div className="pt-6 border-t border-white/5 flex items-center justify-between">
+                         <a 
+                          href={`/workflows/${item.workflowId}.json`} 
+                          download 
+                          onClick={(e) => e.stopPropagation()} 
+                          className="flex items-center gap-2 text-[10px] font-black text-zinc-600 hover:text-indigo-400 uppercase tracking-widest transition-colors"
+                        >
+                          <Download className="w-4 h-4" /> JSON ARCH
+                        </a>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </div>
         )}
       </div>

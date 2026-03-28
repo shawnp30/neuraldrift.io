@@ -8,7 +8,7 @@ import { LearningPreview } from "@/components/home/LearningPreview";
 import { PopularWorkflows } from "@/components/home/PopularWorkflows";
 import { HardwareComparison } from "@/components/home/HardwareComparison";
 import { SocialProof } from "@/components/home/SocialProof";
-import { FinalCTA } from "@/components/home/FinalCTA";
+import { DynamicCTA } from "@/components/DynamicCTA";
 
 export default function HomePage() {
   return (
@@ -37,7 +37,16 @@ export default function HomePage() {
       <SocialProof />
 
       {/* Phase 8: Final CTA */}
-      <FinalCTA />
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pb-32">
+        <DynamicCTA 
+          title="Master the Architecture of Generative Intelligence."
+          description="Don't just run models—understand them. Join the Neuraldrift Academy for premium video-led masterclasses on workflow stabilization and local training."
+          ctaText="ENTER THE ACADEMY"
+          ctaHref="/tutorials"
+          variant="indigo"
+          tag="// Academy Access"
+        />
+      </div>
     </div>
   );
 }
