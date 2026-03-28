@@ -24,9 +24,16 @@ export default function DatasetsHubPage() {
       });
   }, []);
 
-  const filteredDatasets = datasets.filter((d) =>
-    d.name.toLowerCase().includes(query.toLowerCase())
-  );
+  const filteredDatasets = datasets.filter((d: any) => {
+    const s = query.toLowerCase();
+    return (
+      s === "" ||
+      d.id?.toLowerCase().includes(s) ||
+      d.name?.toLowerCase().includes(s) ||
+      d.description?.toLowerCase().includes(s) ||
+      d.tags?.some((t: string) => t.toLowerCase().includes(s))
+    );
+  });
 
   return (
     <main className="min-h-screen bg-[#030712] pb-24 pt-32 text-slate-50">
