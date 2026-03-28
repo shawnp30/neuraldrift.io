@@ -1,4 +1,3 @@
-import { listDatasets } from "@huggingface/hub";
 import { NextResponse } from "next/server";
 
 const SEARCH_QUERIES = [
@@ -12,16 +11,33 @@ const SEARCH_QUERIES = [
   "image-generation",
 ];
 
+const HF_API = "https://huggingface.co/api/datasets";
+
+async function fetchDatasets(search: string): Promise<any[]> {
+  const url = `${HF_API}?search=${encodeURIComponent(search)}&sort=downloads&direction=-1&limit=30`;
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  return res.json();
+}
+
 export async function GET() {
   try {
+    const results = await Promise.all(SEARCH_QUERIES.map(fetchDatasets));
     const seen = new Set<string>();
     const datasets: any[] = [];
 
-    for (const search of SEARCH_QUERIES) {
-      for await (const dataset of listDatasets({ search, limit: 30 })) {
-        if (!seen.has(dataset.id)) {
-          seen.add(dataset.id);
-          datasets.push(dataset);
+    for (const batch of results) {
+      for (const ds of batch) {
+        if (!seen.has(ds.id)) {
+          seen.add(ds.id);
+          datasets.push({
+            id: ds.id,
+            description: ds.description,
+            tags: ds.tags,
+            downloads: ds.downloads,
+            likes: ds.likes,
+            lastModified: ds.lastModified,
+          });
         }
       }
     }
