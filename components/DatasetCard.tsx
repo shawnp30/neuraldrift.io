@@ -71,7 +71,7 @@ export function DatasetCard({ dataset }: DatasetCardProps) {
       <div className="flex flex-col gap-3">
         <div className="flex gap-2">
           <Link
-            href={`/datasets/viewer/${encodeURIComponent(dataset.id)}`}
+            href={`/datasets/viewer/${dataset.id}`}
             className="flex-1 flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold py-3.5 px-6 rounded-2xl transition-all"
           >
             <Eye size={14} className="text-accent" />

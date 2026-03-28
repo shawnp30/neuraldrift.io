@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import styles from "./LiveNewsTicker.module.css";
 
@@ -10,7 +10,7 @@ const statusItems = [
   "📦 6 LoRA Models — Ready to download",
   "⚙️ 50 ComfyUI Workflows — Plug & play",
   "📧 15+ Subscribers — Weekly drops",
-  "🎯 0 Ads — Just signal"
+  "🎯 0 Ads — Just signal",
 ];
 
 export default function StatusTicker() {
@@ -18,10 +18,15 @@ export default function StatusTicker() {
   const displayItems = [...statusItems, ...statusItems];
 
   return (
-    <div className={styles.siteTicker} style={{ background: '#0a0a0a', borderBottom: 'none' }}>
+    <div
+      className={styles.siteTicker}
+      style={{ background: "#0a0a0a", borderBottom: "none" }}
+    >
       <div className={styles.tickerTrack}>
         {displayItems.map((item, i) => (
-          <span key={i} style={{ color: '#818cf8', fontWeight: 500 }}>{item}</span>
+          <span key={i} style={{ color: "#818cf8", fontWeight: 500 }}>
+            {item}
+          </span>
         ))}
       </div>
     </div>
