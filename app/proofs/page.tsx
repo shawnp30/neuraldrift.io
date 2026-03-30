@@ -119,6 +119,19 @@ export default function ProofGalleryPage() {
           (i) => WORKFLOW_CATEGORIES[i.workflowId] === activeCategory
         );
 
+  const handleDownload = async (workflowId: string, workflowName: string) => {
+    const response = await fetch(`/workflows/${workflowId}.json`);
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${workflowName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="min-h-screen overflow-hidden bg-[#030712] pb-32 pt-32 font-sans text-slate-50">
       {/* ── LIGHTBOX ── */}
@@ -177,16 +190,15 @@ export default function ProofGalleryPage() {
                 </div>
 
                 <div className="flex flex-col gap-4 md:col-span-4">
-                  <a
-                    href={`/workflows/${lightbox.workflowId}.json`}
-                    download
+                  <button
+                    onClick={() => handleDownload(lightbox.workflowId, lightbox.workflowTitle)}
                     className="group flex flex-1 transform flex-col items-center justify-center gap-3 rounded-[2.5rem] bg-indigo-500 p-8 text-black shadow-[0_20px_40px_rgba(99,102,241,0.3)] transition-all hover:-translate-y-1 hover:bg-indigo-400"
                   >
                     <Download className="h-8 w-8 transition-transform group-hover:scale-110" />
                     <span className="text-sm font-black uppercase tracking-widest">
                       GET JSON
                     </span>
-                  </a>
+                  </button>
                   <button
                     onClick={() => setLightbox(null)}
                     className="rounded-[2.5rem] border border-white/10 bg-white/5 py-6 text-xs font-bold uppercase tracking-widest text-white transition-all hover:bg-white/10"
@@ -404,14 +416,12 @@ export default function ProofGalleryPage() {
                       )}
 
                       <div className="flex items-center justify-between border-t border-white/5 pt-6">
-                        <a
-                          href={`/workflows/${item.workflowId}.json`}
-                          download
-                          onClick={(e) => e.stopPropagation()}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleDownload(item.workflowId, item.workflowTitle); }}
                           className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-zinc-600 transition-colors hover:text-indigo-400"
                         >
                           <Download className="h-4 w-4" /> JSON ARCH
-                        </a>
+                        </button>
                       </div>
                     </div>
                   </motion.div>

@@ -49,6 +49,19 @@ export default function WorkflowExplorer({
     setExpandedFolders((prev) => ({ ...prev, [path]: !prev[path] }));
   };
 
+  const handleDownload = async (downloadUrl: string, filename: string) => {
+    const response = await fetch(downloadUrl);
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const selectedFile = useMemo(() => {
     const findFile = (nodes: WorkflowNode[]): WorkflowNode | null => {
       for (const node of nodes) {
@@ -145,16 +158,16 @@ export default function WorkflowExplorer({
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                  <a
-                    href={selectedFile.downloadUrl}
-                    download={selectedFile.name}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() =>
+                      selectedFile.downloadUrl &&
+                      handleDownload(selectedFile.downloadUrl, selectedFile.name)
+                    }
                     className="flex items-center gap-2 rounded-xl bg-accent px-6 py-3 font-bold text-black transition-all hover:bg-accent/90"
                   >
                     <Download className="h-4 w-4" />
                     Download JSON
-                  </a>
+                  </button>
                   {selectedFile.downloadUrl?.startsWith("http") && (
                     <a
                       href={`https://github.com/shawnp30/neuraldrift.io/blob/main/${selectedFile.path}`}
