@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { MOCK_WORKFLOWS } from "@/lib/data/mockWorkflows";
 import { DynamicCTA } from "@/components/DynamicCTA";
+import DownloadButton from "./DownloadButton";
 
 export const revalidate = 0;
 
@@ -172,13 +173,10 @@ export default async function WorkflowDetail({ params }: { params: { slug: strin
                   </div>
                 </div>
 
-                <a
-                  href={workflow.download_url}
-                  download
-                  className="w-full py-6 bg-indigo-500 hover:bg-indigo-400 text-black font-black rounded-2xl transition-all shadow-[0_15px_40px_rgba(99,102,241,0.3)] flex items-center justify-center gap-3 text-lg transform hover:-translate-y-1 active:scale-[0.98]"
-                >
-                  <Download className="w-6 h-6" /> DOWNLOAD JSON
-                </a>
+                <DownloadButton
+                  downloadUrl={workflow.download_url}
+                  workflowName={params.slug}
+                />
               </div>
             </div>
 
