@@ -58,7 +58,7 @@
       "properties": {
         "Node name for S&R": "ADE_AnimateDiffLoaderWithContext"
       },
-      "widgets_values": ["mm_sd_v15_v3.ckpt", 24, "v2", "flat", null]
+      "widgets_values": ["mm_sd_v15_v3.ckpt", "linear_quadratic"]
     },
     {
       "id": 2,
@@ -230,7 +230,7 @@
       "properties": {
         "Node name for S&R": "VHS_VideoCombine"
       },
-      "widgets_values": [8, 0, "mp4", "nh_animatediff_prod", true, false]
+      "widgets_values": [8, 0, "nh_animatediff_prod", "video/h264-mp4", false, true]
     },
     {
       "id": 11,

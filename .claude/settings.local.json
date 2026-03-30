@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -rn \"href.*workflows\\\\|download_url\" d:neuraldrift.ioneuraldrift.io/app --include=*.tsx)"
+    ]
+  }
+}
