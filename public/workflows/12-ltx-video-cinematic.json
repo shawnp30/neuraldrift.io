@@ -1,261 +1,161 @@
 {
-  "last_node_id": 9,
-  "last_link_id": 8,
+  "last_node_id": 8,
+  "last_link_id": 9,
   "nodes": [
     {
       "id": 1,
       "type": "LTXVLoader",
       "pos": [40, 40],
-      "size": [315, 82],
+      "size": [315, 98],
       "flags": {},
       "order": 0,
       "mode": 0,
       "inputs": [],
       "outputs": [
-        {
-          "name": "MODEL",
-          "type": "LTXV_MODEL",
-          "links": [1]
-        }
+        { "name": "MODEL", "type": "LTXV_MODEL", "links": [1] },
+        { "name": "VAE",   "type": "VAE",        "links": [2] },
+        { "name": "CLIP",  "type": "CLIP",       "links": [3, 4] }
       ],
-      "properties": {
-        "Node name for S&R": "LTXVLoader"
-      },
+      "properties": { "Node name for S&R": "LTXVLoader" },
       "widgets_values": ["ltx-video-2b-v0.9.5.safetensors"]
     },
     {
       "id": 2,
-      "type": "CheckpointLoaderSimple",
-      "pos": [40, 160],
-      "size": [315, 98],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": []
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [2, 3]
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": []
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CheckpointLoaderSimple"
-      },
-      "widgets_values": ["t5xxl_fp16.safetensors"]
-    },
-    {
-      "id": 3,
       "type": "CLIPTextEncode",
-      "pos": [400, 40],
+      "pos": [410, 40],
       "size": [422, 164],
       "flags": {},
       "order": 2,
       "mode": 0,
       "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 2
-        }
+        { "name": "clip", "type": "CLIP", "link": 3 }
       ],
       "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [4]
-        }
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [5] }
       ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
       "widgets_values": [
         "a high-speed car chase through rain-soaked city streets, GoPro mount low angle, motion blur, cinematic, photorealistic"
       ]
     },
     {
-      "id": 4,
+      "id": 3,
       "type": "CLIPTextEncode",
-      "pos": [400, 230],
+      "pos": [410, 230],
       "size": [422, 164],
       "flags": {},
       "order": 3,
       "mode": 0,
       "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 3
-        }
+        { "name": "clip", "type": "CLIP", "link": 4 }
       ],
       "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [5]
-        }
+        { "name": "CONDITIONING", "type": "CONDITIONING", "links": [6] }
       ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": ["blurry, low quality, watermark, static, no motion"]
+      "properties": { "Node name for S&R": "CLIPTextEncode" },
+      "widgets_values": ["blurry, low quality, watermark, static, no motion, text"]
     },
     {
-      "id": 5,
-      "type": "EmptyLatentImage",
-      "pos": [40, 310],
-      "size": [315, 98],
+      "id": 4,
+      "type": "EmptyLTXVLatentVideo",
+      "pos": [40, 200],
+      "size": [315, 114],
       "flags": {},
-      "order": 4,
+      "order": 1,
       "mode": 0,
       "inputs": [],
       "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [6]
-        }
+        { "name": "LATENT", "type": "LATENT", "links": [7] }
       ],
-      "properties": {
-        "Node name for S&R": "EmptyLatentImage"
-      },
-      "widgets_values": [768, 1344, 1]
+      "properties": { "Node name for S&R": "EmptyLTXVLatentVideo" },
+      "widgets_values": [768, 512, 97, 1]
+    },
+    {
+      "id": 5,
+      "type": "LTXVSampler",
+      "pos": [890, 40],
+      "size": [420, 260],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        { "name": "model",       "type": "LTXV_MODEL",  "link": 1 },
+        { "name": "positive",    "type": "CONDITIONING", "link": 5 },
+        { "name": "negative",    "type": "CONDITIONING", "link": 6 },
+        { "name": "latent_image","type": "LATENT",       "link": 7 }
+      ],
+      "outputs": [
+        { "name": "LATENT", "type": "LATENT", "links": [8] }
+      ],
+      "properties": { "Node name for S&R": "LTXVSampler" },
+      "widgets_values": [1337, 25, 3.5, "dpmpp_2m", "linear", 1.0, 0.0]
     },
     {
       "id": 6,
-      "type": "LTXVSampler",
-      "pos": [870, 40],
-      "size": [400, 300],
+      "type": "VAEDecodeVideo",
+      "pos": [1360, 40],
+      "size": [210, 82],
       "flags": {},
       "order": 5,
       "mode": 0,
       "inputs": [
-        {
-          "name": "model",
-          "type": "LTXV_MODEL",
-          "link": 1
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 4
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 5
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 6
-        }
+        { "name": "samples", "type": "LATENT", "link": 8 },
+        { "name": "vae",     "type": "VAE",    "link": 2 }
       ],
       "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [7]
-        }
+        { "name": "IMAGE", "type": "IMAGE", "links": [9] }
       ],
-      "properties": {
-        "Node name for S&R": "LTXVSampler"
-      },
-      "widgets_values": [1337, 25, 3.5, 1.2, 97, "dpmpp_2m", "linear", true]
+      "properties": { "Node name for S&R": "VAEDecodeVideo" },
+      "widgets_values": []
     },
     {
       "id": 7,
-      "type": "VAEDecodeVideo",
-      "pos": [1310, 40],
-      "size": [210, 46],
+      "type": "VHS_VideoCombine",
+      "pos": [1620, 40],
+      "size": [315, 210],
       "flags": {},
       "order": 6,
       "mode": 0,
       "inputs": [
-        {
-          "name": "samples",
-          "type": "LATENT",
-          "link": 7
-        }
+        { "name": "images", "type": "IMAGE", "link": 9 }
       ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [8]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "VAEDecodeVideo"
-      },
-      "widgets_values": []
+      "outputs": [],
+      "properties": { "Node name for S&R": "VHS_VideoCombine" },
+      "widgets_values": [24, 0, "nh_ltx_cinematic", "video/h264-mp4", false, true]
     },
     {
       "id": 8,
-      "type": "VHS_VideoCombine",
-      "pos": [1560, 40],
-      "size": [315, 200],
+      "type": "Note",
+      "pos": [40, 360],
+      "size": [560, 400],
       "flags": {},
       "order": 7,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 8
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "Node name for S&R": "VHS_VideoCombine"
-      },
-      "widgets_values": [24, 0, "mp4", "nh_ltx_cinematic", true, false]
-    },
-    {
-      "id": 9,
-      "type": "Note",
-      "pos": [40, 448],
-      "size": [540, 380],
-      "flags": {},
-      "order": 8,
       "mode": 0,
       "inputs": [],
       "outputs": [],
       "properties": {
-        "text": "neuraldrift -- 12-ltx-video-cinematic\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 1344\nFrames: 97 frames (~8s at 12fps)\nSteps: 25 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~47s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift"
+        "text": "neuraldrift -- 12-ltx-video-cinematic\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 512\nFrames: 97 (~8s at 12fps)\nSteps: 25 | CFG: 3.5 | Denoise: 1.0\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~45-60s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/Lightricks/LTX-Video\n\n-- Required Custom Nodes --\nComfyUI-LTXVideo (via ComfyUI Manager)\nComfyUI-VideoHelperSuite (via ComfyUI Manager)\n\nneuraldrift"
       },
       "widgets_values": [
-        "neuraldrift -- 12-ltx-video-cinematic\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 1344\nFrames: 97 frames (~8s at 12fps)\nSteps: 25 | CFG: 3.5\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~47s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/video_models/\nDownload: https://huggingface.co/Lightricks/LTX-Video\nAlso needs: None for this version\nCustom nodes: ComfyUI-LTXVideo + ComfyUI-VideoHelperSuite\n\nneuraldrift"
+        "neuraldrift -- 12-ltx-video-cinematic\n\nHardware: 16GB -- Cinematic Quality\nResolution: 768 x 512\nFrames: 97 (~8s at 12fps)\nSteps: 25 | CFG: 3.5 | Denoise: 1.0\nSampler: dpmpp_2m | Scheduler: linear\nLaunch flags: --gpu-only --highvram\nEst. time: ~45-60s per clip\n\n-- Required Models --\nModel: ltx-video-2b-v0.9.5.safetensors\nSize: 9.7GB\nPlace in: ComfyUI/models/checkpoints/\nDownload: https://huggingface.co/Lightricks/LTX-Video\n\n-- Required Custom Nodes --\nComfyUI-LTXVideo (via ComfyUI Manager)\nComfyUI-VideoHelperSuite (via ComfyUI Manager)\n\nneuraldrift"
       ]
     }
   ],
   "links": [
-    [1, 1, 0, 6, 0, "LTXV_MODEL"],
-    [2, 2, 1, 3, 0, "CLIP"],
-    [3, 2, 1, 4, 0, "CLIP"],
-    [4, 3, 0, 6, 1, "CONDITIONING"],
-    [5, 4, 0, 6, 2, "CONDITIONING"],
-    [6, 5, 0, 6, 3, "LATENT"],
-    [7, 6, 0, 7, 0, "LATENT"],
-    [8, 7, 0, 8, 0, "IMAGE"]
+    [1, 1, 0, 5, 0, "LTXV_MODEL"],
+    [2, 1, 1, 6, 1, "VAE"],
+    [3, 1, 2, 2, 0, "CLIP"],
+    [4, 1, 2, 3, 0, "CLIP"],
+    [5, 2, 0, 5, 1, "CONDITIONING"],
+    [6, 3, 0, 5, 2, "CONDITIONING"],
+    [7, 4, 0, 5, 3, "LATENT"],
+    [8, 5, 0, 6, 0, "LATENT"],
+    [9, 6, 0, 7, 0, "IMAGE"]
   ],
   "groups": [],
   "config": {},
   "extra": {
-    "ds": {
-      "scale": 0.7,
-      "offset": [0, 0]
-    }
+    "ds": { "scale": 0.7, "offset": [0, 0] }
   },
   "version": 0.4
 }
