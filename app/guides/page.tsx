@@ -43,7 +43,8 @@ const GUIDES = [
 
   { slug: "ltx-video-cinematic-action", difficulty: "Advanced" as Difficulty, title: "LTX Video: Cinematic Action", desc: "Build chase scenes with consistent motion and camera lock.", time: "35 min", tag: "Video Gen", image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop" },
   { slug: "why-choose-desktop", difficulty: "Advanced" as Difficulty, title: "Why Choose Desktop Install", desc: "Deep dive into the power-user installation with full system access.", time: "7 min", tag: "Guide", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop" },
-  { slug: "ai-workflow-setup-guide", difficulty: "Advanced" as Difficulty, title: "AI Workflow Setup Guide", desc: "Build scalable, modular AI architectures in ComfyUI for production systems.", time: "22 min", tag: "Workflows", image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop" }
+  { slug: "ai-workflow-setup-guide", difficulty: "Advanced" as Difficulty, title: "AI Workflow Setup Guide", desc: "Build scalable, modular AI architectures in ComfyUI for production systems.", time: "22 min", tag: "Workflows", image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop" },
+  { slug: "ace-step-1-5-comfyui", difficulty: "Intermediate" as Difficulty, title: "Audio Ace: ComfyUI Integration", desc: "Master the bridge between Audio Ace and ComfyUI for seamless AV generation.", time: "15 min", tag: "Audio Gen", image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop" }
 ];
 
 const CATEGORIES: Difficulty[] = ["Beginner", "Intermediate", "Advanced"];
