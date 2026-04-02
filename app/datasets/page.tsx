@@ -25,13 +25,14 @@ export default function DatasetsHubPage() {
   }, []);
 
   const filteredDatasets = datasets.filter((d: any) => {
+    if (!d) return false;
     const s = query.toLowerCase();
     return (
       s === "" ||
-      d.id?.toLowerCase().includes(s) ||
-      d.name?.toLowerCase().includes(s) ||
-      d.description?.toLowerCase().includes(s) ||
-      d.tags?.some((t: string) => t.toLowerCase().includes(s))
+      (typeof d.id === "string" && d.id.toLowerCase().includes(s)) ||
+      (typeof d.name === "string" && d.name.toLowerCase().includes(s)) ||
+      (typeof d.description === "string" && d.description.toLowerCase().includes(s)) ||
+      (Array.isArray(d.tags) && d.tags.some((t: any) => typeof t === "string" && t.toLowerCase().includes(s)))
     );
   });
 
