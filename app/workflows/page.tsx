@@ -1,7 +1,13 @@
+import { Metadata } from "next";
 import { getWorkflowTree } from "@/lib/github";
 import WorkflowExplorer from "@/components/workflows/WorkflowExplorer";
 import EngineRoomAssistant from "@/components/workflows/EngineRoomAssistant";
 import { DynamicCTA } from "@/components/DynamicCTA";
+
+export const metadata: Metadata = {
+  title: "ComfyUI Workflows | NeuralDrift",
+  description: "Browse 50+ free ComfyUI workflows for Stable Diffusion, Flux, LTX Video, ACE-Step and more",
+};
 
 // Revalidate every hour to stay within GitHub API rate limits
 export const revalidate = 3600;
