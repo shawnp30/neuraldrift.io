@@ -23,12 +23,12 @@ interface DatasetProps {
 }
 
 export function DatasetHubCard({ dataset }: { dataset: DatasetProps }) {
-  const author = dataset.name.includes("/")
+  const author = (dataset.name && dataset.name.includes("/"))
     ? dataset.name.split("/")[0]
     : "Official";
-  const repoName = dataset.name.includes("/")
+  const repoName = (dataset.name && dataset.name.includes("/"))
     ? dataset.name.split("/").pop()
-    : dataset.name;
+    : dataset.name || "Unknown Dataset";
 
   return (
     <div className="group flex items-center gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-all hover:border-accent/30">
