@@ -252,7 +252,7 @@ export default function VRAMCalculatorPage() {
         </div>
       </div>
 
-      <style jsx global>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Syne:wght@800;Black&display=swap');
         :root {
           --font-fira: 'Fira Code', monospace;
@@ -261,7 +261,7 @@ export default function VRAMCalculatorPage() {
         body { font-family: var(--font-fira); }
         .font-syne { font-family: var(--font-syne) !important; }
         .font-mono { font-family: var(--font-fira) !important; }
-      `}</style>
+      `}} />
     </main>
   );
 }

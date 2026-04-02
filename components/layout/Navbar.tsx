@@ -14,8 +14,8 @@ const NAV = [
     children: [
       { name: "Academy", href: "/tutorials", desc: "Video masterclasses" },
       { name: "Guides", href: "/guides", desc: "Written technical docs" },
-      { name: "LTX Video 2.3", href: "/guides/ltx-video-mastery", desc: "SOTA Video generation", badge: "NEW" },
-      { name: "ACE-Step 1.5", href: "/guides/ace-step-audio", desc: "Advanced audio synthesis", badge: "NEW" },
+      { name: "LTX Video 2.3", href: "/guides/ltx-video-cinematic-action", desc: "SOTA Video generation", badge: "NEW" },
+      { name: "ACE-Step 1.5", href: "/guides/ace-step-1-5-comfyui", desc: "Advanced audio synthesis", badge: "NEW" },
       { name: "GPU Guide", href: "/gpu-guide", desc: "What your card can run" },
     ],
   },
@@ -38,7 +38,7 @@ const NAV = [
     label: "Tools",
     children: [
       { name: "VRAM Calculator", href: "/tools/vram-calculator", desc: "Can my GPU run it?" },
-      { name: "Benchmark Lookup", href: "/benchmarks", desc: "Compare GPU performance" },
+      { name: "Benchmark Lookup", href: "/tools/benchmark-lookup", desc: "Compare GPU performance" },
       { name: "Caption Generator", href: "/tools/caption-generator", desc: "Auto-caption your images" },
     ],
   },

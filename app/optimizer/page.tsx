@@ -11,10 +11,10 @@ import { DynamicCTA } from "@/components/DynamicCTA";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 const FRONTEND_WORKFLOWS = new Set([
-  "ltx-cinematic-chase",
-  "flux-portrait-lora",
-  "sdxl-concept-batch",
-  "animatediff-character-loop",
+  "13-ltx-video-action-chase",
+  "01-flux-dev-t2i",
+  "36-sdxl-batch-4",
+  "15-animatediff-simple",
 ]);
 
 interface WorkflowScore {

@@ -282,7 +282,6 @@ export const WORKFLOWS: WorkflowEntry[] = [
     resolution: "512×512",
     tags: ["AnimateDiff", "loop", "SD1.5", "8GB", "beginner"],
     featured: true,
-    tutorialSlug: "animatediff-character-consistency",
   },
   {
     id: "17-animatediff-loop",
