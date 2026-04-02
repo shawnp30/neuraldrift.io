@@ -1,506 +1,267 @@
 "use client";
+
 import { useState, useMemo } from "react";
-import Navbar from "@/components/layout/Navbar";
+import { 
+  Cpu, 
+  Database, 
+  CheckCircle2, 
+  AlertTriangle, 
+  XCircle, 
+  ExternalLink,
+  Zap,
+  Info
+} from "lucide-react";
 import Link from "next/link";
 
-// ── Data ────────────────────────────────────────────────────────────────────
+// --- DATA DEFINITIONS ---
 
-const MODELS = [
-  { id: "flux-dev-fp16", name: "FLUX Dev FP16", base: 24.0, type: "Image" },
-  { id: "flux-dev-fp8", name: "FLUX Dev FP8", base: 12.1, type: "Image" },
-  { id: "flux-dev-gguf-q4", name: "FLUX Dev GGUF Q4", base: 7.2, type: "Image" },
-  { id: "flux-schnell-fp8", name: "FLUX Schnell FP8", base: 12.1, type: "Image" },
-  { id: "flux-schnell-gguf", name: "FLUX Schnell GGUF Q4", base: 7.0, type: "Image" },
-  { id: "sdxl-fp16", name: "SDXL 1.0 FP16", base: 6.5, type: "Image" },
-  { id: "sdxl-fp8", name: "SDXL 1.0 FP8", base: 4.2, type: "Image" },
-  { id: "sd15-fp16", name: "SD 1.5 FP16", base: 2.1, type: "Image" },
-  { id: "sd15-fp8", name: "SD 1.5 FP8", base: 1.4, type: "Image" },
-  { id: "ltx-video", name: "LTX Video 2.3", base: 8.4, type: "Video" },
-  { id: "ltx-video-gguf", name: "LTX Video GGUF Q4", base: 5.1, type: "Video" },
-  { id: "animatediff-sdxl", name: "AnimateDiff + SDXL", base: 9.2, type: "Animation" },
-  { id: "animatediff-sd15", name: "AnimateDiff + SD1.5", base: 4.8, type: "Animation" },
-  { id: "wan-21-14b", name: "Wan 2.1 14B", base: 18.5, type: "Video" },
-  { id: "hunyuan-video", name: "HunyuanVideo", base: 22.0, type: "Video" },
-];
-
-const RESOLUTIONS = [
-  { id: "512", label: "512×512", mult: 0.7 },
-  { id: "768", label: "768×512", mult: 0.85 },
-  { id: "1024", label: "1024×1024", mult: 1.0 },
-  { id: "1280", label: "1280×720", mult: 1.15 },
-  { id: "1536", label: "1536×1536", mult: 1.45 },
-  { id: "2048", label: "2048×2048", mult: 2.1 },
-];
-
-const GPUS = [
-  // Your rigs
-  { name: "RTX 5080", vram: 16, yours: true },
-  { name: "RTX 3080 16GB", vram: 16, yours: true },
-  { name: "GTX 1660 Ti", vram: 6, yours: true },
-  // RTX 50 series
-  { name: "RTX 5090", vram: 32, yours: false },
-  { name: "RTX 5070 Ti", vram: 16, yours: false },
-  { name: "RTX 5070", vram: 12, yours: false },
-  // RTX 40 series
-  { name: "RTX 4090", vram: 24, yours: false },
-  { name: "RTX 4080 Super", vram: 16, yours: false },
-  { name: "RTX 4080", vram: 16, yours: false },
-  { name: "RTX 4070 Ti Super", vram: 16, yours: false },
-  { name: "RTX 4070 Ti", vram: 12, yours: false },
-  { name: "RTX 4070 Super", vram: 12, yours: false },
-  { name: "RTX 4070", vram: 12, yours: false },
-  { name: "RTX 4060 Ti 16GB", vram: 16, yours: false },
-  { name: "RTX 4060 Ti", vram: 8, yours: false },
-  { name: "RTX 4060", vram: 8, yours: false },
-  // RTX 30 series
-  { name: "RTX 3090 Ti", vram: 24, yours: false },
-  { name: "RTX 3090", vram: 24, yours: false },
-  { name: "RTX 3080 Ti", vram: 12, yours: false },
-  { name: "RTX 3080 10GB", vram: 10, yours: false },
-  { name: "RTX 3070 Ti", vram: 8, yours: false },
-  { name: "RTX 3070", vram: 8, yours: false },
-  { name: "RTX 3060 Ti", vram: 8, yours: false },
-  { name: "RTX 3060", vram: 12, yours: false },
-  { name: "RTX 3060M", vram: 6, yours: false },
-  // RTX 20 series
-  { name: "RTX 2080 Ti", vram: 11, yours: false },
-  { name: "RTX 2080 Super", vram: 8, yours: false },
-  { name: "RTX 2070 Super", vram: 8, yours: false },
-  { name: "GTX 1080 Ti", vram: 11, yours: false },
-];
-
-const BUILD_RECS = [
-  {
-    tier: "Budget Builder",
-    range: "Under 12GB VRAM",
-    gpu: "RTX 3060 12GB or RTX 4060 Ti 8GB",
-    cpu: "Ryzen 5 7600X or Intel i5-13600K",
-    ram: "32GB DDR5",
-    notes: "Good for SD1.5, SDXL at reduced resolution, AnimateDiff. Struggles with FLUX.",
-    maxVram: 12,
-    color: "border-[#a3e635]/20 bg-[#a3e635]/3",
-    labelColor: "text-[#a3e635]",
-  },
-  {
-    tier: "Mid-Range Rig",
-    range: "12–16GB VRAM",
-    gpu: "RTX 4070 Ti / RTX 3080 16GB / RTX 4080",
-    cpu: "Ryzen 7 7700X or Intel i7-13700K",
-    ram: "64GB DDR5",
-    notes: "Handles FLUX FP8, SDXL full resolution, LTX Video. Sweet spot for most workflows.",
-    maxVram: 16,
-    color: "border-[#f97316]/20 bg-[#f97316]/3",
-    labelColor: "text-[#f97316]",
-  },
-  {
-    tier: "Pro Build",
-    range: "24GB VRAM",
-    gpu: "RTX 4090 or RTX 3090",
-    cpu: "Ryzen 9 7900X or Intel i9-13900K",
-    ram: "64GB DDR5",
-    notes: "FLUX FP16, HunyuanVideo, Wan 2.1 14B, large batch generation. No compromises.",
-    maxVram: 24,
-    color: "border-accent/20 bg-accent/3",
-    labelColor: "text-accent",
-  },
-  {
-    tier: "Beast Mode",
-    range: "32GB+ VRAM",
-    gpu: "RTX 5090 or dual GPU setup",
-    cpu: "Ryzen 9 9950X3D (your chip!)",
-    ram: "128GB DDR5",
-    notes: "Everything runs. Multi-model pipelines, full-res video, massive batches. Future-proof.",
-    maxVram: 99,
-    color: "border-[#a78bfa]/20 bg-[#a78bfa]/3",
-    labelColor: "text-[#a78bfa]",
-  },
-];
-
-// ── VRAM estimation ──────────────────────────────────────────────────────────
-
-function estimateVRAM(
-  modelId: string,
-  batchSize: number,
-  resolutionMult: number,
-  loraCount: number,
-  loraStrength: number
-): number {
-  const model = MODELS.find((m) => m.id === modelId);
-  if (!model) return 0;
-
-  let vram = model.base;
-
-  // Resolution scaling (non-linear)
-  vram *= resolutionMult;
-
-  // Batch size scaling (sub-linear — shared weights)
-  vram += (batchSize - 1) * model.base * 0.35;
-
-  // LoRA overhead
-  if (loraCount > 0) {
-    const loraOverhead = loraCount * 0.4 * loraStrength;
-    vram += loraOverhead;
-  }
-
-  // Overhead buffer (activations, gradients, OS)
-  vram *= 1.12;
-
-  return Math.round(vram * 10) / 10;
+interface Model {
+  id: string;
+  name: string;
+  vramNeeded: number; // base GB in standard precision (FP8/4-bit usually)
+  type: "image" | "video" | "audio" | "llm";
+  desc: string;
 }
 
-function getLaunchFlags(vram: number, availableVRAM: number): string[] {
-  const flags: string[] = [];
-  if (vram > availableVRAM * 0.9) flags.push("--lowvram");
-  if (vram > availableVRAM * 1.1) flags.push("--cpu-vae");
-  if (vram < availableVRAM * 0.7) flags.push("--highvram");
-  if (vram > availableVRAM) flags.push("--disable-smart-memory");
-  if (flags.length === 0) flags.push("--gpu-only");
-  return flags;
+const MODELS: Model[] = [
+  { id: "flux-dev", name: "Flux Dev", vramNeeded: 12.1, type: "image", desc: "SOTA Open Image Model" },
+  { id: "flux-schnell", name: "Flux Schnell", vramNeeded: 6.8, type: "image", desc: "4-step Distilled Image Gen" },
+  { id: "sdxl", name: "SDXL 1.0", vramNeeded: 6.5, type: "image", desc: "Standard High Res Diffusion" },
+  { id: "sdxl-turbo", name: "SDXL Turbo", vramNeeded: 4.2, type: "image", desc: "Single-step Real-time Gen" },
+  { id: "ltx-2.3-22b", name: "LTX Video 2.3 22B", vramNeeded: 24.5, type: "video", desc: "High-Fidelity Video Gen" },
+  { id: "ltx-2.3-2b", name: "LTX Video 2.3 2B", vramNeeded: 5.4, type: "video", desc: "Fast Mobile-ready Video" },
+  { id: "ace-step-1.5", name: "ACE-Step 1.5", vramNeeded: 8.2, type: "audio", desc: "Audio Synthesis Foundation" },
+  { id: "wan-14b", name: "Wan Video 14B", vramNeeded: 16.5, type: "video", desc: "Video-First Latent Diffusion" },
+  { id: "animatediff", name: "AnimateDiff", vramNeeded: 9.5, type: "video", desc: "SD1.5 Motion Module Extension" },
+  { id: "llama-3.1-8b", name: "Llama 3.1 8B (4-bit)", vramNeeded: 5.5, type: "llm", desc: "Efficient Tech Assistant" },
+  { id: "llama-3.3-70b", name: "Llama 3.3 70B (4-bit)", vramNeeded: 42.0, type: "llm", desc: "SOTA Open Weights Language" },
+  { id: "qwen-2.5-32b", name: "Qwen 2.5 Coder 32B", vramNeeded: 19.5, type: "llm", desc: "Advanced Coding Assistant" },
+  { id: "deepseek-r1-32b", name: "DeepSeek R1 32B", vramNeeded: 19.5, type: "llm", desc: "Reasoning-Optimized LLM" },
+];
+
+interface GPU {
+  id: string;
+  name: string;
+  vram: number; // GB
+  series: string;
 }
 
-function getStatus(vram: number, gpuVRAM: number): "green" | "yellow" | "red" {
-  if (vram <= gpuVRAM * 0.85) return "green";
-  if (vram <= gpuVRAM * 1.05) return "yellow";
-  return "red";
-}
+const GPUS: GPU[] = [
+  { id: "5090", name: "RTX 5090", vram: 32, series: "50 Series" },
+  { id: "5080", name: "RTX 5080", vram: 16, series: "50 Series" },
+  { id: "4090", name: "RTX 4090", vram: 24, series: "40 Series" },
+  { id: "4080", name: "RTX 4080 16GB", vram: 16, series: "40 Series" },
+  { id: "4070-ti", name: "RTX 4070 Ti 16GB", vram: 16, series: "40 Series" },
+  { id: "4070-12", name: "RTX 4070 12GB", vram: 12, series: "40 Series" },
+  { id: "4060-ti", name: "RTX 4060 Ti 16GB", vram: 16, series: "40 Series" },
+  { id: "4060", name: "RTX 4060 8GB", vram: 8, series: "40 Series" },
+  { id: "3090", name: "RTX 3090 24GB", vram: 24, series: "30 Series" },
+  { id: "3080-16", name: "RTX 3080 16GB", vram: 16, series: "30 Series" },
+  { id: "3080-10", name: "RTX 3080 10GB", vram: 10, series: "30 Series" },
+  { id: "a100-40", name: "A100 40GB", vram: 40, series: "Data Center" },
+  { id: "a100-80", name: "A100 80GB", vram: 80, series: "Data Center" },
+];
 
-// ── Component ────────────────────────────────────────────────────────────────
+// --- COMPONENT ---
 
 export default function VRAMCalculatorPage() {
-  const [modelId, setModelId] = useState("flux-dev-fp8");
-  const [batchSize, setBatchSize] = useState(1);
-  const [resolutionId, setResolutionId] = useState("1024");
-  const [loraCount, setLoraCount] = useState(0);
-  const [loraStrength, setLoraStrength] = useState(0.8);
+  const [modelId, setModelId] = useState<string>(MODELS[0].id);
+  const [gpuId, setGpuId] = useState<string>(GPUS[2].id);
 
-  const resolution = RESOLUTIONS.find((r) => r.id === resolutionId)!;
-  const estimatedVRAM = useMemo(
-    () => estimateVRAM(modelId, batchSize, resolution.mult, loraCount, loraStrength),
-    [modelId, batchSize, resolutionId, loraCount, loraStrength, resolution.mult]
-  );
+  const { model, gpu, result } = useMemo(() => {
+    const m = MODELS.find((x) => x.id === modelId)!;
+    const g = GPUS.find((x) => x.id === gpuId)!;
 
-  const selectedModel = MODELS.find((m) => m.id === modelId)!;
-  const overBudgetGPUs = GPUS.filter((g) => estimatedVRAM > g.vram);
-  const recBuild = BUILD_RECS.find((b) => estimatedVRAM <= b.maxVram) || BUILD_RECS[BUILD_RECS.length - 1];
+    // Logic for Status
+    let status: "green" | "yellow" | "red" = "green";
+    if (m.vramNeeded > g.vram) status = "red";
+    else if (m.vramNeeded > g.vram * 0.85) status = "yellow";
 
-  const yourRigs = GPUS.filter((g) => g.yours);
-  const otherGPUs = GPUS.filter((g) => !g.yours);
+    // Recommended Settings & Tips
+    let settings = { res: "1024x1024", steps: "20-30", batch: "1", flags: "--gpu-only" };
+    let tip = "Standard configuration recommended for stable results.";
+
+    if (m.type === "llm") {
+      settings = { res: "N/A (Context 4k)", steps: "Token limit: 128k", batch: "1", flags: "--4-bit --flash-attention" };
+    } else if (m.type === "video") {
+      settings = { res: "720p", steps: "30-50", batch: "1 (Sequential)", flags: "--low-memory --temp-consistent" };
+    }
+
+    if (status === "yellow") {
+      settings.flags = "--low-vram --cpu-vae";
+      tip = "Close background apps or Chrome to prevent OOM errors during VAE decode.";
+    } else if (status === "red") {
+      settings.flags = "--medvram-v2 (Slow)";
+      tip = "You are over the limit. Consider a GGUF/Quantized version of this model.";
+    }
+
+    // Specific tips
+    if (m.id === "flux-dev" && g.vram >= 24) {
+      tip = "You have enough VRAM for FP16 weights. Use them for higher fidelity.";
+    } else if (m.id.startsWith("ltx") && g.vram < 24) {
+      tip = "LTX loves memory. Use Tiled VAE Decoding to avoid memory spikes.";
+    }
+
+    return { 
+      model: m, 
+      gpu: g, 
+      result: { status, settings, tip } 
+    };
+  }, [modelId, gpuId]);
 
   return (
-    <>
-
-      <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
-        {/* Header */}
+    <main className="min-h-screen bg-[#0a0a0b] text-[#e8e8f0] pt-32 pb-24 px-6 md:px-12 selection:bg-[#7c6af7]/30">
+      <div className="max-w-4xl mx-auto">
         <div className="mb-12">
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Tools"}</p>
-          <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">
-            VRAM Calculator
+          <p className="font-mono text-xs text-[#7c6af7] tracking-[0.3em] uppercase mb-4">{"// Neuro-Hardware Diagnostics"}</p>
+          <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-6">
+            VRAM <span className="text-[#22d3ee]">Calculator</span>
           </h1>
-          <p className="text-muted max-w-xl leading-relaxed">
-            Estimate exactly how much VRAM your AI workflow needs. Adjust model, resolution, batch size, and LoRA settings to see real-time estimates.
+          <p className="text-[#8888a0] max-w-xl text-lg leading-relaxed">
+            Determine hardware compatibility for local AI workloads. Instantly calculates memory footprint across architectures.
           </p>
         </div>
 
-        <div className="grid grid-cols-[420px_1fr] gap-8 items-start">
-
-          {/* ── LEFT: Controls ── */}
-          <div className="space-y-5">
-
-            {/* Model */}
-            <div className="bg-card border border-border rounded-xl p-6">
-              <label className="font-mono text-xs text-accent tracking-widest uppercase block mb-4">
-                01 — Select Model
-              </label>
-              <div className="space-y-1">
-                {["Image", "Video", "Animation"].map((type) => (
-                  <div key={type}>
-                    <p className="font-mono text-xs text-muted tracking-widest uppercase px-2 py-2">{type}</p>
-                    {MODELS.filter((m) => m.type === type).map((m) => (
-                      <button
-                        key={m.id}
-                        onClick={() => setModelId(m.id)}
-                        className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors flex items-center justify-between ${
-                          modelId === m.id
-                            ? "bg-accent/10 text-accent border border-accent/20"
-                            : "text-muted hover:text-text hover:bg-white/4"
-                        }`}
-                      >
-                        <span>{m.name}</span>
-                        <span className="font-mono text-xs opacity-60">{m.base}GB base</span>
-                      </button>
-                    ))}
-                  </div>
-                ))}
-              </div>
+        {/* INPUTS GRID */}
+        <div className="grid md:grid-cols-2 gap-6 mb-10">
+          {/* Model Select */}
+          <div className="bg-[#111113] border border-[#2a2a30] p-6 rounded-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <Zap className="w-12 h-12 text-[#22d3ee]" />
             </div>
-
-            {/* Resolution */}
-            <div className="bg-card border border-border rounded-xl p-6">
-              <label className="font-mono text-xs text-accent tracking-widest uppercase block mb-4">
-                02 — Resolution
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {RESOLUTIONS.map((r) => (
-                  <button
-                    key={r.id}
-                    onClick={() => setResolutionId(r.id)}
-                    className={`py-2.5 rounded-lg font-mono text-xs transition-colors ${
-                      resolutionId === r.id
-                        ? "bg-accent/10 text-accent border border-accent/20"
-                        : "bg-surface border border-border text-muted hover:text-text"
-                    }`}
-                  >
-                    {r.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Batch size */}
-            <div className="bg-card border border-border rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <label className="font-mono text-xs text-accent tracking-widest uppercase">
-                  03 — Batch Size
-                </label>
-                <span className="font-syne text-2xl font-black text-white">{batchSize}</span>
-              </div>
-              <input
-                type="range"
-                min={1}
-                max={8}
-                step={1}
-                value={batchSize}
-                onChange={(e) => setBatchSize(Number(e.target.value))}
-                className="w-full accent-[#00e5ff]"
-              />
-              <div className="flex justify-between font-mono text-xs text-muted mt-1">
-                <span>1</span><span>4</span><span>8</span>
-              </div>
-            </div>
-
-            {/* LoRA */}
-            <div className="bg-card border border-border rounded-xl p-6">
-              <label className="font-mono text-xs text-accent tracking-widest uppercase block mb-4">
-                04 — LoRA Injection
-              </label>
-              <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span className="font-mono text-xs text-muted">LoRA Count</span>
-                    <span className="font-syne font-black text-white">{loraCount}</span>
-                  </div>
-                  <input
-                    type="range"
-                    min={0}
-                    max={5}
-                    step={1}
-                    value={loraCount}
-                    onChange={(e) => setLoraCount(Number(e.target.value))}
-                    className="w-full accent-[#00e5ff]"
-                  />
-                  <div className="flex justify-between font-mono text-xs text-muted mt-1">
-                    <span>0</span><span>5</span>
-                  </div>
-                </div>
-                {loraCount > 0 && (
-                  <div>
-                    <div className="flex justify-between mb-2">
-                      <span className="font-mono text-xs text-muted">Avg Strength</span>
-                      <span className="font-syne font-black text-white">{loraStrength.toFixed(1)}</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={0.1}
-                      max={1.0}
-                      step={0.1}
-                      value={loraStrength}
-                      onChange={(e) => setLoraStrength(Number(e.target.value))}
-                      className="w-full accent-[#00e5ff]"
-                    />
-                    <div className="flex justify-between font-mono text-xs text-muted mt-1">
-                      <span>0.1</span><span>1.0</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+            <label className="block font-mono text-[10px] uppercase tracking-[0.2em] text-[#8888a0] mb-3">Model Architecture</label>
+            <select 
+              value={modelId}
+              onChange={(e) => setModelId(e.target.value)}
+              className="w-full bg-[#0a0a0b] border border-[#3f3f46] rounded-xl px-4 py-3 outline-none focus:border-[#7c6af7] transition-all font-mono text-sm"
+            >
+              {MODELS.map(m => (
+                <option key={m.id} value={m.id}>{m.name}</option>
+              ))}
+            </select>
+            <p className="mt-3 font-mono text-[10px] text-zinc-600 uppercase tracking-widest">{model.desc}</p>
           </div>
 
-          {/* ── RIGHT: Results ── */}
-          <div className="space-y-5">
-
-            {/* VRAM estimate hero */}
-            <div className="bg-card border border-border rounded-xl p-8 relative overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-accent to-transparent" />
-              <p className="font-mono text-xs text-muted tracking-widest uppercase mb-2">Estimated VRAM Required</p>
-              <div className="flex items-end gap-3 mb-1">
-                <span className="font-syne text-7xl font-black text-white tracking-tight leading-none">
-                  {estimatedVRAM}
-                </span>
-                <span className="font-syne text-3xl font-black text-muted mb-2">GB</span>
-              </div>
-              <p className="font-mono text-xs text-muted mt-2 tracking-wide">
-                {selectedModel.name} · {resolution.label} · Batch {batchSize}
-                {loraCount > 0 ? ` · ${loraCount} LoRA${loraCount > 1 ? "s" : ""} @ ${loraStrength}` : ""}
-              </p>
-
-              {/* Bar */}
-              <div className="mt-6">
-                <div className="h-2 bg-border rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{
-                      width: `${Math.min((estimatedVRAM / 32) * 100, 100)}%`,
-                      background: estimatedVRAM > 24
-                        ? "#ef4444"
-                        : estimatedVRAM > 16
-                        ? "#f97316"
-                        : "#00e5ff",
-                    }}
-                  />
-                </div>
-                <div className="flex justify-between font-mono text-xs text-muted mt-1">
-                  <span>0GB</span><span>8GB</span><span>16GB</span><span>24GB</span><span>32GB</span>
-                </div>
-              </div>
+          {/* GPU Select */}
+          <div className="bg-[#111113] border border-[#2a2a30] p-6 rounded-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <Cpu className="w-12 h-12 text-[#7c6af7]" />
             </div>
-
-            {/* Your Rigs */}
-            <div className="bg-card border border-border rounded-xl p-6">
-              <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">Your Rigs</p>
-              <div className="space-y-3">
-                {yourRigs.map((gpu) => {
-                  const status = getStatus(estimatedVRAM, gpu.vram);
-                  const flags = getLaunchFlags(estimatedVRAM, gpu.vram);
-                  return (
-                    <div key={gpu.name} className={`rounded-lg p-4 border ${
-                      status === "green" ? "border-[#10b981]/20 bg-[#10b981]/5" :
-                      status === "yellow" ? "border-[#f97316]/20 bg-[#f97316]/5" :
-                      "border-[#ef4444]/20 bg-[#ef4444]/5"
-                    }`}>
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-2">
-                          <span className={`w-2 h-2 rounded-full ${
-                            status === "green" ? "bg-[#10b981]" :
-                            status === "yellow" ? "bg-[#f97316]" : "bg-[#ef4444]"
-                          }`} />
-                          <span className="font-syne text-sm font-bold text-white">{gpu.name}</span>
-                          <span className="font-mono text-xs text-muted">{gpu.vram}GB VRAM</span>
-                        </div>
-                        <span className={`font-mono text-xs tracking-widest uppercase px-2 py-0.5 rounded ${
-                          status === "green" ? "bg-[#10b981]/10 text-[#10b981]" :
-                          status === "yellow" ? "bg-[#f97316]/10 text-[#f97316]" :
-                          "bg-[#ef4444]/10 text-[#ef4444]"
-                        }`}>
-                          {status === "green" ? "✓ Runs" : status === "yellow" ? "⚠ Tight" : "✗ OOM"}
-                        </span>
-                      </div>
-                      <div className="flex gap-2 flex-wrap">
-                        {flags.map((flag) => (
-                          <span key={flag} className="font-mono text-xs bg-black/30 text-accent px-2 py-0.5 rounded tracking-wider">
-                            {flag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Full GPU compatibility */}
-            <div className="bg-card border border-border rounded-xl p-6">
-              <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">Full GPU Compatibility</p>
-              <div className="grid grid-cols-2 gap-1.5">
-                {otherGPUs.map((gpu) => {
-                  const status = getStatus(estimatedVRAM, gpu.vram);
-                  return (
-                    <div key={gpu.name} className="flex items-center justify-between px-3 py-2 rounded bg-surface border border-border">
-                      <span className="font-mono text-xs text-muted">{gpu.name}</span>
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs text-muted">{gpu.vram}GB</span>
-                        <span className={`w-1.5 h-1.5 rounded-full ${
-                          status === "green" ? "bg-[#10b981]" :
-                          status === "yellow" ? "bg-[#f97316]" : "bg-[#ef4444]"
-                        }`} />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="flex gap-4 mt-4 pt-4 border-t border-border font-mono text-xs text-muted">
-                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#10b981]" />Runs fine</span>
-                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#f97316]" />Tight fit</span>
-                <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#ef4444]" />OOM risk</span>
-              </div>
-            </div>
-
-            {/* Recommended Build */}
-            <div className={`border rounded-xl p-6 ${recBuild.color}`}>
-              <p className="font-mono text-xs tracking-widest uppercase mb-3" style={{ color: recBuild.labelColor.replace("text-[", "").replace("]", "") }}>
-                Recommended Build for {estimatedVRAM}GB
-              </p>
-              <h3 className="font-syne text-xl font-black text-white mb-1">{recBuild.tier}</h3>
-              <p className="font-mono text-xs text-muted mb-4">{recBuild.range}</p>
-              <div className="space-y-2 font-mono text-xs">
-                <div className="flex gap-3">
-                  <span className="text-muted w-10 flex-shrink-0">GPU</span>
-                  <span className="text-text">{recBuild.gpu}</span>
-                </div>
-                <div className="flex gap-3">
-                  <span className="text-muted w-10 flex-shrink-0">CPU</span>
-                  <span className="text-text">{recBuild.cpu}</span>
-                </div>
-                <div className="flex gap-3">
-                  <span className="text-muted w-10 flex-shrink-0">RAM</span>
-                  <span className="text-text">{recBuild.ram}</span>
-                </div>
-                <div className="flex gap-3 pt-2 border-t border-white/10">
-                  <span className="text-muted w-10 flex-shrink-0">Note</span>
-                  <span className="text-muted leading-relaxed">{recBuild.notes}</span>
-                </div>
-              </div>
-              <a
-                href="https://computeatlas.ai/recommended-builds"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 block text-center border border-white/10 text-muted py-2 rounded text-xs font-mono tracking-widest uppercase hover:text-text hover:border-white/20 transition-colors"
-              >
-                Plan this build on ComputeAtlas →
-              </a>
-            </div>
-
-            {/* ComputeAtlas CTA if over 16GB */}
-            {estimatedVRAM > 16 && (
-              <div className="bg-gradient-to-br from-accent-purple/8 to-accent/5 border border-accent-purple/25 rounded-xl p-6">
-                <p className="font-mono text-xs text-[#a78bfa] tracking-widest uppercase mb-2">{"// Hardware Upgrade Path"}</p>
-                <h3 className="font-syne text-xl font-black text-white mb-2">
-                  Your rig needs {estimatedVRAM}GB — time to plan an upgrade.
-                </h3>
-                <p className="text-muted text-sm leading-relaxed mb-4">
-                  ComputeAtlas is an AI workstation planning platform. Input your target workloads and it recommends exact hardware — GPU, CPU, RAM, and storage — before you buy.
-                </p>
-                <div className="flex gap-3 flex-wrap">
-                  <Link
-                    href="https://computeatlas.ai/ai-hardware-estimator"
-                    target="_blank"
-                    className="inline-block bg-accent-purple text-white px-5 py-2.5 rounded font-semibold text-sm hover:opacity-85 transition-opacity"
-                  >
-                    Use Hardware Estimator →
-                  </Link>
-                  <Link
-                    href="https://computeatlas.ai/recommended-builds"
-                    target="_blank"
-                    className="inline-block bg-white/5 border border-white/10 text-muted px-5 py-2.5 rounded font-semibold text-sm hover:text-text transition-colors"
-                  >
-                    Browse Recommended Builds
-                  </Link>
-                </div>
-              </div>
-            )}
+            <label className="block font-mono text-[10px] uppercase tracking-[0.2em] text-[#8888a0] mb-3">Target Hardware</label>
+            <select 
+              value={gpuId}
+              onChange={(e) => setGpuId(e.target.value)}
+              className="w-full bg-[#0a0a0b] border border-[#3f3f46] rounded-xl px-4 py-3 outline-none focus:border-[#7c6af7] transition-all font-mono text-sm"
+            >
+              {GPUS.map(g => (
+                <option key={g.id} value={g.id}>{g.name}</option>
+              ))}
+            </select>
+            <p className="mt-3 font-mono text-[10px] text-zinc-600 uppercase tracking-widest">{gpu.series} · {gpu.vram}GB Total</p>
           </div>
         </div>
-      </main>
-    </>
+
+        {/* RESULTS DASHBOARD */}
+        <div className="bg-[#111113] border border-[#2a2a30] p-8 rounded-3xl mb-12 shadow-2xl relative">
+          <div className="grid md:grid-cols-[1fr_auto] gap-12 items-center">
+            
+            <div className="space-y-8">
+              {/* STATUS */}
+              <div>
+                <div className="inline-flex items-center gap-3 mb-4">
+                  {result.status === "green" && (
+                    <div className="flex items-center gap-2 text-[#4ade80] font-mono text-xs uppercase tracking-widest font-black bg-[#4ade80]/10 px-3 py-1.5 rounded-full border border-[#4ade80]/20">
+                      <CheckCircle2 className="w-4 h-4" /> Ready to Load
+                    </div>
+                  )}
+                  {result.status === "yellow" && (
+                    <div className="flex items-center gap-2 text-amber-500 font-mono text-xs uppercase tracking-widest font-black bg-amber-500/10 px-3 py-1.5 rounded-full border border-amber-500/20">
+                      <AlertTriangle className="w-4 h-4" /> Tight Margin
+                    </div>
+                  )}
+                  {result.status === "red" && (
+                    <div className="flex items-center gap-2 text-rose-500 font-mono text-xs uppercase tracking-widest font-black bg-rose-500/10 px-3 py-1.5 rounded-full border border-rose-500/20">
+                      <XCircle className="w-4 h-4" /> Memory Overload
+                    </div>
+                  )}
+                </div>
+                <h2 className="text-4xl font-syne font-black text-white tracking-tight">
+                  Status: {result.status === "green" ? "Confirmed" : result.status === "yellow" ? "Risk Warning" : "Failed Load"}
+                </h2>
+              </div>
+
+              {/* DETAILS */}
+              <div className="grid grid-cols-2 gap-y-6 gap-x-8">
+                <div>
+                  <label className="block font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-widest">Recommended Res</label>
+                  <p className="text-white font-mono">{result.settings.res}</p>
+                </div>
+                <div>
+                  <label className="block font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-widest">Inference Steps</label>
+                  <p className="text-white font-mono">{result.settings.steps}</p>
+                </div>
+                <div>
+                  <label className="block font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-widest">Launch Flags</label>
+                  <code className="text-[#22d3ee] font-mono text-sm bg-[#22d3ee]/5 px-2 py-0.5 rounded">{result.settings.flags}</code>
+                </div>
+                <div>
+                  <label className="block font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-widest">Optimal Batch</label>
+                  <p className="text-white font-mono">{result.settings.batch}</p>
+                </div>
+              </div>
+
+              {/* TIP */}
+              <div className="p-4 bg-white/[0.03] border border-white/5 rounded-2xl flex gap-4 items-start">
+                <Info className="w-5 h-5 text-[#7c6af7] mt-0.5" />
+                <p className="text-sm text-[#8888a0] leading-relaxed italic">{result.tip}</p>
+              </div>
+            </div>
+
+            {/* VRAM GAUGE */}
+            <div className="flex flex-col items-center justify-center p-8 bg-[#0a0a0b] rounded-[40px] border border-white/5 w-64 h-64 relative">
+              <div className="absolute inset-0 flex items-center justify-center">
+                 <div className={`w-40 h-40 rounded-full border-2 border-dashed opacity-20 ${result.status === "red" ? "border-rose-500" : "border-[#7c6af7]"}`} />
+              </div>
+              <p className="font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-tighter">VRAM Utilization</p>
+              <div className="font-syne text-5xl font-black text-white">{model.vramNeeded.toFixed(1)}</div>
+              <div className="font-mono text-xs text-zinc-500 mt-2">/ {gpu.vram} GB Total </div>
+              <div className="mt-4 w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+                <div 
+                  className={`h-full transition-all duration-700 ${result.status === "green" ? "bg-[#4ade80]" : result.status === "yellow" ? "bg-amber-500" : "bg-rose-500"}`} 
+                  style={{ width: `${Math.min((model.vramNeeded / gpu.vram) * 100, 100)}%` }} 
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* COMPUTEATLAS PARTNER CARD */}
+        <div className="bg-gradient-to-br from-[#7c6af7]/20 via-[#111113] to-[#111113] border border-[#7c6af7]/20 p-10 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-8">
+          <div>
+            <h3 className="font-syne text-2xl font-bold text-white mb-2">Need a GPU upgrade?</h3>
+            <p className="text-[#8888a0] max-w-sm mb-0">ComputeAtlas.ai finds the best real-world deals for local AI workstation builds.</p>
+          </div>
+          <a 
+            href="https://computeatlas.ai" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="group flex items-center gap-3 bg-[#7c6af7] text-white px-8 py-4 rounded-2xl font-bold text-sm hover:translate-y-[-2px] hover:shadow-[0_10px_30px_rgba(124,106,247,0.4)] transition-all uppercase tracking-widest"
+          >
+            Find Deals <ExternalLink className="w-4 h-4 transition-transform group-hover:rotate-45" />
+          </a>
+        </div>
+      </div>
+
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Syne:wght@800;Black&display=swap');
+        :root {
+          --font-fira: 'Fira Code', monospace;
+          --font-syne: 'Syne', sans-serif;
+        }
+        body { font-family: var(--font-fira); }
+        .font-syne { font-family: var(--font-syne) !important; }
+        .font-mono { font-family: var(--font-fira) !important; }
+      `}</style>
+    </main>
   );
 }
