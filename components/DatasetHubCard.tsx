@@ -23,12 +23,15 @@ interface DatasetProps {
 }
 
 export function DatasetHubCard({ dataset }: { dataset: DatasetProps }) {
-  const author = (dataset.name && dataset.name.includes("/"))
-    ? dataset.name.split("/")[0]
+  const displayName = dataset.name || dataset.id || "Unknown Dataset";
+  
+  const author = (displayName.includes("/"))
+    ? displayName.split("/")[0]
     : "Official";
-  const repoName = (dataset.name && dataset.name.includes("/"))
-    ? dataset.name.split("/").pop()
-    : dataset.name || "Unknown Dataset";
+    
+  const repoName = (displayName.includes("/"))
+    ? displayName.split("/").pop()
+    : displayName;
 
   return (
     <div className="group flex items-center gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-4 transition-all hover:border-accent/30">
@@ -69,7 +72,7 @@ export function DatasetHubCard({ dataset }: { dataset: DatasetProps }) {
 
       <div className="flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100">
         <Link
-          href={`/datasets/viewer/${encodeURIComponent(dataset.name)}`}
+          href={`/datasets/viewer/${encodeURIComponent(displayName)}`}
           className="rounded-lg border border-white/10 bg-white/5 p-2 text-zinc-400 transition-all hover:bg-white/10 hover:text-white"
           title="Open Viewer"
         >
@@ -78,7 +81,7 @@ export function DatasetHubCard({ dataset }: { dataset: DatasetProps }) {
         <button
           className="rounded-lg border border-accent/20 bg-accent/10 p-2 text-accent transition-all hover:bg-accent/20"
           title="Copy ID"
-          onClick={() => navigator.clipboard.writeText(dataset.name)}
+          onClick={() => navigator.clipboard.writeText(displayName)}
         >
           <ShieldCheck className="h-4 w-4" />
         </button>
