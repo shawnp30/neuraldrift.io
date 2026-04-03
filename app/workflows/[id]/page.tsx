@@ -17,7 +17,9 @@ import {
   ExternalLink,
   ShieldCheck,
   Zap,
-  Play
+  Play,
+  Layers,
+  LayoutGrid
 } from 'lucide-react';
 import { WORKFLOWS, WorkflowEntry } from '@/lib/workflowsData';
 import { DownloadButton } from '@/components/workflows/DownloadButton';
@@ -350,27 +352,5 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
       </div>
 
     </div>
-  );
-}
-
-// Simple LayoutGrid icon for the related section
-function LayoutGrid({ size, className }: { size: number, className: string }) {
-  return (
-    <svg 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <rect x="3" y="3" width="7" height="7" />
-      <rect x="14" y="3" width="7" height="7" />
-      <rect x="14" y="14" width="7" height="7" />
-      <rect x="3" y="14" width="7" height="7" />
-    </svg>
   );
 }

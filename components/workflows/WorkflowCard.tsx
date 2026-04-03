@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { WorkflowEntry } from '@/lib/workflowsData';
@@ -18,34 +19,36 @@ export default function WorkflowCard({ workflow }: { workflow: WorkflowEntry }) 
     Advanced: '#ef4444',
   };
 
+  const [imageError, setImageError] = useState(false);
+
   return (
     <div className="group relative flex flex-col bg-[#111113] border border-[#2a2a30] rounded-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-[#7c6af7]/50 hover:shadow-[0_0_30px_rgba(124,106,247,0.15)]">
       {/* ── PREVIEW SECTION ────────────────────────────────────────────────── */}
       <div className="relative aspect-video w-full bg-[#0a0a0b] overflow-hidden">
-        {/* We use an image if available, fallback to a styled placeholder */}
-        <div className="absolute inset-0 flex items-center justify-center bg-grid opacity-20" />
+        {/* Grid Background */}
+        <div className="absolute inset-0 bg-grid opacity-20" />
         
-        <Image
-          src={`/workflow-previews/${workflow.id}.svg`}
-          alt={workflow.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-          onError={(e) => {
-            // Simple fallback if SVG is missing
-            const target = e.target as HTMLImageElement;
-            target.style.display = 'none';
-            const parent = target.parentElement;
-            if (parent) {
-              const fallback = document.createElement('div');
-              fallback.className = "absolute inset-0 flex flex-col items-center justify-center p-6 text-center";
-              fallback.innerHTML = `
-                <div class="text-[#7c6af7]/20 font-mono text-[80px] font-black uppercase select-none leading-none mb-2">NEURAL</div>
-                <div class="text-[#8888a0] font-mono text-xs uppercase tracking-[0.3em] font-bold">${workflow.category}</div>
-              `;
-              parent.appendChild(fallback);
-            }
-          }}
-        />
+        {!imageError ? (
+          <Image
+            src={`/workflow-previews/${workflow.id}.svg`}
+            alt={workflow.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+            <div className="text-[#3a3a45] font-mono text-[60px] font-black uppercase select-none leading-none tracking-tighter mix-blend-overlay">
+              NEURAL
+            </div>
+            <div className="mt-2 px-3 py-1 bg-[#7c6af7]/10 border border-[#7c6af7]/30 rounded text-[#7c6af7] font-mono text-[9px] font-bold uppercase tracking-[0.2em] relative z-10 backdrop-blur-sm">
+              {workflow.category} architecture
+            </div>
+            {/* Aesthetic Tech Lines */}
+            <div className="absolute inset-x-8 top-1/2 -translate-y-1/2 h-[1px] bg-gradient-to-r from-transparent via-[#7c6af7]/20 to-transparent" />
+            <div className="absolute inset-y-4 left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-t from-transparent via-[#7c6af7]/10 to-transparent" />
+          </div>
+        )}
 
         {/* OVERLAYS */}
         <div className="absolute top-3 left-3 px-2 py-1 bg-[#0a0a0b]/80 border border-[#22d3ee]/30 rounded text-[#22d3ee] text-[10px] font-mono font-bold uppercase tracking-wider backdrop-blur-sm">
