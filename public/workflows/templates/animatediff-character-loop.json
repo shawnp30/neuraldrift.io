@@ -154,7 +154,7 @@
       "inputs": [],
       "outputs": [],
       "properties": {},
-      "widgets_values": ["neuraldrift — AnimateDiff Loop\n\nHardware: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nFrames: __FRAMES__\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__\nLoRA: __LORA_NAME__ @ __LORA_STRENGTH__\n\nRequired nodes:\n- ComfyUI-AnimateDiff-Evolved\n- ComfyUI-VideoHelperSuite\n\nExported by neuraldrift"]
+      "widgets_values": ["neuraldrift — AnimateDiff Loop\n\nHardware: __HARDWARE_TIER__\nResolution: __WIDTH__x__HEIGHT__\nFrames: __FRAMES__\nSteps: __STEPS__ | CFG: __CFG__\nSampler: __SAMPLER__\nLoRA: __LORA_NAME__ @ __LORA_STRENGTH__\n\nRequired nodes:\n- ComfyUI-AnimateDiff-Evolved\n- ComfyUI-VideoHelperSuite\n\nExported by neuraldrift\n\nDOWNLOAD LINKS:\n- animatediff_v15_3.safetensors: https://huggingface.co/guoyww/AnimateDiff/resolve/main/v3_sd15_mm.ckpt\n\nDOWNLOAD LINKS (Direct):\n- clip_l.safetensors: https://huggingface.co/comfyanonymous/direct-ml-clip-l/resolve/main/clip_l.safetensors\n- ae.safetensors: https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors\n- animatediff_v15_3.safetensors: https://huggingface.co/guoyww/AnimateDiff/resolve/main/v3_sd15_mm.ckpt"]
     }
   ],
   "links": [

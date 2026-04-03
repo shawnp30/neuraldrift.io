@@ -1,17 +1,26 @@
 "use client";
 
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Reorder } from "framer-motion";
 import {
-  Sparkles, Image as ImageIcon, Video, Download, Copy, Check, Wand2, Music, Mic, ChevronDown, CheckCircle, Eye, BoxSelect, History, Settings, Loader2, Save, X
+  Sparkles, Image as ImageIcon, Video, Download, Copy, Check, Wand2, Music, Mic, ChevronDown, CheckCircle, Eye, BoxSelect, History, Settings, Loader2, Save, X, BookOpen
 } from "lucide-react";
 import Link from "next/link";
 import { COMMUNITY_PROMPTS } from "./data";
-import { QUALITY_TIERS, QUALITY_SUFFIX, SUGGESTIONS, OPTIONS, REFERENCE_ARTISTS, getSuggestedBPM, QualityTier, ACE_POOLS } from "./options";
+import { QUALITY_TIERS, QUALITY_SUFFIX, SUGGESTIONS, OPTIONS, REFERENCE_ARTISTS, getSuggestedBPM, QualityTier, ACE_POOLS, ACE_LYRIC_POOLS, ACE_LYRIC_TEMPLATES, ACE_LYRIC_SEED_BANK, ANIME_POOLS } from "./options";
 
 
 type Mode = "image" | "video" | "music" | "lyrics";
-type ExportFormat = "json" | "text" | "a1111" | "api" | "link" | "ace";
+type ExportFormat = "json" | "text" | "a1111" | "api" | "link" | "ace" | "lyrics";
+type LyricSectionType = "intro" | "verse" | "chorus" | "bridge" | "hook" | "pre-chorus" | "interlude" | "outro";
+interface LyricSection {
+  id: string;
+  type: LyricSectionType;
+  lyrics: string;
+  emotion?: string;
+  isAiAssistOpen: boolean;
+  aiAssistPrompt: string;
+}
 type ViewTab = "builder" | "gallery" | "history";
 const cn = (...classes: (string | undefined | false)[]) => classes.filter(Boolean).join(" ");
 
@@ -35,7 +44,7 @@ function ComboboxField({ label, value, onChange, options = [], variant = "slate"
 
   return (
     <div ref={wrapperRef} className="relative w-full">
-      <label className={cn("block font-[800] text-[10px] uppercase tracking-widest mb-2", vColor.split(' ')[0])}>{label}</label>
+      <label className={cn("font-[800] text-[10px] uppercase tracking-widest mb-2", vColor.split(' ')[0])}>{label}</label>
       <div className={cn("flex items-center w-full bg-[#0a0c10] border border-[#1f2330] rounded-xl px-4 py-3 transition-colors", vColor.split(' ')[1])}>
         <input 
            type="text" value={value} 
@@ -63,7 +72,7 @@ function ComboboxField({ label, value, onChange, options = [], variant = "slate"
 function CollapsibleSection({ title, step, defaultOpen = false, colorClass = "text-zinc-200", children }: any) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   return (
-    <div className="bg-[#12151c] border border-[#1f2330] rounded-2xl overflow-hidden shadow-sm">
+    <div className="bg-[#12151c] border border-[#1f2330] rounded-2xl shadow-sm">
       <button onClick={() => setIsOpen(!isOpen)} className="w-full flex items-center justify-between px-6 py-4 hover:bg-[#1f2330]/50 transition-colors text-left">
         <span className={cn("font-[800] text-xs uppercase tracking-widest", colorClass)}>{step} {title}</span>
         <ChevronDown className={cn("w-4 h-4 text-zinc-500 transition-transform", isOpen ? "rotate-180" : "")} />
@@ -140,7 +149,7 @@ function VUMeter({ active = true }: { active?: boolean }) {
 function StudioModule({ title, step, defaultOpen = false, children }: any) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   return (
-    <div className="bg-[#0f111a] border-x border-t border-[#1f2330] last:border-b rounded-none first:rounded-t-2xl last:rounded-b-2xl overflow-hidden shadow-inner flex flex-col relative group">
+    <div className="bg-[#0f111a] border-x border-t border-[#1f2330] last:border-b rounded-none first:rounded-t-2xl last:rounded-b-2xl shadow-inner flex flex-col relative group">
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500/50 to-violet-500/50 opacity-30" />
       <button onClick={() => setIsOpen(!isOpen)} className="w-full flex items-center justify-between px-6 py-5 hover:bg-white/[0.02] transition-colors text-left bg-gradient-to-r from-black/20 to-transparent">
         <div className="flex items-center gap-4">
@@ -200,16 +209,23 @@ export default function PromptGenerator() {
   const [aceCaption, setAceCaption] = useState("");
 
   // Lyrics state
-  const [lyricGenre, setLyricGenre] = useState(""); const [lyricSubstyle, setLyricSubstyle] = useState("");
-  const [lyricLanguage, setLyricLanguage] = useState("English"); const [lyricLength, setLyricLength] = useState("");
-  const [lyricMood, setLyricMood] = useState(""); const [lyricThemes, setLyricThemes] = useState("");
-  const [lyricPerspective, setLyricPerspective] = useState(""); const [lyricReferenceVibe, setLyricReferenceVibe] = useState("");
-  const [lyricImagery, setLyricImagery] = useState(""); const [lyricVocalGender, setLyricVocalGender] = useState("");
-  const [lyricVocalTone, setLyricVocalTone] = useState(""); const [lyricFlowStyle, setLyricFlowStyle] = useState("");
-  const [lyricRhymeDensity, setLyricRhymeDensity] = useState(""); const [lyricTempo, setLyricTempo] = useState("");
-  const [lyricHookType, setLyricHookType] = useState(""); const [lyricStructure, setLyricStructure] = useState("");
-  const [lyricCinematicEffect, setLyricCinematicEffect] = useState("");
-  const [lyricDynamics, setLyricDynamics] = useState({ aggression: 5, melodicity: 5, wordiness: 5, emotionalIntensity: 5, bounce: 5, darkness: 5, complexity: 5 });
+  const [lyricSections, setLyricSections] = useState<LyricSection[]>([]);
+  const [lyricLanguage, setLyricLanguage] = useState("English");
+  const [lyricVocalStyle, setLyricVocalStyle] = useState("Modern Pop");
+  const [lyricVocalGender, setLyricVocalGender] = useState("male");
+  const [lyricThematicDirection, setLyricThematicDirection] = useState("");
+  const [isGeneratingSectionId, setIsGeneratingSectionId] = useState<string | null>(null);
+
+  // Anime state
+  const [animeStyles, setAnimeStyles] = useState<string[]>([]);
+  const [animeModel, setAnimeModel] = useState(ANIME_POOLS.MODELS[0].name);
+  const [animeLora, setAnimeLora] = useState("");
+  const [animeAction, setAnimeAction] = useState("");
+  const [animeFraming, setAnimeFraming] = useState("");
+  const [animeVfx, setAnimeVfx] = useState("");
+  const [animeMotion, setAnimeMotion] = useState(ANIME_POOLS.MOTION[1]);
+  const [useDanbooru, setUseDanbooru] = useState(false);
+  const [useProNarrative, setUseProNarrative] = useState(false);
 
   const [masterPrompt, setMasterPrompt] = useState("");
   const [apiKey, setApiKey] = useState("");
@@ -239,7 +255,34 @@ export default function PromptGenerator() {
       if (data.error) throw new Error(data.error);
 
       if (mode === "lyrics") {
-        setMasterPrompt(data.lyrics);
+        // Parse the generated lyrics into the sections state
+        const lines = data.lyrics.split("\n");
+        const newSections: LyricSection[] = [];
+        let currentSection: LyricSection | null = null;
+
+        lines.forEach((line: string) => {
+          const tagMatch = line.match(/^\[(intro|verse|chorus|bridge|hook|pre-chorus|interlude|outro).*?\]/i);
+          if (tagMatch) {
+            if (currentSection) newSections.push(currentSection);
+            currentSection = {
+              id: Math.random().toString(36).substr(2, 9),
+              type: tagMatch[1].toLowerCase() as LyricSectionType,
+              lyrics: "",
+              isAiAssistOpen: false,
+              aiAssistPrompt: ""
+            };
+          } else if (currentSection && line.trim()) {
+            currentSection.lyrics += line + "\n";
+          }
+        });
+        if (currentSection) newSections.push(currentSection);
+        
+        if (newSections.length > 0) {
+          setLyricSections(newSections);
+        } else {
+          // Fallback: Just set the raw prompt if parsing fails or return format is weird
+          setMasterPrompt(data.lyrics);
+        }
       } else {
         // Auto-sync JSON response to UI fields
         if (data.subject) setSubject(data.subject);
@@ -269,18 +312,43 @@ export default function PromptGenerator() {
     }
   };
 
+  const handleAiGenerateSection = async (sectionId: string) => {
+    const section = lyricSections.find(s => s.id === sectionId);
+    if (!section || !section.aiAssistPrompt.trim()) return;
+    
+    setIsGeneratingSectionId(sectionId);
+    try {
+      const response = await fetch("/api/generate-prompt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-api-key": apiKey },
+        body: JSON.stringify({ 
+          message: `Generate only lyrics for a [${section.type}] section. Theme: ${lyricThematicDirection}. Focus: ${section.aiAssistPrompt}. Emotion: ${section.emotion || 'neutral'}. Language: ${lyricLanguage}.`, 
+          mode: "lyrics" 
+        }),
+      });
+      const data = await response.json();
+      if (data.error) throw new Error(data.error);
+
+      setLyricSections(prev => prev.map(s => 
+        s.id === sectionId ? { ...s, lyrics: data.lyrics.replace(/\[.*?\]/g, "").trim() } : s
+      ));
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setIsGeneratingSectionId(null);
+    }
+  };
+
   useEffect(() => {
     const saved = localStorage.getItem("nd_prompt_history");
     if (saved) { try { setHistory(JSON.parse(saved)); } catch(e){} }
   }, []);
 
   useEffect(() => {
-    setAction(""); setMotion(""); setColorGrade(""); setDetail(""); setNegativePrompt("");
     setAceGenre(""); setAceBpm(""); setAceInstruments(""); setAceTexture(""); setAceMood("");
     setAceEra(""); setAceMix(""); setAceVocals(""); setAceActiveNegatives([]); setAceLora("");
     setFilmStock(""); setCustomNarrative("");
-    setLyricGenre(""); setLyricSubstyle(""); setLyricMood(""); setLyricThemes("");
-    setLyricImagery(""); setLyricReferenceVibe(""); setLyricVocalGender(""); setLyricCinematicEffect("");
+    setLyricSections([]); setLyricThematicDirection("");
   }, [mode]);
 
   useEffect(() => {
@@ -288,26 +356,14 @@ export default function PromptGenerator() {
 
     const parts: string[] = [];
     if (mode === "lyrics") {
-      parts.push("ACT AS AN ELITE MULTI-PLATINUM LYRICIST. Write a complete set of highly creative, unrestricted lyrics based on these precision parameters:");
-      parts.push(`\n[SONG METADATA]`);
-      parts.push(`- Genre/Style: ${lyricGenre} ${lyricSubstyle ? `(${lyricSubstyle})` : ""}`);
-      if (lyricVocalGender) parts.push(`- Vocal Identity: ${lyricVocalGender} (${lyricVocalTone})`);
-      if (lyricTempo) parts.push(`- Pacing/BPM: ${lyricTempo}`);
+      parts.push(`[language: ${lyricLanguage.toLowerCase()}]`);
       
-      parts.push(`\n[CREATIVE DIRECTION]`);
-      if (lyricMood) parts.push(`- Mood/Atmosphere: ${lyricMood}`);
-      if (lyricPerspective) parts.push(`- Perspective: ${lyricPerspective}`);
-      if (lyricThemes) parts.push(`- Core Themes/Narrative: ${lyricThemes}`);
-      if (lyricImagery) parts.push(`- Required Imagery: ${lyricImagery}`);
+      lyricSections.forEach(section => {
+        parts.push(`\n[${section.type}]`);
+        if (section.emotion) parts.push(`[emotion: ${section.emotion}]`);
+        parts.push(section.lyrics || "(Instrumental)");
+      });
 
-      parts.push(`\n[TECHNICAL SPECIFICATIONS]`);
-      if (lyricFlowStyle) parts.push(`- Flow Style: ${lyricFlowStyle}`);
-      if (lyricRhymeDensity) parts.push(`- Rhyme Density: ${lyricRhymeDensity}`);
-      if (lyricHookType) parts.push(`- Chorus/Hook Type: ${lyricHookType}`);
-      if (lyricStructure) parts.push(`- Song Structure: ${lyricStructure}`);
-      if (lyricCinematicEffect) parts.push(`- Cinematic Arc: ${lyricCinematicEffect}`);
-
-      parts.push("\nWrite the lyrics now. Use labeled sections like [Verse], [Chorus], and [Bridge]. Do not include explanations.");
       setMasterPrompt(parts.join("\n"));
     } else if (mode === "music") {
       parts.push(`ACT AS A PROFESSIONAL MUSIC PRODUCER. Generate a high-fidelity audio output based on this technical production brief:`);
@@ -352,40 +408,136 @@ export default function PromptGenerator() {
          ].filter(Boolean);
          setAceCaption(aceParts.join(", "));
       }
-    } else if (mode === "video") {
-      // VIDEO Format: [Scene action], [camera movement], [camera/lens], [FPS], [lighting], [color grade]
-      const videoParts = [
-        subject || "Cinematic scene",
-        action,
-        motion,
-        camera,
-        "24fps",
-        lighting,
-        colorGrade,
-        "2.39:1 aspect ratio"
-      ].filter(Boolean);
-      setMasterPrompt(`${videoParts.join(", ")} --style cinematic`);
-    } else {
-      // IMAGE Format: [Subject], [style], [camera specs], [lighting], [color palette], [mood] --ar 16:9
-      const imgParts = [
-        subject || "Artistic portrait",
-        style,
-        camera,
-        lighting,
-        colorPalette,
-        mood,
-        detail,
-        QUALITY_SUFFIX[qualityTier]
-      ].filter(Boolean);
-      setMasterPrompt(`${imgParts.join(", ")} --ar 16:9 --style raw`);
+    } else if (mode === "video" || mode === "image") {
+       // VISUAL MODES (Anime Architect + Cinematic)
+       const selectedModelObj = ANIME_POOLS.MODELS.find(m => m.name === animeModel);
+       const isVid = mode === "video";
+       
+       if (useProNarrative) {
+         // PRO NARRATIVE ENGINE
+         const narrative = [
+           `A masterpiece high-fidelity anime ${isVid ? 'film sequence' : 'illustration'} of ${subject || 'a mysterious character'}`,
+           animeAction ? `engaged in ${animeAction.toLowerCase()}` : "in a powerful stance",
+           isVid && motion ? `with ${motion.toLowerCase()} movement` : "",
+           animeFraming ? `captured with a ${animeFraming.toLowerCase()}` : "cinematically framed",
+           `set within a detailed ${environment || 'world'} during ${timeOfDay || 'dramatic lighting'}`,
+           `illuminated by ${lighting || 'ambient'} light to create a ${mood || 'striking'} atmosphere`,
+           animeVfx ? `featuring ${animeVfx.toLowerCase()} to enhance the visual impact` : "",
+           `Rendered in the distinct aesthetic of ${animeStyles.length > 0 ? animeStyles.join(' and ') : 'modern high-end anime'}`,
+           isVid && animeMotion ? `Animation style: ${animeMotion}` : "",
+           useDanbooru ? selectedModelObj?.qualityTags : "",
+           animeLora ? `<lora:${animeLora}:0.8>` : "",
+           QUALITY_SUFFIX[qualityTier]
+         ].filter(Boolean).join(". ") + ".";
+         
+         setMasterPrompt(`${narrative} ${isVid ? '--style cinematic' : '--ar 16:9 --style raw'}`);
+       } else {
+         // STANDARD MODE
+         const animeTags = [
+           animeAction,
+           animeFraming,
+           animeVfx,
+           ...animeStyles,
+           isVid ? animeMotion : "",
+           useDanbooru ? selectedModelObj?.qualityTags : "",
+           animeLora ? `<lora:${animeLora}:0.8>` : ""
+         ].filter(Boolean);
+
+         const visualParts = [
+           subject || "Artistic vision",
+           ...animeTags,
+           isVid ? motion : "",
+           style,
+           camera,
+           lighting,
+           colorPalette,
+           colorGrade,
+           mood,
+           detail,
+           QUALITY_SUFFIX[qualityTier]
+         ].filter(Boolean);
+         
+         setMasterPrompt(`${visualParts.join(", ")} ${isVid ? '--style cinematic' : '--ar 16:9 --style raw'}`);
+       }
+     }
+  }, [mode, qualityTier, subject, action, environment, timeOfDay, mood, lighting, camera, style, colorPalette, composition, detail, motion, colorGrade, aceGenre, aceBpm, aceInstruments, aceTexture, aceMood, aceEra, aceMix, aceVocals, aceDuration, aceLora, aceActiveNegatives, aceSampleMode, aceIsInstrumental, filmStock, customNarrative, lyricSections, lyricLanguage, lyricVocalStyle, lyricVocalGender, lyricThematicDirection, isAiGenerating, negativePrompt, animeStyles, animeModel, animeLora, animeAction, animeFraming, animeVfx, animeMotion, useDanbooru, useProNarrative]);
+
+  const handleRandomizeAnime = (includeGlobal: boolean = false) => {
+    // Pick 1-2 random styles
+    const randomStyles = [...ANIME_POOLS.STYLES].sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 2) + 1);
+    setAnimeStyles(randomStyles);
+
+    // Pick random action, framing, vfx
+    setAnimeAction(ANIME_POOLS.ACTIONS[Math.floor(Math.random() * ANIME_POOLS.ACTIONS.length)]);
+    setAnimeFraming(ANIME_POOLS.FRAMING[Math.floor(Math.random() * ANIME_POOLS.FRAMING.length)]);
+    setAnimeVfx(ANIME_POOLS.VFX[Math.floor(Math.random() * ANIME_POOLS.VFX.length)]);
+
+    if (includeGlobal) {
+      setSubject(SUGGESTIONS.subject[Math.floor(Math.random() * SUGGESTIONS.subject.length)]);
+      setEnvironment(SUGGESTIONS.environment[Math.floor(Math.random() * SUGGESTIONS.environment.length)]);
+      setLighting(OPTIONS.lighting[Math.floor(Math.random() * OPTIONS.lighting.length)]);
+      setMood(OPTIONS.mood[Math.floor(Math.random() * OPTIONS.mood.length)]);
     }
-  }, [mode, qualityTier, subject, action, environment, timeOfDay, mood, lighting, camera, style, colorPalette, composition, detail, motion, colorGrade, aceGenre, aceBpm, aceInstruments, aceTexture, aceMood, aceEra, aceMix, aceVocals, aceDuration, aceLora, aceActiveNegatives, aceSampleMode, aceIsInstrumental, filmStock, customNarrative, lyricGenre, lyricSubstyle, lyricLanguage, lyricLength, lyricMood, lyricThemes, lyricPerspective, lyricReferenceVibe, lyricImagery, lyricVocalGender, lyricVocalTone, lyricFlowStyle, lyricRhymeDensity, lyricHookType, lyricStructure, lyricDynamics, lyricTempo, lyricCinematicEffect, isAiGenerating, negativePrompt]);
+  };
+
+  // Scene-to-Workflow Engine
+  async function handleDownloadWorkflow() {
+    try {
+      const templateName = mode === "video" ? "animatediff-character-loop.json" : "flux-portrait-lora.json";
+      const response = await fetch(`/workflows/templates/${templateName}`);
+      if (!response.ok) throw new Error("Template not found");
+      
+      let workflowJson = await response.text();
+      
+      // Basic substitution map
+      const subs: Record<string, string | number> = {
+        "__POSITIVE_PROMPT__": masterPrompt,
+        "__NEGATIVE_PROMPT__": negativePrompt,
+        "__LORA_NAME__": animeLora || "flux_realism_lora.safetensors",
+        "__LORA_STRENGTH__": 0.8,
+        "__WIDTH__": 1024,
+        "__HEIGHT__": 1024,
+        "__SEED__": Math.floor(Math.random() * 1000000),
+        "__STEPS__": 20,
+        "__CFG__": 1.0,
+        "__SAMPLER__": "euler",
+        "__SCHEDULER__": "simple",
+        "__DENOISE__": 1.0,
+        "__HARDWARE_TIER__": "Expert (24GB VRAM)",
+        "__FRAMES__": 16,
+        "__MODEL_FILENAME__": mode === "video" ? "sd_v1-5_pruned_noema.safetensors" : "flux1-dev-fp8.safetensors"
+      };
+
+      // Apply substitutions with proper escaping
+      Object.entries(subs).forEach(([key, val]) => {
+        const regex = new RegExp(key, "g");
+        const safeVal = typeof val === 'string' 
+          ? JSON.stringify(val).slice(1, -1) // Escape for JSON but remove surrounding quotes
+          : String(val);
+        workflowJson = workflowJson.replace(regex, safeVal);
+      });
+
+      // Trigger download
+      const blob = new Blob([workflowJson], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `neuraldrift_${mode}_${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Workflow export failed:", err);
+      alert("Failed to export workflow. Please check console.");
+    }
+  }
 
   useEffect(() => {
     let score = 0;
     const countFilled = (arr: any[]) => arr.filter(Boolean).length;
     if (mode === "lyrics") {
-      score += countFilled([lyricGenre, lyricMood, lyricThemes, lyricImagery, lyricHookType]) * 15;
+      score += (lyricSections.length > 0 ? 30 : 0);
+      score += (lyricThematicDirection ? 20 : 0);
+      score += (lyricSections.filter(s => s.lyrics).length * 10);
     } else if (mode === "music") {
       score += countFilled([aceGenre, aceInstruments, aceBpm, aceTexture, aceVocals]) * 15;
     } else {
@@ -394,7 +546,7 @@ export default function PromptGenerator() {
       if (qualityTier === "cinematic" || qualityTier === "ultra") score += 10;
     }
     setQualityScore(Math.min(score, 100));
-  }, [masterPrompt, mode, qualityTier, subject, environment, lighting, camera, style, lyricGenre, lyricMood, lyricThemes, lyricImagery, lyricHookType, aceGenre, aceInstruments, aceBpm, aceTexture, aceVocals]);
+  }, [masterPrompt, mode, qualityTier, subject, environment, lighting, camera, style, lyricSections, lyricLanguage, lyricThematicDirection, aceGenre, aceInstruments, aceBpm, aceTexture, aceVocals]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(masterPrompt);
@@ -432,12 +584,62 @@ export default function PromptGenerator() {
     setTimeout(() => setCopiedFormat(null), 2000);
   };
 
+  const handleLoadTemplate = (templateId: string) => {
+    const template = ACE_LYRIC_TEMPLATES.find(t => t.id === templateId);
+    if (!template) return;
+
+    setLyricLanguage(template.language);
+    setLyricThematicDirection(template.theme);
+    if ((template as any).style) setLyricVocalStyle((template as any).style);
+    
+    const newSections: LyricSection[] = template.sections.map(s => ({
+      id: Math.random().toString(36).substr(2, 9),
+      type: s.type as LyricSectionType,
+      lyrics: s.lyrics,
+      emotion: s.emotion,
+      isAiAssistOpen: false,
+      aiAssistPrompt: ""
+    }));
+    setLyricSections(newSections);
+  };
+
   const handleRandomize = () => {
     const r = <T,>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)];
+    
     if (mode === "lyrics") {
-      setLyricGenre(r(SUGGESTIONS.audio_genre)); setLyricThemes(r(SUGGESTIONS.lyric_themes));
-      setLyricMood(r(OPTIONS.mood)); setLyricVocalTone(r(SUGGESTIONS.audio_vocals));
-      setLyricHookType(r(OPTIONS.lyric_hook_types));
+      const themes = ACE_LYRIC_POOLS.THEMES;
+      const theme = r(themes);
+      setLyricThematicDirection(theme);
+      setLyricLanguage(r(ACE_LYRIC_POOLS.LANGUAGES));
+      setLyricVocalStyle(r(ACE_LYRIC_POOLS.VOCAL_STYLES));
+      setLyricVocalGender(r(["male", "female", "vocalist"]));
+      
+      const presets = [
+        ["intro", "verse", "chorus", "verse", "chorus", "bridge", "chorus", "outro"],
+        ["intro", "verse", "verse", "hook", "verse", "hook", "outro"],
+        ["verse", "chorus", "verse", "chorus", "outro"]
+      ] as LyricSectionType[][];
+      
+      const structure = r(presets);
+      const newSections: LyricSection[] = structure.map(type => {
+        let randomLyrics = "";
+        if (type === "intro") randomLyrics = `[${r(["ambient swell", "gentle piano", "drum intro", "distorted noise"])}]`;
+        else if (type === "outro") randomLyrics = `[${r(["fading echo", "sudden cutoff", "vocal adlibs", "instrumental tail"])}]`;
+        else if (type === "chorus" || type === "hook") randomLyrics = r(ACE_LYRIC_SEED_BANK.HOOKS) + "\n" + r(ACE_LYRIC_SEED_BANK.HOOKS);
+        else {
+          randomLyrics = r(ACE_LYRIC_SEED_BANK.OPENING) + "\n" + r(ACE_LYRIC_SEED_BANK.IMAGERY) + "\n" + r(ACE_LYRIC_SEED_BANK.CLOSING);
+        }
+
+        return {
+          id: Math.random().toString(36).substr(2, 9),
+          type,
+          lyrics: randomLyrics,
+          emotion: r(ACE_LYRIC_POOLS.EMOTIONS),
+          isAiAssistOpen: false,
+          aiAssistPrompt: ""
+        };
+      });
+      setLyricSections(newSections);
     } else if (mode === "music") {
       setAceGenre(r(ACE_POOLS.GENRE));
       setAceBpm(r(ACE_POOLS.BPM));
@@ -468,14 +670,14 @@ export default function PromptGenerator() {
   const stepNum = (n: number) => <span className="text-slate-500 font-mono font-black text-xs mr-2">0{n} /</span>;
 
   return (
-    <div className="min-h-screen bg-[#08090d] text-slate-200 pt-12 pb-32 font-sans relative">
+    <div className="min-h-screen bg-[#08090d] text-slate-200 pt-32 pb-32 font-sans relative">
       <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '80px 80px' }} />
 
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 xl:px-12 relative z-10">
         <div className="mb-8 flex flex-col md:flex-row justify-between items-end gap-6 border-b border-[#1f2330] pb-6">
             <div>
               <p className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-violet-400 text-[10px] uppercase tracking-[0.3em] font-bold mb-2">{"//"} THE CREATIVE COMMAND CENTER</p>
-              <h1 className="font-syne text-4xl md:text-6xl font-black tracking-tight text-white m-0">
+              <h1 className="font-syne text-4xl md:text-6xl font-black tracking-tight text-white leading-[1.1] m-0">
                 AI Architect<span className="text-zinc-700">.</span> 
               </h1>
               <p className="text-zinc-500 text-xs mt-3 max-w-md leading-relaxed font-[500]">
@@ -506,7 +708,46 @@ export default function PromptGenerator() {
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="w-full lg:w-[60%] flex flex-col gap-6">
 
-              <div className="bg-[#12151c] border border-[#1f2330] rounded-2xl p-6 shadow-xl relative overflow-hidden group">
+                    {/* Anime Technical Stack Reference */}
+                    {animeStyles.length > 0 && (mode === "image" || mode === "video") && (
+                      <div className="bg-gradient-to-br from-[#1a1c25] to-[#12151c] border border-pink-500/20 rounded-2xl p-5 mb-4 shadow-inner relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                          <ImageIcon size={40} className="text-pink-400" />
+                        </div>
+                        <label className="text-pink-400 font-black text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2">
+                           <CheckCircle size={12} /> Anime Technical Stack
+                        </label>
+                        <div className="space-y-3">
+                           <div className="bg-black/40 border border-white/5 rounded-xl p-4">
+                              <span className="text-[9px] text-pink-400 uppercase font-black block mb-1">Recommended Checkpoint</span>
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs text-white font-mono">{animeModel}</span>
+                                <a 
+                                  href={ANIME_POOLS.MODELS.find(m => m.name === animeModel)?.link} 
+                                  target="_blank" rel="noreferrer" 
+                                  className="text-[9px] bg-pink-500/20 text-pink-400 px-2 py-1 rounded hover:bg-pink-500/30 transition-all font-bold"
+                                >
+                                  VIEW ON CIVITAI
+                                </a>
+                              </div>
+                           </div>
+                           {animeLora && (
+                             <div className="bg-black/40 border border-white/5 rounded-xl p-4">
+                               <span className="text-[9px] text-zinc-500 uppercase font-black block mb-1">Active LoRA Reference</span>
+                               <span className="text-xs text-indigo-300 font-mono">{animeLora} (Strength: 0.8)</span>
+                             </div>
+                           )}
+                           {mode === "video" && (
+                             <div className="bg-black/40 border border-white/5 rounded-xl p-4">
+                               <span className="text-[9px] text-zinc-500 uppercase font-black block mb-1">Motion Intent</span>
+                               <span className="text-xs text-blue-300 font-mono">{animeMotion}</span>
+                             </div>
+                           )}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="bg-[#12151c] border border-white/5 rounded-2xl p-6 shadow-2xl relative overflow-hidden flex-1 flex flex-col">
                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                   <Wand2 size={80} />
                 </div>
@@ -571,50 +812,265 @@ export default function PromptGenerator() {
               <div className="space-y-4">
                 
                 {mode === "lyrics" ? (
-                  <>
-                    <CollapsibleSection title="Purpose, Genre & Style" step={stepNum(1)} defaultOpen={true} colorClass="text-purple-400">
-                      <div className="space-y-6">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                          <ComboboxField label="Genre" value={lyricGenre} onChange={setLyricGenre} options={SUGGESTIONS.audio_genre} variant="purple" />
-                          <ComboboxField label="Vocal Identity" value={lyricVocalGender} onChange={setLyricVocalGender} options={OPTIONS.lyric_vocal_genders} variant="purple" />
-                          <ComboboxField label="Tone" value={lyricVocalTone} onChange={setLyricVocalTone} options={SUGGESTIONS.audio_vocals} variant="purple" />
-                          <ComboboxField label="Mood" value={lyricMood} onChange={setLyricMood} options={OPTIONS.mood} variant="purple" />
-                          <ComboboxField label="Perspective" value={lyricPerspective} onChange={setLyricPerspective} options={OPTIONS.lyric_perspectives} variant="purple" />
-                        </div>
-                        <div className="pt-6 border-t border-[#1f2330]">
-                          <ComboboxField label="Core Themes & Story (Type custom if needed)" value={lyricThemes} onChange={setLyricThemes} options={SUGGESTIONS.lyric_themes} variant="purple" />
-                        </div>
-                        <div className="pt-6 border-t border-[#1f2330]">
-                          <ComboboxField label="Required Imagery (Type custom if needed)" value={lyricImagery} onChange={setLyricImagery} options={SUGGESTIONS.lyric_imagery} variant="purple" />
-                        </div>
-                      </div>
-                    </CollapsibleSection>
-
-                    <CollapsibleSection title="Technical Construction" step={stepNum(2)} colorClass="text-teal-400">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                        <ComboboxField label="Hook Type" value={lyricHookType} onChange={setLyricHookType} options={OPTIONS.lyric_hook_types} variant="teal" />
-                        <ComboboxField label="Structure Preset" value={lyricStructure} onChange={setLyricStructure} options={OPTIONS.lyric_structures} variant="teal" />
-                        <ComboboxField label="Flow Style" value={lyricFlowStyle} onChange={setLyricFlowStyle} options={OPTIONS.lyric_flow_styles} variant="teal" />
-                        <ComboboxField label="Rhyme Density" value={lyricRhymeDensity} onChange={setLyricRhymeDensity} options={OPTIONS.lyric_rhyme_densities} variant="teal" />
-                        <ComboboxField label="Cinematic Arc / Pacing" value={lyricCinematicEffect} onChange={setLyricCinematicEffect} options={OPTIONS.cinematic_effects} variant="teal" />
-                        <ComboboxField label="Target Tempo / BPM" value={lyricTempo} onChange={setLyricTempo} options={OPTIONS.audio_tempo} variant="teal" placeholder="e.g. 140 BPM, or leave blank..." />
-                      </div>
-                    </CollapsibleSection>
-
-                    <CollapsibleSection title="Expressive Dynamics (1-10)" step={stepNum(3)} colorClass="text-purple-400">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
-                        {(Object.keys(lyricDynamics) as Array<keyof typeof lyricDynamics>).map(key => (
-                            <div key={key}>
-                              <div className="flex justify-between items-center mb-2">
-                                <label className="text-slate-500 font-[800] text-[10px] uppercase tracking-widest">{String(key).replace(/([A-Z])/g, ' $1').trim()}</label>
-                                <span className="text-purple-400 font-mono text-xs font-bold">{lyricDynamics[key]}</span>
-                              </div>
-                              <input type="range" min="1" max="10" value={lyricDynamics[key]} onChange={(e: any) => setLyricDynamics({...lyricDynamics, [key]: parseInt(e.target.value)})} className="w-full h-1.5 bg-[#1f2330] rounded-lg appearance-none cursor-pointer accent-purple-500" />
+                  <div className="space-y-6">
+                    {/* Header Controls */}
+                    <div className="bg-[#12151c] border border-[#1f2330] rounded-2xl p-6 space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                          <ComboboxField 
+                            label="Target Language" 
+                            value={lyricLanguage} 
+                            onChange={setLyricLanguage} 
+                            options={ACE_LYRIC_POOLS.LANGUAGES} 
+                            variant="purple" 
+                          />
+                          <ComboboxField 
+                            label="Global Vocal Style" 
+                            value={lyricVocalStyle} 
+                            onChange={setLyricVocalStyle} 
+                            options={ACE_LYRIC_POOLS.VOCAL_STYLES} 
+                            variant="purple" 
+                          />
+                          <div className="space-y-4">
+                            <label className="text-zinc-500 font-[800] text-[10px] uppercase tracking-widest block">Voice Gender</label>
+                            <div className="flex bg-[#0a0c10] border border-[#1f2330] p-1 rounded-xl">
+                              {(["male", "female", "vocalist"] as const).map(g => (
+                                <button
+                                  key={g}
+                                  onClick={() => setLyricVocalGender(g)}
+                                  className={cn(
+                                    "flex-1 py-2 rounded-lg text-[10px] font-black uppercase transition-all",
+                                    lyricVocalGender === g ? "bg-purple-600 text-white shadow-lg" : "text-zinc-600 hover:text-zinc-400"
+                                  )}
+                                >
+                                  {g}
+                                </button>
+                              ))}
                             </div>
-                        ))}
+                          </div>
                       </div>
-                    </CollapsibleSection>
-                  </>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-white/5">
+                        <div className="space-y-1.5 w-full">
+                          <label className="text-zinc-500 font-[800] text-[10px] uppercase tracking-widest flex items-center gap-2">
+                             Thematic Direction
+                          </label>
+                          <input 
+                            type="text"
+                            value={lyricThematicDirection}
+                            onChange={(e) => setLyricThematicDirection(e.target.value)}
+                            placeholder="e.g. redemption, heartbreak, revenge..."
+                            className="w-full bg-[#0a0c10] border border-[#1f2330] rounded-xl px-4 py-3 text-white font-[600] text-sm focus:border-purple-500/50 outline-none transition-all placeholder:text-zinc-800"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="pt-6 border-t border-white/5">
+                        <label className="text-zinc-500 font-[800] text-[10px] uppercase tracking-widest block mb-4 italic">No-API Template Gallery</label>
+                        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide mb-6">
+                           {ACE_LYRIC_TEMPLATES.filter(t => !t.id.includes('parody')).map(t => (
+                             <button
+                               key={t.id}
+                               onClick={() => handleLoadTemplate(t.id)}
+                               className="flex-shrink-0 w-64 bg-[#0a0c10] border border-[#1f2330] hover:border-purple-500/50 rounded-2xl p-4 text-left transition-all group relative overflow-hidden"
+                             >
+                                <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                                   <Music size={40} className="text-purple-400" />
+                                </div>
+                                <h4 className="text-xs font-black text-white uppercase tracking-widest mb-1">{t.name}</h4>
+                                <p className="text-[10px] text-purple-400 font-bold uppercase tracking-tight mb-2">{t.genre}</p>
+                                <p className="text-[9px] text-zinc-500 leading-relaxed line-clamp-2">{t.theme}</p>
+                             </button>
+                           ))}
+                        </div>
+
+                        <label className="text-red-400/80 font-[800] text-[10px] uppercase tracking-widest block mb-4 italic flex items-center gap-2">
+                          <Mic size={12} /> Satire & Parody Engine (User Choice)
+                        </label>
+                        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+                           {ACE_LYRIC_TEMPLATES.filter(t => t.id.includes('parody')).map(t => (
+                             <button
+                               key={t.id}
+                               onClick={() => handleLoadTemplate(t.id)}
+                               className="flex-shrink-0 w-64 bg-red-500/5 border border-red-500/20 hover:border-red-500/50 rounded-2xl p-4 text-left transition-all group relative overflow-hidden"
+                             >
+                                <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                                   <Sparkles size={40} className="text-red-400" />
+                                </div>
+                                <h4 className="text-xs font-black text-white uppercase tracking-widest mb-1">{t.name}</h4>
+                                <p className="text-[10px] text-red-400 font-bold uppercase tracking-tight mb-2">{t.genre}</p>
+                                <p className="text-[9px] text-zinc-500 leading-relaxed line-clamp-2">{t.theme}</p>
+                             </button>
+                           ))}
+                        </div>
+                      </div>
+
+                      <div className="pt-6 border-t border-white/5">
+                        <label className="text-zinc-500 font-[800] text-[10px] uppercase tracking-widest block mb-4">Structure Templates (Manual)</label>
+                        <div className="flex flex-wrap gap-2">
+                           {[
+                             { name: "Standard", struct: ["intro", "verse", "chorus", "verse", "chorus", "bridge", "chorus", "outro"] },
+                             { name: "Hip Hop", struct: ["intro", "verse", "verse", "hook", "verse", "hook", "outro"] },
+                             { name: "Ballad", struct: ["intro", "verse", "chorus", "verse", "chorus", "bridge", "chorus", "outro"] },
+                             { name: "Punk", struct: ["verse", "chorus", "verse", "chorus", "outro"] },
+                             { name: "Instrumental", struct: ["intro", "interlude", "outro"] }
+                           ].map(p => (
+                             <button
+                               key={p.name}
+                               onClick={() => {
+                                 const news = p.struct.map(type => ({
+                                   id: Math.random().toString(36).substr(2, 9),
+                                   type: type as LyricSectionType,
+                                   lyrics: "",
+                                   isAiAssistOpen: false,
+                                   aiAssistPrompt: ""
+                                 }));
+                                 setLyricSections(news as LyricSection[]);
+                               }}
+                               className="px-4 py-2 bg-[#0a0c10] border border-[#1f2330] rounded-lg text-xs font-bold text-zinc-400 hover:text-white hover:border-purple-500/50 transition-all uppercase tracking-tighter"
+                             >
+                               {p.name}
+                             </button>
+                           ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section Builder */}
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-center mb-4">
+                        <label className="text-white font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                          <Mic size={14} className="text-purple-400" /> Song Structure Architecture
+                        </label>
+                        <div className="relative group">
+                          <button className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2">
+                            Add Section <ChevronDown size={14} />
+                          </button>
+                          <div className="absolute right-0 top-full mt-2 w-48 bg-[#181b24] border border-[#1f2330] rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 overflow-hidden">
+                            {ACE_LYRIC_POOLS.STRUCTURAL_TAGS.map(tag => (
+                              <button
+                                key={tag}
+                                onClick={() => {
+                                  const news: LyricSection = {
+                                    id: Math.random().toString(36).substr(2, 9),
+                                    type: tag as LyricSectionType,
+                                    lyrics: "",
+                                    isAiAssistOpen: false,
+                                    aiAssistPrompt: ""
+                                  };
+                                  setLyricSections([...lyricSections, news]);
+                                }}
+                                className="w-full px-4 py-3 text-left text-[10px] font-bold text-zinc-400 hover:bg-white/5 hover:text-white transition-all uppercase tracking-widest"
+                              >
+                                {tag}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      <Reorder.Group axis="y" values={lyricSections} onReorder={setLyricSections} className="space-y-4">
+                        {lyricSections.map((section) => {
+                          const borderColorClass = {
+                            intro: "border-l-zinc-500",
+                            outro: "border-l-zinc-500",
+                            verse: "border-l-blue-500",
+                            chorus: "border-l-cyan-500",
+                            bridge: "border-l-purple-500",
+                            hook: "border-l-yellow-500",
+                            "pre-chorus": "border-l-teal-500",
+                            interlude: "border-l-zinc-700"
+                          }[section.type];
+
+                          return (
+                            <Reorder.Item key={section.id} value={section}>
+                              <div className={cn(
+                                "bg-[#12151c] border border-[#1f2330] border-l-4 rounded-2xl p-5 shadow-xl transition-all",
+                                borderColorClass
+                              )}>
+                                <div className="flex justify-between items-start mb-4">
+                                  <div className="flex items-center gap-4">
+                                    <div className="cursor-grab active:cursor-grabbing text-zinc-700 hover:text-zinc-500 transition-colors">
+                                      <BoxSelect size={16} />
+                                    </div>
+                                    <span className="font-mono text-[10px] font-black uppercase tracking-widest text-[#52525b]">
+                                      [{section.type}]
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <button 
+                                       onClick={() => {
+                                         setLyricSections(lyricSections.map(s => s.id === section.id ? { ...s, isAiAssistOpen: !s.isAiAssistOpen } : s));
+                                       }}
+                                       className={cn("px-3 py-1 rounded-lg text-[10px] font-black uppercase transition-all", section.isAiAssistOpen ? "bg-purple-500 text-white" : "bg-[#0a0c10] border border-[#1f2330] text-zinc-600 hover:text-zinc-400")}
+                                    >
+                                       AI ASSIST
+                                    </button>
+                                    <button 
+                                      onClick={() => setLyricSections(lyricSections.filter(s => s.id !== section.id))}
+                                      className="p-1.5 text-zinc-600 hover:text-red-500 transition-colors"
+                                    >
+                                      <X size={16} />
+                                    </button>
+                                  </div>
+                                </div>
+
+                                {section.isAiAssistOpen && (
+                                  <div className="mb-4 p-4 bg-purple-500/5 border border-purple-500/20 rounded-xl space-y-3 animate-in slide-in-from-top-2">
+                                    <div className="flex justify-between items-center">
+                                       <span className="text-[10px] font-black text-purple-400 uppercase tracking-widest">Section Assistant</span>
+                                       {isGeneratingSectionId === section.id && <Loader2 className="animate-spin text-purple-400" size={12} />}
+                                    </div>
+                                    <textarea 
+                                      value={section.aiAssistPrompt}
+                                      onChange={(e) => setLyricSections(lyricSections.map(s => s.id === section.id ? { ...s, aiAssistPrompt: e.target.value } : s))}
+                                      placeholder="Describe what this section should feel like..."
+                                      className="w-full bg-[#0a0c10] border border-[#1f2330] rounded-xl px-4 py-3 text-white font-[600] text-sm focus:border-purple-500/50 outline-none transition-all placeholder:text-zinc-800 h-20"
+                                    />
+                                    <button 
+                                      onClick={() => handleAiGenerateSection(section.id)}
+                                      disabled={isAiGenerating || !!isGeneratingSectionId}
+                                      className="w-full bg-purple-600 hover:bg-purple-500 text-white py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all disabled:opacity-50"
+                                    >
+                                      Generate Suggestions
+                                    </button>
+                                  </div>
+                                )}
+
+                                <div className="space-y-4">
+                                  <textarea 
+                                    value={section.lyrics}
+                                    onChange={(e) => setLyricSections(lyricSections.map(s => s.id === section.id ? { ...s, lyrics: e.target.value } : s))}
+                                    placeholder={`Write your lyrics for [${section.type}]...`}
+                                    className="w-full bg-[#0a0c10] border border-[#1f2330] rounded-xl px-5 py-4 text-white font-[600] text-base focus:border-purple-500/30 outline-none transition-all placeholder:text-zinc-800 min-h-[140px] font-mono leading-relaxed"
+                                  />
+                                  
+                                  <div className="flex flex-wrap gap-2">
+                                     {ACE_LYRIC_POOLS.EMOTIONS.map(emo => (
+                                       <button
+                                         key={emo}
+                                         onClick={() => {
+                                           setLyricSections(lyricSections.map(s => s.id === section.id ? { ...s, emotion: s.emotion === emo ? undefined : emo } : s));
+                                         }}
+                                         className={cn(
+                                           "px-3 py-1.5 rounded-lg text-[9px] font-black uppercase transition-all border",
+                                           section.emotion === emo 
+                                             ? "bg-zinc-100 border-zinc-100 text-black shadow-lg shadow-white/5" 
+                                             : "bg-[#0a0c10] border-[#1f2330] text-zinc-600 hover:text-zinc-400"
+                                         )}
+                                       >
+                                         {emo}
+                                       </button>
+                                     ))}
+                                  </div>
+                                </div>
+                              </div>
+                            </Reorder.Item>
+                          );
+                        })}
+                      </Reorder.Group>
+                    </div>
+                  </div>
+
                 ) : mode === "music" ? (
                   <div className="flex flex-col gap-4">
                     {/* Mode Toggle & Info */}
@@ -640,7 +1096,7 @@ export default function PromptGenerator() {
                       </div>
                     </div>
 
-                    <div className="flex flex-col border border-[#1f2330] rounded-2xl overflow-hidden shadow-2xl">
+                    <div className="flex flex-col border border-[#1f2330] rounded-2xl shadow-2xl">
                     <StudioModule title="Compositional Architecture" step="01" defaultOpen={true}>
                       <div className="space-y-6">
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -742,24 +1198,24 @@ export default function PromptGenerator() {
                               onChange={(e) => setAceLora(e.target.value)}
                               placeholder="e.g. my-country-lora, artist-style-v1"
                               className="w-full bg-[#0a0c10] border border-[#1f2330] rounded-xl px-4 py-3 text-white font-[600] text-sm focus:border-indigo-500/50 outline-none transition-all placeholder:text-zinc-800"
-                           />
-                        </div>
+                            />
+                         </div>
+                       </div>
+                     </StudioModule>
+                   </div>
+                   
+                   <div className="mt-4 p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl flex items-start gap-4">
+                      <BoxSelect className="w-5 h-5 text-amber-500/40 shrink-0 mt-0.5" />
+                      <div>
+                         <p className="text-[10px] text-amber-500/60 uppercase font-black tracking-widest mb-1">Editing Guidance</p>
+                         <p className="text-[9px] text-zinc-600 leading-relaxed font-medium capitalize">
+                           Load src_audio in ComfyUI for cover/remix mode. For painting, enable is_repaint in your server settings node.
+                         </p>
                       </div>
-                    </StudioModule>
-                  </div>
-                  
-                  <div className="mt-4 p-4 bg-amber-500/5 border border-amber-500/10 rounded-xl flex items-start gap-4">
-                     <BoxSelect className="w-5 h-5 text-amber-500/40 shrink-0 mt-0.5" />
-                     <div>
-                        <p className="text-[10px] text-amber-500/60 uppercase font-black tracking-widest mb-1">Editing Guidance</p>
-                        <p className="text-[9px] text-zinc-600 leading-relaxed font-medium capitalize">
-                          Load src_audio in ComfyUI for cover/remix mode. for painting, enable is_repaint in your server settings node.
-                        </p>
-                     </div>
-                  </div>
-                </div>
-                ) : (
-                  <>
+                   </div>
+                 </div>
+                 ) : (
+                   <div className="flex flex-col gap-4">
                      <CollapsibleSection title="Focal Subject & Narrative" step={stepNum(1)} defaultOpen={true} colorClass="text-purple-400">
                       <div className="space-y-6">
                         <ComboboxField label="Focal Subject (Type detailed prompt or select template)" value={subject} onChange={setSubject} options={SUGGESTIONS.subject} variant="purple" />
@@ -776,12 +1232,162 @@ export default function PromptGenerator() {
                         <ComboboxField label="Environment Details" value={environment} onChange={setEnvironment} options={SUGGESTIONS.environment} variant="purple" />
                      </CollapsibleSection>
 
-                     <CollapsibleSection title="Master Visual Settings" step={stepNum(3)} colorClass="text-slate-200">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                     <CollapsibleSection title="Anime Architect — Styles & Technical Stack" step={stepNum(3)} colorClass="text-pink-400">
+                        <div className="space-y-8">
+                          <div className="flex flex-col gap-4">
+                            <div className="flex items-center justify-between">
+                               <div className="space-y-1">
+                                  <h3 className="text-zinc-200 font-bold text-xs uppercase tracking-tight">One-Click Anime Randomizer</h3>
+                                  <p className="text-[9px] text-zinc-500 uppercase font-medium">Instantly blend top anime presets</p>
+                               </div>
+                               <div className="flex gap-2">
+                                  <button 
+                                    onClick={() => handleRandomizeAnime(false)}
+                                    className="bg-pink-500/10 hover:bg-pink-500/20 border border-pink-500/30 px-3 py-2 rounded-xl text-[10px] font-black uppercase text-pink-400 transition-all flex items-center gap-2"
+                                  >
+                                    <Sparkles size={12} /> Anime Only
+                                  </button>
+                                  <button 
+                                    onClick={() => handleRandomizeAnime(true)}
+                                    className="bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 px-3 py-2 rounded-xl text-[10px] font-black uppercase text-indigo-400 transition-all flex items-center gap-2"
+                                  >
+                                    <Wand2 size={12} /> Randomize All
+                                  </button>
+                               </div>
+                            </div>
+
+                            <div className="flex items-center justify-between border-t border-white/5 pt-4">
+                              <label className="text-pink-400 font-[800] text-[10px] uppercase tracking-widest flex items-center gap-2">
+                                <Sparkles size={12} /> Danbooru Tag Optimizer
+                              </label>
+                              <button 
+                                onClick={() => setUseDanbooru(!useDanbooru)}
+                                className={cn(
+                                  "w-10 h-5 rounded-full p-1 transition-colors duration-200",
+                                  useDanbooru ? "bg-pink-500" : "bg-zinc-800"
+                                )}
+                              >
+                                <div className={cn("w-3 h-3 bg-white rounded-full transition-transform", useDanbooru ? "translate-x-5" : "translate-x-0")} />
+                              </button>
+                            </div>
+
+                            <div className="flex items-center justify-between border-t border-white/5 pt-4">
+                              <label className="text-indigo-400 font-[800] text-[10px] uppercase tracking-widest flex items-center gap-2">
+                                <BookOpen size={12} /> Pro Narrative Mode (Verbose)
+                              </label>
+                              <button 
+                                onClick={() => setUseProNarrative(!useProNarrative)}
+                                className={cn(
+                                  "w-10 h-5 rounded-full p-1 transition-colors duration-200",
+                                  useProNarrative ? "bg-indigo-500" : "bg-zinc-800"
+                                )}
+                              >
+                                <div className={cn("w-3 h-3 bg-white rounded-full transition-transform", useProNarrative ? "translate-x-5" : "translate-x-0")} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-zinc-500 font-[800] text-[10px] uppercase tracking-widest mb-4">Top Anime Aesthetics (Intertwine-able)</label>
+                            <div className="grid grid-cols-2 gap-2">
+                               {ANIME_POOLS.STYLES.slice(0, 10).map((s, i) => (
+                                 <button
+                                   key={s}
+                                   onClick={() => {
+                                     if (animeStyles.includes(s)) setAnimeStyles(animeStyles.filter(x => x !== s));
+                                     else setAnimeStyles([...animeStyles, s]);
+                                   }}
+                                   className={cn(
+                                     "px-3 py-2.5 rounded-xl text-[10px] font-bold uppercase transition-all border text-left flex justify-between items-center group",
+                                     animeStyles.includes(s) 
+                                      ? "bg-pink-500 border-pink-500 text-white shadow-lg shadow-pink-500/20" 
+                                      : "bg-[#0a0c10] border-[#1f2330] text-zinc-500 hover:text-zinc-300"
+                                   )}
+                                 >
+                                   <span className="truncate">{s}</span>
+                                   {i < 5 && <CheckCircle size={10} className={cn(animeStyles.includes(s) ? "text-white" : "text-pink-500/40")} />}
+                                 </button>
+                               ))}
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-white/5">
+                             <div>
+                               <label className="block text-zinc-500 font-[800] text-[10px] uppercase tracking-widest mb-3 text-pink-400">Target Checkpoint</label>
+                               <div className="space-y-4">
+                                  {ANIME_POOLS.MODELS.map(m => (
+                                    <button
+                                      key={m.name}
+                                      onClick={() => setAnimeModel(m.name)}
+                                      className={cn(
+                                        "w-full px-4 py-3 rounded-xl border text-left transition-all group",
+                                        animeModel === m.name ? "bg-white/5 border-pink-500/50" : "bg-black/20 border-[#1f2330] opacity-60 hover:opacity-100"
+                                      )}
+                                    >
+                                      <div className="flex justify-between items-center mb-1">
+                                         <span className={cn("text-[10px] font-black uppercase tracking-widest", animeModel === m.name ? "text-white" : "text-zinc-400")}>{m.name}</span>
+                                         <a href={m.link} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="p-1 hover:bg-white/10 rounded transition-colors"><Download size={12} className="text-pink-500" /></a>
+                                      </div>
+                                      <p className="text-[9px] text-zinc-600 font-medium leading-relaxed group-hover:text-zinc-400 transition-colors">{m.useCase}</p>
+                                    </button>
+                                  ))}
+                               </div>
+                             </div>
+
+                             <div className="space-y-6">
+                                <ComboboxField 
+                                  label="Anime LoRA" 
+                                  value={animeLora} 
+                                  onChange={setAnimeLora} 
+                                  options={ANIME_POOLS.LORAS.map(l => l.name)} 
+                                  variant="purple" 
+                                />
+                                <ComboboxField 
+                                  label="Action / Combat Sequence" 
+                                  value={animeAction} 
+                                  onChange={setAnimeAction} 
+                                  options={ANIME_POOLS.ACTIONS} 
+                                  variant="pink" 
+                                />
+                                <ComboboxField 
+                                  label="Action Shot / Framing" 
+                                  value={animeFraming} 
+                                  onChange={setAnimeFraming} 
+                                  options={ANIME_POOLS.FRAMING} 
+                                  variant="indigo" 
+                                />
+                                <ComboboxField 
+                                  label="Visual Effects (VFX)" 
+                                  value={animeVfx} 
+                                  onChange={setAnimeVfx} 
+                                  options={ANIME_POOLS.VFX} 
+                                  variant="blue" 
+                                />
+                                {mode === "video" && (
+                                  <ComboboxField 
+                                    label="Motion Style" 
+                                    value={animeMotion} 
+                                    onChange={setAnimeMotion} 
+                                    options={ANIME_POOLS.MOTION} 
+                                    variant="blue" 
+                                  />
+                                )}
+                                <div className="p-4 bg-pink-500/5 border border-pink-500/10 rounded-2xl">
+                                   <p className="text-[9px] text-zinc-500 leading-relaxed">
+                                      <strong className="text-pink-400 uppercase tracking-widest mb-1 block">Pro Tip:</strong>
+                                      For perfect anime video, use <span className="text-white">AnimateDiff-Lightning</span> with the <span className="text-white">Traditional (On 2s)</span> motion style to simulate hand-drawn frames.
+                                   </p>
+                                </div>
+                             </div>
+                          </div>
+                        </div>
+                     </CollapsibleSection>
+
+                     <CollapsibleSection title="Atmosphere & Photographic Control" step={stepNum(4)} colorClass="text-indigo-400">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+                          <ComboboxField label="Lighting / Atmosphere" value={lighting} onChange={setLighting} options={OPTIONS.lighting} variant="slate" />
+                          <ComboboxField label="Camera / Lens Ref" value={camera} onChange={setCamera} options={OPTIONS.camera} variant="slate" />
                           <ComboboxField label="Time of Day" value={timeOfDay} onChange={setTimeOfDay} options={OPTIONS.timeOfDay} variant="slate" />
-                          <ComboboxField label="Mood / Atmosphere" value={mood} onChange={setMood} options={OPTIONS.mood} variant="slate" />
-                          <ComboboxField label="Lighting / Studio" value={lighting} onChange={setLighting} options={OPTIONS.lighting} variant="slate" />
-                          <ComboboxField label="Professional Gear" value={camera} onChange={setCamera} options={OPTIONS.camera} variant="slate" />
                           <ComboboxField label="Film Stock / Grain" value={filmStock} onChange={setFilmStock} options={OPTIONS.filmStock} variant="slate" />
                           <ComboboxField label="Color Palette / Tone" value={colorPalette} onChange={setColorPalette} options={OPTIONS.colorPalette} variant="slate" />
                           <ComboboxField label="Composition / Frame" value={composition} onChange={setComposition} options={OPTIONS.composition} variant="slate" />
@@ -791,7 +1397,7 @@ export default function PromptGenerator() {
                      </CollapsibleSection>
 
                      {mode === "video" && (
-                       <CollapsibleSection title="Camera Motion & Color Grade" step={stepNum(4)} colorClass="text-blue-400">
+                       <CollapsibleSection title="Camera Motion & Color Grade" step={stepNum(5)} colorClass="text-blue-400">
                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             <ComboboxField label="Camera Motion" value={motion} onChange={setMotion} options={OPTIONS.motion} variant="blue" />
                             <ComboboxField label="Color Grade Reference" value={colorGrade} onChange={setColorGrade} options={OPTIONS.colorGrade} variant="blue" />
@@ -799,89 +1405,173 @@ export default function PromptGenerator() {
                        </CollapsibleSection>
                      )}
 
-                     <CollapsibleSection title="Negative Prompt — Avoid / Exclude" colorClass="text-red-400">
-                         <ComboboxField label="What should NOT appear" value={negativePrompt} onChange={setNegativePrompt} options={["ugly, deformed, low quality, watermark, text"]} variant="slate" />
-                     </CollapsibleSection>
-                  </>
-                )}
-              </div>
-            </div>
+                    <CollapsibleSection title="Negative Prompt — Avoid / Exclude" colorClass="text-red-400">
+                        <ComboboxField label="What should NOT appear" value={negativePrompt} onChange={setNegativePrompt} options={["ugly, deformed, low quality, watermark, text"]} variant="slate" />
+                    </CollapsibleSection>
+                   </div>
+                 )}
+               </div>
+             </div>
 
-            <div className="w-full lg:w-[40%]">
+             <div className="w-full lg:w-[40%]">
               <div className="sticky top-[40px] flex flex-col gap-4">
                 
-                {mode === "music" ? (
+                {/* Anime Technical Stack Reference */}
+                {(mode === "image" || mode === "video") && animeStyles.length > 0 && (
+                  <div className="bg-gradient-to-br from-[#1a1c25] to-[#12151c] border border-pink-500/20 rounded-2xl p-5 mb-4 shadow-inner relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                      <ImageIcon size={40} className="text-pink-400" />
+                    </div>
+                    <label className="text-pink-400/80 font-black text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2">
+                       <CheckCircle size={12} /> Anime Technical Stack
+                    </label>
+                    <div className="space-y-3">
+                       <div className="bg-black/40 border border-white/5 rounded-xl p-4">
+                          <span className="text-[9px] text-zinc-500 uppercase font-black block mb-1">Recommended Checkpoint</span>
+                          <div className="flex justify-between items-center">
+                            <span className="text-xs text-white font-mono">{animeModel}</span>
+                            {ANIME_POOLS.MODELS.find(m => m.name === animeModel)?.link && (
+                              <a 
+                                href={ANIME_POOLS.MODELS.find(m => m.name === animeModel)?.link} 
+                                target="_blank" rel="noreferrer" 
+                                className="text-[9px] bg-pink-500/20 text-pink-400 px-2 py-1 rounded hover:bg-pink-500/30 transition-all font-bold"
+                              >
+                                VIEW ON CIVITAI
+                              </a>
+                            )}
+                          </div>
+                       </div>
+                       {animeLora && (
+                         <div className="bg-black/40 border border-white/5 rounded-xl p-4">
+                           <span className="text-[9px] text-zinc-500 uppercase font-black block mb-1">Active LoRA Reference</span>
+                           <span className="text-xs text-indigo-300 font-mono">{animeLora} (Strength: 0.8)</span>
+                         </div>
+                       )}
+                       {mode === "video" && (
+                         <div className="bg-black/40 border border-white/5 rounded-xl p-4">
+                           <span className="text-[9px] text-zinc-500 uppercase font-black block mb-1">Motion Intent</span>
+                           <span className="text-xs text-blue-300 font-mono">{animeMotion}</span>
+                         </div>
+                       )}
+                    </div>
+                  </div>
+                )}
+
+                {mode === "music" || mode === "lyrics" ? (
                   <>
-                    {/* BLOCK 1 - ACE CAPTION */}
-                    <div className="bg-black border-2 border-cyan-500/50 rounded-2xl overflow-hidden flex flex-col shadow-[0_0_40px_rgba(6,182,212,0.15)]">
+                    {/* ACE-Step Condensed Caption (NEW) */}
+                    {mode === "lyrics" && (
+                       <div className="bg-gradient-to-br from-[#1a1c25] to-[#12151c] border border-cyan-500/20 rounded-2xl p-5 shadow-inner relative overflow-hidden group">
+                          <div className="absolute top-0 right-0 p-3 opacity-0 group-hover:opacity-10 transition-opacity">
+                            <Sparkles size={40} className="text-cyan-400" />
+                          </div>
+                          <label className="text-cyan-400/80 font-black text-[10px] uppercase tracking-widest mb-3 flex items-center gap-2">
+                             <CheckCircle size={12} /> Optimized ACE-Step Caption
+                          </label>
+                          <div className="bg-black/40 border border-white/5 rounded-xl p-4 font-mono text-[11px] text-cyan-200/90 leading-relaxed min-h-[50px] shadow-lg">
+                            A {lyricVocalGender === 'vocalist' ? 'vocalist' : `${lyricVocalGender} voice`} performing a {lyricVocalStyle.toLowerCase()} song in {lyricLanguage} about {lyricThematicDirection.toLowerCase() || 'a creative vision'}, featuring high-fidelity production.
+                          </div>
+                          <button 
+                            onClick={() => {
+                              const caption = `A ${lyricVocalGender === 'vocalist' ? 'vocalist' : `${lyricVocalGender} voice`} performing a ${lyricVocalStyle.toLowerCase()} song in ${lyricLanguage} about ${lyricThematicDirection.toLowerCase() || 'a creative vision'}, featuring high-fidelity production.`;
+                              navigator.clipboard.writeText(caption);
+                              setCopiedFormat("ace");
+                              setTimeout(() => setCopiedFormat(null), 2000);
+                            }}
+                            className="mt-3 w-full bg-cyan-600/10 hover:bg-cyan-600/20 border border-cyan-500/30 py-2.5 rounded-xl text-[10px] font-black uppercase text-cyan-400 transition-all flex items-center justify-center gap-2"
+                          >
+                             {copiedFormat === "ace" ? <Check size={14} /> : <Copy size={14} />}
+                             {copiedFormat === "ace" ? "COPIED CAPTION" : "Copy Concise Caption"}
+                          </button>
+                        </div>
+                    )}
+
+                    {/* BLOCK 1 - ACE CAPTION / LYRICS */}
+                    <div className="bg-[#0a0c10] border-2 border-cyan-500/30 rounded-2xl overflow-hidden flex flex-col shadow-[0_0_40px_rgba(6,182,212,0.15)]">
                       <div className="bg-cyan-500/10 px-5 py-4 border-b border-cyan-500/20 flex justify-between items-center">
                         <span className="font-mono text-[10px] font-black text-cyan-400 uppercase tracking-widest">
-                          PASTE THIS INTO COMFYUI → caption field
+                          {mode === "music" ? "PASTE THIS INTO COMFYUI → caption field" : "PASTE THIS INTO COMFYUI → lyrics field"}
                         </span>
+                        {mode === "lyrics" && <span className="text-[10px] font-bold text-cyan-700 uppercase tracking-tighter">ACE-Step 1.5 Compatible</span>}
                       </div>
                       
                       <div className="p-6">
-                        <div className="font-mono text-xl text-cyan-300 leading-relaxed break-words min-h-[120px]">
-                          {aceCaption || <span className="text-cyan-900 italic">Configure parameters to generate ACE caption...</span>}
+                        <div className="font-mono text-lg text-cyan-300 leading-relaxed whitespace-pre-wrap break-words min-h-[120px]">
+                          {mode === "music" ? (aceCaption || <span className="text-cyan-900 italic">Configure parameters to generate ACE caption...</span>) : (masterPrompt || <span className="text-cyan-900 italic">Architecture lyrics to see output...</span>)}
                         </div>
                       </div>
 
                       <div className="p-4 pt-0">
                         <button 
                           onClick={() => {
-                            navigator.clipboard.writeText(aceCaption);
-                            setCopiedFormat("ace");
+                            navigator.clipboard.writeText(mode === "music" ? aceCaption : masterPrompt);
+                            setCopiedFormat(mode === "music" ? "text" : "lyrics");
                             setTimeout(() => setCopiedFormat(null), 2000);
                           }}
-                          className="w-full bg-cyan-500 text-black py-4 font-black rounded-xl hover:bg-cyan-400 transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(6,182,212,0.3)] uppercase tracking-widest text-xs"
+                          className={cn(
+                            "w-full py-4 font-black rounded-xl transition-all flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(6,182,212,0.3)] uppercase tracking-widest text-xs",
+                            mode === "music" ? "bg-cyan-500 text-black hover:bg-cyan-400" : "bg-purple-600 text-white hover:bg-purple-500 shadow-[0_0_20px_rgba(147,51,234,0.3)]"
+                          )}
                         >
-                          {copiedFormat === "ace" ? <CheckCircle size={18} /> : <Copy size={18} />}
-                          {copiedFormat === "ace" ? "COPIED TO CLIPBOARD" : "COPY ACE CAPTION"}
+                          {(copiedFormat === "text" || copiedFormat === "lyrics") ? <CheckCircle size={18} /> : <Copy size={18} />}
+                          {(copiedFormat === "text" || copiedFormat === "lyrics") ? "COPIED TO CLIPBOARD" : mode === "music" ? "COPY ACE CAPTION" : "COPY LYRICS FOR COMFYUI"}
                         </button>
                       </div>
                     </div>
 
-                    {/* BLOCK 2 - SUNO / UDIO */}
-                    <div className="bg-[#12151c] border border-[#1f2330] rounded-2xl overflow-hidden flex flex-col opacity-60 hover:opacity-100 transition-opacity">
-                      <div className="bg-[#181b24] px-5 py-4 border-b border-[#1f2330] flex justify-between items-center">
-                        <span className="font-syne text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
-                          FOR SUNO / UDIO / REFERENCE
-                        </span>
-                      </div>
-                      
-                      <div className="p-6">
-                        <div className="font-mono text-xs text-zinc-400 leading-relaxed whitespace-pre-wrap break-words">
-                          {masterPrompt || <span className="text-zinc-700 italic">Structured prompt format...</span>}
+                    {mode === "music" && (
+                      <div className="bg-[#12151c] border border-[#1f2330] rounded-2xl overflow-hidden flex flex-col opacity-60 hover:opacity-100 transition-opacity">
+                        <div className="bg-[#181b24] px-5 py-4 border-b border-[#1f2330] flex justify-between items-center">
+                          <span className="font-syne text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
+                            FOR SUNO / UDIO / REFERENCE
+                          </span>
+                        </div>
+                        
+                        <div className="p-6">
+                          <div className="font-mono text-xs text-zinc-400 leading-relaxed whitespace-pre-wrap break-words">
+                            {masterPrompt || <span className="text-zinc-700 italic">Structured prompt format...</span>}
+                          </div>
+                        </div>
+
+                        <div className="px-5 pb-5">
+                          <button 
+                            onClick={handleCopy}
+                            className="w-full bg-[#1f2330] hover:bg-[#252a3a] text-zinc-300 py-3 font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-[#2f354a] text-[10px] uppercase tracking-widest"
+                          >
+                            {copiedFormat === "text" ? <Check size={14} className="text-teal-400" /> : <Copy size={14} />}
+                            {copiedFormat === "text" ? "COPIED" : "COPY FULL PROMPT"}
+                          </button>
                         </div>
                       </div>
-
-                      <div className="px-5 pb-5">
-                        <button 
-                          onClick={handleCopy}
-                          className="w-full bg-[#1f2330] hover:bg-[#252a3a] text-zinc-300 py-3 font-bold rounded-xl transition-all flex items-center justify-center gap-2 border border-[#2f354a] text-[10px] uppercase tracking-widest"
-                        >
-                          {copiedFormat === "text" ? <Check size={14} className="text-teal-400" /> : <Copy size={14} />}
-                          {copiedFormat === "text" ? "COPIED" : "COPY FULL PROMPT"}
-                        </button>
-                      </div>
-                    </div>
+                    )}
 
                     <div className="px-2">
-                       <CollapsibleSection title="ACE-Step ComfyUI Settings Reference" colorClass="text-zinc-600">
-                          <div className="font-mono text-[10px] text-zinc-500 space-y-1.5 pt-2">
-                             <div className="flex justify-between"><span>temperature:</span> <span className="text-zinc-300">0.85</span></div>
-                             <div className="flex justify-between"><span>dit_guidance_scale:</span> <span className="text-zinc-300">7.5</span></div>
-                             <div className="flex justify-between"><span>dit_inference_steps:</span> <span className="text-zinc-300">60</span></div>
-                             <div className="flex justify-between"><span>thinking:</span> <span className="text-cyan-500 font-bold">ON</span></div>
-                             <div className="flex justify-between"><span>use_cot_caption:</span> <span className="text-cyan-500 font-bold">ON</span></div>
-                             <div className="flex justify-between"><span>use_cot_language:</span> <span className="text-cyan-500 font-bold">ON</span></div>
-                             <div className="flex justify-between"><span>lm_cfg_scale:</span> <span className="text-zinc-300">2.0</span></div>
-                             <div className="flex justify-between"><span>lm_top_p:</span> <span className="text-zinc-300">0.90</span></div>
-                             <div className="flex justify-between"><span>lm_top_k:</span> <span className="text-zinc-300">0</span></div>
-                             <div className="flex justify-between"><span>seed:</span> <span className="text-zinc-300">-1 (random)</span></div>
-                             <div className="flex justify-between"><span>dit_infer_method:</span> <span className="text-zinc-300">ode</span></div>
-                             <div className="flex justify-between"><span>is_instrumental:</span> <span className={cn(aceIsInstrumental ? "text-indigo-400" : "text-zinc-600")}>{aceIsInstrumental ? "TRUE" : "FALSE"}</span></div>
-                          </div>
+                       <CollapsibleSection title={mode === "music" ? "ACE-Step ComfyUI Settings Reference" : "ACE-Step Lyric Formatting Rules"} colorClass="text-zinc-600">
+                          {mode === "music" ? (
+                            <div className="font-mono text-[10px] text-zinc-500 space-y-1.5 pt-2">
+                               <div className="flex justify-between"><span>temperature:</span> <span className="text-zinc-300">0.85</span></div>
+                               <div className="flex justify-between"><span>dit_guidance_scale:</span> <span className="text-zinc-300">7.5</span></div>
+                               <div className="flex justify-between"><span>dit_inference_steps:</span> <span className="text-zinc-300">60</span></div>
+                               <div className="flex justify-between"><span>thinking:</span> <span className="text-cyan-500 font-bold">ON</span></div>
+                               <div className="flex justify-between"><span>use_cot_caption:</span> <span className="text-cyan-500 font-bold">ON</span></div>
+                               <div className="flex justify-between"><span>use_cot_language:</span> <span className="text-cyan-500 font-bold">ON</span></div>
+                               <div className="flex justify-between"><span>lm_cfg_scale:</span> <span className="text-zinc-300">2.0</span></div>
+                               <div className="flex justify-between"><span>lm_top_p:</span> <span className="text-zinc-300">0.90</span></div>
+                               <div className="flex justify-between"><span>lm_top_k:</span> <span className="text-zinc-300">0</span></div>
+                               <div className="flex justify-between"><span>seed:</span> <span className="text-zinc-300">-1 (random)</span></div>
+                               <div className="flex justify-between"><span>dit_infer_method:</span> <span className="text-zinc-300">ode</span></div>
+                               <div className="flex justify-between"><span>is_instrumental:</span> <span className={cn(aceIsInstrumental ? "text-indigo-400" : "text-zinc-600")}>{aceIsInstrumental ? "TRUE" : "FALSE"}</span></div>
+                            </div>
+                          ) : (
+                            <div className="font-mono text-[9px] text-zinc-500 space-y-2 pt-2 uppercase tracking-tighter font-bold">
+                               <p className="text-cyan-500/80 leading-relaxed border-l border-cyan-500/30 pl-2">
+                                 - [section] tags must be on their own line<br/>
+                                 - language tag at top is mandatory<br/>
+                                 - emotion tags are inline [emotion: sad]<br/>
+                                 - empty sections = instrumental
+                               </p>
+                            </div>
+                          )}
                        </CollapsibleSection>
                     </div>
                   </>
@@ -932,10 +1622,16 @@ export default function PromptGenerator() {
                         {copiedFormat === "text" ? <Check size={14} className="text-teal-400" /> : <Copy size={14} className="text-purple-400 group-hover:scale-110 transition-transform" />}
                         Copy Prompt Text
                       </button>
-                      <button onClick={handleExportJson} className="bg-gradient-to-r from-indigo-500 to-violet-600 hover:saturate-150 border border-transparent text-white rounded-xl py-3.5 flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(124,58,237,0.2)] font-bold text-[10px] uppercase tracking-wider">
-                        {copiedFormat === "json" ? <Check size={14} className="text-white" /> : <Download size={14} className="text-white" />}
-                        ComfyUI JSON
-                      </button>
+                      <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-violet-600 rounded-xl blur opacity-25 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                        <button onClick={handleDownloadWorkflow} className="relative w-full bg-[#0a0c10] hover:bg-[#12151c] border border-indigo-500/30 text-indigo-400 rounded-xl py-4 flex flex-col items-center justify-center gap-1 transition-all font-bold text-[11px] uppercase tracking-wider shadow-2xl">
+                          <div className="flex items-center gap-2">
+                            {copiedFormat === "json" ? <Check size={16} className="text-white" /> : <Download size={16} className="text-indigo-400 group-hover:animate-bounce" />}
+                            <span>Download High-Fidelity Workflow</span>
+                          </div>
+                          <span className="text-[9px] text-zinc-600 font-medium lowercase tracking-normal">Bakes this scene into a master .json graph</span>
+                        </button>
+                      </div>
                     </div>
                   </>
                 )}

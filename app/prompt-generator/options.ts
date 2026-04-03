@@ -468,3 +468,256 @@ export const ACE_POOLS = {
   ]
 };
 
+export const ACE_LYRIC_POOLS = {
+  LANGUAGES: ["English", "Spanish", "French", "Japanese", "Korean", "Chinese", "Portuguese", "German", "Italian", "Russian"],
+  EMOTIONS: ["sad", "angry", "hopeful", "joyful", "melancholic", "determined", "desperate", "tender", "aggressive", "peaceful"],
+  THEMES: [
+    "redemption", "heartbreak", "revenge", "freedom",
+    "addiction", "faith", "loss", "rage", "nostalgia",
+    "survival", "love found", "love lost", "identity",
+    "home", "escape", "war", "nature", "city life",
+    "poverty", "success", "paranoia", "peace"
+  ],
+  STRUCTURAL_TAGS: ["intro", "verse", "chorus", "bridge", "hook", "pre-chorus", "interlude", "outro"],
+  VOCAL_STYLES: [
+    "Modern Pop", "90s Boom Bap Rap", "Melodic RnB", "Traditional Country", 
+    "Outlaw Country", "Dark Synth Pop", "Aggressive Industrial", "Ethereal Dream Pop",
+    "Gospel Choir Soul", "Nu-Metal Energy", "Bossa Nova Smooth", "Classical Operatic",
+    "Jazz Crooner", "Delta Blues Growl", "Retrowave / Vaporwave"
+  ]
+};
+
+export const ANIME_POOLS = {
+  STYLES: [
+    "Studio Ghibli (Painterly/Nature)",
+    "Makoto Shinkai (Vibrant/Clouds)",
+    "90s Retro (Akira/Cyberpunk)",
+    "Modern Shonen (High-Contrast/Action)",
+    "Kyoto Animation (Soft/Detail)",
+    "TRIGGER Style (Geometric/Fluorescent)",
+    "Studio MAPPA (Gritty/Modern)",
+    "Flat Cel Shaded (Classic TV)",
+    "Oil Paint Anime (Thick Brush)",
+    "Sketch / Lineart Style",
+    "Ukiyo-e Inspired",
+    "Grimdark Seinen (Berserk Style)"
+  ],
+  MODELS: [
+    { 
+      name: "Pony Diffusion V6 XL", 
+      useCase: "Best for stylized characters and anatomical accuracy.", 
+      link: "https://civitai.com/models/257749/pony-diffusion-v6-xl",
+      qualityTags: "score_9, score_8_up, score_7_up, masterpiece, source_anime"
+    },
+    { 
+      name: "Animagine XL V3.1", 
+      useCase: "Best for high-fidelity official character consistency.", 
+      link: "https://civitai.com/models/260267/animagine-xl-v31",
+      qualityTags: "masterpiece, best quality, ultra-detailed"
+    },
+    { 
+      name: "Counterfeit-V3.0", 
+      useCase: "Best for soft, detailed painterly backgrounds.", 
+      link: "https://civitai.com/models/4468/counterfeit-v30",
+      qualityTags: "masterpiece, best quality"
+    },
+    { 
+      name: "MeinaMix", 
+      useCase: "Best for bright modern anime looks (SD1.5).", 
+      link: "https://civitai.com/models/7240/meinamix",
+      qualityTags: "masterpiece, 8k wallpaper"
+    }
+  ],
+  LORAS: [
+    { name: "Detail Tweaker XL", useCase: "Enhance complex textures and line weight." },
+    { name: "Concept Art / Ghibli Style", useCase: "Force painterly environmental foliage." },
+    { name: "90s Retro Aesthetic", useCase: "Apply grain and chromatic aberration." },
+    { name: "Anime Screencap Effect", useCase: "Add cinematic SUBTITLES and cinematic bars." }
+  ],
+  MOTION: [
+    "High Action (Fluid 24fps)",
+    "Traditional (On 2s / 12fps)",
+    "Glitchy / Stylized Cuts",
+    "Subtle Idle / Breathing"
+  ],
+  ACTIONS: [
+    "70s Retro Mecha Transformation Sequence",
+    "70s Dramatic Silhouette against Sunrise",
+    "70s Shojo Soft-Focus Poetic Close-Up",
+    "80s High-Speed Futuristic Motorcycle Slide",
+    "80s Kinetic Gunfight with Shell Casings",
+    "80s Neon Cyberpunk City Skyline Jump",
+    "90s High-Octane Martial Arts Energy Clash",
+    "90s Shonen Power-Up Scream with Aura",
+    "90s Magical Girl Transformation Sequence",
+    "90s Urban Rooftop Parkour Chase",
+    "2000s Complex Magical Circle Combat",
+    "2000s Dynamic Sword Clash with Sparks",
+    "2000s High-Intensity Impact Frame Flash",
+    "2000s Extreme Determination Eye Close-Up",
+    "Explosive Energy Blast (Ki)",
+    "Sakuga Highlight High-Speed Chase",
+    "Dimensional Gate / Portal Tear",
+    "Impact Frame (B&W Flashing)",
+  ],
+  FRAMING: [
+    "Dutchman Angle (Dynamic Tilt)",
+    "Impact Frame (High Contrast Flash)",
+    "Extreme Foreshortening (Power Shot)",
+    "Worm's Eye View (Looking Up)",
+    "Bird's Eye View (Looking Down)",
+    "Cinematic Profile Side-Shot",
+    "Extreme Close-Up (Eye Detail)",
+    "Cowboy Shot (Mid-Thigh Up)",
+    "Rule of Thirds Cinematic",
+    "Wide-Angle Environmental Shot"
+  ],
+  VFX: [
+    "Motion Blur / Speed Lines",
+    "Chromatic Aberration (RGB Shift)",
+    "Glowing Particle Effects",
+    "Screen Tones / Manga Hatching",
+    "Dynamic Lens Flare",
+    "Heat Haze / Distortion",
+    "Flying Debris / Dust Motes",
+    "Energy Auras / Lightning Sparks",
+    "Vignette / Film Grain",
+    "Sakuga Particle Dispersion"
+  ]
+};
+
+export const ACE_LYRIC_TEMPLATES = [
+  {
+    id: "cyber-void",
+    name: "Cybernetic Void",
+    genre: "Dark Techno / Industrial",
+    theme: "Digital isolation",
+    language: "English",
+    sections: [
+      { type: "intro", lyrics: "[heavy synth bass sequence]", emotion: "determined" },
+      { type: "verse", lyrics: "Neon rain on the silicon street,\nHeartbeat syncs to the city's beat.\nScanning the horizon for a glitch in the void,\nDigital memories of a life destroyed.", emotion: "aggressive" },
+      { type: "chorus", lyrics: "We are the ghosts in the mainframe,\nSearching for a soul, avoiding the blame.\nElectric blood and a heart of lead,\nWhere do the dreams go when the system is dead?", emotion: "desperate" },
+      { type: "outro", lyrics: "[fading digital glitch error]", emotion: "melancholic" }
+    ]
+  },
+  {
+    id: "dust-diesel",
+    name: "Dust & Diesel",
+    genre: "Outlaw Country / Southern Rock",
+    theme: "Road-weary freedom",
+    language: "English",
+    sections: [
+      { type: "intro", lyrics: "[twangy slide guitar swell]", emotion: "peaceful" },
+      { type: "verse", lyrics: "Woke up in Reno with the sun in my eyes,\nTrading my soul for the desert skies.\nThis old Ford pickup's seen better years,\nRunning on grit and a fountain of tears.", emotion: "melancholic" },
+      { type: "chorus", lyrics: "Dust and diesel on a Saturday night,\nChasing the horizon to stay in the light.\nNo home behind me, no roots below,\nWherever the wind and the highway go.", emotion: "determined" },
+      { type: "outro", lyrics: "[fading harmonica solo]", emotion: "peaceful" }
+    ]
+  },
+  {
+    id: "epic-redemption",
+    name: "Redemption Arc",
+    genre: "Epic Orchestral / Trailer",
+    theme: "Rising from defeat",
+    language: "English",
+    sections: [
+      { type: "intro", lyrics: "[low thunderous taiko drum hits]", emotion: "aggressive" },
+      { type: "verse", lyrics: "The silver curtain falls on the end of the age,\nA broken king on a hollow stage.\nBut from the ashes, the fire will grow,\nMore than the winter of defeat can know.", emotion: "desperate" },
+      { type: "chorus", lyrics: "Rise from the shadows, reclaim the throne,\nA kingdom of steel, built on bone.\nThe sky is burning, the oceans will roar,\nWe are become what we were before.", emotion: "hopeful" },
+      { type: "outro", lyrics: "[grand orchestral finale]", emotion: "joyful" }
+    ]
+  },
+  {
+    id: "neo-vapor",
+    name: "Neo-Vapor",
+    genre: "Retrowave / Dream Pop",
+    theme: "Nostalgic longing",
+    language: "English",
+    sections: [
+      { type: "intro", lyrics: "[shimmering 80s pads and bells]", emotion: "peaceful" },
+      { type: "verse", lyrics: "Midnight mirrors, a reflection of blue,\nChasing the echoes of a memory of you.\nPink clouds drifting over the bay,\nSearching for words I never could say.", emotion: "melancholic" },
+      { type: "chorus", lyrics: "Lost in the vapor, a pastel sunrise,\nLooking for truth in your electric eyes.\nRetro love in a digital dream,\nNothing is ever as real as it seems.", emotion: "tender" },
+      { type: "outro", lyrics: "[reverb-heavy synth fade]", emotion: "melancholic" }
+    ]
+  },
+  {
+    id: "red-state-parody",
+    name: "Red State Anthem",
+    genre: "Funny Country / Southern Anthem",
+    theme: "Right-wing Satire / Parody",
+    language: "English",
+    sections: [
+      { type: "intro", lyrics: "[heavy motorcycle engine revving, electric guitar riff]", emotion: "joyful" },
+      { type: "verse", lyrics: "Got my tractor in the driveway, got my eagle in the yard,\nWriting 'Freedom' on my mailbox with a permanent marker card.\nThey told me keep it quiet, but the pickup's way too loud,\nI'm just a simple man, standing tall and feeling proud.", emotion: "joyful" },
+      { type: "chorus", lyrics: "God, guns, and gasoline, that's the only way to be,\nLiving life in logic while they're lost across the sea.\nPut a flag on the moon, put a flag on my truck,\nIf you don't like the diesel, then you're running out of luck.", emotion: "aggressive" },
+      { type: "outro", lyrics: "[big country stadium finish with fireworks sounds]", emotion: "joyful" }
+    ]
+  },
+  {
+    id: "blue-state-parody",
+    name: "Blue Wave Blues",
+    genre: "Emo / Indie / Political Satire",
+    theme: "Left-wing Satire / Parody",
+    language: "English",
+    sections: [
+      { type: "intro", lyrics: "[sad acoustic guitar with vinyl crackle]", emotion: "melancholic" },
+      { type: "verse", lyrics: "My soy latte's lukewarm, like the policy we passed,\nI'm reading theory in the basement, hope the feeling's gonna last.\nI knitted you a scarf from the recycled hopes of youth,\nWaiting for a TikTok to tell me what's the truth.", emotion: "melancholic" },
+      { type: "chorus", lyrics: "Oh, the existential dread of a decentralized parade,\nWe're protesting the sunrise in the organic garden shade.\nWrite a poem for the planet, put it in a glass jar,\nWondering if the carbon tax will let me drive my car.", emotion: "desperate" },
+      { type: "outro", lyrics: "[fading out with a single, lonely wind chime]", emotion: "melancholic" }
+    ]
+  }
+];
+
+export const ACE_LYRIC_SEED_BANK = {
+  OPENING: [
+    "Neon rain on the silicon street,",
+    "Woke up at midnight with fire in my chest,",
+    "The silver curtain falls on the edge of the age,",
+    "Midnight mirrors, a reflection of blue,",
+    "Shadows dancing on the concrete wall,",
+    "The wind is howling like a ghost in the trees,",
+    "Static in the wires, a digital soul,",
+    "Behind the mountains where the thunder roars,",
+    "Got my tractor in the driveway, feeling mighty large,",
+    "My soy latte's lukewarm, like the policy we passed,"
+  ],
+  IMAGERY: [
+    "Scanning the spectrum for a sign of light,",
+    "Dust on my boots and a hole in my heart,",
+    "The sky is burning with a violet glow,",
+    "Chasing the echoes of a memory of you,",
+    "Iron and ivory, a kingdom of bone,",
+    "Cold coffee and a pack of lies,",
+    "Digital dreams in a pastel sunrise,",
+    "The ocean is deep and the stars are blind,",
+    "Writing 'Freedom' on my mailbox with a marker card,",
+    "Knitting scarves from the recycled hopes of youth,"
+  ],
+  HOOKS: [
+    "We are the ghosts in the mainframe,",
+    "God, guns, and whiskey on a Saturday night,",
+    "Rise from the ashes, reclaim the throne,",
+    "Lost in the vapor, an electric dream,",
+    "The cycle is broken, the end is near,",
+    "Living for the moments we can't repeat,",
+    "No way home and no roots below,",
+    "The light that burns is the light that leads,",
+    "God, guns, and gasoline, that's the only way to be,",
+    "Oh, the existential dread of a decentralized parade,"
+  ],
+  CLOSING: [
+    "Where do the dreams go when the system is dead?",
+    "Wherever the wind and the highway go.",
+    "The king is dead, long live the king.",
+    "Nothing is ever as real as it seems.",
+    "Scanning the void for another glitch.",
+    "The silence is louder than the thunder could be.",
+    "Fading out to a digital error.",
+    "The sun will rise on a different world.",
+    "If you don't like the diesel, you're out of luck.",
+    "Wondering if the carbon tax will let me drive my car."
+  ]
+};
+
+
+
+

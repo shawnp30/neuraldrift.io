@@ -3,13 +3,15 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Zap, Layers, Cpu, ChevronDown, Menu } from "lucide-react";
+import { ArrowRight, Zap, Layers, Cpu, ChevronDown, Menu, AlertCircle, Hammer, LifeBuoy } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import type { Difficulty } from "@/types";
 
 import { DynamicCTA } from "@/components/DynamicCTA";
 
-const DIFF_STYLES: Record<Difficulty, { badge: string; icon: React.ReactNode; color: string }> = {
+type GuideDifficulty = Difficulty | "Troubleshooting";
+
+const DIFF_STYLES: Record<GuideDifficulty, { badge: string; icon: React.ReactNode; color: string }> = {
   Beginner: { 
     badge: "bg-[rgba(163,230,53,0.1)] text-[#a3e635] border border-[rgba(163,230,53,0.2)]", 
     icon: <Zap size={14} />,
@@ -25,81 +27,200 @@ const DIFF_STYLES: Record<Difficulty, { badge: string; icon: React.ReactNode; co
     icon: <Cpu size={14} />,
     color: "#a78bfa"
   },
+  Troubleshooting: {
+    badge: "bg-[rgba(239,68,68,0.1)] text-[#ef4444] border border-[rgba(239,68,68,0.2)]",
+    icon: <AlertCircle size={14} />,
+    color: "#ef4444"
+  }
 };
 
 const GUIDES = [
-  // --- FOUNDATION SERIES ---
+  // --- BEGINNER FOUNDATION ---
   { 
     slug: "comfyui-complete-setup", 
-    difficulty: "Beginner" as Difficulty, 
+    difficulty: "Beginner" as GuideDifficulty, 
     title: "ComfyUI Complete Setup", 
-    desc: "Install, configure, and benchmark your first ComfyUI node network.", 
+    desc: "Install, configure, and benchmark your first ComfyUI node network with optimal VRAM settings.", 
     time: "12 min", 
     tag: "Foundation", 
-    image: "/images/learn/beginner.png",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
     minVram: 8,
     modelId: "sdxl"
   },
   { 
     slug: "installation", 
-    difficulty: "Beginner" as Difficulty, 
-    title: "ComfyUI Installation Guide", 
-    desc: "Complete setup for Windows/Linux. Portable vs Desktop methods.", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "How to install ComfyUI Correctly", 
+    desc: "Complete setup for Windows/Linux. From Python environment to the first successful generation.", 
     time: "15 min", 
     tag: "Foundation", 
-    image: "/images/learn/intermediate.png",
+    image: "/images/guides/comfyui-install.jpg",
     minVram: 4,
     modelId: "sdxl-turbo"
   },
-  // --- FLUX MASTERCLASS ---
+  { 
+    slug: "model-folders", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "Where Every Model File Goes", 
+    desc: "Properly organizing your Checkpoints, LoRAs, and VAEs for speed and easy management.", 
+    time: "10 min", 
+    tag: "Foundation", 
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "base"
+  },
+  { 
+    slug: "portable-vs-desktop", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "Portable vs Desktop: Which should you choose?", 
+    desc: "Side-by-side comparison. Which version works best for your specific GPU stack?", 
+    time: "8 min", 
+    tag: "Foundation", 
+    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2040&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "base"
+  },
+  { 
+    slug: "why-choose-portable", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "Why Choose ComfyUI Portable version", 
+    desc: "Exploring the benefits of the standalone version for flexibility and mobility across systems.", 
+    time: "5 min", 
+    tag: "Foundation", 
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "base"
+  },
+  { 
+    slug: "model-types", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "SD Model Types Explained", 
+    desc: "SDXL vs Flux vs DeepSeek. Choose the right core for your local pipeline.", 
+    time: "10 min", 
+    tag: "Masterclass", 
+    image: "/images/learn/beginner.png",
+    minVram: 12,
+    modelId: "flux-dev"
+  },
+
+  // --- INTERMEDIATE MASTERCLASS ---
+  { 
+    slug: "performance-optimization", 
+    difficulty: "Intermediate" as GuideDifficulty, 
+    title: "Optimize Performance On Any GPU", 
+    desc: "Squeeze every last bit of power from your local GPU with specific tier tuning strategies.", 
+    time: "15 min", 
+    tag: "Optimization", 
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2068&auto=format&fit=crop",
+    minVram: 8,
+    modelId: "sdxl"
+  },
+  { 
+    slug: "workflow-errors", 
+    difficulty: "Intermediate" as GuideDifficulty, 
+    title: "Understanding and Fixing Workflow Errors", 
+    desc: "Master troubleshooting for node not found, version conflicts, and loading failures.", 
+    time: "12 min", 
+    tag: "Maintenance", 
+    image: "/images/learn/intermediate.png",
+    minVram: 8,
+    modelId: "any"
+  },
+  { 
+    slug: "ace-step-1-5-comfyui", 
+    difficulty: "Intermediate" as GuideDifficulty, 
+    title: "Audio Ace: Spatial Synthesis", 
+    desc: "Master the bridge between Audio Ace and ComfyUI for premium AV generation.", 
+    time: "15 min", 
+    tag: "Audio Engine", 
+    image: "/images/guides/ace-node-prompt.png",
+    minVram: 8,
+    modelId: "ace-step-1.5"
+  },
+  { 
+    slug: "ai-workflow-setup-guide", 
+    difficulty: "Intermediate" as GuideDifficulty, 
+    title: "AI Workflow Setup Guide", 
+    desc: "Mastering the art of building scalable, modular AI architectures from scratch.", 
+    time: "20 min", 
+    tag: "Node Ops", 
+    image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=2070&auto=format&fit=crop",
+    minVram: 12,
+    modelId: "flux-dev"
+  },
+
+  // --- ADVANCED SYSTEMS ---
+  { 
+    slug: "custom-nodes", 
+    difficulty: "Advanced" as GuideDifficulty, 
+    title: "Custom Nodes: install & fix", 
+    desc: "Unlock ComfyUI extensions like Manager and IPAdapter. Building custom logic blocks.", 
+    time: "15 min", 
+    tag: "Extensions", 
+    image: "/images/learn/advanced.png",
+    minVram: 8,
+    modelId: "sdxl"
+  },
+  { 
+    slug: "gpu-errors", 
+    difficulty: "Advanced" as GuideDifficulty, 
+    title: "Fixing GPU Errors", 
+    desc: "Deep dive into solving CUDA out of memory errors and VRAM overflow issues.", 
+    time: "10 min", 
+    tag: "Hardware", 
+    image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?q=80&w=2070&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "any"
+  },
   { 
     slug: "train-flux-lora", 
-    difficulty: "Intermediate" as Difficulty, 
+    difficulty: "Advanced" as GuideDifficulty, 
     title: "Train Your First FLUX LoRA", 
-    desc: "Dataset preparation, Kohya_ss configuration, and evaluation loop.", 
+    desc: "Dataset prep, Kohya_ss configuration, and evaluation loop in under 6 hours.", 
     time: "28 min", 
-    tag: "Flux Masterclass", 
-    image: "/images/workflows/thumbs/flux.png",
+    tag: "Masterclass", 
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
     minVram: 16,
     modelId: "flux-dev"
   },
   { 
-    slug: "model-types", 
-    difficulty: "Intermediate" as Difficulty, 
-    title: "Neural Architecture Guide", 
-    desc: "SDXL vs Flux vs DeepSeek. Choose the right core for your pipeline.", 
-    time: "10 min", 
-    tag: "Flux Masterclass", 
-    image: "/images/workflows/thumbs/sdxl.png",
-    minVram: 12,
-    modelId: "flux-dev"
+    slug: "comfyui-deployment-guide", 
+    difficulty: "Advanced" as GuideDifficulty, 
+    title: "ComfyUI Deployment Guide", 
+    desc: "Deploy production-ready cloud APIs on RunPod, Modal, and AWS at scale.", 
+    time: "25 min", 
+    tag: "Architecture", 
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
+    minVram: 24,
+    modelId: "cloud"
   },
-  // --- CINEMATIC VIDEO ---
   { 
     slug: "ltx-video-cinematic-action", 
-    difficulty: "Advanced" as Difficulty, 
-    title: "LTX Video: Cinematic Action", 
-    desc: "Building consistent motion and camera lock with LTX-Video-2.3.", 
+    difficulty: "Advanced" as GuideDifficulty, 
+    title: "Cinematic Action Sequences", 
+    desc: "Build chase and action scenes with consistent motion using LTX-Video-2.3.", 
     time: "35 min", 
     tag: "Video Engine", 
-    image: "/images/workflows/thumbs/ltx-video.png",
+    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2069&auto=format&fit=crop",
     minVram: 24,
     modelId: "ltx-2.3-22b"
   },
+
+  // --- TROUBLESHOOTING ---
   { 
-    slug: "ace-step-1-5-comfyui", 
-    difficulty: "Intermediate" as Difficulty, 
-    title: "Audio Ace: Spatial Synthesis", 
-    desc: "Master the bridge between Audio Ace and ComfyUI for AV generation.", 
-    time: "15 min", 
-    tag: "Audio Engine", 
-    image: "/images/workflows/thumbs/animatediff.png",
-    minVram: 8,
-    modelId: "ace-step-1.5"
+    slug: "why-choose-desktop", 
+    difficulty: "Troubleshooting" as GuideDifficulty, 
+    title: "Desktop Setup Troubleshooting", 
+    desc: "Common roadblocks when installing the official ComfyUI desktop application.", 
+    time: "5 min", 
+    tag: "Support", 
+    image: "/images/guides/workflow-errors.png",
+    minVram: 4,
+    modelId: "base"
   }
 ];
 
-const CATEGORIES: Difficulty[] = ["Beginner", "Intermediate", "Advanced"];
+const CATEGORIES: GuideDifficulty[] = ["Beginner", "Intermediate", "Advanced", "Troubleshooting"];
 
 export default function GuidesPage() {
   const [activeSection, setActiveSection] = useState<string>("Beginner");

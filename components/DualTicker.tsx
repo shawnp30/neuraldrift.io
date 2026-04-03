@@ -5,29 +5,23 @@
 
 export default function DualTicker() {
   const line1 = [
-    "⚡ RTX 5080 — Primary test rig",
-    "🔧 ComfyUI — Workflow engine",
-    "🎬 LTX Video 2.3 — Cinematic generation",
-    "🧠 FLUX Dev/Schnell — Image models",
-    "📦 6 LoRA Models — Ready to download",
-    "⚙️ 50 ComfyUI Workflows — Plug & play",
-    "📧 15+ Subscribers — Weekly drops",
-    "🎯 0 Ads — Just signal",
-    "⚡ RTX 5080 — Primary test rig", // Duplicated for seamless loop
-    "🔧 ComfyUI — Workflow engine",
-    "🎬 LTX Video 2.3 — Cinematic generation",
-    "🧠 FLUX Dev/Schnell — Image models",
+    "🚀 Gemma 4 Release: Google DeepMind launches vision/audio-capable models on Hugging Face...",
+    "🛡️ ComfyUI Stability Phase: Feature freeze through April to prioritize core robustness...",
+    "🎬 OmniWeaving: Tencent Hunyuan team bridges gap in multimodal video synthesis...",
+    "💎 Civitai Airship: New 4K upscaling and frame interpolation for local gens...",
+    "🤗 Hugging Face: Day-one support for Gemma 4 across all major integrations...",
+    "🚀 Gemma 4 Release: Google DeepMind launches vision/audio-capable models on Hugging Face...", // Duplicate for loop
+    "🛡️ ComfyUI Stability Phase: Feature freeze through April to prioritize core robustness...",
   ];
 
   const line2 = [
-    "Stable Diffusion 3.5 Turbo hits 30% faster sampling...",
-    "ComfyUI nodes updated: new ControlNet preprocessor fixes...",
-    "Hugging Face releases Safetensors 0.5 with integrity checks...",
-    "Fooocus expands modular pipeline support...",
-    "Runway Gen-3 motion test leaks show major realism jump...",
-    "NVIDIA H20 benchmarks surface: huge speed bump for SDXL...",
-    "Stable Diffusion 3.5 Turbo hits 30% faster sampling...", // Duplicated
-    "ComfyUI nodes updated: new ControlNet preprocessor fixes...",
+    "📈 AMD Ryzen 9 9950X3D2: Teased with massive 192MB L3 Cache for April launch...",
+    "🔥 RTX 50-Series: New rumors surface regarding Blackwell-based high-end architecture...",
+    "💻 Intel Core Ultra Series 3: 18A process commercial PCs now shipping globally...",
+    "🏆 NVIDIA Dominance: Team Green maintains massive AIB market lead in Q1 2026...",
+    "🧠 Samsung/SK Hynix: LPDDR6 and HBM4 specs finalized for next-gen AI accelerators...",
+    "📈 AMD Ryzen 9 9950X3D2: Teased with massive 192MB L3 Cache for April launch...", // Duplicate for loop
+    "🔥 RTX 50-Series: New rumors surface regarding Blackwell-based high-end architecture...",
   ];
 
   return (
