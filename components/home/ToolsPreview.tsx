@@ -16,7 +16,7 @@ export function ToolsPreview() {
   return (
     <section ref={ref} className="py-24 px-10 max-w-7xl mx-auto">
       <div className="reveal mb-12">
-        <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// Tools</p>
+        <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Tools"}</p>
         <h2 className="font-syne text-[clamp(2rem,3.5vw,3rem)] font-black tracking-tight mb-3">
           Utilities for every stage<br />of the pipeline.
         </h2>

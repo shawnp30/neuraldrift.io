@@ -12,11 +12,11 @@ const NAV = [
   {
     label: "Learn",
     children: [
+      { name: "Hardware Hub", href: "/hardware", desc: "Can your PC run AI?", badge: "HOT" },
       { name: "Academy", href: "/tutorials", desc: "Video masterclasses" },
       { name: "Guides", href: "/guides", desc: "Written technical docs" },
       { name: "LTX Video 2.3", href: "/guides/ltx-video-cinematic-action", desc: "SOTA Video generation", badge: "NEW" },
       { name: "ACE-Step 1.5", href: "/guides/ace-step-1-5-comfyui", desc: "Advanced audio synthesis", badge: "NEW" },
-      { name: "GPU Guide", href: "/gpu-guide", desc: "What your card can run" },
     ],
   },
   {
@@ -37,9 +37,8 @@ const NAV = [
   {
     label: "Tools",
     children: [
-      { name: "VRAM Calculator", href: "/tools/vram-calculator", desc: "Can my GPU run it?" },
-      { name: "Benchmark Lookup", href: "/tools/benchmark-lookup", desc: "Compare GPU performance" },
       { name: "Caption Generator", href: "/tools/caption-generator", desc: "Auto-caption your images" },
+      { name: "Optimizer", href: "/hardware", desc: "Get peak speed & VRAM" },
     ],
   },
 ];
@@ -151,35 +150,20 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Audio setup
+  // Audio setup: One instance, single mount
   useEffect(() => {
+    if (typeof window === "undefined") return;
     const audio = new Audio("/sounds/lofi.mp3");
     audio.loop = true;
     audio.volume = 0;
     audioRef.current = audio;
 
-    const startOnInteraction = () => {
-      if (!audioRef.current || isPlaying) return;
-      audioRef.current
-        .play()
-        .then(() => {
-          setIsPlaying(true);
-          fadeIn();
-        })
-        .catch(() => {});
-    };
-
-    document.addEventListener("click", startOnInteraction, { once: true });
-    document.addEventListener("keydown", startOnInteraction, { once: true });
-
     return () => {
-      document.removeEventListener("click", startOnInteraction);
-      document.removeEventListener("keydown", startOnInteraction);
       audio.pause();
       audio.src = "";
       audioRef.current = null;
     };
-  }, [isPlaying]);
+  }, []);
 
   const fadeIn = () => {
     if (!audioRef.current) return;
@@ -428,7 +412,7 @@ export default function Navbar() {
             </button>
 
             <Link
-              href="/optimizer"
+              href="/hardware"
               className="hidden rounded-full bg-[#7c6af7] px-5 py-2 text-xs font-bold uppercase tracking-widest text-black transition-opacity hover:opacity-85 sm:flex"
             >
               CAN I RUN IT?
@@ -548,11 +532,11 @@ export default function Navbar() {
 
           <div className="mt-10">
             <Link
-              href="/tools/vram-calculator"
+              href="/hardware"
               onClick={() => setMobileOpen(false)}
               className="block w-full rounded-2xl bg-[#7c6af7] py-4 text-center text-xs font-black uppercase tracking-widest text-[#0a0a0b] shadow-[0_10px_20px_rgba(124,106,247,0.2)]"
             >
-              VRAM CALCULATOR →
+              HARDWARE HUB →
             </Link>
           </div>
         </div>

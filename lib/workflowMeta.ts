@@ -16,6 +16,7 @@ export interface WorkflowMeta {
   categoryLabel: string;
   categoryColor: string; // Tailwind text color
   categoryBg: string; // Tailwind bg color
+  previewImage?: string; // Result of the workflow
 }
 
 const WORKFLOW_META: Record<string, WorkflowMeta> = {
@@ -26,6 +27,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "FLUX",
     categoryColor: "text-cyan-400",
     categoryBg: "bg-cyan-400/10",
+    previewImage: "/images/workflows/cards/starter-diffusion.png",
   },
   "02-flux-schnell-fast": {
     description:
@@ -34,6 +36,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "FLUX",
     categoryColor: "text-cyan-400",
     categoryBg: "bg-cyan-400/10",
+    previewImage: "/images/workflows/cards/high-detail.png",
   },
   "03-sdxl-standard": {
     description:
@@ -42,6 +45,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "SDXL",
     categoryColor: "text-indigo-400",
     categoryBg: "bg-indigo-400/10",
+    previewImage: "/images/workflows/cards/lora-training.png",
   },
   "04-sdxl-portrait": {
     description:
@@ -50,6 +54,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "SDXL",
     categoryColor: "text-indigo-400",
     categoryBg: "bg-indigo-400/10",
+    previewImage: "/images/workflows/thumbs/sdxl.png",
   },
   "05-sdxl-turbo-fast": {
     description:
@@ -58,6 +63,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "SDXL",
     categoryColor: "text-indigo-400",
     categoryBg: "bg-indigo-400/10",
+    previewImage: "/images/workflows/thumbs/sdxl.png",
   },
   "06-sd15-classic": {
     description:
@@ -66,6 +72,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "SD 1.5",
     categoryColor: "text-amber-400",
     categoryBg: "bg-amber-400/10",
+    previewImage: "/images/workflows/cards/audio-gen.png",
   },
   "07-flux-lora-character": {
     description:
@@ -98,6 +105,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "SD 1.5",
     categoryColor: "text-amber-400",
     categoryBg: "bg-amber-400/10",
+    previewImage: "/images/workflows/thumbs/sd15.png",
   },
   "11-ltx-video-t2v-basic": {
     description:
@@ -106,6 +114,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "LTX VIDEO",
     categoryColor: "text-rose-400",
     categoryBg: "bg-rose-400/10",
+    previewImage: "/images/workflows/thumbs/ltx-video.png",
   },
   "12-ltx-video-cinematic": {
     description:
@@ -114,6 +123,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "LTX VIDEO",
     categoryColor: "text-rose-400",
     categoryBg: "bg-rose-400/10",
+    previewImage: "/images/workflows/thumbs/ltx-video.png",
   },
   "13-ltx-video-action-chase": {
     description:
@@ -138,6 +148,7 @@ const WORKFLOW_META: Record<string, WorkflowMeta> = {
     categoryLabel: "ANIMATEDIFF",
     categoryColor: "text-emerald-400",
     categoryBg: "bg-emerald-400/10",
+    previewImage: "/images/workflows/thumbs/animatediff.png",
   },
 };
 

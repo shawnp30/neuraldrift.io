@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { PlayCircle, FileText, ArrowRight, DollarSign, Workflow, Clock, Filter } from "lucide-react";
+import Navbar from "@/components/layout/Navbar";
+import { PlayCircle, FileText, ArrowRight, DollarSign, Workflow, Clock, Filter, Zap } from "lucide-react";
 
 import { DynamicCTA } from "@/components/DynamicCTA";
 
@@ -115,20 +116,41 @@ export default function TutorialsPage() {
     : VIDEOS.filter((v) => v.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-50 pt-32 pb-24 font-sans selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-[#0a0a0b] text-slate-50 pt-32 pb-24 font-sans selection:bg-[#7c6af7]/30">
+      <Navbar />
+
+      {/* SEO STRUCTURED DATA */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": VIDEOS.map((v, i) => ({
+              "@type": "VideoObject",
+              "position": i + 1,
+              "name": v.title,
+              "description": v.description,
+              "thumbnailUrl": `https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`,
+              "uploadDate": "2024-03-20T08:00:00+08:00",
+              "duration": `PT${v.duration.replace(':', 'M')}S`,
+              "embedUrl": `https://www.youtube.com/embed/${v.videoId}`
+            }))
+          })
+        }}
+      />
 
       {/* ── HEADER ── */}
       <div className="max-w-4xl mx-auto px-6 md:px-12 mb-20 text-center relative z-10">
-        <div className="inline-flex items-center justify-center p-4 bg-indigo-500/10 border border-indigo-500/20 rounded-2xl mb-6 shadow-[0_0_30px_rgba(99,102,241,0.15)] text-indigo-400">
+        <div className="inline-flex items-center justify-center p-4 bg-[#7c6af7]/10 border border-[#7c6af7]/20 rounded-2xl mb-6 shadow-[0_0_30px_rgba(124,106,247,0.15)] text-[#7c6af7]">
           <PlayCircle className="w-8 h-8" />
         </div>
-        <p className="text-indigo-400 font-[800] tracking-widest uppercase text-sm mb-4">Neuraldrift Academy</p>
-        <h1 className="text-4xl md:text-5xl lg:text-7xl font-[800] tracking-tight text-white mb-6 drop-shadow-xl leading-tight">
-          Academy <span className="text-indigo-400">Masterclass.</span>
+        <p className="text-[#7c6af7] font-[800] tracking-widest uppercase text-sm mb-4">Neuraldrift Academy</p>
+        <h1 className="font-syne text-5xl md:text-7xl font-[900] tracking-tight text-white mb-6 drop-shadow-xl leading-[0.85]">
+          ACADEMY <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7c6af7] to-[#22d3ee]">MASTERCLASS.</span>
         </h1>
-        <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl font-[500] text-[#8888a0] max-w-2xl mx-auto leading-relaxed">
           Premium video-led education for mastering generative AI, workflow architecture, and monetization strategies.
-          Looking for technical documentation? <Link href="/guides" className="text-indigo-400 hover:underline">Browse our Guides →</Link>
         </p>
       </div>
 
@@ -165,30 +187,38 @@ export default function TutorialsPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
             {filteredVideos.map((video, idx) => (
-              <div key={video.id} className="group relative bg-[#0f172a]/50 border border-indigo-500/20 rounded-3xl overflow-hidden hover:border-indigo-500/50 transition-all duration-500 shadow-xl hover:shadow-[0_0_40px_rgba(99,102,241,0.15)] flex flex-col">
+              <div key={video.id} className="group relative bg-[#111113] border border-white/5 rounded-3xl overflow-hidden hover:border-[#7c6af7]/30 transition-all duration-500 shadow-xl flex flex-col">
 
                 {/* 16:9 YouTube Embed Wrapper */}
-                <div className="relative w-full pt-[56.25%] bg-black">
+                <div className="relative w-full pt-[56.25%] bg-black overflow-hidden">
                   <iframe
-                    className="absolute inset-0 w-full h-full border-0"
+                    className="absolute inset-0 w-full h-full border-0 grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700"
                     src={`https://www.youtube.com/embed/${video.videoId}?rel=0&modestbranding=1`}
                     title={video.title}
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
+                  <div className="absolute inset-0 pointer-events-none border border-white/5 rounded-t-3xl" />
                 </div>
 
                 <div className="p-6 md:p-8 flex-1 flex flex-col">
                   <div className="flex items-center justify-between mb-4">
-                    <span className="text-[10px] font-[800] tracking-widest uppercase text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20">
+                    <span className="text-[10px] font-[800] tracking-widest uppercase text-[#7c6af7] bg-[#7c6af7]/10 px-3 py-1 rounded-full border border-[#7c6af7]/20">
                       {video.category}
                     </span>
-                    <span className="flex items-center gap-1.5 text-xs font-[600] text-zinc-500">
+                    <span className="flex items-center gap-1.5 text-xs font-[600] text-[#8888a0]">
                       <Clock className="w-4 h-4" /> {video.duration}
                     </span>
                   </div>
-                  <h3 className="text-xl md:text-2xl font-[800] text-white mb-3 group-hover:text-indigo-300 transition-colors">{video.title}</h3>
-                  <p className="text-sm font-[500] text-zinc-400 leading-relaxed mb-6 flex-1">{video.description}</p>
+                  <h3 className="font-syne text-xl md:text-2xl font-[800] text-white mb-3 group-hover:text-[#7c6af7] transition-colors leading-tight">{video.title}</h3>
+                  <p className="text-sm font-[500] text-[#8888a0] leading-relaxed mb-8 flex-1">{video.description}</p>
+                  
+                  <div className="pt-6 border-t border-white/5 flex items-center justify-between mt-auto">
+                    <Link href="/hardware" className="text-[10px] font-bold text-[#f59e0b] hover:text-white transition-colors flex items-center gap-1.5 uppercase tracking-widest">
+                       <Zap size={10} /> Check Gear Compatibility
+                    </Link>
+                    <ArrowRight className="w-5 h-5 text-[#7c6af7] group-hover:translate-x-1 transition-transform" />
+                  </div>
                 </div>
               </div>
             ))}

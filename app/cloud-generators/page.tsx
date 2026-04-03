@@ -151,7 +151,7 @@ export default function CloudGeneratorsPage() {
 
                 <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-2xl p-6 mt-auto">
                   <p className="text-xs font-[800] text-indigo-400 uppercase tracking-widest mb-3">Master Example</p>
-                  <p className="text-sm font-mono text-indigo-200/90 leading-relaxed">"{plat.example}"</p>
+                  <p className="text-sm font-mono text-indigo-200/90 leading-relaxed">&quot;{plat.example}&quot;</p>
                 </div>
               </div>
 
@@ -178,22 +178,22 @@ export default function CloudGeneratorsPage() {
               </div>
               <div className="bg-black/40 border border-white/5 p-6 rounded-2xl">
                 <h3 className="text-sky-400 font-[800] uppercase tracking-widest text-xs mb-2 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-sky-500" /> 2. The Action (Video)</h3>
-                <p className="text-sm font-[500] text-zinc-300 leading-relaxed">What is the subject doing? Use precise verbs. "Walking briskly", "staring intensely", "shattering into pieces".</p>
+                <p className="text-sm font-medium text-zinc-300 leading-relaxed">What is the subject doing? Use precise verbs. &quot;Walking briskly&quot;, &quot;staring intensely&quot;, &quot;shattering into pieces&quot;.</p>
               </div>
               <div className="bg-black/40 border border-white/5 p-6 rounded-2xl">
                 <h3 className="text-violet-400 font-[800] uppercase tracking-widest text-xs mb-2 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-violet-500" /> 3. Camera / Format</h3>
-                <p className="text-sm font-[500] text-zinc-300 leading-relaxed">Dictate the view. "Medium shot", "macro photography", "drone tracking shot", "GoPro footage". This defines the spatial relationship.</p>
+                <p className="text-sm font-medium text-zinc-300 leading-relaxed">Dictate the view. &quot;Medium shot&quot;, &quot;macro photography&quot;, &quot;drone tracking shot&quot;, &quot;GoPro footage&quot;. This defines the spatial relationship.</p>
               </div>
             </div>
             
             <div className="space-y-6">
               <div className="bg-black/40 border border-white/5 p-6 rounded-2xl">
                 <h3 className="text-pink-400 font-[800] uppercase tracking-widest text-xs mb-2 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-pink-500" /> 4. The Environment</h3>
-                <p className="text-sm font-[500] text-zinc-300 leading-relaxed">Where is the subject? "A rainy cyberpunk alley", "a sterile minimal laboratory", "an endless desert at dusk".</p>
+                <p className="text-sm font-medium text-zinc-300 leading-relaxed">Where is the subject? &quot;A rainy cyberpunk alley&quot;, &quot;a sterile minimal laboratory&quot;, &quot;an endless desert at dusk&quot;.</p>
               </div>
               <div className="bg-black/40 border border-white/5 p-6 rounded-2xl">
                 <h3 className="text-green-400 font-[800] uppercase tracking-widest text-xs mb-2 flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-green-500" /> 5. Lighting / Quality</h3>
-                <p className="text-sm font-[500] text-zinc-300 leading-relaxed">Lighting makes or breaks the execution. "Volumetric fog", "cinematic rim lighting", "harsh flash photography", "8k resolution".</p>
+                <p className="text-sm font-medium text-zinc-300 leading-relaxed">Lighting makes or breaks the execution. &quot;Volumetric fog&quot;, &quot;cinematic rim lighting&quot;, &quot;harsh flash photography&quot;, &quot;8k resolution&quot;.</p>
               </div>
               <div className="bg-gradient-to-br from-indigo-500 to-cyan-400 border border-indigo-400 p-6 rounded-2xl text-black">
                 <h3 className="text-black font-[900] uppercase tracking-widest text-xs mb-2 flex items-center gap-2"><Sparkles className="w-4 h-4 text-white" /> Put into Practice</h3>

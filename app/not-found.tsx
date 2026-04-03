@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -10,7 +11,7 @@ export default function NotFound() {
         Page not found
       </h1>
       <p className="mb-8 max-w-md text-muted">
-        This node doesn't exist in the graph. Try navigating back to the hub.
+        This node doesn&apos;t exist in the graph. Try navigating back to the hub.
       </p>
       <Link
         href="/"

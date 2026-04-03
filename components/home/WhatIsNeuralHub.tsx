@@ -18,7 +18,7 @@ export function WhatIsneuraldrift() {
       <div className="reveal grid grid-cols-2 items-center gap-20">
         <div>
           <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
-            // What is neuraldrift?
+            {"// What is neuraldrift?"}
           </p>
           <h2 className="mb-6 font-syne text-[clamp(2rem,3.5vw,3rem)] font-black leading-tight tracking-tight">
             The place you go

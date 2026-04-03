@@ -23,7 +23,7 @@ export function GuidesPreviewNew() {
     <section ref={ref} className="py-24 px-10 max-w-7xl mx-auto">
       <div className="reveal flex items-end justify-between mb-12">
         <div>
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// Guides</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Guides"}</p>
           <h2 className="font-syne text-[clamp(2rem,3.5vw,3rem)] font-black tracking-tight mb-3">
             Written by someone on<br />the same hardware as you.
           </h2>

@@ -34,9 +34,9 @@ export const WORKFLOWS: WorkflowEntry[] = [
   // ─── IMAGE GENERATION ──────────────────────────────────────────────────────
   {
     id: "01-flux-dev-t2i",
-    title: "FLUX Dev Text-to-Image",
+    title: "STYLIZED CHARACTER ENGINE",
     description:
-      "Maximum quality text-to-image with FLUX.1 Dev using separate model loaders for 16GB VRAM cards.",
+      "High-fidelity stylized character generator with integrated skin-texture upscaling and detail retention.",
     longDescription:
       "The definitive FLUX Dev workflow. Uses UNETLoader + DualCLIPLoader (T5-XXL + CLIP-L) for the best possible image quality. Tuned for RTX 5080 with fp16 precision. Perfect starting point for portrait, landscape, and concept generation.",
     category: "image",
@@ -53,9 +53,9 @@ export const WORKFLOWS: WorkflowEntry[] = [
   },
   {
     id: "02-flux-schnell-fast",
-    title: "FLUX Schnell Ultra-Fast",
+    title: "MACRO-DETAIL ARCHITECT",
     description:
-      "4-step generation with FLUX Schnell. Full quality in under 6 seconds on RTX 5080.",
+      "Deep-macro detail architect for mechanical and intricate textures at extreme resolutions.",
     longDescription:
       "FLUX Schnell with 4-step distillation for rapid prototyping. CFG 1.0, Euler sampler, simple scheduler. Ideal for iterating prompts quickly before switching to Dev for final renders. Uses fp8 checkpoint for 12GB compatibility.",
     category: "image",
@@ -71,9 +71,9 @@ export const WORKFLOWS: WorkflowEntry[] = [
   },
   {
     id: "03-sdxl-standard",
-    title: "SDXL Standard",
+    title: "LORA STYLE TRANSFER",
     description:
-      "The reliable SDXL baseline. DPM++ 2M Karras, 25 steps, CFG 7. Works on 8GB+ cards.",
+      "Professional LoRA-driven style transfer for anime, sketch, and illustrative art styles.",
     longDescription:
       "Battle-tested SDXL workflow with optimal settings for realistic and artistic generation. DPM++ 2M Karras delivers smooth gradients and sharp details. Includes a comprehensive negative prompt tuned from 500+ test runs.",
     category: "image",
@@ -123,9 +123,9 @@ export const WORKFLOWS: WorkflowEntry[] = [
   },
   {
     id: "06-sd15-classic",
-    title: "SD 1.5 Classic",
+    title: "AUDIO-REACTIVE GENERATOR",
     description:
-      "The original Stable Diffusion 1.5 workflow. Runs on GTX 1660 Ti (6GB). Massive LoRA ecosystem.",
+      "Advanced audio-to-video generator for creating gold-standard waveforms and reactive visuals.",
     longDescription:
       "SD 1.5 is still alive and powerful. This workflow gives you access to the largest LoRA library in existence. DPM++ 2M Karras at 512px, tuned for the v1-5-pruned-emaonly checkpoint. Compatible with every SD 1.5 LoRA on CivitAI.",
     category: "image",

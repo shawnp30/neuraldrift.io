@@ -32,7 +32,7 @@ const FEATURES = [
 
 export const ValueProp = () => {
   return (
-    <section className="py-24 bg-[#080b0f] border-t border-white/5">
+    <section className="py-16 bg-[#080b0f] border-t border-white/5">
       <div className="nh-container">
         <div className="text-center mb-16">
           <div className="nh-section-label justify-center mb-4">Core Capabilities</div>

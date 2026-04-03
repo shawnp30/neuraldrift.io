@@ -2,8 +2,8 @@
   {
     "id": "lightx2v/Wan2.2-Distill-Loras",
     "name": "lightx2v/Wan2.2-Distill-Loras",
-    "downloads": 2083708,
-    "likes": 222,
+    "downloads": 1831051,
+    "likes": 225,
     "tags": [
       "diffusers",
       "diffusion-single-file",
@@ -23,7 +23,7 @@
   {
     "id": "shashu2325/resume-job-matcher-lora",
     "name": "shashu2325/resume-job-matcher-lora",
-    "downloads": 568140,
+    "downloads": 684540,
     "likes": 15,
     "tags": [
       "peft",
@@ -41,8 +41,8 @@
   {
     "id": "lightx2v/Qwen-Image-Lightning",
     "name": "lightx2v/Qwen-Image-Lightning",
-    "downloads": 392261,
-    "likes": 781,
+    "downloads": 361795,
+    "likes": 785,
     "tags": [
       "diffusers",
       "Qwen-Image",
@@ -59,9 +59,36 @@
     ]
   },
   {
+    "id": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
+    "name": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
+    "downloads": 238216,
+    "likes": 222,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "text-generation",
+      "en",
+      "zh",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "base_model:Qwen/Qwen3.5-9B",
+      "base_model:adapter:Qwen/Qwen3.5-9B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
+    ]
+  },
+  {
     "id": "autoweeb/Qwen-Image-Edit-2509-Photo-to-Anime",
     "name": "autoweeb/Qwen-Image-Edit-2509-Photo-to-Anime",
-    "downloads": 225977,
+    "downloads": 214758,
     "likes": 118,
     "tags": [
       "diffusers",
@@ -83,9 +110,88 @@
     ]
   },
   {
+    "id": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
+    "name": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
+    "downloads": 213441,
+    "likes": 84,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "text-generation",
+      "en",
+      "zh",
+      "ko",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "base_model:Qwen/Qwen3.5-4B",
+      "base_model:adapter:Qwen/Qwen3.5-4B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
+    ]
+  },
+  {
+    "id": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
+    "name": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
+    "downloads": 202605,
+    "likes": 461,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "image-text-to-text",
+      "en",
+      "zh",
+      "ko",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:Roman1111111/claude-opus-4.6-10000x",
+      "base_model:Qwen/Qwen3.5-27B",
+      "base_model:adapter:Qwen/Qwen3.5-27B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
+    ]
+  },
+  {
+    "id": "lightx2v/Qwen-Image-Edit-2511-Lightning",
+    "name": "lightx2v/Qwen-Image-Edit-2511-Lightning",
+    "downloads": 196774,
+    "likes": 412,
+    "tags": [
+      "diffusers",
+      "safetensors",
+      "diffusion-single-file",
+      "comfyui",
+      "distillation",
+      "LoRA",
+      "lora",
+      "Qwen-Image",
+      "Qwen-Image-Edit",
+      "image-to-image",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
     "id": "hypaai/Hypa_Orpheus-3b-0.1-ft-unsloth-merged_16bit",
     "name": "hypaai/Hypa_Orpheus-3b-0.1-ft-unsloth-merged_16bit",
-    "downloads": 208320,
+    "downloads": 175231,
     "likes": 3,
     "tags": [
       "transformers",
@@ -118,141 +224,10 @@
     ]
   },
   {
-    "id": "lightx2v/Qwen-Image-Edit-2511-Lightning",
-    "name": "lightx2v/Qwen-Image-Edit-2511-Lightning",
-    "downloads": 204881,
-    "likes": 407,
-    "tags": [
-      "diffusers",
-      "safetensors",
-      "diffusion-single-file",
-      "comfyui",
-      "distillation",
-      "LoRA",
-      "lora",
-      "Qwen-Image",
-      "Qwen-Image-Edit",
-      "image-to-image",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
-    "name": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
-    "downloads": 175718,
-    "likes": 193,
-    "tags": [
-      "gguf",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "text-generation",
-      "en",
-      "zh",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "base_model:Qwen/Qwen3.5-9B",
-      "base_model:adapter:Qwen/Qwen3.5-9B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us",
-      "conversational"
-    ]
-  },
-  {
-    "id": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
-    "name": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
-    "downloads": 157396,
-    "likes": 73,
-    "tags": [
-      "gguf",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "text-generation",
-      "en",
-      "zh",
-      "ko",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "base_model:Qwen/Qwen3.5-4B",
-      "base_model:adapter:Qwen/Qwen3.5-4B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us",
-      "conversational"
-    ]
-  },
-  {
-    "id": "lrzjason/Anything2Real",
-    "name": "lrzjason/Anything2Real",
-    "downloads": 132941,
-    "likes": 88,
-    "tags": [
-      "diffusers",
-      "lora",
-      "image-to-image",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "nphSi/Z-Image-Lora",
-    "name": "nphSi/Z-Image-Lora",
-    "downloads": 109044,
-    "likes": 60,
-    "tags": [
-      "diffusers",
-      "text-to-image",
-      "lora",
-      "safetensors",
-      "template:diffusion-lora",
-      "z-image",
-      "dataset:nphSi/LoRa_Datasets",
-      "base_model:Tongyi-MAI/Z-Image",
-      "base_model:adapter:Tongyi-MAI/Z-Image",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "lightx2v/Qwen-Image-2512-Lightning",
-    "name": "lightx2v/Qwen-Image-2512-Lightning",
-    "downloads": 104622,
-    "likes": 195,
-    "tags": [
-      "diffusers",
-      "diffusion-single-file",
-      "comfyui",
-      "distillation",
-      "LoRA",
-      "lora",
-      "Qwen-Image",
-      "text-to-image",
-      "base_model:Qwen/Qwen-Image-2512",
-      "base_model:adapter:Qwen/Qwen-Image-2512",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
     "id": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
     "name": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
-    "downloads": 92081,
-    "likes": 185,
+    "downloads": 147991,
+    "likes": 240,
     "tags": [
       "gguf",
       "qwen3_5",
@@ -279,12 +254,66 @@
     ]
   },
   {
-    "id": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
-    "name": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
-    "downloads": 85140,
-    "likes": 203,
+    "id": "lrzjason/Anything2Real",
+    "name": "lrzjason/Anything2Real",
+    "downloads": 129813,
+    "likes": 89,
     "tags": [
-      "gguf",
+      "diffusers",
+      "lora",
+      "image-to-image",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "nphSi/Z-Image-Lora",
+    "name": "nphSi/Z-Image-Lora",
+    "downloads": 110654,
+    "likes": 62,
+    "tags": [
+      "diffusers",
+      "text-to-image",
+      "lora",
+      "safetensors",
+      "template:diffusion-lora",
+      "z-image",
+      "dataset:nphSi/LoRa_Datasets",
+      "base_model:Tongyi-MAI/Z-Image",
+      "base_model:adapter:Tongyi-MAI/Z-Image",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "lightx2v/Qwen-Image-2512-Lightning",
+    "name": "lightx2v/Qwen-Image-2512-Lightning",
+    "downloads": 101233,
+    "likes": 196,
+    "tags": [
+      "diffusers",
+      "diffusion-single-file",
+      "comfyui",
+      "distillation",
+      "LoRA",
+      "lora",
+      "Qwen-Image",
+      "text-to-image",
+      "base_model:Qwen/Qwen-Image-2512",
+      "base_model:adapter:Qwen/Qwen-Image-2512",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled",
+    "name": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled",
+    "downloads": 99144,
+    "likes": 52,
+    "tags": [
+      "safetensors",
       "qwen3_5",
       "unsloth",
       "qwen",
@@ -292,32 +321,14 @@
       "reasoning",
       "chain-of-thought",
       "lora",
-      "image-text-to-text",
+      "text-generation",
+      "conversational",
       "en",
       "zh",
-      "ko",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
       "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:Roman1111111/claude-opus-4.6-10000x",
-      "base_model:Qwen/Qwen3.5-27B",
-      "base_model:adapter:Qwen/Qwen3.5-27B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us",
-      "conversational"
-    ]
-  },
-  {
-    "id": "dx8152/Qwen-Edit-2509-Multiple-angles",
-    "name": "dx8152/Qwen-Edit-2509-Multiple-angles",
-    "downloads": 79806,
-    "likes": 919,
-    "tags": [
-      "diffusers",
-      "lora",
-      "image-to-image",
-      "base_model:Qwen/Qwen-Image-Edit-2509",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "base_model:Qwen/Qwen3.5-9B",
+      "base_model:adapter:Qwen/Qwen3.5-9B",
       "license:apache-2.0",
       "region:us"
     ]
@@ -325,8 +336,8 @@
   {
     "id": "Jackrong/Qwen3.5-2B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
     "name": "Jackrong/Qwen3.5-2B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
-    "downloads": 74013,
-    "likes": 128,
+    "downloads": 83548,
+    "likes": 134,
     "tags": [
       "gguf",
       "qwen3_5",
@@ -346,9 +357,40 @@
     ]
   },
   {
+    "id": "dx8152/Qwen-Edit-2509-Multiple-angles",
+    "name": "dx8152/Qwen-Edit-2509-Multiple-angles",
+    "downloads": 83376,
+    "likes": 922,
+    "tags": [
+      "diffusers",
+      "lora",
+      "image-to-image",
+      "base_model:Qwen/Qwen-Image-Edit-2509",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "latent-consistency/lcm-lora-sdv1-5",
+    "name": "latent-consistency/lcm-lora-sdv1-5",
+    "downloads": 64445,
+    "likes": 523,
+    "tags": [
+      "diffusers",
+      "lora",
+      "text-to-image",
+      "arxiv:2311.05556",
+      "base_model:runwayml/stable-diffusion-v1-5",
+      "base_model:adapter:runwayml/stable-diffusion-v1-5",
+      "license:openrail++",
+      "region:us"
+    ]
+  },
+  {
     "id": "ByteDance/Hyper-SD",
     "name": "ByteDance/Hyper-SD",
-    "downloads": 59137,
+    "downloads": 56938,
     "likes": 1333,
     "tags": [
       "diffusers",
@@ -365,8 +407,8 @@
   {
     "id": "Alissonerdx/BFS-Best-Face-Swap",
     "name": "Alissonerdx/BFS-Best-Face-Swap",
-    "downloads": 58387,
-    "likes": 393,
+    "downloads": 56682,
+    "likes": 409,
     "tags": [
       "diffusers",
       "lora",
@@ -389,25 +431,38 @@
     ]
   },
   {
-    "id": "latent-consistency/lcm-lora-sdv1-5",
-    "name": "latent-consistency/lcm-lora-sdv1-5",
-    "downloads": 56840,
-    "likes": 522,
+    "id": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
+    "name": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
+    "downloads": 53598,
+    "likes": 92,
     "tags": [
-      "diffusers",
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
       "lora",
-      "text-to-image",
-      "arxiv:2311.05556",
-      "base_model:runwayml/stable-diffusion-v1-5",
-      "base_model:adapter:runwayml/stable-diffusion-v1-5",
-      "license:openrail++",
-      "region:us"
+      "image-text-to-text",
+      "en",
+      "zh",
+      "ko",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:Roman1111111/claude-opus-4.6-10000x",
+      "base_model:Qwen/Qwen3.5-4B",
+      "base_model:adapter:Qwen/Qwen3.5-4B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
     ]
   },
   {
     "id": "ostris/zimage_turbo_training_adapter",
     "name": "ostris/zimage_turbo_training_adapter",
-    "downloads": 54390,
+    "downloads": 50900,
     "likes": 131,
     "tags": [
       "diffusers",
@@ -421,9 +476,38 @@
     ]
   },
   {
+    "id": "LuffyTheFox/Qwen3.5-9B-Claude-4.6-Opus-Uncensored-Distilled-GGUF",
+    "name": "LuffyTheFox/Qwen3.5-9B-Claude-4.6-Opus-Uncensored-Distilled-GGUF",
+    "downloads": 47935,
+    "likes": 87,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "uncensored",
+      "not-for-all-audiences",
+      "text-generation",
+      "conversational",
+      "en",
+      "zh",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "base_model:Qwen/Qwen3.5-9B",
+      "base_model:adapter:Qwen/Qwen3.5-9B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us"
+    ]
+  },
+  {
     "id": "tarn59/pixel_art_style_lora_z_image_turbo",
     "name": "tarn59/pixel_art_style_lora_z_image_turbo",
-    "downloads": 49800,
+    "downloads": 47279,
     "likes": 26,
     "tags": [
       "diffusers",
@@ -439,8 +523,8 @@
   {
     "id": "fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA",
     "name": "fal/Qwen-Image-Edit-2511-Multiple-Angles-LoRA",
-    "downloads": 45406,
-    "likes": 1152,
+    "downloads": 42553,
+    "likes": 1184,
     "tags": [
       "diffusers",
       "qwen",
@@ -462,10 +546,39 @@
     ]
   },
   {
+    "id": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-v2",
+    "name": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-v2",
+    "downloads": 40950,
+    "likes": 146,
+    "tags": [
+      "safetensors",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "image-text-to-text",
+      "conversational",
+      "en",
+      "zh",
+      "ko",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:Roman1111111/claude-opus-4.6-10000x",
+      "dataset:TeichAI/claude-4.5-opus-high-reasoning-250x",
+      "base_model:Qwen/Qwen3.5-9B",
+      "base_model:adapter:Qwen/Qwen3.5-9B",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
     "id": "kenpath/svara-tts-v1",
     "name": "kenpath/svara-tts-v1",
-    "downloads": 38647,
-    "likes": 31,
+    "downloads": 37009,
+    "likes": 32,
     "tags": [
       "transformers",
       "safetensors",
@@ -514,133 +627,9 @@
     ]
   },
   {
-    "id": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
-    "name": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-v2-GGUF",
-    "downloads": 38533,
-    "likes": 78,
-    "tags": [
-      "gguf",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "image-text-to-text",
-      "en",
-      "zh",
-      "ko",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:Roman1111111/claude-opus-4.6-10000x",
-      "base_model:Qwen/Qwen3.5-4B",
-      "base_model:adapter:Qwen/Qwen3.5-4B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us",
-      "conversational"
-    ]
-  },
-  {
-    "id": "LuffyTheFox/Qwen3.5-9B-Claude-4.6-Opus-Uncensored-Distilled-GGUF",
-    "name": "LuffyTheFox/Qwen3.5-9B-Claude-4.6-Opus-Uncensored-Distilled-GGUF",
-    "downloads": 38529,
-    "likes": 80,
-    "tags": [
-      "gguf",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "uncensored",
-      "not-for-all-audiences",
-      "text-generation",
-      "conversational",
-      "en",
-      "zh",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "base_model:Qwen/Qwen3.5-9B",
-      "base_model:adapter:Qwen/Qwen3.5-9B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us"
-    ]
-  },
-  {
-    "id": "prithivMLmods/Qwen-Image-Edit-2511-Object-Adder",
-    "name": "prithivMLmods/Qwen-Image-Edit-2511-Object-Adder",
-    "downloads": 34432,
-    "likes": 32,
-    "tags": [
-      "diffusers",
-      "lora",
-      "object-adder",
-      "art",
-      "image-to-image",
-      "en",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "doi:10.57967/hf/7439",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-v2",
-    "name": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-v2",
-    "downloads": 34381,
-    "likes": 128,
-    "tags": [
-      "safetensors",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "image-text-to-text",
-      "conversational",
-      "en",
-      "zh",
-      "ko",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:Roman1111111/claude-opus-4.6-10000x",
-      "dataset:TeichAI/claude-4.5-opus-high-reasoning-250x",
-      "base_model:Qwen/Qwen3.5-9B",
-      "base_model:adapter:Qwen/Qwen3.5-9B",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "prithivMLmods/Qwen-Image-Edit-2511-Ultra-Realistic-Portrait",
-    "name": "prithivMLmods/Qwen-Image-Edit-2511-Ultra-Realistic-Portrait",
-    "downloads": 34074,
-    "likes": 51,
-    "tags": [
-      "diffusers",
-      "lora",
-      "art",
-      "image-to-image",
-      "en",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "doi:10.57967/hf/7595",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
     "id": "ycheng1024/task-20-microsoft-Phi-3-mini-4k-instruct",
     "name": "ycheng1024/task-20-microsoft-Phi-3-mini-4k-instruct",
-    "downloads": 32846,
+    "downloads": 32847,
     "likes": 0,
     "tags": [
       "peft",
@@ -658,27 +647,38 @@
     ]
   },
   {
-    "id": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled",
-    "name": "Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled",
-    "downloads": 31649,
-    "likes": 45,
+    "id": "prithivMLmods/Qwen-Image-Edit-2511-Ultra-Realistic-Portrait",
+    "name": "prithivMLmods/Qwen-Image-Edit-2511-Ultra-Realistic-Portrait",
+    "downloads": 32505,
+    "likes": 54,
     "tags": [
-      "safetensors",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
+      "diffusers",
       "lora",
-      "text-generation",
-      "conversational",
+      "art",
+      "image-to-image",
       "en",
-      "zh",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "base_model:Qwen/Qwen3.5-9B",
-      "base_model:adapter:Qwen/Qwen3.5-9B",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
+      "doi:10.57967/hf/7595",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "prithivMLmods/Qwen-Image-Edit-2511-Object-Adder",
+    "name": "prithivMLmods/Qwen-Image-Edit-2511-Object-Adder",
+    "downloads": 31161,
+    "likes": 32,
+    "tags": [
+      "diffusers",
+      "lora",
+      "object-adder",
+      "art",
+      "image-to-image",
+      "en",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
+      "doi:10.57967/hf/7439",
       "license:apache-2.0",
       "region:us"
     ]
@@ -686,7 +686,7 @@
   {
     "id": "valiantcat/Qwen-Image-Edit-2511-Upscale2K",
     "name": "valiantcat/Qwen-Image-Edit-2511-Upscale2K",
-    "downloads": 31613,
+    "downloads": 29465,
     "likes": 150,
     "tags": [
       "diffusers",
@@ -704,8 +704,8 @@
   {
     "id": "Wuli-art/Qwen-Image-2512-Turbo-LoRA-2-Steps",
     "name": "Wuli-art/Qwen-Image-2512-Turbo-LoRA-2-Steps",
-    "downloads": 29782,
-    "likes": 111,
+    "downloads": 27150,
+    "likes": 114,
     "tags": [
       "diffusers",
       "Qwen",
@@ -721,9 +721,68 @@
     ]
   },
   {
+    "id": "Jackrong/Qwen3.5-0.8B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
+    "name": "Jackrong/Qwen3.5-0.8B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
+    "downloads": 26632,
+    "likes": 40,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "qwen3.5-0.8B",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "text-generation",
+      "en",
+      "zh",
+      "ko",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "base_model:Qwen/Qwen3.5-0.8B",
+      "base_model:adapter:Qwen/Qwen3.5-0.8B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
+    ]
+  },
+  {
+    "id": "LuffyTheFox/Qwen3.5-27B-Claude-4.6-Opus-Uncensored-V2-Kullback-Leibler-GGUF",
+    "name": "LuffyTheFox/Qwen3.5-27B-Claude-4.6-Opus-Uncensored-V2-Kullback-Leibler-GGUF",
+    "downloads": 25758,
+    "likes": 30,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "uncensored",
+      "image-text-to-text",
+      "en",
+      "zh",
+      "ko",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:Roman1111111/claude-opus-4.6-10000x",
+      "base_model:Qwen/Qwen3.5-27B",
+      "base_model:adapter:Qwen/Qwen3.5-27B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
+    ]
+  },
+  {
     "id": "ahczhg/Llama-3.2-1B-Aegis-SFT-DPO",
     "name": "ahczhg/Llama-3.2-1B-Aegis-SFT-DPO",
-    "downloads": 23999,
+    "downloads": 23996,
     "likes": 1,
     "tags": [
       "transformers",
@@ -754,7 +813,7 @@
   {
     "id": "prithivMLmods/Qwen-Image-Edit-2511-Hyper-Realistic-Portrait",
     "name": "prithivMLmods/Qwen-Image-Edit-2511-Hyper-Realistic-Portrait",
-    "downloads": 23659,
+    "downloads": 22254,
     "likes": 17,
     "tags": [
       "diffusers",
@@ -772,8 +831,8 @@
   {
     "id": "lovis93/next-scene-qwen-image-lora-2509",
     "name": "lovis93/next-scene-qwen-image-lora-2509",
-    "downloads": 23231,
-    "likes": 592,
+    "downloads": 22098,
+    "likes": 595,
     "tags": [
       "diffusers",
       "lora",
@@ -792,38 +851,9 @@
     ]
   },
   {
-    "id": "Jackrong/Qwen3.5-0.8B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
-    "name": "Jackrong/Qwen3.5-0.8B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
-    "downloads": 20481,
-    "likes": 36,
-    "tags": [
-      "gguf",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "qwen3.5-0.8B",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "text-generation",
-      "en",
-      "zh",
-      "ko",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "base_model:Qwen/Qwen3.5-0.8B",
-      "base_model:adapter:Qwen/Qwen3.5-0.8B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us",
-      "conversational"
-    ]
-  },
-  {
     "id": "starsfriday/Qwen-Image-Edit-2511-Upscale2K",
     "name": "starsfriday/Qwen-Image-Edit-2511-Upscale2K",
-    "downloads": 20477,
+    "downloads": 20813,
     "likes": 14,
     "tags": [
       "diffusers",
@@ -839,9 +869,36 @@
     ]
   },
   {
+    "id": "athrael-soju/colqwen3.5-4.5B-v3",
+    "name": "athrael-soju/colqwen3.5-4.5B-v3",
+    "downloads": 20797,
+    "likes": 4,
+    "tags": [
+      "colpali_engine",
+      "safetensors",
+      "qwen3_5",
+      "visual-document-retrieval",
+      "colbert",
+      "late-interaction",
+      "multi-vector",
+      "lora",
+      "model-soup",
+      "optimized",
+      "en",
+      "fr",
+      "de",
+      "es",
+      "zh",
+      "base_model:Qwen/Qwen3.5-4B",
+      "base_model:adapter:Qwen/Qwen3.5-4B",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
     "id": "Danrisi/Lenovo_UltraReal_Z_Image",
     "name": "Danrisi/Lenovo_UltraReal_Z_Image",
-    "downloads": 20331,
+    "downloads": 19937,
     "likes": 10,
     "tags": [
       "diffusers",
@@ -856,44 +913,10 @@
     ]
   },
   {
-    "id": "latent-consistency/lcm-lora-sdxl",
-    "name": "latent-consistency/lcm-lora-sdxl",
-    "downloads": 19780,
-    "likes": 768,
-    "tags": [
-      "diffusers",
-      "lora",
-      "text-to-image",
-      "arxiv:2311.05556",
-      "base_model:stabilityai/stable-diffusion-xl-base-1.0",
-      "base_model:adapter:stabilityai/stable-diffusion-xl-base-1.0",
-      "license:openrail++",
-      "region:us"
-    ]
-  },
-  {
-    "id": "tlennon-ie/qwen-edit-skin",
-    "name": "tlennon-ie/qwen-edit-skin",
-    "downloads": 18738,
-    "likes": 173,
-    "tags": [
-      "diffusers",
-      "lora",
-      "template:diffusion-lora",
-      "image-to-image",
-      "qwen",
-      "en",
-      "base_model:Qwen/Qwen-Image-Edit-2509",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
     "id": "enhanceaiteam/Flux-Uncensored-V2",
     "name": "enhanceaiteam/Flux-Uncensored-V2",
-    "downloads": 17364,
-    "likes": 710,
+    "downloads": 18058,
+    "likes": 716,
     "tags": [
       "diffusers",
       "text-to-image",
@@ -910,23 +933,26 @@
     ]
   },
   {
-    "id": "alibaba-pai/Z-Image-Fun-Lora-Distill",
-    "name": "alibaba-pai/Z-Image-Fun-Lora-Distill",
-    "downloads": 17007,
-    "likes": 125,
+    "id": "latent-consistency/lcm-lora-sdxl",
+    "name": "latent-consistency/lcm-lora-sdxl",
+    "downloads": 17491,
+    "likes": 768,
     "tags": [
-      "videox_fun",
+      "diffusers",
       "lora",
       "text-to-image",
-      "license:apache-2.0",
+      "arxiv:2311.05556",
+      "base_model:stabilityai/stable-diffusion-xl-base-1.0",
+      "base_model:adapter:stabilityai/stable-diffusion-xl-base-1.0",
+      "license:openrail++",
       "region:us"
     ]
   },
   {
     "id": "LuffyTheFox/Omnicoder-Claude-4.6-Opus-Uncensored-GGUF",
     "name": "LuffyTheFox/Omnicoder-Claude-4.6-Opus-Uncensored-GGUF",
-    "downloads": 16355,
-    "likes": 11,
+    "downloads": 17386,
+    "likes": 13,
     "tags": [
       "gguf",
       "qwen3_5",
@@ -954,36 +980,72 @@
     ]
   },
   {
-    "id": "athrael-soju/colqwen3.5-4.5B-v3",
-    "name": "athrael-soju/colqwen3.5-4.5B-v3",
-    "downloads": 15807,
-    "likes": 4,
+    "id": "tlennon-ie/qwen-edit-skin",
+    "name": "tlennon-ie/qwen-edit-skin",
+    "downloads": 17180,
+    "likes": 174,
     "tags": [
-      "colpali_engine",
-      "safetensors",
-      "qwen3_5",
-      "visual-document-retrieval",
-      "colbert",
-      "late-interaction",
-      "multi-vector",
+      "diffusers",
       "lora",
-      "model-soup",
-      "optimized",
+      "template:diffusion-lora",
+      "image-to-image",
+      "qwen",
       "en",
-      "fr",
-      "de",
-      "es",
-      "zh",
-      "base_model:Qwen/Qwen3.5-4B",
-      "base_model:adapter:Qwen/Qwen3.5-4B",
+      "base_model:Qwen/Qwen-Image-Edit-2509",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
       "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "alibaba-pai/Z-Image-Fun-Lora-Distill",
+    "name": "alibaba-pai/Z-Image-Fun-Lora-Distill",
+    "downloads": 16295,
+    "likes": 131,
+    "tags": [
+      "videox_fun",
+      "lora",
+      "text-to-image",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "dx8152/Flux2-Klein-9B-Consistency",
+    "name": "dx8152/Flux2-Klein-9B-Consistency",
+    "downloads": 16173,
+    "likes": 210,
+    "tags": [
+      "diffusers",
+      "lora",
+      "image-to-image",
+      "base_model:black-forest-labs/FLUX.2-klein-9B",
+      "base_model:adapter:black-forest-labs/FLUX.2-klein-9B",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "vafipas663/Qwen-Edit-2509-Upscale-LoRA",
+    "name": "vafipas663/Qwen-Edit-2509-Upscale-LoRA",
+    "downloads": 14954,
+    "likes": 226,
+    "tags": [
+      "diffusers",
+      "lora",
+      "image-to-image",
+      "dataset:zhihefang/UltraHR-100K",
+      "dataset:1aurent/unsplash-lite",
+      "base_model:Qwen/Qwen-Image-Edit-2509",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
+      "license:gpl-3.0",
       "region:us"
     ]
   },
   {
     "id": "XLabs-AI/flux-RealismLora",
     "name": "XLabs-AI/flux-RealismLora",
-    "downloads": 15012,
+    "downloads": 13948,
     "likes": 1217,
     "tags": [
       "diffusers",
@@ -1000,26 +1062,9 @@
     ]
   },
   {
-    "id": "vafipas663/Qwen-Edit-2509-Upscale-LoRA",
-    "name": "vafipas663/Qwen-Edit-2509-Upscale-LoRA",
-    "downloads": 14907,
-    "likes": 226,
-    "tags": [
-      "diffusers",
-      "lora",
-      "image-to-image",
-      "dataset:zhihefang/UltraHR-100K",
-      "dataset:1aurent/unsplash-lite",
-      "base_model:Qwen/Qwen-Image-Edit-2509",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
-      "license:gpl-3.0",
-      "region:us"
-    ]
-  },
-  {
     "id": "lightx2v/Wan2.1-Distill-Models",
     "name": "lightx2v/Wan2.1-Distill-Models",
-    "downloads": 14256,
+    "downloads": 13898,
     "likes": 23,
     "tags": [
       "diffusers",
@@ -1037,73 +1082,9 @@
     ]
   },
   {
-    "id": "dx8152/Flux2-Klein-9B-Consistency",
-    "name": "dx8152/Flux2-Klein-9B-Consistency",
-    "downloads": 14008,
-    "likes": 191,
-    "tags": [
-      "diffusers",
-      "lora",
-      "image-to-image",
-      "base_model:black-forest-labs/FLUX.2-klein-9B",
-      "base_model:adapter:black-forest-labs/FLUX.2-klein-9B",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "dx8152/Qwen-Image-Edit-2509-Light_restoration",
-    "name": "dx8152/Qwen-Image-Edit-2509-Light_restoration",
-    "downloads": 13795,
-    "likes": 242,
-    "tags": [
-      "diffusers",
-      "lora",
-      "image-to-image",
-      "base_model:Qwen/Qwen-Image-Edit-2509",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "dx8152/Qwen-Edit-2509-Light-Migration",
-    "name": "dx8152/Qwen-Edit-2509-Light-Migration",
-    "downloads": 13786,
-    "likes": 152,
-    "tags": [
-      "diffusers",
-      "lora",
-      "image-to-image",
-      "base_model:Qwen/Qwen-Image-Edit-2509",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "prithivMLmods/Qwen-Image-Edit-2511-Object-Remover",
-    "name": "prithivMLmods/Qwen-Image-Edit-2511-Object-Remover",
-    "downloads": 13654,
-    "likes": 56,
-    "tags": [
-      "diffusers",
-      "lora",
-      "object-remover",
-      "art",
-      "image-to-image",
-      "en",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "doi:10.57967/hf/7435",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
     "id": "lopi999/Wan2.2-I2V_General-NSFW-LoRA",
     "name": "lopi999/Wan2.2-I2V_General-NSFW-LoRA",
-    "downloads": 13609,
+    "downloads": 13644,
     "likes": 55,
     "tags": [
       "diffusers",
@@ -1117,10 +1098,25 @@
     ]
   },
   {
+    "id": "dx8152/Qwen-Image-Edit-2509-Light_restoration",
+    "name": "dx8152/Qwen-Image-Edit-2509-Light_restoration",
+    "downloads": 13274,
+    "likes": 242,
+    "tags": [
+      "diffusers",
+      "lora",
+      "image-to-image",
+      "base_model:Qwen/Qwen-Image-Edit-2509",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
     "id": "LyliaEngine/Pony_Diffusion_V6_XL",
     "name": "LyliaEngine/Pony_Diffusion_V6_XL",
-    "downloads": 13268,
-    "likes": 77,
+    "downloads": 13124,
+    "likes": 79,
     "tags": [
       "diffusers",
       "text-to-image",
@@ -1134,56 +1130,16 @@
     ]
   },
   {
-    "id": "prithivMLmods/Qwen-Image-Edit-2511-Polaroid-Photo",
-    "name": "prithivMLmods/Qwen-Image-Edit-2511-Polaroid-Photo",
-    "downloads": 13225,
-    "likes": 10,
+    "id": "dx8152/Qwen-Edit-2509-Light-Migration",
+    "name": "dx8152/Qwen-Edit-2509-Light-Migration",
+    "downloads": 12958,
+    "likes": 152,
     "tags": [
       "diffusers",
       "lora",
-      "art",
-      "polaroid",
       "image-to-image",
-      "en",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "doi:10.57967/hf/7489",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "lilylilith/QIE-2511-MP-AnyLight",
-    "name": "lilylilith/QIE-2511-MP-AnyLight",
-    "downloads": 13013,
-    "likes": 24,
-    "tags": [
-      "diffusers",
-      "LoRA",
-      "lora",
-      "Qwen-Image-Edit",
-      "Qwen-Image",
-      "image-to-image",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "prithivMLmods/Qwen-Image-Edit-2511-Unblur-Upscale",
-    "name": "prithivMLmods/Qwen-Image-Edit-2511-Unblur-Upscale",
-    "downloads": 12927,
-    "likes": 114,
-    "tags": [
-      "diffusers",
-      "lora",
-      "art",
-      "image-to-image",
-      "en",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "doi:10.57967/hf/7521",
+      "base_model:Qwen/Qwen-Image-Edit-2509",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
       "license:apache-2.0",
       "region:us"
     ]
@@ -1191,7 +1147,7 @@
   {
     "id": "prithivMLmods/QIE-2511-Studio-DeLight",
     "name": "prithivMLmods/QIE-2511-Studio-DeLight",
-    "downloads": 12679,
+    "downloads": 12584,
     "likes": 22,
     "tags": [
       "diffusers",
@@ -1208,19 +1164,48 @@
     ]
   },
   {
-    "id": "nphSi/LoRA_SDXL",
-    "name": "nphSi/LoRA_SDXL",
-    "downloads": 12288,
-    "likes": 7,
+    "id": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2",
+    "name": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2",
+    "downloads": 12534,
+    "likes": 95,
+    "tags": [
+      "safetensors",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "image-text-to-text",
+      "conversational",
+      "en",
+      "zh",
+      "ko",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:Roman1111111/claude-opus-4.6-10000x",
+      "base_model:Qwen/Qwen3.5-27B",
+      "base_model:adapter:Qwen/Qwen3.5-27B",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "prithivMLmods/Qwen-Image-Edit-2511-Polaroid-Photo",
+    "name": "prithivMLmods/Qwen-Image-Edit-2511-Polaroid-Photo",
+    "downloads": 12521,
+    "likes": 10,
     "tags": [
       "diffusers",
-      "text-to-image",
       "lora",
-      "safetensors",
-      "template:diffusion-lora",
-      "dataset:nphSi/LoRa_Datasets",
-      "base_model:nphSi/Mindstorm-SDXL",
-      "base_model:adapter:nphSi/Mindstorm-SDXL",
+      "art",
+      "polaroid",
+      "image-to-image",
+      "en",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
+      "doi:10.57967/hf/7489",
       "license:apache-2.0",
       "region:us"
     ]
@@ -1228,7 +1213,7 @@
   {
     "id": "mradermacher/tavern-sensei-qwen3.5-35B-A3B-i1-GGUF",
     "name": "mradermacher/tavern-sensei-qwen3.5-35B-A3B-i1-GGUF",
-    "downloads": 12086,
+    "downloads": 12142,
     "likes": 0,
     "tags": [
       "transformers",
@@ -1250,10 +1235,47 @@
     ]
   },
   {
+    "id": "prithivMLmods/Qwen-Image-Edit-2511-Object-Remover",
+    "name": "prithivMLmods/Qwen-Image-Edit-2511-Object-Remover",
+    "downloads": 12135,
+    "likes": 56,
+    "tags": [
+      "diffusers",
+      "lora",
+      "object-remover",
+      "art",
+      "image-to-image",
+      "en",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
+      "doi:10.57967/hf/7435",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "lilylilith/QIE-2511-MP-AnyLight",
+    "name": "lilylilith/QIE-2511-MP-AnyLight",
+    "downloads": 12033,
+    "likes": 24,
+    "tags": [
+      "diffusers",
+      "LoRA",
+      "lora",
+      "Qwen-Image-Edit",
+      "Qwen-Image",
+      "image-to-image",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
     "id": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled",
     "name": "Jackrong/Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled",
-    "downloads": 11162,
-    "likes": 20,
+    "downloads": 11505,
+    "likes": 24,
     "tags": [
       "safetensors",
       "qwen3_5",
@@ -1277,29 +1299,81 @@
     ]
   },
   {
-    "id": "fal/FLUX.2-dev-Turbo",
-    "name": "fal/FLUX.2-dev-Turbo",
-    "downloads": 11017,
-    "likes": 343,
+    "id": "prithivMLmods/Qwen-Image-Edit-2511-Unblur-Upscale",
+    "name": "prithivMLmods/Qwen-Image-Edit-2511-Unblur-Upscale",
+    "downloads": 11344,
+    "likes": 118,
     "tags": [
       "diffusers",
-      "image-generation",
-      "flux",
       "lora",
-      "distillation",
-      "turbo",
-      "text-to-image",
+      "art",
+      "image-to-image",
       "en",
-      "base_model:black-forest-labs/FLUX.2-dev",
-      "base_model:adapter:black-forest-labs/FLUX.2-dev",
-      "license:other",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
+      "doi:10.57967/hf/7521",
+      "license:apache-2.0",
       "region:us"
+    ]
+  },
+  {
+    "id": "samuelcardillo/Qwen3.5-35B-A3B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
+    "name": "samuelcardillo/Qwen3.5-35B-A3B-Claude-4.6-Opus-Reasoning-Distilled-GGUF",
+    "downloads": 11305,
+    "likes": 18,
+    "tags": [
+      "gguf",
+      "qwen3.5",
+      "moe",
+      "reasoning",
+      "claude-distillation",
+      "llama-cpp",
+      "lora",
+      "unsloth",
+      "text-generation",
+      "en",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:TeichAI/claude-4.5-opus-high-reasoning-250x",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "base_model:Qwen/Qwen3.5-35B-A3B",
+      "base_model:adapter:Qwen/Qwen3.5-35B-A3B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
+    ]
+  },
+  {
+    "id": "Jackrong/Qwopus3.5-9B-v3-GGUF",
+    "name": "Jackrong/Qwopus3.5-9B-v3-GGUF",
+    "downloads": 10925,
+    "likes": 116,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "competitive-programming",
+      "image-text-to-text",
+      "en",
+      "zh",
+      "ko",
+      "base_model:unsloth/Qwen3.5-9B",
+      "base_model:adapter:unsloth/Qwen3.5-9B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
     ]
   },
   {
     "id": "khtsly/Qwen3.5-9B-Claude-4.6-Opus-Distilled-32k-GGUF",
     "name": "khtsly/Qwen3.5-9B-Claude-4.6-Opus-Distilled-32k-GGUF",
-    "downloads": 10506,
+    "downloads": 10886,
     "likes": 5,
     "tags": [
       "gguf",
@@ -1326,10 +1400,48 @@
     ]
   },
   {
+    "id": "nphSi/LoRA_SDXL",
+    "name": "nphSi/LoRA_SDXL",
+    "downloads": 10711,
+    "likes": 7,
+    "tags": [
+      "diffusers",
+      "text-to-image",
+      "lora",
+      "safetensors",
+      "template:diffusion-lora",
+      "dataset:nphSi/LoRa_Datasets",
+      "base_model:nphSi/Mindstorm-SDXL",
+      "base_model:adapter:nphSi/Mindstorm-SDXL",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "fal/FLUX.2-dev-Turbo",
+    "name": "fal/FLUX.2-dev-Turbo",
+    "downloads": 10396,
+    "likes": 347,
+    "tags": [
+      "diffusers",
+      "image-generation",
+      "flux",
+      "lora",
+      "distillation",
+      "turbo",
+      "text-to-image",
+      "en",
+      "base_model:black-forest-labs/FLUX.2-dev",
+      "base_model:adapter:black-forest-labs/FLUX.2-dev",
+      "license:other",
+      "region:us"
+    ]
+  },
+  {
     "id": "lilylilith/AnyPose",
     "name": "lilylilith/AnyPose",
-    "downloads": 10299,
-    "likes": 441,
+    "downloads": 10390,
+    "likes": 443,
     "tags": [
       "diffusers",
       "LoRA",
@@ -1346,8 +1458,8 @@
   {
     "id": "Chun121/Qwen3-4B-RPG-Roleplay-V2",
     "name": "Chun121/Qwen3-4B-RPG-Roleplay-V2",
-    "downloads": 9871,
-    "likes": 45,
+    "downloads": 9797,
+    "likes": 46,
     "tags": [
       "transformers",
       "safetensors",
@@ -1378,8 +1490,8 @@
   {
     "id": "Wuli-art/Qwen-Image-2512-Turbo-LoRA",
     "name": "Wuli-art/Qwen-Image-2512-Turbo-LoRA",
-    "downloads": 9395,
-    "likes": 211,
+    "downloads": 9456,
+    "likes": 212,
     "tags": [
       "diffusers",
       "Qwen",
@@ -1395,29 +1507,32 @@
     ]
   },
   {
-    "id": "JujoHotaru/lora",
-    "name": "JujoHotaru/lora",
-    "downloads": 8419,
-    "likes": 349,
+    "id": "DJLougen/hermes-qwen3.5-35b-a3b-GGUF",
+    "name": "DJLougen/hermes-qwen3.5-35b-a3b-GGUF",
+    "downloads": 8071,
+    "likes": 1,
     "tags": [
-      "diffusers",
-      "anime",
-      "art",
-      "stable-diffusion",
-      "stable-diffusion-diffusers",
+      "hermes",
+      "gguf",
+      "qwen3.5",
+      "moe",
       "lora",
-      "text-to-image",
-      "ja",
-      "en",
-      "license:mit",
-      "license:openrail",
-      "region:us"
+      "function-calling",
+      "unsloth",
+      "text-generation",
+      "dataset:NousResearch/hermes-function-calling-v1",
+      "base_model:Qwen/Qwen3.5-35B-A3B",
+      "base_model:adapter:Qwen/Qwen3.5-35B-A3B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
     ]
   },
   {
     "id": "mradermacher/GLM-4.7-Flash-Springdragon-i1-GGUF",
     "name": "mradermacher/GLM-4.7-Flash-Springdragon-i1-GGUF",
-    "downloads": 7942,
+    "downloads": 7971,
     "likes": 0,
     "tags": [
       "transformers",
@@ -1436,142 +1551,88 @@
     ]
   },
   {
-    "id": "Linaqruf/style-enhancer-xl-lora",
-    "name": "Linaqruf/style-enhancer-xl-lora",
-    "downloads": 7249,
-    "likes": 25,
+    "id": "peterjohannmedina/Medina-Qwen3.5-27B-OpenClaw",
+    "name": "peterjohannmedina/Medina-Qwen3.5-27B-OpenClaw",
+    "downloads": 7882,
+    "likes": 8,
     "tags": [
-      "diffusers",
-      "text-to-image",
-      "stable-diffusion",
-      "lora",
+      "transformers",
       "safetensors",
-      "stable-diffusion-xl",
+      "gguf",
+      "lora",
+      "qwen3",
+      "unsloth",
+      "openclaw",
+      "tool-calling",
+      "function-calling",
+      "trl",
+      "peft",
       "en",
-      "base_model:Linaqruf/animagine-xl-2.0",
-      "base_model:adapter:Linaqruf/animagine-xl-2.0",
-      "license:openrail++",
+      "base_model:Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled",
+      "base_model:adapter:Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled",
+      "license:apache-2.0",
+      "endpoints_compatible",
       "region:us"
     ]
   },
   {
-    "id": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2",
-    "name": "Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2",
-    "downloads": 7230,
-    "likes": 57,
+    "id": "mradermacher/Qwen3.5-9B-Neo-heretic-i1-GGUF",
+    "name": "mradermacher/Qwen3.5-9B-Neo-heretic-i1-GGUF",
+    "downloads": 7854,
+    "likes": 0,
     "tags": [
-      "safetensors",
-      "qwen3_5",
+      "transformers",
+      "gguf",
       "unsloth",
       "qwen",
       "qwen3.5",
       "reasoning",
       "chain-of-thought",
       "lora",
-      "image-text-to-text",
-      "conversational",
+      "competitive-programming",
+      "heretic",
+      "uncensored",
+      "decensored",
+      "abliterated",
+      "ara",
       "en",
       "zh",
-      "ko",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:Roman1111111/claude-opus-4.6-10000x",
-      "base_model:Qwen/Qwen3.5-27B",
-      "base_model:adapter:Qwen/Qwen3.5-27B",
+      "dataset:Jackrong/Competitive-Programming-python-blend",
+      "dataset:stepfun-ai/Step-3.5-Flash-SFT",
+      "base_model:Impulse2000/Qwen3.5-9B-Neo-heretic",
+      "base_model:adapter:Impulse2000/Qwen3.5-9B-Neo-heretic",
       "license:apache-2.0",
-      "region:us"
+      "endpoints_compatible",
+      "region:us",
+      "imatrix",
+      "conversational"
     ]
   },
   {
-    "id": "llm-semantic-router/lora_intent_classifier_bert-base-uncased_model",
-    "name": "llm-semantic-router/lora_intent_classifier_bert-base-uncased_model",
-    "downloads": 7162,
-    "likes": 1,
-    "tags": [
-      "candle",
-      "safetensors",
-      "bert",
-      "lora",
-      "semantic-router",
-      "intent-classification",
-      "text-classification",
-      "rust",
-      "en",
-      "base_model:google-bert/bert-base-uncased",
-      "base_model:adapter:google-bert/bert-base-uncased",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "systms/SYSTMS-INFL8-LoRA-Qwen-Image-Edit-2511",
-    "name": "systms/SYSTMS-INFL8-LoRA-Qwen-Image-Edit-2511",
-    "downloads": 7093,
-    "likes": 15,
+    "id": "JujoHotaru/lora",
+    "name": "JujoHotaru/lora",
+    "downloads": 7778,
+    "likes": 349,
     "tags": [
       "diffusers",
-      "lora",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "Linaqruf/anime-detailer-xl-lora",
-    "name": "Linaqruf/anime-detailer-xl-lora",
-    "downloads": 7089,
-    "likes": 61,
-    "tags": [
-      "diffusers",
-      "text-to-image",
+      "anime",
+      "art",
       "stable-diffusion",
+      "stable-diffusion-diffusers",
       "lora",
-      "safetensors",
-      "stable-diffusion-xl",
+      "text-to-image",
+      "ja",
       "en",
-      "base_model:Linaqruf/animagine-xl-2.0",
-      "base_model:adapter:Linaqruf/animagine-xl-2.0",
-      "license:openrail++",
+      "license:mit",
+      "license:openrail",
       "region:us"
     ]
   },
   {
-    "id": "nerijs/pixel-art-xl",
-    "name": "nerijs/pixel-art-xl",
-    "downloads": 6840,
-    "likes": 596,
-    "tags": [
-      "diffusers",
-      "text-to-image",
-      "stable-diffusion",
-      "lora",
-      "base_model:stabilityai/stable-diffusion-xl-base-1.0",
-      "base_model:adapter:stabilityai/stable-diffusion-xl-base-1.0",
-      "license:creativeml-openrail-m",
-      "region:us"
-    ]
-  },
-  {
-    "id": "falanaja/Amateur-Photography",
-    "name": "falanaja/Amateur-Photography",
-    "downloads": 6564,
-    "likes": 4,
-    "tags": [
-      "diffusers",
-      "text-to-image",
-      "lora",
-      "template:diffusion-lora",
-      "base_model:black-forest-labs/FLUX.1-dev",
-      "base_model:adapter:black-forest-labs/FLUX.1-dev",
-      "region:us"
-    ]
-  },
-  {
-    "id": "LuffyTheFox/Qwen3.5-27B-Claude-4.6-Opus-Uncensored-V2-Kullback-Leibler-GGUF",
-    "name": "LuffyTheFox/Qwen3.5-27B-Claude-4.6-Opus-Uncensored-V2-Kullback-Leibler-GGUF",
-    "downloads": 6511,
-    "likes": 17,
+    "id": "LuffyTheFox/OmniClaw-Qwen3.5-9B-Claude-4.6-Opus-Uncensored-v2-GGUF",
+    "name": "LuffyTheFox/OmniClaw-Qwen3.5-9B-Claude-4.6-Opus-Uncensored-v2-GGUF",
+    "downloads": 7112,
+    "likes": 10,
     "tags": [
       "gguf",
       "qwen3_5",
@@ -1590,8 +1651,8 @@
       "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
       "dataset:Jackrong/Qwen3.5-reasoning-700x",
       "dataset:Roman1111111/claude-opus-4.6-10000x",
-      "base_model:Qwen/Qwen3.5-27B",
-      "base_model:adapter:Qwen/Qwen3.5-27B",
+      "base_model:Qwen/Qwen3.5-9B",
+      "base_model:adapter:Qwen/Qwen3.5-9B",
       "license:apache-2.0",
       "endpoints_compatible",
       "region:us",
@@ -1599,46 +1660,113 @@
     ]
   },
   {
-    "id": "llm-semantic-router/lora_pii_detector_bert-base-uncased_model",
-    "name": "llm-semantic-router/lora_pii_detector_bert-base-uncased_model",
-    "downloads": 6371,
+    "id": "artificialguybr/ColoringBookRedmond-V2",
+    "name": "artificialguybr/ColoringBookRedmond-V2",
+    "downloads": 7003,
+    "likes": 44,
+    "tags": [
+      "diffusers",
+      "text-to-image",
+      "stable-diffusion",
+      "lora",
+      "base_model:stabilityai/stable-diffusion-xl-base-1.0",
+      "base_model:adapter:stabilityai/stable-diffusion-xl-base-1.0",
+      "license:creativeml-openrail-m",
+      "region:us"
+    ]
+  },
+  {
+    "id": "mradermacher/Qwopus3.5-9B-v3-i1-GGUF",
+    "name": "mradermacher/Qwopus3.5-9B-v3-i1-GGUF",
+    "downloads": 6896,
     "likes": 0,
     "tags": [
-      "candle",
-      "safetensors",
-      "bert",
+      "transformers",
+      "gguf",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
       "lora",
-      "semantic-router",
-      "pii-classification",
-      "text-classification",
-      "rust",
+      "competitive-programming",
       "en",
-      "base_model:google-bert/bert-base-uncased",
-      "base_model:adapter:google-bert/bert-base-uncased",
+      "zh",
+      "ko",
+      "base_model:Jackrong/Qwopus3.5-9B-v3",
+      "base_model:adapter:Jackrong/Qwopus3.5-9B-v3",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "imatrix",
+      "conversational"
+    ]
+  },
+  {
+    "id": "systms/SYSTMS-INFL8-LoRA-Qwen-Image-Edit-2511",
+    "name": "systms/SYSTMS-INFL8-LoRA-Qwen-Image-Edit-2511",
+    "downloads": 6653,
+    "likes": 15,
+    "tags": [
+      "diffusers",
+      "lora",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
       "license:apache-2.0",
       "region:us"
     ]
   },
   {
-    "id": "ReCodePlus/Smnth_v1_NSFW1",
-    "name": "ReCodePlus/Smnth_v1_NSFW1",
-    "downloads": 6225,
-    "likes": 55,
+    "id": "nerijs/pixel-art-xl",
+    "name": "nerijs/pixel-art-xl",
+    "downloads": 6623,
+    "likes": 598,
     "tags": [
       "diffusers",
       "text-to-image",
+      "stable-diffusion",
       "lora",
-      "template:diffusion-lora",
-      "base_model:Tongyi-MAI/Z-Image-Turbo",
-      "base_model:adapter:Tongyi-MAI/Z-Image-Turbo",
-      "license:openrail",
+      "base_model:stabilityai/stable-diffusion-xl-base-1.0",
+      "base_model:adapter:stabilityai/stable-diffusion-xl-base-1.0",
+      "license:creativeml-openrail-m",
       "region:us"
+    ]
+  },
+  {
+    "id": "LuffyTheFox/Qwen3.5-9B-Claude-4.6-Opus-Uncensored-Kullback-Leibler",
+    "name": "LuffyTheFox/Qwen3.5-9B-Claude-4.6-Opus-Uncensored-Kullback-Leibler",
+    "downloads": 6383,
+    "likes": 14,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "uncensored",
+      "not-for-all-audiences",
+      "image-text-to-text",
+      "en",
+      "zh",
+      "ko",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:Roman1111111/claude-opus-4.6-10000x",
+      "base_model:Qwen/Qwen3.5-9B",
+      "base_model:adapter:Qwen/Qwen3.5-9B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
     ]
   },
   {
     "id": "khtsly/Qwen3.5-4B-Claude-4.6-Opus-Distilled-32k-GGUF",
     "name": "khtsly/Qwen3.5-4B-Claude-4.6-Opus-Distilled-32k-GGUF",
-    "downloads": 6143,
+    "downloads": 6348,
     "likes": 5,
     "tags": [
       "gguf",
@@ -1665,41 +1793,233 @@
     ]
   },
   {
-    "id": "artificialguybr/ColoringBookRedmond-V2",
-    "name": "artificialguybr/ColoringBookRedmond-V2",
-    "downloads": 5995,
-    "likes": 44,
+    "id": "Linaqruf/style-enhancer-xl-lora",
+    "name": "Linaqruf/style-enhancer-xl-lora",
+    "downloads": 6197,
+    "likes": 25,
     "tags": [
       "diffusers",
       "text-to-image",
       "stable-diffusion",
       "lora",
-      "base_model:stabilityai/stable-diffusion-xl-base-1.0",
-      "base_model:adapter:stabilityai/stable-diffusion-xl-base-1.0",
-      "license:creativeml-openrail-m",
+      "safetensors",
+      "stable-diffusion-xl",
+      "en",
+      "base_model:Linaqruf/animagine-xl-2.0",
+      "base_model:adapter:Linaqruf/animagine-xl-2.0",
+      "license:openrail++",
       "region:us"
     ]
   },
   {
-    "id": "zooeyy/Style-Transfer",
-    "name": "zooeyy/Style-Transfer",
-    "downloads": 5819,
-    "likes": 15,
+    "id": "Jackrong/Qwen3.5-9B-Neo-GGUF",
+    "name": "Jackrong/Qwen3.5-9B-Neo-GGUF",
+    "downloads": 6117,
+    "likes": 12,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "competitive-programming",
+      "text-generation",
+      "en",
+      "zh",
+      "dataset:Jackrong/Competitive-Programming-python-blend",
+      "dataset:stepfun-ai/Step-3.5-Flash-SFT",
+      "base_model:Qwen/Qwen3.5-9B",
+      "base_model:adapter:Qwen/Qwen3.5-9B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
+    ]
+  },
+  {
+    "id": "llm-semantic-router/lora_intent_classifier_bert-base-uncased_model",
+    "name": "llm-semantic-router/lora_intent_classifier_bert-base-uncased_model",
+    "downloads": 5975,
+    "likes": 1,
+    "tags": [
+      "candle",
+      "safetensors",
+      "bert",
+      "lora",
+      "semantic-router",
+      "intent-classification",
+      "text-classification",
+      "rust",
+      "en",
+      "base_model:google-bert/bert-base-uncased",
+      "base_model:adapter:google-bert/bert-base-uncased",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "Linaqruf/anime-detailer-xl-lora",
+    "name": "Linaqruf/anime-detailer-xl-lora",
+    "downloads": 5967,
+    "likes": 61,
+    "tags": [
+      "diffusers",
+      "text-to-image",
+      "stable-diffusion",
+      "lora",
+      "safetensors",
+      "stable-diffusion-xl",
+      "en",
+      "base_model:Linaqruf/animagine-xl-2.0",
+      "base_model:adapter:Linaqruf/animagine-xl-2.0",
+      "license:openrail++",
+      "region:us"
+    ]
+  },
+  {
+    "id": "mradermacher/Qwen3.5-4B-NSFW-ARA-Heretic-Literotica-i1-GGUF",
+    "name": "mradermacher/Qwen3.5-4B-NSFW-ARA-Heretic-Literotica-i1-GGUF",
+    "downloads": 5964,
+    "likes": 2,
+    "tags": [
+      "transformers",
+      "gguf",
+      "nsfw",
+      "story-generation",
+      "erotica",
+      "literotica",
+      "qwen",
+      "lora",
+      "ara",
+      "heretic",
+      "uncensored",
+      "en",
+      "base_model:Sinbad-The-Sailor/Qwen3.5-4B-NSFW-ARA-Heretic-Literotica",
+      "base_model:adapter:Sinbad-The-Sailor/Qwen3.5-4B-NSFW-ARA-Heretic-Literotica",
+      "endpoints_compatible",
+      "region:us",
+      "imatrix",
+      "conversational",
+      "not-for-all-audiences"
+    ]
+  },
+  {
+    "id": "Jackrong/MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-4bit",
+    "name": "Jackrong/MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-4bit",
+    "downloads": 5913,
+    "likes": 13,
+    "tags": [
+      "mlx",
+      "safetensors",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "text-generation",
+      "conversational",
+      "en",
+      "zh",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "base_model:Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled",
+      "base_model:adapter:Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled",
+      "license:apache-2.0",
+      "4-bit",
+      "region:us"
+    ]
+  },
+  {
+    "id": "Jackrong/MLX-Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-4bit",
+    "name": "Jackrong/MLX-Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2-4bit",
+    "downloads": 5849,
+    "likes": 28,
+    "tags": [
+      "mlx",
+      "safetensors",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "text-generation",
+      "conversational",
+      "en",
+      "zh",
+      "ko",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "dataset:Jackrong/Qwen3.5-reasoning-700x",
+      "dataset:Roman1111111/claude-opus-4.6-10000x",
+      "base_model:Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2",
+      "base_model:adapter:Jackrong/Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled-v2",
+      "license:apache-2.0",
+      "4-bit",
+      "region:us"
+    ]
+  },
+  {
+    "id": "falanaja/Amateur-Photography",
+    "name": "falanaja/Amateur-Photography",
+    "downloads": 5844,
+    "likes": 4,
     "tags": [
       "diffusers",
       "text-to-image",
       "lora",
       "template:diffusion-lora",
-      "base_model:Qwen/Qwen-Image-Edit-2511",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
-      "license:apache-2.0",
+      "base_model:black-forest-labs/FLUX.1-dev",
+      "base_model:adapter:black-forest-labs/FLUX.1-dev",
+      "region:us"
+    ]
+  },
+  {
+    "id": "ReCodePlus/Smnth_v1_NSFW1",
+    "name": "ReCodePlus/Smnth_v1_NSFW1",
+    "downloads": 5823,
+    "likes": 58,
+    "tags": [
+      "diffusers",
+      "text-to-image",
+      "lora",
+      "template:diffusion-lora",
+      "base_model:Tongyi-MAI/Z-Image-Turbo",
+      "base_model:adapter:Tongyi-MAI/Z-Image-Turbo",
+      "license:openrail",
+      "region:us",
+      "not-for-all-audiences"
+    ]
+  },
+  {
+    "id": "linoyts/Flux2-Klein-Delight-LoRA",
+    "name": "linoyts/Flux2-Klein-Delight-LoRA",
+    "downloads": 5816,
+    "likes": 25,
+    "tags": [
+      "diffusers",
+      "tensorboard",
+      "text-to-image",
+      "diffusers-training",
+      "lora",
+      "flux2",
+      "flux2-diffusers",
+      "template:sd-lora",
+      "base_model:black-forest-labs/FLUX.2-klein-base-9B",
+      "base_model:adapter:black-forest-labs/FLUX.2-klein-base-9B",
+      "license:other",
       "region:us"
     ]
   },
   {
     "id": "mradermacher/MedPHINER-Llama-3.1-Swallow-8B-Instruct-v0.5-i1-GGUF",
     "name": "mradermacher/MedPHINER-Llama-3.1-Swallow-8B-Instruct-v0.5-i1-GGUF",
-    "downloads": 5772,
+    "downloads": 5798,
     "likes": 0,
     "tags": [
       "transformers",
@@ -1720,32 +2040,38 @@
     ]
   },
   {
-    "id": "salakash/SamKash-Tolstoy",
-    "name": "salakash/SamKash-Tolstoy",
-    "downloads": 5638,
-    "likes": 148,
+    "id": "Jackrong/Qwen3.5-4B-Neo-GGUF",
+    "name": "Jackrong/Qwen3.5-4B-Neo-GGUF",
+    "downloads": 5486,
+    "likes": 7,
     "tags": [
-      "peft",
-      "safetensors",
-      "base_model:adapter:deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
       "lora",
-      "transformers",
-      "Safetensor",
-      "text-generation",
-      "conversational",
+      "competitive-programming",
+      "image-text-to-text",
       "en",
-      "dataset:manu/project_gutenberg",
-      "dataset:oscar-corpus/oscar",
-      "dataset:sedthh/gutenberg_english",
-      "base_model:deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B",
+      "zh",
+      "ko",
+      "dataset:Jackrong/Competitive-Programming-python-blend",
+      "dataset:stepfun-ai/Step-3.5-Flash-SFT",
+      "base_model:Qwen/Qwen3.5-4B",
+      "base_model:adapter:Qwen/Qwen3.5-4B",
       "license:apache-2.0",
-      "region:us"
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
     ]
   },
   {
     "id": "obann001/Saraptah_Flux_LoRA_v1",
     "name": "obann001/Saraptah_Flux_LoRA_v1",
-    "downloads": 5446,
+    "downloads": 5477,
     "likes": 0,
     "tags": [
       "diffusers",
@@ -1767,9 +2093,104 @@
     ]
   },
   {
+    "id": "khtsly/Qwen3.5-35B-A3B-Claude-4.6-Opus-Distilled-32k-GGUF",
+    "name": "khtsly/Qwen3.5-35B-A3B-Claude-4.6-Opus-Distilled-32k-GGUF",
+    "downloads": 5426,
+    "likes": 5,
+    "tags": [
+      "gguf",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "luau",
+      "llama.cpp",
+      "vision-language-model",
+      "image-text-to-text",
+      "en",
+      "zh",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "base_model:Qwen/Qwen3.5-35B-A3B",
+      "base_model:adapter:Qwen/Qwen3.5-35B-A3B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "imatrix",
+      "conversational"
+    ]
+  },
+  {
+    "id": "llm-semantic-router/lora_pii_detector_bert-base-uncased_model",
+    "name": "llm-semantic-router/lora_pii_detector_bert-base-uncased_model",
+    "downloads": 5343,
+    "likes": 0,
+    "tags": [
+      "candle",
+      "safetensors",
+      "bert",
+      "lora",
+      "semantic-router",
+      "pii-classification",
+      "text-classification",
+      "rust",
+      "en",
+      "base_model:google-bert/bert-base-uncased",
+      "base_model:adapter:google-bert/bert-base-uncased",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
+    "id": "khtsly/Qwen3.5-27B-Claude-4.6-Opus-Distilled-32k-GGUF",
+    "name": "khtsly/Qwen3.5-27B-Claude-4.6-Opus-Distilled-32k-GGUF",
+    "downloads": 5310,
+    "likes": 2,
+    "tags": [
+      "gguf",
+      "qwen3_5",
+      "unsloth",
+      "qwen",
+      "qwen3.5",
+      "reasoning",
+      "chain-of-thought",
+      "lora",
+      "luau",
+      "llama.cpp",
+      "vision-language-model",
+      "image-text-to-text",
+      "en",
+      "zh",
+      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
+      "base_model:Qwen/Qwen3.5-27B",
+      "base_model:adapter:Qwen/Qwen3.5-27B",
+      "license:apache-2.0",
+      "endpoints_compatible",
+      "region:us",
+      "conversational"
+    ]
+  },
+  {
+    "id": "zooeyy/Style-Transfer",
+    "name": "zooeyy/Style-Transfer",
+    "downloads": 5230,
+    "likes": 15,
+    "tags": [
+      "diffusers",
+      "text-to-image",
+      "lora",
+      "template:diffusion-lora",
+      "base_model:Qwen/Qwen-Image-Edit-2511",
+      "base_model:adapter:Qwen/Qwen-Image-Edit-2511",
+      "license:apache-2.0",
+      "region:us"
+    ]
+  },
+  {
     "id": "mradermacher/gpt-4o-distil-Llama-3.3-70B-Instruct-PaperWitch-heresy-i1-GGUF",
     "name": "mradermacher/gpt-4o-distil-Llama-3.3-70B-Instruct-PaperWitch-heresy-i1-GGUF",
-    "downloads": 5390,
+    "downloads": 5213,
     "likes": 0,
     "tags": [
       "transformers",
@@ -1792,56 +2213,9 @@
     ]
   },
   {
-    "id": "dx8152/Qwen-Image-Edit-2509-Relight",
-    "name": "dx8152/Qwen-Image-Edit-2509-Relight",
-    "downloads": 5202,
-    "likes": 213,
-    "tags": [
-      "diffusers",
-      "qwen-edit",
-      "comfyui",
-      "lora",
-      "re-light",
-      "kontext",
-      "image-to-image",
-      "base_model:Qwen/Qwen-Image-Edit-2509",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "DiffSynth-Studio/Qwen-Image-Edit-F2P",
-    "name": "DiffSynth-Studio/Qwen-Image-Edit-F2P",
-    "downloads": 5182,
-    "likes": 104,
-    "tags": [
-      "diffusers",
-      "lora",
-      "image-to-image",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "dx8152/Qwen-Edit-2509-Multi-Angle-Lighting",
-    "name": "dx8152/Qwen-Edit-2509-Multi-Angle-Lighting",
-    "downloads": 5155,
-    "likes": 163,
-    "tags": [
-      "diffusers",
-      "lora",
-      "image-to-image",
-      "base_model:Qwen/Qwen-Image-Edit-2509",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
     "id": "mradermacher/QiMing-Me-i1-GGUF",
     "name": "mradermacher/QiMing-Me-i1-GGUF",
-    "downloads": 5127,
+    "downloads": 5116,
     "likes": 0,
     "tags": [
       "transformers",
@@ -1870,117 +2244,9 @@
     ]
   },
   {
-    "id": "khtsly/Qwen3.5-35B-A3B-Claude-4.6-Opus-Distilled-32k-GGUF",
-    "name": "khtsly/Qwen3.5-35B-A3B-Claude-4.6-Opus-Distilled-32k-GGUF",
-    "downloads": 5055,
-    "likes": 5,
-    "tags": [
-      "gguf",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "luau",
-      "llama.cpp",
-      "vision-language-model",
-      "image-text-to-text",
-      "en",
-      "zh",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "base_model:Qwen/Qwen3.5-35B-A3B",
-      "base_model:adapter:Qwen/Qwen3.5-35B-A3B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us",
-      "imatrix",
-      "conversational"
-    ]
-  },
-  {
-    "id": "wolfer45/nsfwv2-zit",
-    "name": "wolfer45/nsfwv2-zit",
-    "downloads": 5021,
-    "likes": 0,
-    "tags": [
-      "diffusers",
-      "text-to-image",
-      "lora",
-      "template:diffusion-lora",
-      "base_model:Tongyi-MAI/Z-Image-Turbo",
-      "base_model:adapter:Tongyi-MAI/Z-Image-Turbo",
-      "region:us"
-    ]
-  },
-  {
-    "id": "Arturmel/perfect1",
-    "name": "Arturmel/perfect1",
-    "downloads": 4957,
-    "likes": 0,
-    "tags": [
-      "diffusers",
-      "text-to-image",
-      "lora",
-      "template:diffusion-lora",
-      "base_model:black-forest-labs/FLUX.1-dev",
-      "base_model:adapter:black-forest-labs/FLUX.1-dev",
-      "region:us"
-    ]
-  },
-  {
-    "id": "khtsly/Qwen3.5-27B-Claude-4.6-Opus-Distilled-32k-GGUF",
-    "name": "khtsly/Qwen3.5-27B-Claude-4.6-Opus-Distilled-32k-GGUF",
-    "downloads": 4927,
-    "likes": 2,
-    "tags": [
-      "gguf",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "luau",
-      "llama.cpp",
-      "vision-language-model",
-      "image-text-to-text",
-      "en",
-      "zh",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "base_model:Qwen/Qwen3.5-27B",
-      "base_model:adapter:Qwen/Qwen3.5-27B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us",
-      "conversational"
-    ]
-  },
-  {
-    "id": "linoyts/Flux2-Klein-Delight-LoRA",
-    "name": "linoyts/Flux2-Klein-Delight-LoRA",
-    "downloads": 4924,
-    "likes": 25,
-    "tags": [
-      "diffusers",
-      "tensorboard",
-      "text-to-image",
-      "diffusers-training",
-      "lora",
-      "flux2",
-      "flux2-diffusers",
-      "template:sd-lora",
-      "base_model:black-forest-labs/FLUX.2-klein-base-9B",
-      "base_model:adapter:black-forest-labs/FLUX.2-klein-base-9B",
-      "license:other",
-      "region:us"
-    ]
-  },
-  {
     "id": "valiantcat/Qwen-Image-Edit-2509-Upscale2K",
     "name": "valiantcat/Qwen-Image-Edit-2509-Upscale2K",
-    "downloads": 4915,
+    "downloads": 5104,
     "likes": 23,
     "tags": [
       "diffusers",
@@ -1993,173 +2259,6 @@
       "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
       "license:apache-2.0",
       "region:us"
-    ]
-  },
-  {
-    "id": "kudzueye/boreal-qwen-image",
-    "name": "kudzueye/boreal-qwen-image",
-    "downloads": 4855,
-    "likes": 125,
-    "tags": [
-      "diffusers",
-      "text-to-image",
-      "lora",
-      "template:diffusion-lora",
-      "base_model:Qwen/Qwen-Image",
-      "base_model:adapter:Qwen/Qwen-Image",
-      "region:us"
-    ]
-  },
-  {
-    "id": "lucylq/qwen3_06B_lora_math",
-    "name": "lucylq/qwen3_06B_lora_math",
-    "downloads": 4817,
-    "likes": 1,
-    "tags": [
-      "peft",
-      "safetensors",
-      "executorch",
-      "base_model:adapter:unsloth/Qwen3-0.6B",
-      "lora",
-      "sft",
-      "transformers",
-      "trl",
-      "unsloth",
-      "text-generation",
-      "base_model:unsloth/Qwen3-0.6B",
-      "region:us"
-    ]
-  },
-  {
-    "id": "Jackrong/MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-4bit",
-    "name": "Jackrong/MLX-Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled-4bit",
-    "downloads": 4816,
-    "likes": 10,
-    "tags": [
-      "mlx",
-      "safetensors",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "text-generation",
-      "conversational",
-      "en",
-      "zh",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "base_model:Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled",
-      "base_model:adapter:Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled",
-      "license:apache-2.0",
-      "4-bit",
-      "region:us"
-    ]
-  },
-  {
-    "id": "mradermacher/LLaDA-8B-Tools-i1-GGUF",
-    "name": "mradermacher/LLaDA-8B-Tools-i1-GGUF",
-    "downloads": 4810,
-    "likes": 0,
-    "tags": [
-      "transformers",
-      "gguf",
-      "llada",
-      "tool-calling",
-      "lora",
-      "peft",
-      "function-calling",
-      "tools",
-      "chatbot",
-      "assistant",
-      "sft",
-      "en",
-      "base_model:Proximile/LLaDA-8B-Tools",
-      "base_model:adapter:Proximile/LLaDA-8B-Tools",
-      "license:mit",
-      "endpoints_compatible",
-      "region:us",
-      "imatrix",
-      "conversational"
-    ]
-  },
-  {
-    "id": "dx8152/Qwen-Image-Edit-2509-Fusion",
-    "name": "dx8152/Qwen-Image-Edit-2509-Fusion",
-    "downloads": 4704,
-    "likes": 251,
-    "tags": [
-      "diffusers",
-      "lora",
-      "image-to-image",
-      "base_model:Qwen/Qwen-Image-Edit-2509",
-      "base_model:adapter:Qwen/Qwen-Image-Edit-2509",
-      "license:apache-2.0",
-      "region:us"
-    ]
-  },
-  {
-    "id": "LuffyTheFox/Qwen3.5-9B-Claude-4.6-Opus-Uncensored-Kullback-Leibler",
-    "name": "LuffyTheFox/Qwen3.5-9B-Claude-4.6-Opus-Uncensored-Kullback-Leibler",
-    "downloads": 4699,
-    "likes": 12,
-    "tags": [
-      "gguf",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "uncensored",
-      "not-for-all-audiences",
-      "image-text-to-text",
-      "en",
-      "zh",
-      "ko",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:Roman1111111/claude-opus-4.6-10000x",
-      "base_model:Qwen/Qwen3.5-9B",
-      "base_model:adapter:Qwen/Qwen3.5-9B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us",
-      "conversational"
-    ]
-  },
-  {
-    "id": "LuffyTheFox/OmniClaw-Qwen3.5-9B-Claude-4.6-Opus-Uncensored-v2-GGUF",
-    "name": "LuffyTheFox/OmniClaw-Qwen3.5-9B-Claude-4.6-Opus-Uncensored-v2-GGUF",
-    "downloads": 4511,
-    "likes": 6,
-    "tags": [
-      "gguf",
-      "qwen3_5",
-      "unsloth",
-      "qwen",
-      "qwen3.5",
-      "reasoning",
-      "chain-of-thought",
-      "lora",
-      "uncensored",
-      "not-for-all-audiences",
-      "image-text-to-text",
-      "en",
-      "zh",
-      "ko",
-      "dataset:nohurry/Opus-4.6-Reasoning-3000x-filtered",
-      "dataset:Jackrong/Qwen3.5-reasoning-700x",
-      "dataset:Roman1111111/claude-opus-4.6-10000x",
-      "base_model:Qwen/Qwen3.5-9B",
-      "base_model:adapter:Qwen/Qwen3.5-9B",
-      "license:apache-2.0",
-      "endpoints_compatible",
-      "region:us",
-      "conversational"
     ]
   }
 ]

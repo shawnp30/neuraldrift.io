@@ -10,5 +10,13 @@ const nextConfig = {
       { protocol: "https", hostname: "avatar.vercel.sh" },
     ],
   },
+  async redirects() {
+    return [
+      { source: '/gpu-guide', destination: '/hardware', permanent: true },
+      { source: '/tools/vram-calculator', destination: '/hardware', permanent: true },
+      { source: '/tools/benchmark-lookup', destination: '/hardware', permanent: true },
+      { source: '/optimizer', destination: '/hardware', permanent: true },
+    ]
+  },
 };
 export default nextConfig;

@@ -26,8 +26,8 @@ export function ComputeBridge() {
         <div className="grid grid-cols-2 gap-0">
           {/* Left: Main CTA */}
           <div className="border-r border-accent-purple/15 p-14">
-            <p className="mb-4 font-mono text-xs uppercase tracking-widest text-[#a78bfa]">
-              // Hardware Partner
+            <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
+              {"// Hardware Partner"}
             </p>
             <h2 className="relative mb-4 font-syne text-4xl font-black tracking-tight text-white">
               Need a better rig

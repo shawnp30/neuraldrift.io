@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Zap, ExternalLink, Award } from "lucide-react";
+import { Counter } from "@/components/shared/Counter";
 
 interface CreatorData {
   name: string;
@@ -134,8 +135,8 @@ export function ArchitectsSpotlight() {
                 @{creator.name}
               </h3>
               <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
-                {creator.downloads.toLocaleString()} Downloads •{" "}
-                {creator.modelCount} LoRAs
+                <Counter value={creator.downloads} /> Downloads •{" "}
+                <Counter value={creator.modelCount} /> LoRAs
               </p>
             </div>
           </div>

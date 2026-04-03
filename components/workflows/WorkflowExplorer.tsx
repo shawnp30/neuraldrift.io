@@ -12,6 +12,7 @@ import {
   Activity,
   Cpu,
   Layers,
+  Wrench,
   ZoomIn,
   ZoomOut,
   Maximize2,
@@ -20,10 +21,12 @@ import { WorkflowNode } from "@/lib/github";
 import { getWorkflowMeta, getCategoryColor } from "@/lib/workflowMeta";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { WORKFLOWS } from "@/lib/workflowsData";
 
 // ─── Thumbnail path helper ───────────────────────────────────────────
-function getThumbPath(category: string): string {
-  return `/images/workflows/thumbs/${category}.png`;
+function getThumbPath(nodeName: string): string {
+  const meta = getWorkflowMeta(nodeName);
+  return meta.previewImage || `/images/workflows/thumbs/${meta.category}.png`;
 }
 function getMapPath(category: string): string {
   return `/images/workflows/maps/${category}.png`;
@@ -183,50 +186,50 @@ export default function WorkflowExplorer({
               </div>
 
               {/* ── Workflow Description ── */}
-              <div className="mb-10 rounded-2xl border border-white/5 bg-white/[0.03] p-6">
-                <div className="mb-3 flex items-center gap-2">
-                  <span
-                    className={`rounded-md px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest ${meta.categoryColor} ${meta.categoryBg}`}
-                  >
-                    {meta.categoryLabel}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-500">
-                    // Pipeline Overview
-                  </span>
-                </div>
-                <p className="text-[15px] font-medium leading-relaxed text-[#F3F4F6]">
-                  {meta.description}
-                </p>
-              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
+                <div className="flex flex-col gap-6">
+                  <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6 lg:p-8">
+                    <div className="mb-4 flex items-center gap-2 text-[#7c6af7]">
+                       <Wrench className="w-4 h-4" />
+                       <span className="font-mono text-[10px] uppercase tracking-[0.2em] font-bold">Pipeline Overview</span>
+                    </div>
+                    <p className="text-[17px] font-medium leading-relaxed text-[#F3F4F6] mb-6">
+                      {meta.description}
+                    </p>
+                    <div className="flex flex-wrap gap-2 mb-8">
+                      <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest ${meta.categoryColor} ${meta.categoryBg} border border-white/5`}>
+                        {meta.categoryLabel}
+                      </span>
+                    </div>
+                  </div>
 
-              {/* ── Metadata Cards ── */}
-              <div className="mb-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6">
-                  <Cpu className="mb-3 h-5 w-5 text-indigo-400" />
-                  <h4 className="mb-1 font-syne text-sm font-bold uppercase tracking-wide text-white">
-                    Optimization
-                  </h4>
-                  <p className="font-mono text-xs text-zinc-300">
-                    Tuned for RTX 40+ Series
-                  </p>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6">
+                      <Cpu className="mb-3 h-5 w-5 text-[#22d3ee]" />
+                      <h4 className="mb-1 font-syne text-xs font-bold uppercase tracking-wide text-white">Hardware</h4>
+                      <p className="font-mono text-[10px] text-zinc-400">Optimized for RTX 40+</p>
+                    </div>
+                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6">
+                      <Activity className="mb-3 h-5 w-5 text-[#4ade80]" />
+                      <h4 className="mb-1 font-syne text-xs font-bold uppercase tracking-wide text-white">Performance</h4>
+                      <p className="font-mono text-[10px] text-zinc-400">Local-First / 0 Fees</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6">
-                  <Activity className="mb-3 h-5 w-5 text-cyan-400" />
-                  <h4 className="mb-1 font-syne text-sm font-bold uppercase tracking-wide text-white">
-                    Performance
-                  </h4>
-                  <p className="font-mono text-xs text-zinc-300">
-                    Real-time inference compatible
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6">
-                  <Layers className="mb-3 h-5 w-5 text-purple-400" />
-                  <h4 className="mb-1 font-syne text-sm font-bold uppercase tracking-wide text-white">
-                    Version
-                  </h4>
-                  <p className="font-mono text-xs text-zinc-300">
-                    Latest Push / Main Branch
-                  </p>
+
+                <div className="relative group overflow-hidden rounded-3xl border border-white/10 bg-black aspect-square md:aspect-auto">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
+                    <Image 
+                      src={meta.previewImage || "/images/workflows/thumbs/flux.png"} 
+                      alt="Workflow Preview" 
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      unoptimized
+                    />
+                    <div className="absolute bottom-6 left-6 z-20">
+                       <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/50 mb-1 block">Output Sample</span>
+                       <h4 className="text-white font-bold text-lg">High-Fidelity Inference</h4>
+                    </div>
                 </div>
               </div>
 
@@ -391,6 +394,7 @@ function TreeNode({
   const isSelected = selectedPath === node.path;
   const isDir = node.type === "dir";
   const catInfo = !isDir ? getCategoryColor(node.name) : null;
+  const workflowData = !isDir ? WORKFLOWS.find(w => w.id === node.name.replace(".json", "")) : null;
 
   const matchesSearch =
     !searchQuery ||
@@ -426,7 +430,7 @@ function TreeNode({
             className={`h-6 w-6 shrink-0 overflow-hidden rounded-md border border-white/10 ${catInfo.bg}`}
           >
             <Image
-              src={getThumbPath(getWorkflowMeta(node.name).category)}
+              src={getThumbPath(node.name)}
               alt=""
               width={24}
               height={24}
@@ -444,13 +448,22 @@ function TreeNode({
           {node.name.replace(".json", "")}
         </span>
 
-        {/* Category badge */}
-        {!isDir && catInfo && (
-          <span
-            className={`ml-auto shrink-0 rounded px-1.5 py-0.5 text-[7px] font-bold uppercase tracking-wider ${catInfo.text} ${catInfo.bg}`}
-          >
-            {catInfo.label}
-          </span>
+        {/* Category & VRAM badge */}
+        {!isDir && (
+          <div className="ml-auto flex items-center gap-1.5 shrink-0">
+             {workflowData?.vram && (
+               <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[7px] font-black font-mono text-zinc-500 uppercase">
+                 {workflowData.vram}
+               </span>
+             )}
+             {catInfo && (
+               <span
+                 className={`rounded px-1.5 py-0.5 text-[7px] font-bold uppercase tracking-wider ${catInfo.text} ${catInfo.bg}`}
+               >
+                 {catInfo.label}
+               </span>
+             )}
+          </div>
         )}
       </div>
 

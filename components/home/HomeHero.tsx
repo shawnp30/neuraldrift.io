@@ -3,10 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
+import { Counter } from "@/components/shared/Counter";
 
 export const HomeHero = () => {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center pt-32 pb-20 overflow-hidden bg-[#080b0f]">
+    <section className="relative min-h-[85vh] flex items-center justify-center pt-[160px] pb-16 overflow-hidden bg-[#080b0f]">
       {/* Background Decorative Elements */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent-cyan/10 rounded-full blur-[120px]" />
@@ -49,19 +50,19 @@ export const HomeHero = () => {
               </Link>
             </div>
 
-            {/* Sub-stats or trust signals can go here */}
+            {/* Sub-stats hidden as requested */}
             <div className="mt-12 flex items-center gap-8 border-t border-white/5 pt-8">
               <div>
-                <div className="text-2xl font-[800] text-white">50+</div>
+                <div className="text-2xl font-[800] text-white flex items-center">
+                  <Counter value={50} />+
+                </div>
                 <div className="text-xs uppercase tracking-widest text-zinc-500 font-mono">Workflows</div>
               </div>
               <div>
-                <div className="text-2xl font-[800] text-white">6.5k</div>
-                <div className="text-xs uppercase tracking-widest text-zinc-500 font-mono">Subscribers</div>
-              </div>
-              <div>
-                <div className="text-2xl font-[800] text-white">0</div>
-                <div className="text-xs uppercase tracking-widest text-zinc-500 font-mono">Ads</div>
+                <div className="text-2xl font-[800] text-white flex items-center">
+                  <Counter value={0} />
+                </div>
+                <div className="text-xs uppercase tracking-widest text-zinc-500 font-mono">Ads Ever</div>
               </div>
             </div>
           </div>

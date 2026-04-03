@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import "@/styles/globals.css";
-import Background from "@/components/Background";
+import { ColorDrift } from "@/components/layout/ColorDrift";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -71,9 +71,9 @@ export default function RootLayout({
       className={`${syne.variable} ${ibmPlexMono.variable} ${crimsonPro.variable} scroll-smooth`}
     >
       <body className="relative min-h-screen overflow-x-hidden bg-[#06080d] font-sans text-slate-50 antialiased selection:bg-accent/30">
-        <Background />
+        <ColorDrift />
         <Navbar />
-        <main className="relative z-10 pt-[140px]">{children}</main>
+        <main className="relative z-10">{children}</main>
         <Footer />
         <Analytics />
       </body>

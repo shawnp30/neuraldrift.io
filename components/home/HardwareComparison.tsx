@@ -15,7 +15,11 @@ export const HardwareComparison = () => {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-16 relative">
+          {/* Central VS Badge (Desktop) */}
+          <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-[#080b0f] border border-white/10 items-center justify-center z-10 font-syne font-[800] text-xl text-white shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+            VS
+          </div>
           {/* Desktop Column */}
           <div className="nh-glass-card rounded-3xl p-10 flex flex-col items-center text-center">
             <div className="mb-8 p-4 rounded-3xl bg-accent-cyan/10 border border-accent-cyan/20">

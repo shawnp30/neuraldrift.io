@@ -46,7 +46,7 @@ const WORKFLOWS = [
 
 export const PopularWorkflows = () => {
   return (
-    <section className="relative overflow-hidden border-t border-white/5 bg-[#0b0f14] py-28">
+    <section className="relative overflow-hidden border-t border-white/5 bg-[#0b0f14] py-20">
       {/* Subtle circuit background pattern */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"

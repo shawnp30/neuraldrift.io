@@ -74,7 +74,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 pt-5 border-t border-[#1a1e2e] flex flex-col md:flex-row justify-between items-center text-[0.62rem] text-[#55575f] gap-4">
-          <span>© {new Date().getFullYear()} NeuralDrift. Open source under MIT.</span>
+          <span>© {new Date().getFullYear()} NeuralDrift. All rights reserved.</span>
           <div className="flex gap-4">
             <Link href="#" className="hover:text-[#00e5a0] transition-colors duration-200">Privacy</Link>
             <span>·</span>
