@@ -91,22 +91,10 @@ export default function WorkflowsPage() {
           </p>
 
           {/* TOTAL COUNTER */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-8 border-y border-[#2a2a30]/50 max-w-4xl mx-auto mb-12">
+          <div className="flex justify-center py-8 border-y border-[#2a2a30]/50 max-w-4xl mx-auto mb-12">
             <div className="flex flex-col items-center">
               <span className="text-4xl font-mono font-black text-white">50</span>
               <span className="text-[10px] font-mono font-bold text-[#555565] uppercase tracking-widest mt-1">Verified Workflows</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-4xl font-mono font-black text-[#7c6af7]">8K+</span>
-              <span className="text-[10px] font-mono font-bold text-[#555565] uppercase tracking-widest mt-1">Daily Downloads</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-4xl font-mono font-black text-[#22d3ee]">40%</span>
-              <span className="text-[10px] font-mono font-bold text-[#555565] uppercase tracking-widest mt-1">Lower Latency</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-4xl font-mono font-black text-[#4ade80]">PRO</span>
-              <span className="text-[10px] font-mono font-bold text-[#555565] uppercase tracking-widest mt-1">Checked Artifacts</span>
             </div>
           </div>
         </div>
