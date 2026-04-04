@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { Upload, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
 
 interface ComfyNode {
@@ -48,9 +48,10 @@ function getNodeHeight(node: ComfyNode): number {
   return node.size?.[1] || 80;
 }
 
-export function WorkflowGraphViewer({ workflowTitle }: { workflowTitle: string }) {
+export function WorkflowGraphViewer({ workflowId, workflowTitle }: { workflowId?: string; workflowTitle: string }) {
   const [graphData, setGraphData] = useState<ComfyWorkflow | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -74,6 +75,27 @@ export function WorkflowGraphViewer({ workflowTitle }: { workflowTitle: string }
       setError('Invalid JSON file. Please drop a valid ComfyUI workflow.');
     }
   }, []);
+
+  // Auto-load if workflowId is provided
+  useEffect(() => {
+    if (workflowId) {
+      setIsLoading(true);
+      fetch(`/workflows/${workflowId}.json`)
+        .then(res => {
+          if (!res.ok) throw new Error('Workflow not found');
+          return res.text();
+        })
+        .then(text => {
+          parseAndRender(text);
+          setIsLoading(false);
+        })
+        .catch(err => {
+          console.error('Failed to auto-load workflow:', err);
+          setIsLoading(false);
+          // Don't show error immediately, allow drop fallback
+        });
+    }
+  }, [workflowId, parseAndRender]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -156,7 +178,27 @@ export function WorkflowGraphViewer({ workflowTitle }: { workflowTitle: string }
         }}
       />
 
-      {!graphData && !error && (
+      {isLoading && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 z-20 bg-[#060810]/80 backdrop-blur-sm">
+          <div className="relative w-16 h-16">
+            <div className="absolute inset-0 border-2 border-[#7c6af7]/20 rounded-full" />
+            <div className="absolute inset-0 border-2 border-[#7c6af7] rounded-full border-t-transparent animate-spin" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-8 h-8 bg-[#7c6af7]/20 rounded-full animate-pulse" />
+            </div>
+          </div>
+          <div className="text-center">
+            <p className="font-mono text-[10px] font-black text-[#7c6af7] uppercase tracking-[0.3em] animate-pulse">
+              Initializing_Neural_Link...
+            </p>
+            <p className="font-mono text-[8px] text-[#555565] uppercase mt-1">
+              Synchronizing node schematics
+            </p>
+          </div>
+        </div>
+      )}
+
+      {!graphData && !error && !isLoading && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 text-center pointer-events-none">
           <div className={`p-5 rounded-2xl border-2 border-dashed transition-all duration-300 ${isDragOver ? 'border-[#7c6af7] bg-[#7c6af7]/10 scale-105' : 'border-[#333340]'}`}>
             <Upload size={36} className={isDragOver ? 'text-[#7c6af7]' : 'text-[#555565]'} />

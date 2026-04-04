@@ -110,127 +110,25 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
           <span className="text-[#333340] font-mono text-[10px] uppercase font-bold tracking-widest">{workflow.category} architecture</span>
         </div>
 
-        {/* ── MAIN CONTENT GRID (40/60) ─────────────────────────────────────── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        {/* ── MAIN CONTENT GRID (70/30 or 8/4) ─────────────────────────────────── */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start pb-20">
           
-          {/* 🟢 LEFT COLUMN: TECH SPECS & REQS (4/12) */}
-          <div className="lg:col-span-4 space-y-8 animate-in fade-in slide-in-from-left-4 duration-700">
-            
-            {/* 1. PRIMARY INFO */}
-            <div className="space-y-4">
-              <h1 className="text-4xl md:text-5xl font-mono font-black text-white uppercase tracking-tighter leading-tight">
-                {workflow.title}
-              </h1>
-              <div className="flex flex-wrap gap-3">
-                <span className={`px-2 py-0.5 bg-[#111113] border border-[#2a2a30] rounded text-[9px] font-mono font-bold uppercase tracking-widest ${difficultyColors[workflow.difficulty]}`}>
-                  {workflow.difficulty}
-                </span>
-                <span className="px-2 py-0.5 bg-[#111113] border border-[#2a2a30] rounded text-[9px] font-mono font-bold uppercase tracking-widest text-[#22d3ee]">
-                  {workflow.vram} MIN
-                </span>
-              </div>
-              <p className="text-[#8888a0] font-mono text-sm leading-relaxed pt-2">
-                {workflow.description}
-              </p>
-            </div>
-
-            {/* 2. TECH METRICS */}
-            <div className="grid grid-cols-2 gap-4 p-4 bg-[#111113] border border-[#2a2a30] rounded-xl">
-              <div className="flex flex-col">
-                <span className="text-[9px] font-mono font-black text-[#333340] uppercase tracking-widest mb-1">Architecture</span>
-                <span className="text-xs font-mono font-bold text-white uppercase">{workflow.category}</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-[9px] font-mono font-black text-[#333340] uppercase tracking-widest mb-1">Compute Cost</span>
-                <span className="text-xs font-mono font-bold text-white uppercase">{workflow.genTime.split(' on')[0]}</span>
-              </div>
-              <div className="flex flex-col mt-2">
-                <span className="text-[9px] font-mono font-black text-[#333340] uppercase tracking-widest mb-1">Base Resolution</span>
-                <span className="text-xs font-mono font-bold text-white uppercase">{workflow.resolution}</span>
-              </div>
-              <div className="flex flex-col mt-2">
-                <span className="text-[9px] font-mono font-black text-[#333340] uppercase tracking-widest mb-1">Status</span>
-                <span className="text-xs font-mono font-bold text-[#4ade80] uppercase flex items-center gap-1.5">
-                  <ShieldCheck size={12} />
-                  VERIFIED
-                </span>
-              </div>
-            </div>
-
-            {/* 3. PRO TIP (EMPHASIZED) */}
-            <div className="relative p-6 bg-gradient-to-br from-[#1c1c20] to-[#111113] border border-[#7c6af7]/30 rounded-xl overflow-hidden group">
-               <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
-                  <Sparkles size={40} className="text-[#7c6af7]" />
-               </div>
-               <h3 className="text-[10px] font-mono font-black text-[#7c6af7] uppercase tracking-widest mb-2 flex items-center gap-2">
-                 <Terminal size={14} />
-                 PRO TIP
-               </h3>
-               <p className="text-xs text-white leading-relaxed font-mono italic">
-                 &quot;{workflow.proTip}&quot;
-               </p>
-            </div>
-
-            {/* 4. MODEL REQUIREMENTS */}
-            <div className="space-y-4 pt-4">
-               <div className="flex items-center gap-3">
-                 <Cpu size={16} className="text-[#22d3ee]" />
-                 <h3 className="text-[10px] font-mono font-black text-white uppercase tracking-widest">Model Dependencies</h3>
-               </div>
-               <div className="space-y-3">
-                 {workflow.modelPaths.map((m, i) => (
-                   <a 
-                    key={i}
-                    href={m.downloadUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block p-3 bg-[#111113]/50 border border-[#2a2a30] hover:border-[#7c6af7]/50 rounded-lg group/model transition-all"
-                   >
-                     <div className="flex items-center justify-between mb-1">
-                       <span className="text-[11px] font-mono font-bold text-[#e8e8f0] group-hover:text-white truncate">{m.file}</span>
-                       <ExternalLink size={12} className="text-[#333340] group-hover:text-[#7c6af7]" />
-                     </div>
-                     <span className="text-[9px] font-mono text-[#555565] uppercase tracking-tighter truncate block">{m.dir}</span>
-                   </a>
-                 ))}
-               </div>
-            </div>
-
-            {/* 5. CUSTOM NODES */}
-            <div className="space-y-4 pt-4">
-               <div className="flex items-center gap-3">
-                 <Layers size={16} className="text-[#a855f7]" />
-                 <h3 className="text-[10px] font-mono font-black text-white uppercase tracking-widest">Expansion Nodes</h3>
-               </div>
-               <div className="flex flex-wrap gap-2">
-                 {workflow.customNodes.length > 0 ? workflow.customNodes.map((node, i) => (
-                   <a 
-                    key={i}
-                    href={`https://github.com/search?q=${node}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-3 py-1 bg-[#111113] border border-[#2a2a30] hover:border-[#a855f7]/50 rounded text-[10px] font-mono font-bold text-[#8888a0] hover:text-white transition-all uppercase"
-                   >
-                     {node}
-                   </a>
-                 )) : (
-                   <span className="text-[10px] font-mono text-[#555565] uppercase italic font-bold">Standard Native Nodes Only</span>
-                 )}
-               </div>
-            </div>
-
-          </div>
-
-          {/* 🟦 RIGHT COLUMN: ANALYSIS & DOWNLOAD (8/12) */}
-          <div className="lg:col-span-8 space-y-10 animate-in fade-in slide-in-from-right-4 duration-1000">
+          {/* 🟦 LEFT COLUMN: ANALYSIS & VISUALS (8/12) */}
+          <div className="lg:col-span-8 space-y-10 animate-in fade-in slide-in-from-left-4 duration-1000">
             
             {/* 1. VISUAL ANALYSIS PANEL */}
             <div className="bg-[#111113] border border-[#2a2a30] rounded-2xl overflow-hidden shadow-2xl">
               {/* Header / Mode Switch */}
               <div className="flex items-center justify-between p-4 bg-[#0a0a0b] border-b border-[#2a2a30]">
-                <div className="flex items-center gap-2 px-3 py-1 bg-[#2a2a30]/50 rounded-full">
-                  <div className="w-2 h-2 rounded-full bg-[#f59e0b] shadow-[0_0_8px_#f59e0b/50] animate-pulse" />
-                  <span className="text-[9px] font-mono font-bold text-white uppercase tracking-widest">LIVE_ANALYSIS</span>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 px-3 py-1 bg-[#2a2a30]/50 rounded-full border border-[#22d3ee]/20">
+                    <div className="w-2 h-2 rounded-full bg-[#22d3ee] shadow-[0_0_8px_#22d3ee/50] animate-pulse" />
+                    <span className="text-[9px] font-mono font-bold text-white uppercase tracking-widest">LIVE_NEURAL_LINK</span>
+                  </div>
+                  <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 bg-[#4ade80]/5 rounded text-[10px] font-mono font-bold text-[#4ade80] border border-[#4ade80]/20">
+                    <ShieldCheck size={12} />
+                    VERIFIED_SCHEMATIC
+                  </div>
                 </div>
                 
                 <div className="flex gap-2 p-1 bg-[#111113] border border-[#2a2a30] rounded-lg">
@@ -252,7 +150,7 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
               </div>
 
               {/* Display Area */}
-              <div className="relative w-full bg-[#0a0a0b] group" style={{ minHeight: '420px' }}>
+              <div className="relative w-full bg-[#0a0a0b] group" style={{ minHeight: '480px' }}>
                 <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
                 
                 {previewMode === 'proof' ? (
@@ -260,11 +158,11 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
                     src={workflow.imageUrl}
                     alt={`${workflow.title} Proof`}
                     className="w-full h-full object-cover animate-in fade-in duration-500"
-                    style={{ minHeight: '420px', maxHeight: '520px' }}
+                    style={{ minHeight: '480px', maxHeight: '580px' }}
                   />
                 ) : (
-                  <div className="absolute inset-0" style={{ minHeight: '420px' }}>
-                    <WorkflowGraphViewer workflowTitle={workflow.title} />
+                  <div className="absolute inset-0" style={{ minHeight: '480px' }}>
+                    <WorkflowGraphViewer workflowId={workflow.id} workflowTitle={workflow.title} />
                   </div>
                 )}
 
@@ -277,12 +175,12 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
                 </div>
                 <div className="absolute bottom-6 right-6 pointer-events-none select-none text-right">
                   <span className="text-[9px] font-mono font-black text-[#333340] uppercase tracking-[0.3em] block mb-1">COORDINATES</span>
-                  <span className="text-[11px] font-mono font-bold text-[#555565]">{workflow.resolution} | 30_STEPS</span>
+                  <span className="text-[11px] font-mono font-bold text-[#555565]">{workflow.resolution} | {workflow.version}</span>
                 </div>
               </div>
 
               {/* Action Bar */}
-              <div className="p-8 bg-gradient-to-br from-[#111113] to-[#0a0a0b] flex flex-col sm:flex-row gap-6 items-center border-t border-[#2a2a30]">
+              <div className="p-6 bg-gradient-to-br from-[#111113] to-[#0a0a0b] flex flex-col sm:flex-row gap-4 items-center border-t border-[#2a2a30]">
                  <div className="flex-1 w-full">
                     <DownloadButton workflowId={workflow.id} workflowTitle={workflow.title} size="large" />
                  </div>
@@ -298,32 +196,37 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
               </div>
             </div>
 
-            {/* 2. PROOF PROMPT PANEL */}
+            {/* 2. PROMPT ANALYSIS PANEL */}
             <div className="bg-[#111113] border border-[#2a2a30] rounded-2xl overflow-hidden">
-               <div className="p-4 border-b border-[#2a2a30] flex items-center justify-between">
+               <div className="p-4 border-b border-[#2a2a30] flex items-center justify-between bg-[#0a0a0b]/50">
                   <h3 className="text-[10px] font-mono font-black text-[#22d3ee] uppercase tracking-[0.2em] flex items-center gap-2">
                     <Terminal size={14} />
-                    VALIDATION PROMPT
+                    ANALYSIS_PROMPT_STRING
                   </h3>
                   <button 
                   onClick={handleCopyPrompt}
-                  className="flex items-center gap-2 text-[9px] font-mono font-bold text-[#555565] hover:text-[#7c6af7] transition-all uppercase"
+                  className="flex items-center gap-2 px-3 py-1 bg-[#2a2a30]/50 rounded text-[9px] font-mono font-bold text-[#555565] hover:text-[#7c6af7] transition-all uppercase border border-transparent hover:border-[#7c6af7]/30"
                   >
                     {copiedPrompt ? <Check size={12} className="text-[#4ade80]" /> : <Copy size={12} />}
-                    {copiedPrompt ? 'COMMAND_SENT' : 'COPY_STRING'}
+                    {copiedPrompt ? 'COPIED' : 'COPY_BUFFER'}
                   </button>
                </div>
-               <div className="p-10 bg-[#0a0a0b] text-center">
-                  <div className="max-w-2xl mx-auto">
-                    <p className="text-[#e8e8f0] text-lg italic leading-relaxed font-serif text-outline-1">
+               <div className="p-8 md:p-12 bg-gradient-to-br from-[#0a0a0b] to-[#111113]">
+                  <div className="max-w-3xl mx-auto text-center">
+                    <p className="text-[#e8e8f0]/90 text-lg md:text-xl italic leading-relaxed font-serif tracking-wide border-l-2 border-r-2 border-[#7c6af7]/10 px-8">
                       &quot;{workflow.proofPrompt}&quot;
                     </p>
                   </div>
                </div>
+               <div className="px-6 py-3 bg-[#0a0a0b] border-t border-[#2a2a30] flex flex-wrap gap-4 justify-center items-center">
+                  <span className="text-[9px] font-mono text-[#333340] uppercase tracking-widest">Metadata Hash: 0x{workflow.id}F7A...</span>
+                  <div className="h-1 w-1 bg-[#333340] rounded-full" />
+                  <span className="text-[9px] font-mono text-[#333340] uppercase tracking-widest">Sample Count: 30_Steps</span>
+               </div>
             </div>
 
-            {/* 3. EXTENDED DOCUMENTATION */}
-            <div className="space-y-6">
+            {/* 3. ARCHITECTURE MANUAL */}
+            <div className="space-y-6 pt-6">
               <div className="flex items-center gap-4">
                 <Search size={20} className="text-[#7c6af7]" />
                 <h3 className="text-xl font-mono font-black text-white uppercase tracking-tighter">Architecture Manual</h3>
@@ -334,19 +237,153 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
                     {workflow.longDescription}
                  </p>
               </div>
+              
+              {/* Tags in main column now */}
+              <div className="flex flex-wrap gap-2 pt-4">
+                {workflow.tags.map((tag, i) => (
+                  <Link 
+                    key={i} 
+                    href={`/workflows?search=${tag}`}
+                    className="px-3 py-1 bg-[#111113] border border-[#2a2a30] hover:border-[#7c6af7]/50 rounded text-[9px] font-mono font-bold text-[#555565] hover:text-[#7c6af7] uppercase tracking-widest transition-all"
+                  >
+                    #{tag}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* 🟢 RIGHT COLUMN: DASHBOARD & REQS (4/12) */}
+          <div className="lg:col-span-4 space-y-8 animate-in fade-in slide-in-from-right-4 duration-700 lg:sticky lg:top-28">
+            
+            {/* 1. PRIMARY IDENTITY */}
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <h1 className="text-3xl md:text-4xl font-mono font-black text-white uppercase tracking-tighter leading-tight">
+                  {workflow.title}
+                </h1>
+                <div className="flex items-center gap-3">
+                  <span className={`px-2 py-0.5 bg-[#111113] border border-[#2a2a30] rounded text-[9px] font-mono font-bold uppercase tracking-widest ${difficultyColors[workflow.difficulty]}`}>
+                    {workflow.difficulty}
+                  </span>
+                  <div className="h-1 w-1 bg-[#2a2a30] rounded-full" />
+                  <span className="text-[10px] font-mono font-bold text-[#555565] uppercase tracking-widest">
+                    v{workflow.version}
+                  </span>
+                </div>
+              </div>
+              <p className="text-[#8888a0] font-mono text-xs leading-relaxed border-l-2 border-[#2a2a30] pl-4 italic">
+                {workflow.description}
+              </p>
             </div>
 
-            {/* 4. TAGS */}
-            <div className="flex flex-wrap gap-2 pt-6">
-              {workflow.tags.map((tag, i) => (
-                <Link 
-                  key={i} 
-                  href={`/workflows?search=${tag}`}
-                  className="px-3 py-1 bg-[#0a0a0b] border border-[#2a2a30] hover:border-[#7c6af7]/50 rounded text-[9px] font-mono font-bold text-[#333340] hover:text-[#7c6af7] uppercase tracking-widest transition-all"
-                >
-                  #{tag}
-                </Link>
-              ))}
+            {/* 2. SYSTEM STATUS (SOCIAL PROOF SIM) */}
+            <div className="p-5 bg-[#0a0a0b] border border-[#2a2a30] rounded-xl grid grid-cols-3 gap-4">
+               <div className="text-center">
+                  <span className="block text-[8px] font-mono font-black text-[#333340] uppercase tracking-tighter mb-1">Registry Hits</span>
+                  <span className="text-sm font-mono font-bold text-white">4.2K</span>
+               </div>
+               <div className="text-center border-x border-[#2a2a30]">
+                  <span className="block text-[8px] font-mono font-black text-[#333340] uppercase tracking-tighter mb-1">Downloads</span>
+                  <span className="text-sm font-mono font-bold text-white">1.8K</span>
+               </div>
+               <div className="text-center">
+                  <span className="block text-[8px] font-mono font-black text-[#7c6af7] uppercase tracking-tighter mb-1">Uptime</span>
+                  <span className="text-sm font-mono font-bold text-[#7c6af7]">100%</span>
+               </div>
+            </div>
+
+            {/* 3. TECH SPECS GRID */}
+            <div className="space-y-4">
+              <h3 className="text-[10px] font-mono font-black text-white uppercase tracking-[0.2em] border-b border-[#2a2a30] pb-2">Hardware Reqs</h3>
+              <div className="grid grid-cols-1 gap-3">
+                <div className="p-3 bg-[#111113] border border-[#2a2a30] rounded-lg flex items-center justify-between group hover:border-[#22d3ee]/30 transition-all">
+                  <div className="flex items-center gap-3">
+                    <Zap size={14} className="text-[#22d3ee]" />
+                    <span className="text-[10px] font-mono text-[#555565] uppercase">Target VRAM</span>
+                  </div>
+                  <span className="text-[10px] font-mono font-black text-[#22d3ee]">{workflow.vram}</span>
+                </div>
+                <div className="p-3 bg-[#111113] border border-[#2a2a30] rounded-lg flex items-center justify-between group hover:border-[#7c6af7]/30 transition-all">
+                  <div className="flex items-center gap-3">
+                    <Clock size={14} className="text-[#7c6af7]" />
+                    <span className="text-[10px] font-mono text-[#555565] uppercase">Gen Latency</span>
+                  </div>
+                  <span className="text-[10px] font-mono font-black text-[#e8e8f0]">{workflow.genTime.split(' on')[0]}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 4. MODEL DEPENDENCIES (CHIPS STYLE) */}
+            <div className="space-y-4">
+               <div className="flex items-center justify-between border-b border-[#2a2a30] pb-2">
+                 <h3 className="text-[10px] font-mono font-black text-white uppercase tracking-[0.2em]">Neural Weights</h3>
+                 <span className="text-[9px] font-mono text-[#333340] uppercase">{workflow.modelPaths.length} FILES</span>
+               </div>
+               <div className="flex flex-col gap-2">
+                 {workflow.modelPaths.map((m, i) => {
+                   const isCheckpoint = m.dir.includes('checkpoints') || m.dir.includes('unet');
+                   const isVAE = m.dir.includes('vae');
+                   const isEncoder = m.dir.includes('text_encoders');
+                   
+                   let colorClass = "border-[#2a2a30] text-[#8888a0]";
+                   let dotColor = "bg-[#333340]";
+                   
+                   if (isCheckpoint) { colorClass = "border-[#22d3ee]/30 text-[#22d3ee] bg-[#22d3ee]/5"; dotColor = "bg-[#22d3ee]"; }
+                   else if (isVAE) { colorClass = "border-[#f59e0b]/30 text-[#f59e0b] bg-[#f59e0b]/5"; dotColor = "bg-[#f59e0b]"; }
+                   else if (isEncoder) { colorClass = "border-[#a855f7]/30 text-[#a855f7] bg-[#a855f7]/5"; dotColor = "bg-[#a855f7]"; }
+
+                   return (
+                    <a 
+                      key={i}
+                      href={m.downloadUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center justify-between px-3 py-2 border rounded-md transition-all hover:scale-[1.02] active:scale-[0.98] group/item ${colorClass}`}
+                    >
+                      <div className="flex items-center gap-2 overflow-hidden">
+                        <div className={`w-1 h-1 rounded-full ${dotColor} animate-pulse`} />
+                        <span className="text-[10px] font-mono font-bold truncate uppercase">{m.file}</span>
+                      </div>
+                      <ExternalLink size={10} className="opacity-30 group-hover/item:opacity-100 transition-opacity flex-shrink-0" />
+                    </a>
+                   );
+                 })}
+               </div>
+            </div>
+
+            {/* 5. EXPANSION NODES */}
+            <div className="space-y-4">
+               <h3 className="text-[10px] font-mono font-black text-white uppercase tracking-[0.2em] border-b border-[#2a2a30] pb-2">Custom Nodes</h3>
+               <div className="flex flex-wrap gap-2">
+                 {workflow.customNodes.length > 0 ? workflow.customNodes.map((node, i) => (
+                   <a 
+                    key={i}
+                    href={`https://github.com/search?q=${node}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 bg-[#111113] border border-[#2a2a30] hover:border-[#7c6af7]/50 rounded-sm text-[9px] font-mono font-bold text-[#555565] hover:text-white transition-all uppercase tracking-tighter"
+                   >
+                     {node}
+                   </a>
+                 )) : (
+                   <span className="text-[9px] font-mono text-[#333340] uppercase italic font-bold">Native Nodes Only</span>
+                 )}
+               </div>
+            </div>
+
+            {/* 6. PRO TIP */}
+            <div className="relative p-5 bg-gradient-to-br from-[#1c1c20] to-[#0a0a0b] border border-[#7c6af7]/20 rounded-xl overflow-hidden group">
+               <div className="absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <Sparkles size={30} className="text-[#7c6af7]" />
+               </div>
+               <h3 className="text-[10px] font-mono font-black text-[#7c6af7] uppercase tracking-widest mb-2 flex items-center gap-2">
+                 <Terminal size={14} />
+                 NEURAL_ADVICE
+               </h3>
+               <p className="text-[11px] text-[#e8e8f0] leading-relaxed font-mono italic">
+                 &quot;{workflow.proTip}&quot;
+               </p>
             </div>
 
           </div>
