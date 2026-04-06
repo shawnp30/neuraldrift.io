@@ -281,13 +281,7 @@ export default function GuidesPage() {
       <section className="relative h-[65vh] flex items-center justify-center overflow-hidden border-b border-white/5">
         {/* Main Image Asset */}
         <div className="absolute inset-0 z-0">
-          <Image 
-            src="/images/learn/hero.png" 
-            alt="Guides Hero" 
-            fill
-            className="object-cover opacity-30 mix-blend-screen scale-105"
-            priority
-          />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#7c6af7]/10 via-transparent to-[#00e5ff]/5" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-[#0a0a0b]/40 to-transparent" />
         </div>
 

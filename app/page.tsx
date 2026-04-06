@@ -5,6 +5,7 @@ import matter from "gray-matter";
 
 // High-Fidelity Components
 import { HomeHero } from "@/components/home/HomeHero";
+import { ExpectationSection } from "@/components/home/ExpectationSection";
 import { ArchitectsSpotlight } from "@/components/home/ArchitectsSpotlight";
 import { PopularWorkflows } from "@/components/home/PopularWorkflows";
 import { OptimizerFeature } from "@/components/home/OptimizerFeature";
@@ -62,6 +63,9 @@ export default async function HomePage() {
     <div className="bg-[#07090e] text-[#e8e8f0] selection:bg-[#7c6af7]/30">
       {/* Hero: The cinematic entry point */}
       <HomeHero />
+
+      {/* Onboarding: What NeuralDrift is and how people use it */}
+      <ExpectationSection />
 
       {/* Social: Community growth & proof */}
       <SocialProof />
