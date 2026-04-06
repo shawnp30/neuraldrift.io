@@ -71,11 +71,12 @@ export const HomeHero = () => {
           <div className="relative group lg:block hidden">
             <div className="absolute -inset-0.5 bg-gradient-to-r from-accent-cyan to-accent-purple rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000"></div>
             <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-[#0f172a] shadow-2xl">
-              <Image 
-                src="/images/comfyui-hero.png" 
-                alt="Branded ComfyUI Workflow" 
-                width={800} 
-                height={600} 
+              <Image
+                src="/images/comfyui-hero.png"
+                alt="Branded ComfyUI Workflow"
+                width={800}
+                height={600}
+                priority
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-[1.05]"
               />
               {/* Overlay Glass Nodes (Simulated) */}

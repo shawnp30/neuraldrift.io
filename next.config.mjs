@@ -8,6 +8,7 @@ const nextConfig = {
       { protocol: "https", hostname: "neuraldrift" },
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "avatar.vercel.sh" },
+      { protocol: "https", hostname: "comfyanonymous.github.io" },
     ],
   },
   async redirects() {

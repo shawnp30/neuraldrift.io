@@ -15,8 +15,8 @@
   --rose: #f472b6;
   --rose-dim: rgba(244, 114, 182, 0.08);
   --text: #e4e2dd;
-  --text-secondary: #8b8d97;
-  --text-muted: #55575f;
+  --text-secondary: #9a9ca8;
+  --text-muted: #7a7c8a;
   --mono: var(--font-ibm-plex-mono), monospace;
   --display: var(--font-syne), sans-serif;
   --serif: var(--font-crimson-pro), serif;

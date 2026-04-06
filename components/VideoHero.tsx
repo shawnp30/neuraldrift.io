@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Play, Info, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
@@ -62,10 +63,12 @@ export function VideoHero({
         <div className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 shadow-2xl group cursor-pointer" onClick={() => setIsPlaying(true)}>
           {!isPlaying ? (
             <>
-              <img 
-                src={thumbnail} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60" 
+              <Image
+                src={thumbnail}
                 alt="Video Thumbnail"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-60"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-transparent to-transparent opacity-60" />
               <div className="absolute inset-0 flex items-center justify-center">

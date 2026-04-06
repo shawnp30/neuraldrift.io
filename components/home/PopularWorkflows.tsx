@@ -112,7 +112,7 @@ function WorkflowCard({ workflow }: WorkflowCardProps) {
           className={`object-cover transition-all duration-700 ${
             isHovered ? "scale-110 brightness-75" : "scale-100 brightness-90"
           }`}
-          unoptimized
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
 
         {/* Glow emanating from image */}

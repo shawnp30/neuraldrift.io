@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { WorkflowEntry } from '@/lib/workflowsData';
 import { DownloadButton } from './DownloadButton';
 import { MoveRight, Cpu, Clock, Layers, Zap, Info } from 'lucide-react';
@@ -26,11 +27,12 @@ export default function WorkflowCard({ workflow }: { workflow: WorkflowEntry }) 
         <div className="absolute inset-0 bg-grid opacity-10" />
         
         {/* Main Proof Image */}
-        <img
+        <Image
           src={workflow.imageUrl}
           alt={workflow.title}
-          loading="lazy"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
 
         {/* OVERLAYS */}
@@ -58,7 +60,7 @@ export default function WorkflowCard({ workflow }: { workflow: WorkflowEntry }) 
           <h3 className="text-lg font-mono font-bold text-white leading-tight mb-2 group-hover:text-[#7c6af7] transition-colors uppercase tracking-tight">
             {workflow.title}
           </h3>
-          <p className="text-[#8888a0] text-xs leading-relaxed line-clamp-2 min-h-[3.0rem]">
+          <p className="text-[#9a9ca8] text-xs leading-relaxed line-clamp-2 min-h-[3.0rem]">
             {workflow.description}
           </p>
         </div>
@@ -68,7 +70,7 @@ export default function WorkflowCard({ workflow }: { workflow: WorkflowEntry }) 
           <div className="flex items-center gap-2">
             <Zap size={14} className="text-[#22d3ee]" />
             <div className="flex flex-col">
-              <span className="text-[9px] text-[#555565] uppercase tracking-wider leading-none mb-1">Model</span>
+              <span className="text-[9px] text-[#7a7c8a] uppercase tracking-wider leading-none mb-1">Model</span>
               <span className="text-[10px] font-mono text-[#e8e8f0] truncate max-w-[80px]" title={workflow.model}>{workflow.model}</span>
             </div>
           </div>
@@ -76,7 +78,7 @@ export default function WorkflowCard({ workflow }: { workflow: WorkflowEntry }) 
           <div className="flex items-center gap-2">
             <Cpu size={14} className="text-[#a855f7]" />
             <div className="flex flex-col">
-              <span className="text-[9px] text-[#555565] uppercase tracking-wider leading-none mb-1">VRAM</span>
+              <span className="text-[9px] text-[#7a7c8a] uppercase tracking-wider leading-none mb-1">VRAM</span>
               <span className="text-[10px] font-mono text-[#e8e8f0]">{workflow.vram}</span>
             </div>
           </div>
@@ -84,7 +86,7 @@ export default function WorkflowCard({ workflow }: { workflow: WorkflowEntry }) 
           <div className="flex items-center gap-2">
             <Clock size={14} className="text-[#4ade80]" />
             <div className="flex flex-col">
-              <span className="text-[9px] text-[#555565] uppercase tracking-wider leading-none mb-1">Compute</span>
+              <span className="text-[9px] text-[#7a7c8a] uppercase tracking-wider leading-none mb-1">Compute</span>
               <span className="text-[10px] font-mono text-[#e8e8f0] truncate">{workflow.genTime.split(' on')[0]}</span>
             </div>
           </div>
@@ -92,7 +94,7 @@ export default function WorkflowCard({ workflow }: { workflow: WorkflowEntry }) 
           <div className="flex items-center gap-2">
             <Layers size={14} className="text-[#f59e0b]" />
             <div className="flex flex-col">
-              <span className="text-[9px] text-[#555565] uppercase tracking-wider leading-none mb-1">Version</span>
+              <span className="text-[9px] text-[#7a7c8a] uppercase tracking-wider leading-none mb-1">Version</span>
               <span className="text-[10px] font-mono text-[#e8e8f0]">{workflow.version}</span>
             </div>
           </div>
@@ -104,7 +106,7 @@ export default function WorkflowCard({ workflow }: { workflow: WorkflowEntry }) 
           
           <Link 
             href={`/workflows/${workflow.id}`}
-            className="flex items-center justify-center gap-2 w-full py-2 text-[10px] font-mono font-bold text-[#555565] hover:text-[#7c6af7] border border-transparent hover:border-[#7c6af7]/20 rounded transition-all group/link"
+            className="flex items-center justify-center gap-2 w-full py-2 text-[10px] font-mono font-bold text-[#7a7c8a] hover:text-[#7c6af7] border border-transparent hover:border-[#7c6af7]/20 rounded transition-all group/link"
           >
             DOCUMENTATION & PROMPT
             <MoveRight size={14} className="transition-transform group-hover/link:translate-x-1" />

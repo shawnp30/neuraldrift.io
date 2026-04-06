@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   ChevronLeft, 
   Download, 
@@ -154,11 +155,12 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
                 <div className="absolute inset-0 bg-grid opacity-10 pointer-events-none" />
                 
                 {previewMode === 'proof' ? (
-                  <img 
+                  <Image
                     src={workflow.imageUrl}
                     alt={`${workflow.title} Proof`}
-                    className="w-full h-full object-cover animate-in fade-in duration-500"
-                    style={{ minHeight: '480px', maxHeight: '580px' }}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 800px"
+                    className="object-cover animate-in fade-in duration-500"
                   />
                 ) : (
                   <div className="absolute inset-0" style={{ minHeight: '480px' }}>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ExternalLink,
   Video,
@@ -160,11 +161,13 @@ export default function ProofGalleryPage() {
                     className="max-h-[75vh] w-full object-contain"
                   />
                 ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={lightbox.url}
                     alt={lightbox.workflowTitle}
-                    className="max-h-[75vh] w-full object-contain"
+                    width={1200}
+                    height={900}
+                    style={{ maxHeight: "75vh", width: "100%", height: "auto" }}
+                    className="object-contain"
                   />
                 )}
               </div>
@@ -366,12 +369,13 @@ export default function ProofGalleryPage() {
                           className="h-auto w-full object-cover transition-transform duration-1000 group-hover:scale-110"
                         />
                       ) : (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        <Image
                           src={item.url}
                           alt={item.workflowTitle}
-                          loading="lazy"
-                          className="h-auto w-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                          width={800}
+                          height={600}
+                          style={{ width: "100%", height: "auto" }}
+                          className="object-cover transition-transform duration-1000 group-hover:scale-110"
                         />
                       )}
 
