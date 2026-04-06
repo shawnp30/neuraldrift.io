@@ -56,13 +56,13 @@ export const HomeHero = () => {
                 <div className="text-2xl font-[800] text-white flex items-center">
                   <Counter value={50} />+
                 </div>
-                <div className="text-xs uppercase tracking-widest text-zinc-500 font-mono">Workflows</div>
+                <div className="text-xs uppercase tracking-widest text-zinc-400 font-mono">Workflows</div>
               </div>
               <div>
                 <div className="text-2xl font-[800] text-white flex items-center">
                   <Counter value={0} />
                 </div>
-                <div className="text-xs uppercase tracking-widest text-zinc-500 font-mono">Ads Ever</div>
+                <div className="text-xs uppercase tracking-widest text-zinc-400 font-mono">Ads Ever</div>
               </div>
             </div>
           </div>

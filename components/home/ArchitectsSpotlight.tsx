@@ -91,7 +91,7 @@ export function ArchitectsSpotlight() {
         <h2 className="mb-2 font-syne text-4xl font-black text-white drop-shadow-[0_0_10px_#00f2ff]">
           Architects of the Drift
         </h2>
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-500">
+        <p className="font-mono text-xs uppercase tracking-[0.2em] text-zinc-400">
           Top-tier creators shaping the future of generative media.
         </p>
       </div>
@@ -134,7 +134,7 @@ export function ArchitectsSpotlight() {
               <h3 className="text-2xl font-black tracking-tight text-white transition-colors group-hover:text-accent">
                 @{creator.name}
               </h3>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-500">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-zinc-400">
                 <Counter value={creator.downloads} /> Downloads •{" "}
                 <Counter value={creator.modelCount} /> LoRAs
               </p>
@@ -167,7 +167,7 @@ export function ArchitectsSpotlight() {
       <div className="mx-auto mt-8 flex max-w-[900px] justify-center">
         <Link
           href="/monetization/featured"
-          className="font-mono text-[10px] uppercase tracking-widest text-zinc-600 transition-colors hover:text-accent"
+          className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 transition-colors hover:text-accent"
         >
           Apply to be Featured →
         </Link>

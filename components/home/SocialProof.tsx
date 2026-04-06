@@ -44,7 +44,7 @@ export const SocialProof = () => {
                   <div className="text-white font-[800] text-sm uppercase tracking-widest font-mono">
                     {t.author}
                   </div>
-                  <div className="text-zinc-500 text-xs font-mono font-[500] mt-1">
+                  <div className="text-zinc-400 text-xs font-mono font-[500] mt-1">
                     {t.role}
                   </div>
                 </div>

@@ -55,7 +55,7 @@ export function ExpectationSection() {
           <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-7 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-sm md:p-8">
             <div className="mb-6 flex items-center justify-between gap-4">
               <div>
-                <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+                <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400">
                   Workflow Preview
                 </p>
                 <h3 className="mt-2 font-syne text-2xl font-[800] text-white">
@@ -72,19 +72,19 @@ export function ExpectationSection() {
                 <span className="h-2.5 w-2.5 rounded-full bg-[#fb7185]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#f59e0b]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#22c55e]" />
-                <span className="ml-3 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-500">
+                <span className="ml-3 font-mono text-[11px] uppercase tracking-[0.2em] text-zinc-400">
                   NeuralDrift Session
                 </span>
               </div>
 
               <div className="grid gap-4 p-5 md:grid-cols-[0.9fr_1.1fr]">
                 <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-500">
+                  <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-400">
                     Start Here
                   </p>
-                  <h4 className="mt-3 font-syne text-xl font-[800] text-white">
+                  <h3 className="mt-3 font-syne text-xl font-[800] text-white">
                     FLUX Food Photography
-                  </h4>
+                  </h3>
                   <p className="mt-3 text-sm leading-6 text-zinc-400">
                     Build a polished food image, tune the creative direction,
                     then export the setup for ComfyUI or your own local stack.
@@ -112,7 +112,7 @@ export function ExpectationSection() {
 
           <div className="grid gap-6">
             <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-7 shadow-[0_18px_60px_rgba(0,0,0,0.24)] backdrop-blur-sm md:p-8">
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400">
                 Your Experience
               </p>
               <div className="mt-5 space-y-4">
@@ -138,7 +138,7 @@ export function ExpectationSection() {
             </div>
 
             <div className="rounded-[28px] border border-white/10 bg-gradient-to-br from-white/[0.05] to-white/[0.02] p-7 md:p-8">
-              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-zinc-400">
                 For New And Advanced Builders
               </p>
               <p className="mt-4 text-base leading-7 text-zinc-300">

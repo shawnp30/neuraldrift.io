@@ -40,7 +40,7 @@ export function Hero() {
         LoRA models, curate datasets, and optimize everything for their specific
         hardware — all in one place.
       </p>
-      <p className="reveal mb-10 max-w-xl font-mono text-sm text-muted/60">
+      <p className="reveal mb-10 max-w-xl font-mono text-sm text-muted/80">
         Not a cloud service. Not a subscription. A complete local AI production
         system — workflows export as ready-to-run ComfyUI JSON for your GPU.
       </p>

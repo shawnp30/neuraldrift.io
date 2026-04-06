@@ -37,7 +37,7 @@ export default function UserJourney() {
       <h2 className="text-2xl font-bold text-white text-center mb-2">
         Where do you want to start?
       </h2>
-      <p className="text-zinc-500 text-center mb-10">
+      <p className="text-zinc-400 text-center mb-10">
         Pick your path. We'll get you to results fast.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -48,7 +48,7 @@ export default function UserJourney() {
             className={`group relative rounded-2xl border bg-gradient-to-b p-6 hover:scale-[1.02] transition-all ${p.color}`}
           >
             <div className="text-3xl mb-3">{p.icon}</div>
-            <div className="text-xs font-bold tracking-widest text-zinc-500 uppercase mb-1">
+            <div className="text-xs font-bold tracking-widest text-zinc-400 uppercase mb-1">
               {p.level}
             </div>
             <h3 className="text-lg font-bold text-white mb-2">{p.title}</h3>

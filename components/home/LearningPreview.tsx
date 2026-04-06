@@ -85,7 +85,7 @@ export const LearningPreview = () => {
 
               {/* Content Container */}
               <div className="flex flex-1 flex-col p-6">
-                <div className="mb-3 font-mono text-[10px] uppercase tracking-widest text-zinc-500 flex justify-between items-center">
+                <div className="mb-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-zinc-400">
                    <div className="flex items-center gap-2">
                      {card.icon}
                      {card.readTime}
