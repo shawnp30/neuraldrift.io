@@ -36,7 +36,7 @@ export function WorkflowsPreview() {
     <section ref={ref} className="py-24 px-10 max-w-7xl mx-auto">
       <div className="reveal flex items-end justify-between mb-12">
         <div>
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// Workflow Library</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Workflow Library"}</p>
           <h2 className="font-syne text-[clamp(2rem,3.5vw,3rem)] font-black tracking-tight mb-3 leading-tight">
             Pick a workflow.<br />Configure for your GPU. Export.
           </h2>
@@ -71,7 +71,7 @@ export function WorkflowsPreview() {
 
       {/* How export works */}
       <div className="reveal bg-card border border-border rounded-2xl p-8">
-        <p className="font-mono text-xs text-accent tracking-widest uppercase mb-6">// How the Export System Works</p>
+        <p className="font-mono text-xs text-accent tracking-widest uppercase mb-6">{"// How the Export System Works"}</p>
         <div className="grid grid-cols-5 gap-4 items-center">
           {[
             { step: "1", label: "Select workflow", detail: "Browse by category, VRAM, or difficulty" },

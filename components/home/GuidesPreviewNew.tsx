@@ -23,7 +23,7 @@ export function GuidesPreviewNew() {
     <section ref={ref} className="py-24 px-10 max-w-7xl mx-auto">
       <div className="reveal flex items-end justify-between mb-12">
         <div>
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// Guides</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Guides"}</p>
           <h2 className="font-syne text-[clamp(2rem,3.5vw,3rem)] font-black tracking-tight mb-3">
             Written by someone on<br />the same hardware as you.
           </h2>
@@ -41,7 +41,7 @@ export function GuidesPreviewNew() {
           <Link key={g.slug} href={`/guides/${g.slug}`}
             className="bg-card border border-border rounded-xl p-7 block hover:-translate-y-1 hover:border-accent/30 transition-all duration-200 group">
             <span className={`inline-block font-mono text-xs px-2 py-0.5 rounded-sm tracking-widest uppercase mb-4 ${g.bg} ${g.color}`}>{g.difficulty}</span>
-            <h4 className="font-syne text-sm font-bold text-white mb-2 leading-snug group-hover:text-accent transition-colors">{g.title}</h4>
+            <h3 className="font-syne text-sm font-bold text-white mb-2 leading-snug group-hover:text-accent transition-colors">{g.title}</h3>
             <p className="text-xs text-muted leading-relaxed mb-5">{g.desc}</p>
             <div className="flex items-center gap-3 pt-4 border-t border-border font-mono text-xs text-muted">
               <span>⏱ {g.time}</span><span>·</span><span>{g.tag}</span>

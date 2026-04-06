@@ -22,8 +22,8 @@ export function CodeFeature() {
     <section ref={ref} className="mx-auto max-w-7xl px-10 py-24">
       <div className="reveal grid grid-cols-2 items-center gap-20">
         <div>
-          <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
-            // Practical, Not Theoretical
+          <p className="mb-4 font-mono text-xs uppercase tracking-widest text-[#a3e635]">
+            {"// Practical, Not Theoretical"}
           </p>
           <h2 className="mb-4 font-syne text-[clamp(1.8rem,3vw,2.8rem)] font-black tracking-tight">
             Every guide ships

@@ -35,7 +35,7 @@ export const FinalCTA = () => {
           </Link>
         </div>
 
-        <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+        <p className="mt-8 font-mono text-[10px] uppercase tracking-[0.2em] text-zinc-400">
           Neuraldrift — Local AI Workflow Architecture
         </p>
       </div>

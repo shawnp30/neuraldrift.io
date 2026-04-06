@@ -23,9 +23,9 @@ const TESTIMONIALS = [
 
 export const SocialProof = () => {
   return (
-    <section className="py-24 bg-[#0b0f14] border-t border-white/5">
+    <section className="border-t border-white/5 bg-[#080b0f] py-12">
       <div className="nh-container">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <div className="nh-section-label justify-center mb-4">Community</div>
           <h2 className="font-syne text-4xl md:text-5xl font-[800] text-white tracking-tight">
             Creators Using Neuraldrift
@@ -44,7 +44,7 @@ export const SocialProof = () => {
                   <div className="text-white font-[800] text-sm uppercase tracking-widest font-mono">
                     {t.author}
                   </div>
-                  <div className="text-zinc-500 text-xs font-mono font-[500] mt-1">
+                  <div className="text-zinc-400 text-xs font-mono font-[500] mt-1">
                     {t.role}
                   </div>
                 </div>

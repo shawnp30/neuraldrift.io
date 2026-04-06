@@ -1,43 +1,46 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import React from "react";
-import { GraduationCap, Trophy, Wrench, Cpu, ArrowRight } from "lucide-react";
+import { ArrowRight, Play, BookOpen, Settings } from "lucide-react";
 
 const CARDS = [
   {
-    icon: <GraduationCap size={20} className="text-accent-cyan" />,
-    title: "ComfyUI Deployment Guide",
-    cta: "Read Guide",
-    href: "/guides/comfyui-deployment-guide",
-    desc: "Master the full lifecycle of ComfyUI deployment from local to cloud.",
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    level: "Beginner",
+    levelColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+    icon: <Settings size={16} className="text-emerald-400" />,
+    title: "ComfyUI Complete Setup: RTX 5080 Edition",
+    readTime: "12 min",
+    href: "/guides/comfyui-complete-setup",
+    desc: "Install, configure, and benchmark your first ComfyUI workflow. From zero to generating in under 30 minutes.",
   },
   {
-    icon: <Trophy size={20} className="text-accent-purple" />,
-    title: "Workflow Setup Guide",
-    cta: "Read Guide",
-    href: "/guides/ai-workflow-setup-guide",
-    desc: "Architect scalable, modular AI systems for production environments.",
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
+    level: "Intermediate",
+    levelColor: "bg-orange-500/10 text-orange-400 border-orange-500/20",
+    icon: <BookOpen size={16} className="text-orange-400" />,
+    title: "Train Your First FLUX LoRA in Under 6 Hours",
+    readTime: "28 min",
+    href: "/guides/train-flux-lora",
+    desc: "Dataset prep, Kohya config, training loop, and quality evaluation. Exact settings for RTX 5080 and 3080.",
   },
   {
-    icon: <Wrench size={20} className="text-accent-cyan" />,
-    title: "LoRA Training Toolkit",
-    cta: "Start Training",
-    href: "/loras",
-    desc: "Everything you need to fine-tune custom characters.",
-  },
-  {
-    icon: <Cpu size={20} className="text-accent-purple" />,
-    title: "Local Model Selection Guide",
-    cta: "Explore Models",
-    href: "/hardware",
-    desc: "Pick the right GGUF or Safetensors for your VRAM.",
+    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
+    level: "Advanced",
+    levelColor: "bg-violet-500/10 text-violet-400 border-violet-500/20",
+    icon: <Play size={16} className="text-violet-400" />,
+    title: "LTX Video 2.3: Cinematic Action Sequences",
+    readTime: "35 min",
+    href: "/guides/ltx-video-cinematic-action",
+    desc: "Build chase and action scenes with consistent motion, camera lock, and temporal coherence between clips.",
   },
 ];
 
 export const LearningPreview = () => {
   return (
-    <section className="border-t border-white/5 bg-[#080b0f] py-24">
+    <section className="border-t border-white/5 bg-[#080b0f] py-16">
       <div className="nh-container">
         <div className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
@@ -55,32 +58,53 @@ export const LearningPreview = () => {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {CARDS.map((card, idx) => (
-            <div
+            <Link
+              href={card.href}
               key={idx}
-              className="nh-glass-card group overflow-hidden rounded-2xl p-1"
+              className="nh-glass-card group overflow-hidden rounded-2xl flex flex-col hover:border-white/20 transition-all hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
             >
-              <div className="flex h-full flex-col p-6">
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="group-hover:bg-accent-cyan/10 rounded-lg border border-white/10 bg-white/5 p-2 transition-colors">
-                    {card.icon}
-                  </div>
-                  <h3 className="font-mono text-sm font-[800] uppercase tracking-tight text-white">
-                    {card.title}
-                  </h3>
+              {/* Image Container */}
+              <div className="relative h-48 w-full overflow-hidden border-b border-white/5">
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  unoptimized // Simplifies demo
+                />
+                
+                {/* Level Badge Overlay */}
+                <div className="absolute top-4 left-4 z-10">
+                  <span className={`inline-block rounded-md border px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-widest backdrop-blur-md ${card.levelColor}`}>
+                    {card.level}
+                  </span>
                 </div>
-                <p className="mb-8 flex-1 text-xs font-[500] text-zinc-500">
+              </div>
+
+              {/* Content Container */}
+              <div className="flex flex-1 flex-col p-6">
+                <div className="mb-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-zinc-400">
+                   <div className="flex items-center gap-2">
+                     {card.icon}
+                     {card.readTime}
+                   </div>
+                </div>
+                
+                <h3 className="mb-3 font-syne text-lg font-[800] text-white leading-tight group-hover:text-accent-cyan transition-colors">
+                  {card.title}
+                </h3>
+                
+                <p className="mb-6 flex-1 text-xs font-[500] leading-relaxed text-zinc-400">
                   {card.desc}
                 </p>
-                <Link
-                  href={card.href}
-                  className="hover:border-accent-cyan/30 w-full rounded-xl border border-white/10 bg-white/5 py-3 text-center font-mono text-[10px] uppercase tracking-widest text-white transition-all hover:bg-white/10"
-                >
-                  {card.cta}
-                </Link>
+                
+                <div className="mt-auto flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-300 group-hover:text-white transition-colors">
+                  Read Lesson <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

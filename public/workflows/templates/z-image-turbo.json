@@ -19,7 +19,7 @@
       "title": "Model link",
       "properties": {},
       "widgets_values": [
-        "## Report workflow issue\n\nIf you found any issues when running this workflow, [report template issue here](https://github.com/Comfy-Org/workflow_templates/issues)\n\n\n## Model links\n\n**text_encoders**\n\n- [qwen_3_4b.safetensors](https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors)\n\n**loras**\n\n- [pixel_art_style_z_image_turbo.safetensors](https://huggingface.co/tarn59/pixel_art_style_lora_z_image_turbo/resolve/main/pixel_art_style_z_image_turbo.safetensors)\n\n**diffusion_models**\n\n- [z_image_turbo_bf16.safetensors](https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/diffusion_models/z_image_turbo_bf16.safetensors)\n\n**vae**\n\n- [ae.safetensors](https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/vae/ae.safetensors)\n\n\nModel Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 text_encoders/\n│   │      └── qwen_3_4b.safetensors\n│   ├── 📂 loras/\n│   │      └── pixel_art_style_z_image_turbo.safetensors\n│   ├── 📂 diffusion_models/\n│   │      └── z_image_turbo_bf16.safetensors\n│   └── 📂 vae/\n│          └── ae.safetensors\n```\n"
+        "## Report workflow issue\n\nIf you found any issues when running this workflow, [report template issue here](https://github.com/Comfy-Org/workflow_templates/issues)\n\n\n## Model links\n\n**text_encoders**\n\n- [qwen_3_4b.safetensors](https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/text_encoders/qwen_3_4b.safetensors)\n\n**loras**\n\n- [pixel_art_style_z_image_turbo.safetensors](https://huggingface.co/tarn59/pixel_art_style_lora_z_image_turbo/resolve/main/pixel_art_style_z_image_turbo.safetensors)\n\n**diffusion_models**\n\n- [z_image_turbo_bf16.safetensors](https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/diffusion_models/z_image_turbo_bf16.safetensors)\n\n**vae**\n\n- [ae.safetensors](https://huggingface.co/Comfy-Org/z_image_turbo/resolve/main/split_files/vae/ae.safetensors)\n\n\nModel Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 text_encoders/\n│   │      └── qwen_3_4b.safetensors\n│   ├── 📂 loras/\n│   │      └── pixel_art_style_z_image_turbo.safetensors\n│   ├── 📂 diffusion_models/\n│   │      └── z_image_turbo_bf16.safetensors\n│   └── 📂 vae/\n│          └── ae.safetensors\n```\n\n\nDOWNLOAD LINKS (Direct):\n- clip_l.safetensors: https://huggingface.co/comfyanonymous/direct-ml-clip-l/resolve/main/clip_l.safetensors\n- ae.safetensors: https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#000"
@@ -52,7 +52,7 @@
         "secondTabOffset": 80,
         "secondTabWidth": 65
       },
-      "widgets_values": ["z-image-turbo"]
+      "widgets_values": ["z-image-turbo\n\nDOWNLOAD LINKS (Direct):\n- ae.safetensors: https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors"]
     },
     {
       "id": 57,

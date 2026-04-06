@@ -48,7 +48,7 @@ export default function HeroSection() {
           <div className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* GPU Select */}
             <div className="text-left">
-              <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-zinc-500">
+              <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-zinc-400">
                 Your GPU VRAM
               </label>
               <div className="flex flex-wrap gap-2">
@@ -70,7 +70,7 @@ export default function HeroSection() {
 
             {/* Goal Select */}
             <div className="text-left">
-              <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-zinc-500">
+              <label className="mb-2 block text-xs font-medium uppercase tracking-wider text-zinc-400">
                 What do you want to create?
               </label>
               <div className="flex flex-wrap gap-2">
@@ -101,7 +101,7 @@ export default function HeroSection() {
         </div>
 
         {/* Trust bar */}
-        <p className="mt-5 text-sm text-zinc-600">
+        <p className="mt-5 text-sm text-zinc-400">
           Free · No signup required · Works with ComfyUI
         </p>
       </div>

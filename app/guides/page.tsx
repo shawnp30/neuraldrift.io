@@ -2,13 +2,16 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowRight, Zap, Layers, Cpu, ChevronDown, Menu } from "lucide-react";
+import Image from "next/image";
+import { ArrowRight, Zap, Layers, Cpu, ChevronDown, Menu, AlertCircle, Hammer, LifeBuoy } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import type { Difficulty } from "@/types";
 
 import { DynamicCTA } from "@/components/DynamicCTA";
 
-const DIFF_STYLES: Record<Difficulty, { badge: string; icon: React.ReactNode; color: string }> = {
+type GuideDifficulty = Difficulty | "Troubleshooting";
+
+const DIFF_STYLES: Record<GuideDifficulty, { badge: string; icon: React.ReactNode; color: string }> = {
   Beginner: { 
     badge: "bg-[rgba(163,230,53,0.1)] text-[#a3e635] border border-[rgba(163,230,53,0.2)]", 
     icon: <Zap size={14} />,
@@ -24,30 +27,200 @@ const DIFF_STYLES: Record<Difficulty, { badge: string; icon: React.ReactNode; co
     icon: <Cpu size={14} />,
     color: "#a78bfa"
   },
+  Troubleshooting: {
+    badge: "bg-[rgba(239,68,68,0.1)] text-[#ef4444] border border-[rgba(239,68,68,0.2)]",
+    icon: <AlertCircle size={14} />,
+    color: "#ef4444"
+  }
 };
 
 const GUIDES = [
-  { slug: "comfyui-complete-setup", difficulty: "Beginner" as Difficulty, title: "ComfyUI Complete Setup", desc: "Install, configure, and benchmark your first ComfyUI workflow.", time: "12 min", tag: "Image Gen", image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop" },
-  { slug: "installation", difficulty: "Beginner" as Difficulty, title: "How to Install ComfyUI Correctly", desc: "Complete installation guide for ComfyUI. Portable and Desktop methods.", time: "15 min", tag: "Guide", image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop" },
-  { slug: "model-folders", difficulty: "Beginner" as Difficulty, title: "Where Every Model File Goes", desc: "Complete folder structure for checkpoints, LoRAs, VAEs, and ControlNet", time: "6 min", tag: "Guide", image: "https://images.unsplash.com/photo-1544391682-17173b392231?q=80&w=2070&auto=format&fit=crop" },
-  { slug: "portable-vs-desktop", difficulty: "Beginner" as Difficulty, title: "Portable vs Desktop: Which Should You Choose?", desc: "Complete decision guide for installation methods", time: "5 min", tag: "Guide", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2020&auto=format&fit=crop" },
-  { slug: "why-choose-portable", difficulty: "Beginner" as Difficulty, title: "Why Choose ComfyUI Portable Version", desc: "Deep dive into the beginner-friendly installation", time: "5 min", tag: "Guide", image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2020&auto=format&fit=crop" },
-  { slug: "workflow-errors", difficulty: "Beginner" as Difficulty, title: "Understanding and Fixing Workflow Errors", desc: "Solve node not found, black images, and type mismatches", time: "10 min", tag: "Guide", image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop" },
-  
-  { slug: "custom-nodes", difficulty: "Intermediate" as Difficulty, title: "Custom Nodes: Install & Fix", desc: "Master custom node management and troubleshooting", time: "5 min", tag: "Guide", image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop" },
-  { slug: "gpu-errors", difficulty: "Intermediate" as Difficulty, title: "Fixing GPU Errors", desc: "Solve CUDA not available, out of memory, and GPU detection issues", time: "8 min", tag: "Guide", image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?q=80&w=2070&auto=format&fit=crop" },
-  { slug: "model-types", difficulty: "Intermediate" as Difficulty, title: "SD Model Types Explained", desc: "SD1.5 vs SDXL vs LCM vs Turbo vs Flux - which should you use?", time: "10 min", tag: "Guide", image: "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=2232&auto=format&fit=crop" },
-  { slug: "performance-optimization", difficulty: "Intermediate" as Difficulty, title: "Optimize Performance on Any GPU", desc: "GPU-tier specific optimization for 4GB to 24GB+ VRAM.", time: "12 min", tag: "Guide", image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2068&auto=format&fit=crop" },
-  { slug: "train-flux-lora", difficulty: "Intermediate" as Difficulty, title: "Train Your First FLUX LoRA", desc: "Dataset prep, Kohya config, training loop, and evaluation.", time: "28 min", tag: "LoRA Training", image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop" },
-  { slug: "comfyui-deployment-guide", difficulty: "Intermediate" as Difficulty, title: "ComfyUI Deployment Guide", desc: "Master the full lifecycle of ComfyUI deployment from local setup to cloud APIs.", time: "18 min", tag: "Deployment", image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" },
+  // --- BEGINNER FOUNDATION ---
+  { 
+    slug: "comfyui-complete-setup", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "ComfyUI Complete Setup", 
+    desc: "Install, configure, and benchmark your first ComfyUI node network with optimal VRAM settings.", 
+    time: "12 min", 
+    tag: "Foundation", 
+    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    minVram: 8,
+    modelId: "sdxl"
+  },
+  { 
+    slug: "installation", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "How to install ComfyUI Correctly", 
+    desc: "Complete setup for Windows/Linux. From Python environment to the first successful generation.", 
+    time: "15 min", 
+    tag: "Foundation", 
+    image: "/images/guides/comfyui-install.jpg",
+    minVram: 4,
+    modelId: "sdxl-turbo"
+  },
+  { 
+    slug: "model-folders", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "Where Every Model File Goes", 
+    desc: "Properly organizing your Checkpoints, LoRAs, and VAEs for speed and easy management.", 
+    time: "10 min", 
+    tag: "Foundation", 
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "base"
+  },
+  { 
+    slug: "portable-vs-desktop", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "Portable vs Desktop: Which should you choose?", 
+    desc: "Side-by-side comparison. Which version works best for your specific GPU stack?", 
+    time: "8 min", 
+    tag: "Foundation", 
+    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2040&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "base"
+  },
+  { 
+    slug: "why-choose-portable", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "Why Choose ComfyUI Portable version", 
+    desc: "Exploring the benefits of the standalone version for flexibility and mobility across systems.", 
+    time: "5 min", 
+    tag: "Foundation", 
+    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "base"
+  },
+  { 
+    slug: "model-types", 
+    difficulty: "Beginner" as GuideDifficulty, 
+    title: "SD Model Types Explained", 
+    desc: "SDXL vs Flux vs DeepSeek. Choose the right core for your local pipeline.", 
+    time: "10 min", 
+    tag: "Masterclass", 
+    image: "/images/learn/beginner.png",
+    minVram: 12,
+    modelId: "flux-dev"
+  },
 
-  { slug: "ltx-video-cinematic-action", difficulty: "Advanced" as Difficulty, title: "LTX Video: Cinematic Action", desc: "Build chase scenes with consistent motion and camera lock.", time: "35 min", tag: "Video Gen", image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop" },
-  { slug: "why-choose-desktop", difficulty: "Advanced" as Difficulty, title: "Why Choose Desktop Install", desc: "Deep dive into the power-user installation with full system access.", time: "7 min", tag: "Guide", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop" },
-  { slug: "ai-workflow-setup-guide", difficulty: "Advanced" as Difficulty, title: "AI Workflow Setup Guide", desc: "Build scalable, modular AI architectures in ComfyUI for production systems.", time: "22 min", tag: "Workflows", image: "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop" },
-  { slug: "ace-step-1-5-comfyui", difficulty: "Intermediate" as Difficulty, title: "Audio Ace: ComfyUI Integration", desc: "Master the bridge between Audio Ace and ComfyUI for seamless AV generation.", time: "15 min", tag: "Audio Gen", image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?q=80&w=2070&auto=format&fit=crop" }
+  // --- INTERMEDIATE MASTERCLASS ---
+  { 
+    slug: "performance-optimization", 
+    difficulty: "Intermediate" as GuideDifficulty, 
+    title: "Optimize Performance On Any GPU", 
+    desc: "Squeeze every last bit of power from your local GPU with specific tier tuning strategies.", 
+    time: "15 min", 
+    tag: "Optimization", 
+    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2068&auto=format&fit=crop",
+    minVram: 8,
+    modelId: "sdxl"
+  },
+  { 
+    slug: "workflow-errors", 
+    difficulty: "Intermediate" as GuideDifficulty, 
+    title: "Understanding and Fixing Workflow Errors", 
+    desc: "Master troubleshooting for node not found, version conflicts, and loading failures.", 
+    time: "12 min", 
+    tag: "Maintenance", 
+    image: "/images/learn/intermediate.png",
+    minVram: 8,
+    modelId: "any"
+  },
+  { 
+    slug: "ace-step-1-5-comfyui", 
+    difficulty: "Intermediate" as GuideDifficulty, 
+    title: "Audio Ace: Spatial Synthesis", 
+    desc: "Master the bridge between Audio Ace and ComfyUI for premium AV generation.", 
+    time: "15 min", 
+    tag: "Audio Engine", 
+    image: "/images/guides/ace-node-prompt.png",
+    minVram: 8,
+    modelId: "ace-step-1.5"
+  },
+  { 
+    slug: "ai-workflow-setup-guide", 
+    difficulty: "Intermediate" as GuideDifficulty, 
+    title: "AI Workflow Setup Guide", 
+    desc: "Mastering the art of building scalable, modular AI architectures from scratch.", 
+    time: "20 min", 
+    tag: "Node Ops", 
+    image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=2070&auto=format&fit=crop",
+    minVram: 12,
+    modelId: "flux-dev"
+  },
+
+  // --- ADVANCED SYSTEMS ---
+  { 
+    slug: "custom-nodes", 
+    difficulty: "Advanced" as GuideDifficulty, 
+    title: "Custom Nodes: install & fix", 
+    desc: "Unlock ComfyUI extensions like Manager and IPAdapter. Building custom logic blocks.", 
+    time: "15 min", 
+    tag: "Extensions", 
+    image: "/images/learn/advanced.png",
+    minVram: 8,
+    modelId: "sdxl"
+  },
+  { 
+    slug: "gpu-errors", 
+    difficulty: "Advanced" as GuideDifficulty, 
+    title: "Fixing GPU Errors", 
+    desc: "Deep dive into solving CUDA out of memory errors and VRAM overflow issues.", 
+    time: "10 min", 
+    tag: "Hardware", 
+    image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?q=80&w=2070&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "any"
+  },
+  { 
+    slug: "train-flux-lora", 
+    difficulty: "Advanced" as GuideDifficulty, 
+    title: "Train Your First FLUX LoRA", 
+    desc: "Dataset prep, Kohya_ss configuration, and evaluation loop in under 6 hours.", 
+    time: "28 min", 
+    tag: "Masterclass", 
+    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
+    minVram: 16,
+    modelId: "flux-dev"
+  },
+  { 
+    slug: "comfyui-deployment-guide", 
+    difficulty: "Advanced" as GuideDifficulty, 
+    title: "ComfyUI Deployment Guide", 
+    desc: "Deploy production-ready cloud APIs on RunPod, Modal, and AWS at scale.", 
+    time: "25 min", 
+    tag: "Architecture", 
+    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
+    minVram: 24,
+    modelId: "cloud"
+  },
+  { 
+    slug: "ltx-video-cinematic-action", 
+    difficulty: "Advanced" as GuideDifficulty, 
+    title: "Cinematic Action Sequences", 
+    desc: "Build chase and action scenes with consistent motion using LTX-Video-2.3.", 
+    time: "35 min", 
+    tag: "Video Engine", 
+    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2069&auto=format&fit=crop",
+    minVram: 24,
+    modelId: "ltx-2.3-22b"
+  },
+
+  // --- TROUBLESHOOTING ---
+  { 
+    slug: "why-choose-desktop", 
+    difficulty: "Troubleshooting" as GuideDifficulty, 
+    title: "Desktop Setup Troubleshooting", 
+    desc: "Common roadblocks when installing the official ComfyUI desktop application.", 
+    time: "5 min", 
+    tag: "Support", 
+    image: "/images/guides/workflow-errors.png",
+    minVram: 4,
+    modelId: "base"
+  }
 ];
 
-const CATEGORIES: Difficulty[] = ["Beginner", "Intermediate", "Advanced"];
+const CATEGORIES: GuideDifficulty[] = ["Beginner", "Intermediate", "Advanced", "Troubleshooting"];
 
 export default function GuidesPage() {
   const [activeSection, setActiveSection] = useState<string>("Beginner");
@@ -83,33 +256,46 @@ export default function GuidesPage() {
   };
 
   return (
-    <div className="bg-bg min-h-screen text-white font-sans">
+    <div className="bg-[#0a0a0b] min-h-screen text-white font-sans selection:bg-[#7c6af7]/30">
       <Navbar />
 
+      {/* SEO STRUCTURED DATA */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "itemListElement": GUIDES.map((g, i) => ({
+              "@type": "ListItem",
+              "position": i + 1,
+              "url": `https://neuraldrift.io/guides/${g.slug}`,
+              "name": g.title,
+              "description": g.desc
+            }))
+          })
+        }}
+      />
+
       {/* ── HIGH-IMPACT HERO ── */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden border-b border-border">
+      <section className="relative h-[65vh] flex items-center justify-center overflow-hidden border-b border-white/5">
         {/* Main Image Asset */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src="/images/guides-hero.png" 
-            alt="Guides Hero" 
-            className="w-full h-full object-cover opacity-60 mix-blend-luminosity hover:mix-blend-normal transition-all duration-1000 scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/40 to-transparent" />
-          <div className="absolute inset-0 bg-radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#7c6af7]/10 via-transparent to-[#00e5ff]/5" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-[#0a0a0b]/40 to-transparent" />
         </div>
 
-        <div className="relative z-10 text-center px-10 max-w-4xl nh-animate-slide-up">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-6 backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-            <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-accent font-bold">The Knowledge Base</span>
+        <div className="relative z-10 text-center px-10 max-w-4xl opacity-0 animate-[fadeIn_0.8s_ease-out_forwards]">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">
+            <span className="w-2 h-2 rounded-full bg-[#7c6af7] animate-pulse" />
+            <span className="font-mono text-[10px] tracking-[0.3em] uppercase text-zinc-400 font-bold">Knowledge Authority Hub</span>
           </div>
-          <h1 className="font-syne text-6xl md:text-8xl font-[900] tracking-tighter text-white mb-6 leading-none">
-            Master the <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-purple">Stack.</span>
+          <h1 className="font-syne text-7xl md:text-8xl font-[900] tracking-tighter text-white mb-6 leading-[0.85]">
+            MASTER THE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7c6af7] to-[#22d3ee]">AI STACK.</span>
           </h1>
-          <p className="text-lg md:text-xl text-muted font-medium max-w-2xl mx-auto leading-relaxed">
-            From your first node to production-scale cloud deployments. 
-            Structured, hardware-tested guides for the engineering era of AI.
+          <p className="text-lg md:text-xl text-[#8888a0] font-medium max-w-2xl mx-auto leading-relaxed">
+            From node architecture to production cloud deployment. 
+            Structured, hardware-verified guides for the engineering era of AI.
           </p>
         </div>
       </section>
@@ -207,10 +393,9 @@ export default function GuidesPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8">
                     {filtered.map((guide) => (
-                      <Link 
+                      <div 
                         key={guide.slug} 
-                        href={`/guides/${guide.slug}`} 
-                        className="group bg-card/40 hover:bg-card border border-border rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-accent/30 shadow-2xl relative"
+                        className="group bg-[#111113] hover:bg-[#151518] border border-white/5 rounded-3xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:border-[#7c6af7]/30 shadow-2xl relative"
                       >
                         {/* Dynamic glow overlay based on difficulty */}
                         <div 
@@ -218,36 +403,46 @@ export default function GuidesPage() {
                           style={{ backgroundColor: DIFF_STYLES[difficulty].color }}
                         />
 
-                        <div className="aspect-[16/10] relative overflow-hidden bg-black/50 border-b border-border">
-                          <img 
+                        <Link href={`/guides/${guide.slug}`} className="block aspect-[16/10] relative overflow-hidden bg-black/50 border-b border-white/5">
+                          <Image 
                             src={guide.image} 
                             alt={guide.title} 
-                            className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700" 
+                            fill
+                            className="object-cover group-hover:scale-105 transition-all duration-700 opacity-80" 
                           />
-                          <div className="absolute top-4 left-4">
+                          <div className="absolute top-4 left-4 flex gap-2">
                              <span className={`inline-flex items-center gap-1.5 font-mono text-[9px] px-2.5 py-1 rounded-full tracking-widest uppercase backdrop-blur-md shadow-lg ${DIFF_STYLES[guide.difficulty].badge}`}>
                                {DIFF_STYLES[guide.difficulty].icon} {guide.difficulty}
                              </span>
+                             <span className="inline-flex items-center gap-1.5 font-mono text-[9px] px-2.5 py-1 rounded-full tracking-widest uppercase bg-black/40 text-blue-400 border border-blue-400/20 backdrop-blur-md">
+                               <Cpu size={10} /> {guide.minVram}GB+ VRAM
+                             </span>
                           </div>
-                        </div>
+                        </Link>
 
                         <div className="p-8">
                           <div className="flex items-center gap-2 mb-3">
-                            <span className="font-mono text-[10px] text-accent tracking-widest uppercase">{guide.tag}</span>
-                            <span className="text-muted text-[10px] font-bold">·</span>
-                            <span className="text-muted text-[10px] font-bold">⏱ {guide.time}</span>
+                            <span className="font-mono text-[10px] text-[#7c6af7] tracking-widest uppercase">{guide.tag}</span>
+                            <span className="text-[#8888a0] text-[10px] font-bold">·</span>
+                            <span className="text-[#8888a0] text-[10px] font-bold">⏱ {guide.time}</span>
                           </div>
-                          <h4 className="font-syne text-xl font-bold text-white mb-3 tracking-tight group-hover:text-accent transition-colors">
-                            {guide.title}
-                          </h4>
-                          <p className="text-sm text-muted leading-relaxed line-clamp-2">{guide.desc}</p>
+                          <Link href={`/guides/${guide.slug}`}>
+                            <h4 className="font-syne text-xl font-bold text-white mb-3 tracking-tight group-hover:text-[#7c6af7] transition-colors leading-tight">
+                              {guide.title}
+                            </h4>
+                          </Link>
+                          <p className="text-sm text-[#8888a0] leading-relaxed line-clamp-2">{guide.desc}</p>
                           
-                          <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/5 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
-                            <span className="font-mono text-[10px] font-bold text-accent uppercase tracking-widest">Learn More</span>
-                            <ArrowRight className="w-4 h-4 text-accent" />
+                          <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/5">
+                            <Link href={`/hardware?model=${guide.modelId}`} className="text-[10px] font-bold text-[#f59e0b] hover:text-white transition-colors flex items-center gap-1.5 uppercase tracking-widest relative z-20">
+                              <Zap size={10} /> Check Compatibility
+                            </Link>
+                            <Link href={`/guides/${guide.slug}`}>
+                              <ArrowRight className="w-4 h-4 text-[#7c6af7] group-hover:translate-x-1 transition-transform" />
+                            </Link>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     ))}
                   </div>
                 </section>

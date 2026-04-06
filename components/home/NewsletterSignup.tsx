@@ -25,7 +25,7 @@ export function NewsletterSignup() {
         <div className="absolute inset-0 bg-dots opacity-40 pointer-events-none rounded-2xl" />
 
         <div className="relative">
-          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">// Weekly Drop</p>
+          <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Weekly Drop"}</p>
           <h2 className="font-syne text-4xl font-black tracking-tight text-white mb-4">
             Stay ahead of the<br />AI workflow curve.
           </h2>
@@ -65,23 +65,7 @@ export function NewsletterSignup() {
             <p className="font-mono text-xs text-[#ef4444] mt-3">Something went wrong. Try again.</p>
           )}
 
-          {/* Social proof */}
-          <div className="flex items-center justify-center gap-8 mt-10 pt-8 border-t border-border">
-            <div className="text-center">
-              <div className="font-syne text-2xl font-black text-white">2.4K</div>
-              <div className="font-mono text-xs text-muted tracking-widest uppercase mt-0.5">Subscribers</div>
-            </div>
-            <div className="w-px h-8 bg-border" />
-            <div className="text-center">
-              <div className="font-syne text-2xl font-black text-white">Weekly</div>
-              <div className="font-mono text-xs text-muted tracking-widest uppercase mt-0.5">Drop Schedule</div>
-            </div>
-            <div className="w-px h-8 bg-border" />
-            <div className="text-center">
-              <div className="font-syne text-2xl font-black text-white">0</div>
-              <div className="font-mono text-xs text-muted tracking-widest uppercase mt-0.5">Ads Ever</div>
-            </div>
-          </div>
+          {/* Social proof hidden as requested */}
         </div>
       </div>
     </section>

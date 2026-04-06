@@ -44,7 +44,7 @@ export function GuidesPreview() {
             <span className={`inline-block font-mono text-xs px-2 py-0.5 rounded-sm tracking-widest uppercase mb-4 ${DIFF_STYLES[guide.difficulty]}`}>
               {guide.difficulty}
             </span>
-            <h4 className="font-syne text-sm font-bold text-white mb-2 leading-snug">{guide.title}</h4>
+            <h3 className="font-syne text-sm font-bold text-white mb-2 leading-snug">{guide.title}</h3>
             <p className="text-xs text-muted leading-relaxed">{guide.desc}</p>
             <div className="flex items-center gap-3 mt-5 pt-4 border-t border-border font-mono text-xs text-muted tracking-wide">
               <span>⏱ {guide.time}</span>

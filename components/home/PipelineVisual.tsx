@@ -22,7 +22,7 @@ export function PipelineVisual() {
 
   return (
     <section ref={ref} className="py-24 px-10 max-w-7xl mx-auto">
-      <p className="reveal font-mono text-xs text-accent tracking-widest uppercase mb-4">// Video Pipeline</p>
+      <p className="reveal font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Video Pipeline"}</p>
       <h2 className="reveal font-syne text-[clamp(1.8rem,3.5vw,3rem)] font-black tracking-tight mb-12">
         From prompt to publish<br />in under 15 seconds.
       </h2>

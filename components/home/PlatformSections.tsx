@@ -132,7 +132,7 @@ export function PlatformSections() {
   }, []);
 
   return (
-    <section ref={ref} className="mx-auto max-w-7xl px-10 py-24">
+    <section ref={ref} className="mx-auto max-w-7xl px-10 py-16">
       <div className="mb-16">
         <p className="reveal mb-4 font-mono text-xs uppercase tracking-widest text-accent">
           {"// Platform Overview"}
@@ -153,10 +153,13 @@ export function PlatformSections() {
         {SECTIONS.map((s, i) => (
           <div
             key={s.number}
-            className={`reveal overflow-hidden rounded-2xl border bg-card ${s.border} transition-all duration-300 hover:shadow-lg`}
-            style={{ transitionDelay: `${i * 60}ms` }}
+            className={`reveal overflow-hidden rounded-2xl border bg-card ${s.border} transition-all duration-500 hover:shadow-[0_0_25px_var(--glow-color)] group relative`}
+            style={{ transitionDelay: `${i * 60}ms`, "--glow-color": s.color.replace("text-", "").replace("[", "").replace("]", "") } as React.CSSProperties}
           >
-            <div className="grid grid-cols-[80px_1fr_320px] items-stretch">
+            {/* Visual Hover Layer */}
+            <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none bg-gradient-to-r from-transparent via-${s.bg.replace("bg-[", "").replace("]", "")} to-transparent`} />
+
+            <div className="grid grid-cols-1 md:grid-cols-[100px_1fr_340px] items-stretch">
               {/* Number */}
               <div
                 className={`${s.bg} flex items-center justify-center border-r ${s.border}`}

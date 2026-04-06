@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Database,
   Cpu,
@@ -262,9 +263,12 @@ export default function LoraTrainingPage() {
                       key={i}
                       className="group relative aspect-square overflow-hidden rounded-xl border border-white/5 bg-black/40"
                     >
-                      <img
+                      <Image
                         src={`/api/images/${category}/${img.image}`}
-                        className="h-full w-full object-cover opacity-80 transition-transform duration-500 group-hover:scale-110"
+                        alt={img.caption || "Training image"}
+                        fill
+                        sizes="(max-width: 768px) 33vw, 25vw"
+                        className="object-cover opacity-80 transition-transform duration-500 group-hover:scale-110"
                       />
                       <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-transparent to-transparent p-4 opacity-0 transition-opacity group-hover:opacity-100">
                         <p className="line-clamp-2 font-mono text-[9px] italic leading-tight text-zinc-300">

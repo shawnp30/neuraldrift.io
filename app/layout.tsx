@@ -1,35 +1,63 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Outfit, Manrope } from "next/font/google";
+import { Syne, IBM_Plex_Mono, Crimson_Pro } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import "@/styles/globals.css";
-import Background from "@/components/Background";
-const outfit = Outfit({
+import { ColorDrift } from "@/components/layout/ColorDrift";
+
+const syne = Syne({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-syne",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   weight: ["300", "400", "500"],
-  variable: "--font-jetbrains-mono",
+  variable: "--font-ibm-plex-mono",
 });
 
-const manrope = Manrope({
+const crimsonPro = Crimson_Pro({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  variable: "--font-dm-sans",
+  weight: ["300", "400"],
+  style: ["normal", "italic"],
+  variable: "--font-crimson-pro",
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://neuraldrift.io"),
   title: {
-    default: "neuraldrift — Train. Build. Master AI.",
-    template: "%s | neuraldrift",
+    default: "NeuralDrift — ComfyUI Workflows, Guides, and Tools",
+    template: "%s | NeuralDrift",
   },
   description:
-    "The hub for building, training, and mastering AI systems. LoRA creation, ComfyUI pipelines, datasets, and optimization — all in one place.",
+    "High-performance ComfyUI workflows, technical AI guides, and hardware optimization tools for local image and video generation. Built for builders.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "NeuralDrift — Master Local AI Creation",
+    description: "ComfyUI workflows, guides, and tools for high-fidelity AI generation.",
+    url: "https://neuraldrift.io",
+    siteName: "NeuralDrift",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "NeuralDrift — ComfyUI Workflows, Guides & Tools",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "NeuralDrift — ComfyUI Workflows, Guides & Tools",
+    description: "Free ComfyUI workflows, AI model guides, VRAM calculator and GPU tools for image and video generation",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
@@ -40,12 +68,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${jetbrainsMono.variable} ${manrope.variable} scroll-smooth`}
+      className={`${syne.variable} ${ibmPlexMono.variable} ${crimsonPro.variable} scroll-smooth`}
     >
-      <body className="relative min-h-screen overflow-x-hidden bg-[#0d1117] font-sans text-slate-50 antialiased selection:bg-accent/30">
-        <Background />
+      <body className="relative min-h-screen overflow-x-hidden bg-[#06080d] font-sans text-slate-50 antialiased selection:bg-accent/30">
+        <ColorDrift />
         <Navbar />
-        <main className="relative z-10 pt-[140px]">{children}</main>
+        <main className="relative z-10">{children}</main>
         <Footer />
         <Analytics />
       </body>

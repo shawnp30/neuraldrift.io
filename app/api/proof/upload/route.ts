@@ -4,9 +4,8 @@
 // Add BLOB_READ_WRITE_TOKEN to your Vercel environment variables
 
 
-
+import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
-export const runtime = "edge";
 
 
 

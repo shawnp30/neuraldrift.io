@@ -60,7 +60,7 @@ export function OptimizerFeature() {
   ];
 
   return (
-    <section ref={ref} className="mx-auto max-w-7xl px-10 py-24">
+    <section ref={ref} className="mx-auto max-w-7xl px-10 py-16">
       <div className="reveal relative overflow-hidden rounded-3xl border border-border bg-gradient-to-br from-accent/5 via-surface to-accent-purple/5">
         <div className="pointer-events-none absolute left-1/2 top-0 h-[200px] w-[600px] -translate-x-1/2 bg-[radial-gradient(ellipse,rgba(0,229,255,0.06),transparent_70%)]" />
 
@@ -68,7 +68,7 @@ export function OptimizerFeature() {
           {/* Left: explanation */}
           <div className="border-r border-border p-14">
             <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
-              // The Optimizer
+              {"// The Optimizer"}
             </p>
             <h2 className="mb-5 font-syne text-4xl font-black leading-tight tracking-tight text-white">
               Know before you run.

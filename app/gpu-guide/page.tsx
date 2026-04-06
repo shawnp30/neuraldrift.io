@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { useState, useEffect, useRef } from "react";
+import type { MouseEvent as ReactMouseEvent, SVGProps } from "react";
 
 // ─── COMPUTEATLAS AD COMPONENTS ───
 
@@ -487,7 +488,7 @@ const CPU_DATA = {
   "Apple M4 Max": { cores: 16, threads: 16, tier: "flagship", gen: "Apple Silicon", socket: "SoC", notes: "Best Apple Silicon for AI. MLX optimized." },
 };
 
-const RAM_OPTIONS = ["8 GB", "16 GB", "32 GB", "64 GB", "128 GB"];
+const RAM_OPTIONS = ["8 GB", "16 GB", "32 GB", "64 GB", "128 GB"] as const;
 const RAM_NOTES = {
   "8 GB": { viable: false, note: "8GB system RAM is not enough for AI generation. Your OS alone uses 3-4GB, leaving almost nothing for model loading and processing. Upgrade to at least 16GB, ideally 32GB." },
   "16 GB": { viable: true, note: "Minimum viable. You can run AI tools but expect slowdowns if you have a browser, ComfyUI, and monitoring open simultaneously. 32GB is recommended." },
@@ -538,29 +539,63 @@ const CLOUD_PROVIDERS = [
 
 // ─── COMPONENTS ───
 
-function ChevronDown({ className }) {
+type GpuKey = keyof typeof GPU_DATA;
+type CpuKey = keyof typeof CPU_DATA;
+type RamOption = (typeof RAM_OPTIONS)[number];
+type GpuData = (typeof GPU_DATA)[GpuKey];
+type CloudProvider = (typeof CLOUD_PROVIDERS)[number];
+type CanHandle = GpuData["canHandle"];
+type SvgIconProps = SVGProps<SVGSVGElement>;
+type DropdownProps<T extends string> = {
+  label: string;
+  options: readonly T[];
+  value: T | "";
+  onChange: (value: T) => void;
+  placeholder: string;
+};
+type HardwareDetailProps = {
+  gpu: GpuKey;
+  cpu: CpuKey;
+  ram: RamOption;
+  onBack: () => void;
+};
+type CloudCardProps = {
+  provider: CloudProvider;
+};
+type SelectedHardware = {
+  gpu: GpuKey;
+  cpu: CpuKey;
+  ram: RamOption;
+};
+
+function ChevronDown(props: SvgIconProps) {
   return (
-    <svg className={className} viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20" {...props}>
       <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clipRule="evenodd" />
     </svg>
   );
 }
 
-function ExternalLink({ className }) {
+function ExternalLink(props: SvgIconProps) {
   return (
-    <svg className={className} viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+    <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16" {...props}>
       <path fillRule="evenodd" d="M4.25 5.5a.75.75 0 00-.75.75v8.5c0 .414.336.75.75.75h8.5a.75.75 0 00.75-.75v-4a.75.75 0 011.5 0v4A2.25 2.25 0 0112.75 17h-8.5A2.25 2.25 0 012 14.75v-8.5A2.25 2.25 0 014.25 4h5a.75.75 0 010 1.5h-5z" clipRule="evenodd" />
       <path fillRule="evenodd" d="M6.194 12.753a.75.75 0 001.06.053L16.5 4.44v2.81a.75.75 0 001.5 0v-4.5a.75.75 0 00-.75-.75h-4.5a.75.75 0 000 1.5h2.553l-9.056 8.194a.75.75 0 00-.053 1.06z" clipRule="evenodd" />
     </svg>
   );
 }
 
-function Dropdown({ label, options, value, onChange, placeholder }) {
+function Dropdown<T extends string>({ label, options, value, onChange, placeholder }: DropdownProps<T>) {
   const [open, setOpen] = useState(false);
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    const handler = (event: MouseEvent) => {
+      const target = event.target;
+      if (ref.current && target instanceof Node && !ref.current.contains(target)) {
+        setOpen(false);
+      }
+    };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
@@ -597,8 +632,12 @@ function Dropdown({ label, options, value, onChange, placeholder }) {
                 color: opt === value ? "#f59e0b" : "#d1d5db", fontSize: 14, cursor: "pointer",
                 fontFamily: "'Space Grotesk', sans-serif", transition: "background 0.15s",
               }}
-              onMouseEnter={(e) => { if (opt !== value) e.target.style.background = "rgba(255,255,255,0.04)"; }}
-              onMouseLeave={(e) => { if (opt !== value) e.target.style.background = "transparent"; }}
+              onMouseEnter={(event: ReactMouseEvent<HTMLButtonElement>) => {
+                if (opt !== value) event.currentTarget.style.background = "rgba(255,255,255,0.04)";
+              }}
+              onMouseLeave={(event: ReactMouseEvent<HTMLButtonElement>) => {
+                if (opt !== value) event.currentTarget.style.background = "transparent";
+              }}
             >
               {opt}
             </button>
@@ -609,7 +648,7 @@ function Dropdown({ label, options, value, onChange, placeholder }) {
   );
 }
 
-function StatusBadge({ canHandle }) {
+function StatusBadge({ canHandle }: { canHandle: CanHandle }) {
   if (canHandle === true) return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 20, background: "rgba(16,185,129,0.12)", color: "#10b981", fontSize: 13, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>
       <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#10b981" }}></span>
@@ -630,7 +669,7 @@ function StatusBadge({ canHandle }) {
   );
 }
 
-function HardwareDetail({ gpu, cpu, ram, onBack }) {
+function HardwareDetail({ gpu, cpu, ram, onBack }: HardwareDetailProps) {
   const gpuData = GPU_DATA[gpu];
   const cpuData = CPU_DATA[cpu];
   const ramData = RAM_NOTES[ram];
@@ -642,8 +681,14 @@ function HardwareDetail({ gpu, cpu, ram, onBack }) {
         border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, color: "#9ca3af", fontSize: 14,
         cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif", marginBottom: 24, transition: "all 0.2s",
       }}
-      onMouseEnter={e => { e.target.style.borderColor = "#f59e0b"; e.target.style.color = "#f59e0b"; }}
-      onMouseLeave={e => { e.target.style.borderColor = "rgba(255,255,255,0.08)"; e.target.style.color = "#9ca3af"; }}
+      onMouseEnter={(event: ReactMouseEvent<HTMLButtonElement>) => {
+        event.currentTarget.style.borderColor = "#f59e0b";
+        event.currentTarget.style.color = "#f59e0b";
+      }}
+      onMouseLeave={(event: ReactMouseEvent<HTMLButtonElement>) => {
+        event.currentTarget.style.borderColor = "rgba(255,255,255,0.08)";
+        event.currentTarget.style.color = "#9ca3af";
+      }}
       >
         ← Back to selector
       </button>
@@ -762,7 +807,7 @@ function HardwareDetail({ gpu, cpu, ram, onBack }) {
   );
 }
 
-function CloudCard({ provider }) {
+function CloudCard({ provider }: CloudCardProps) {
   const [hovered, setHovered] = useState(false);
   return (
     <a
@@ -820,9 +865,9 @@ function CloudCard({ provider }) {
 
 // ─── MAIN ───
 export default function GPUComputePage() {
-  const [gpu, setGpu] = useState("");
-  const [cpu, setCpu] = useState("");
-  const [ram, setRam] = useState("");
+  const [gpu, setGpu] = useState<GpuKey | "">("");
+  const [cpu, setCpu] = useState<CpuKey | "">("");
+  const [ram, setRam] = useState<RamOption | "">("");
   const [showDetail, setShowDetail] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -842,10 +887,12 @@ export default function GPUComputePage() {
     return () => { document.head.removeChild(style); };
   }, []);
 
-  const canLookup = gpu && cpu && ram;
+  const selectedHardware: SelectedHardware | null =
+    gpu && cpu && ram ? { gpu, cpu, ram } : null;
+  const canLookup = selectedHardware !== null;
 
   const handleLookup = () => {
-    if (canLookup) setShowDetail(true);
+    if (selectedHardware) setShowDetail(true);
   };
 
   return (
@@ -881,9 +928,27 @@ export default function GPUComputePage() {
               border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, marginBottom: 48,
             }}>
               <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 24 }}>
-                <Dropdown label="GPU" options={Object.keys(GPU_DATA)} value={gpu} onChange={setGpu} placeholder="Select your GPU" />
-                <Dropdown label="CPU" options={Object.keys(CPU_DATA)} value={cpu} onChange={setCpu} placeholder="Select your CPU" />
-                <Dropdown label="RAM" options={RAM_OPTIONS} value={ram} onChange={setRam} placeholder="Select RAM" />
+                <Dropdown
+                  label="GPU"
+                  options={Object.keys(GPU_DATA) as GpuKey[]}
+                  value={gpu}
+                  onChange={(value) => setGpu(value)}
+                  placeholder="Select your GPU"
+                />
+                <Dropdown
+                  label="CPU"
+                  options={Object.keys(CPU_DATA) as CpuKey[]}
+                  value={cpu}
+                  onChange={(value) => setCpu(value)}
+                  placeholder="Select your CPU"
+                />
+                <Dropdown
+                  label="RAM"
+                  options={RAM_OPTIONS}
+                  value={ram}
+                  onChange={(value) => setRam(value)}
+                  placeholder="Select RAM"
+                />
               </div>
               <button
                 onClick={handleLookup}
@@ -932,7 +997,14 @@ export default function GPUComputePage() {
           </div>
         ) : (
           <div style={{ marginBottom: 48 }}>
-            <HardwareDetail gpu={gpu} cpu={cpu} ram={ram} onBack={() => setShowDetail(false)} />
+            {selectedHardware && (
+              <HardwareDetail
+                gpu={selectedHardware.gpu}
+                cpu={selectedHardware.cpu}
+                ram={selectedHardware.ram}
+                onBack={() => setShowDetail(false)}
+              />
+            )}
           </div>
         )}
 

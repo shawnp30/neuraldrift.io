@@ -63,7 +63,7 @@
         "text": ""
       },
       "widgets_values": [
-        "This node sets the image's resolution in Width and Height.\n\nNOTE: For SDXL, it is recommended to use trained values listed below:\n - 1024 x 1024\n - 1152 x 896\n - 896  x 1152\n - 1216 x 832\n - 832  x 1216\n - 1344 x 768\n - 768  x 1344\n - 1536 x 640\n - 640  x 1536"
+        "This node sets the image's resolution in Width and Height.\n\nNOTE: For SDXL, it is recommended to use trained values listed below:\n - 1024 x 1024\n - 1152 x 896\n - 896  x 1152\n - 1216 x 832\n - 832  x 1216\n - 1344 x 768\n - 768  x 1344\n - 1536 x 640\n - 640  x 1536\n\nDOWNLOAD LINKS:\n\nDOWNLOAD LINKS (Direct):\n- clip_l.safetensors: https://huggingface.co/comfyanonymous/direct-ml-clip-l/resolve/main/clip_l.safetensors\n- ae.safetensors: https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors"
       ],
       "color": "#323",
       "bgcolor": "#535"
@@ -234,7 +234,7 @@
         "text": ""
       },
       "widgets_values": [
-        "This is a checkpoint model loader. \n - This is set up automatically with the optimal settings for whatever SD model version you choose to use.\n - In this example, it is for the Base SDXL model\n - This node is also used for SD1.5 and SD2.x models\n \nNOTE: When loading in another person's workflow, be sure to manually choose your own *local* model. This also applies to LoRas and all their deviations"
+        "This is a checkpoint model loader. \n - This is set up automatically with the optimal settings for whatever SD model version you choose to use.\n - In this example, it is for the Base SDXL model\n - This node is also used for SD1.5 and SD2.x models\n \nNOTE: When loading in another person's workflow, be sure to manually choose your own *local* model. This also applies to LoRas and all their deviations\n\nDOWNLOAD LINKS (Direct):\n- clip_l.safetensors: https://huggingface.co/comfyanonymous/direct-ml-clip-l/resolve/main/clip_l.safetensors\n- ae.safetensors: https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
@@ -325,7 +325,7 @@
         "text": ""
       },
       "widgets_values": [
-        "These nodes receive the text from the prompt and use the optimal CLIP settings for the specified checkpoint model (in this case: SDXL Base)"
+        "These nodes receive the text from the prompt and use the optimal CLIP settings for the specified checkpoint model (in this case: SDXL Base)\n\nDOWNLOAD LINKS (Direct):\n- clip_l.safetensors: https://huggingface.co/comfyanonymous/direct-ml-clip-l/resolve/main/clip_l.safetensors\n- ae.safetensors: https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/ae.safetensors"
       ],
       "color": "#432",
       "bgcolor": "#653"
