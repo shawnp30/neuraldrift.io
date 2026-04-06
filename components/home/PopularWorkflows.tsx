@@ -13,7 +13,7 @@ const WORKFLOWS = [
     tagColor: "bg-blue-500/15 text-blue-400 border-blue-500/25",
     glowColor: "from-blue-500/20",
     image: "/images/workflows/cards/starter-diffusion.png",
-    href: "/workflows/essential/the-essential-flux",
+    href: "/workflows/anime-transfer",
   },
   {
     title: "High-Detail Image Pipeline",
@@ -22,7 +22,7 @@ const WORKFLOWS = [
     tagColor: "bg-cyan-500/15 text-cyan-400 border-cyan-500/25",
     glowColor: "from-cyan-500/20",
     image: "/images/workflows/cards/high-detail.png",
-    href: "/workflows/essential/high-res-pipeline",
+    href: "/workflows/photo-portrait",
   },
   {
     title: "LoRA Training Graph",
@@ -31,7 +31,7 @@ const WORKFLOWS = [
     tagColor: "bg-emerald-500/15 text-emerald-400 border-emerald-500/25",
     glowColor: "from-emerald-500/20",
     image: "/images/workflows/cards/lora-training.png",
-    href: "/workflows/essential/dual-lora",
+    href: "/workflows/character-sheet",
   },
   {
     title: "Audio Generation Flow",
@@ -40,7 +40,7 @@ const WORKFLOWS = [
     tagColor: "bg-yellow-500/15 text-yellow-400 border-yellow-500/25",
     glowColor: "from-yellow-500/20",
     image: "/images/workflows/cards/audio-gen.png",
-    href: "/workflows/essential/ultimate-upscaler",
+    href: "/workflows/audio-reactive",
   },
 ];
 

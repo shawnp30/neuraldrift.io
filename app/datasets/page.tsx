@@ -8,6 +8,7 @@ import { DatasetHubCard } from "@/components/DatasetHubCard";
 export default function DatasetsHubPage() {
   const [datasets, setDatasets] = useState<any[]>([]);
   const [query, setQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("all");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -15,7 +16,12 @@ export default function DatasetsHubPage() {
     fetch("/api/hf-datasets")
       .then((r) => r.json())
       .then((data) => {
-        setDatasets(Array.isArray(data) ? data : []);
+        const normalized = (Array.isArray(data) ? data : []).map((d: any) => ({
+          ...d,
+          name: d.name || d.id || "Unknown Dataset",
+          id: d.id || d.name || Math.random().toString(),
+        }));
+        setDatasets(normalized);
         setLoading(false);
       })
       .catch((err) => {
@@ -25,13 +31,23 @@ export default function DatasetsHubPage() {
   }, []);
 
   const filteredDatasets = datasets.filter((d: any) => {
+    if (!d) return false;
     const s = query.toLowerCase();
+    
+    // Task Filter (Sidebar)
+    if (activeFilter !== "all") {
+      const matchTask = (d.pipeline_tag === activeFilter) || 
+                        (Array.isArray(d.tags) && d.tags.includes(activeFilter));
+      if (!matchTask) return false;
+    }
+
+    // Search Query
     return (
       s === "" ||
-      d.id?.toLowerCase().includes(s) ||
-      d.name?.toLowerCase().includes(s) ||
-      d.description?.toLowerCase().includes(s) ||
-      d.tags?.some((t: string) => t.toLowerCase().includes(s))
+      (typeof d.id === "string" && d.id.toLowerCase().includes(s)) ||
+      (typeof d.name === "string" && d.name.toLowerCase().includes(s)) ||
+      (typeof d.description === "string" && d.description.toLowerCase().includes(s)) ||
+      (Array.isArray(d.tags) && d.tags.some((t: any) => typeof t === "string" && t.toLowerCase().includes(s)))
     );
   });
 
@@ -39,7 +55,7 @@ export default function DatasetsHubPage() {
     <main className="min-h-screen bg-[#030712] pb-24 pt-32 text-slate-50">
       <div className="mx-auto flex max-w-[1600px] gap-8 px-6 lg:px-12">
         {/* SIDEBAR */}
-        <HubSidebar />
+        <HubSidebar onFilterChange={setActiveFilter} activeFilter={activeFilter} />
 
         {/* MAIN CONTENT */}
         <div className="min-w-0 flex-1">

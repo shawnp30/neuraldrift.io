@@ -1,433 +1,267 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Navbar from "@/components/layout/Navbar";
-import Link from "next/link";
-import Image from "next/image";
-import {
-  ChevronDown,
-  Info,
+import { 
+  Cpu, 
+  Database, 
+  CheckCircle2, 
+  AlertTriangle, 
+  XCircle, 
+  ExternalLink,
   Zap,
-  AlertTriangle,
-  CheckCircle2,
+  Info
 } from "lucide-react";
+import Link from "next/link";
 
-// ── Models & GPUs Data ────────────────────────────────────────────────────────
+// --- DATA DEFINITIONS ---
 
-const MODELS = [
-  {
-    id: "flux-dev-fp16",
-    name: "FLUX.1 Dev (FP16)",
-    vram: 23.8,
-    category: "Image / Pro",
-  },
-  {
-    id: "flux-dev-fp8",
-    name: "FLUX.1 Dev (FP8)",
-    vram: 11.9,
-    category: "Image / Pro",
-  },
-  {
-    id: "flux-schnell-fp8",
-    name: "FLUX.1 Schnell (FP8)",
-    vram: 11.9,
-    category: "Image / Fast",
-  },
-  {
-    id: "sdxl-fp16",
-    name: "SDXL 1.0 (FP16)",
-    vram: 6.5,
-    category: "Image / Legacy",
-  },
-  {
-    id: "sdxl-fp8",
-    name: "SDXL 1.0 (FP8)",
-    vram: 4.2,
-    category: "Image / Legacy",
-  },
-  {
-    id: "ltx-video-23",
-    name: "LTX Video 2.3",
-    vram: 9.4,
-    category: "Video Gen",
-  },
-  {
-    id: "ace-step-15",
-    name: "ACE-Step 1.5",
-    vram: 14.5,
-    category: "Video Gen",
-  },
-  {
-    id: "wan-video-14b",
-    name: "Wan Video 2.1 (14B)",
-    vram: 18.2,
-    category: "Video Gen",
-  },
-  {
-    id: "animatediff-sd15",
-    name: "AnimateDiff (SD1.5)",
-    vram: 4.8,
-    category: "Animation",
-  },
-  {
-    id: "llama-3-8b-q4",
-    name: "Llama 3 (8B Q4)",
-    vram: 5.5,
-    category: "LLM / Text",
-  },
-  {
-    id: "deepseek-v3-q4",
-    name: "DeepSeek V3 (Q4)",
-    vram: 42.0,
-    category: "LLM / Text",
-  },
+interface Model {
+  id: string;
+  name: string;
+  vramNeeded: number; // base GB in standard precision (FP8/4-bit usually)
+  type: "image" | "video" | "audio" | "llm";
+  desc: string;
+}
+
+const MODELS: Model[] = [
+  { id: "flux-dev", name: "Flux Dev", vramNeeded: 12.1, type: "image", desc: "SOTA Open Image Model" },
+  { id: "flux-schnell", name: "Flux Schnell", vramNeeded: 6.8, type: "image", desc: "4-step Distilled Image Gen" },
+  { id: "sdxl", name: "SDXL 1.0", vramNeeded: 6.5, type: "image", desc: "Standard High Res Diffusion" },
+  { id: "sdxl-turbo", name: "SDXL Turbo", vramNeeded: 4.2, type: "image", desc: "Single-step Real-time Gen" },
+  { id: "ltx-2.3-22b", name: "LTX Video 2.3 22B", vramNeeded: 24.5, type: "video", desc: "High-Fidelity Video Gen" },
+  { id: "ltx-2.3-2b", name: "LTX Video 2.3 2B", vramNeeded: 5.4, type: "video", desc: "Fast Mobile-ready Video" },
+  { id: "ace-step-1.5", name: "ACE-Step 1.5", vramNeeded: 8.2, type: "audio", desc: "Audio Synthesis Foundation" },
+  { id: "wan-14b", name: "Wan Video 14B", vramNeeded: 16.5, type: "video", desc: "Video-First Latent Diffusion" },
+  { id: "animatediff", name: "AnimateDiff", vramNeeded: 9.5, type: "video", desc: "SD1.5 Motion Module Extension" },
+  { id: "llama-3.1-8b", name: "Llama 3.1 8B (4-bit)", vramNeeded: 5.5, type: "llm", desc: "Efficient Tech Assistant" },
+  { id: "llama-3.3-70b", name: "Llama 3.3 70B (4-bit)", vramNeeded: 42.0, type: "llm", desc: "SOTA Open Weights Language" },
+  { id: "qwen-2.5-32b", name: "Qwen 2.5 Coder 32B", vramNeeded: 19.5, type: "llm", desc: "Advanced Coding Assistant" },
+  { id: "deepseek-r1-32b", name: "DeepSeek R1 32B", vramNeeded: 19.5, type: "llm", desc: "Reasoning-Optimized LLM" },
 ];
 
-const GPUS = [
-  { id: "rtx-5090", name: "NVIDIA RTX 5090", vram: 32, series: "50-Series" },
-  { id: "rtx-5080", name: "NVIDIA RTX 5080", vram: 16, series: "50-Series" },
-  { id: "rtx-4090", name: "NVIDIA RTX 4090", vram: 24, series: "40-Series" },
-  { id: "rtx-4080", name: "NVIDIA RTX 4080", vram: 16, series: "40-Series" },
-  { id: "rtx-4070", name: "NVIDIA RTX 4070", vram: 12, series: "40-Series" },
-  { id: "rtx-4060", name: "NVIDIA RTX 4060", vram: 8, series: "40-Series" },
-  { id: "rtx-3090", name: "NVIDIA RTX 3090", vram: 24, series: "30-Series" },
-  { id: "rtx-3080", name: "NVIDIA RTX 3080", vram: 10, series: "30-Series" },
-  {
-    id: "a100-80g",
-    name: "NVIDIA A100 (80GB)",
-    vram: 80,
-    series: "Enterprise",
-  },
-  {
-    id: "h100-80g",
-    name: "NVIDIA H100 (80GB)",
-    vram: 80,
-    series: "Enterprise",
-  },
+interface GPU {
+  id: string;
+  name: string;
+  vram: number; // GB
+  series: string;
+}
+
+const GPUS: GPU[] = [
+  { id: "5090", name: "RTX 5090", vram: 32, series: "50 Series" },
+  { id: "5080", name: "RTX 5080", vram: 16, series: "50 Series" },
+  { id: "4090", name: "RTX 4090", vram: 24, series: "40 Series" },
+  { id: "4080", name: "RTX 4080 16GB", vram: 16, series: "40 Series" },
+  { id: "4070-ti", name: "RTX 4070 Ti 16GB", vram: 16, series: "40 Series" },
+  { id: "4070-12", name: "RTX 4070 12GB", vram: 12, series: "40 Series" },
+  { id: "4060-ti", name: "RTX 4060 Ti 16GB", vram: 16, series: "40 Series" },
+  { id: "4060", name: "RTX 4060 8GB", vram: 8, series: "40 Series" },
+  { id: "3090", name: "RTX 3090 24GB", vram: 24, series: "30 Series" },
+  { id: "3080-16", name: "RTX 3080 16GB", vram: 16, series: "30 Series" },
+  { id: "3080-10", name: "RTX 3080 10GB", vram: 10, series: "30 Series" },
+  { id: "a100-40", name: "A100 40GB", vram: 40, series: "Data Center" },
+  { id: "a100-80", name: "A100 80GB", vram: 80, series: "Data Center" },
 ];
 
-// ── Components ────────────────────────────────────────────────────────────────
-
-const Dropdown = ({ label, options, selected, onSelect }: any) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const selectedOption = options.find((o: any) => o.id === selected);
-
-  return (
-    <div className="relative mb-6">
-      <label className="mb-2 block px-1 font-mono text-[10px] uppercase tracking-widest text-[#7c6af7]">
-        {label}
-      </label>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between rounded-xl border border-[#2a2a30] bg-[#111113] px-4 py-4 text-left transition-all hover:border-[#7c6af7]/40 focus:outline-none focus:ring-2 focus:ring-[#7c6af7]/20"
-      >
-        <span className="font-syne font-bold uppercase tracking-tight text-white">
-          {selectedOption?.name || "Select..."}
-        </span>
-        <ChevronDown
-          size={18}
-          className={`text-[#8888a0] transition-transform ${isOpen ? "rotate-180" : ""}`}
-        />
-      </button>
-
-      {isOpen && (
-        <div className="absolute z-50 mt-2 max-h-60 w-full overflow-hidden overflow-y-auto rounded-xl border border-[#2a2a30] bg-[#111113] shadow-2xl">
-          {options.map((opt: any) => (
-            <button
-              key={opt.id}
-              onClick={() => {
-                onSelect(opt.id);
-                setIsOpen(false);
-              }}
-              className="group w-full border-b border-[#2a2a30] px-4 py-3 text-left transition-colors last:border-0 hover:bg-[#7c6af7]/10"
-            >
-              <div className="flex items-center justify-between">
-                <span className="font-syne text-sm font-bold uppercase tracking-tight text-white group-hover:text-[#7c6af7]">
-                  {opt.name}
-                </span>
-                <span className="font-mono text-[10px] text-[#8888a0]">
-                  {opt.vram} GB
-                </span>
-              </div>
-              {opt.category && (
-                <div className="mt-0.5 text-[10px] text-[#8888a0]">
-                  {opt.category}
-                </div>
-              )}
-              {opt.series && (
-                <div className="mt-0.5 text-[10px] text-[#8888a0]">
-                  {opt.series}
-                </div>
-              )}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+// --- COMPONENT ---
 
 export default function VRAMCalculatorPage() {
-  const [modelId, setModelId] = useState("flux-dev-fp8");
-  const [gpuId, setGpuId] = useState("rtx-4080");
-  const [batchSize, setBatchSize] = useState(1);
+  const [modelId, setModelId] = useState<string>(MODELS[0].id);
+  const [gpuId, setGpuId] = useState<string>(GPUS[2].id);
 
-  const selectedModel = MODELS.find((m) => m.id === modelId)!;
-  const selectedGPU = GPUS.find((g) => g.id === gpuId)!;
+  const { model, gpu, result } = useMemo(() => {
+    const m = MODELS.find((x) => x.id === modelId)!;
+    const g = GPUS.find((x) => x.id === gpuId)!;
 
-  const estimatedVRAM = useMemo(() => {
-    let base = selectedModel.vram;
-    // Batch scaling: first image full vram, subsequent ones ~35% overhead
-    const total = base + (batchSize - 1) * (base * 0.35);
-    return Math.round(total * 10) / 10;
-  }, [selectedModel, batchSize]);
+    // Logic for Status
+    let status: "green" | "yellow" | "red" = "green";
+    if (m.vramNeeded > g.vram) status = "red";
+    else if (m.vramNeeded > g.vram * 0.85) status = "yellow";
 
-  const canRun = estimatedVRAM <= selectedGPU.vram;
-  const tightFit = !canRun && estimatedVRAM <= selectedGPU.vram * 1.15; // Within 15% (could use swap)
+    // Recommended Settings & Tips
+    let settings = { res: "1024x1024", steps: "20-30", batch: "1", flags: "--gpu-only" };
+    let tip = "Standard configuration recommended for stable results.";
+
+    if (m.type === "llm") {
+      settings = { res: "N/A (Context 4k)", steps: "Token limit: 128k", batch: "1", flags: "--4-bit --flash-attention" };
+    } else if (m.type === "video") {
+      settings = { res: "720p", steps: "30-50", batch: "1 (Sequential)", flags: "--low-memory --temp-consistent" };
+    }
+
+    if (status === "yellow") {
+      settings.flags = "--low-vram --cpu-vae";
+      tip = "Close background apps or Chrome to prevent OOM errors during VAE decode.";
+    } else if (status === "red") {
+      settings.flags = "--medvram-v2 (Slow)";
+      tip = "You are over the limit. Consider a GGUF/Quantized version of this model.";
+    }
+
+    // Specific tips
+    if (m.id === "flux-dev" && g.vram >= 24) {
+      tip = "You have enough VRAM for FP16 weights. Use them for higher fidelity.";
+    } else if (m.id.startsWith("ltx") && g.vram < 24) {
+      tip = "LTX loves memory. Use Tiled VAE Decoding to avoid memory spikes.";
+    }
+
+    return { 
+      model: m, 
+      gpu: g, 
+      result: { status, settings, tip } 
+    };
+  }, [modelId, gpuId]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-[#e8e8f0] selection:bg-[#7c6af7]/30">
-      <Navbar />
-
-      <main className="mx-auto max-w-7xl px-6 pb-32 pt-[140px]">
-        {/* Header */}
-        <div className="mb-16">
-          <div
-            className="nh-section-label mb-6"
-            style={{
-              background: "rgba(124, 106, 247, 0.1)",
-              border: "1px solid rgba(124, 106, 247, 0.2)",
-              color: "#7c6af7",
-            }}
-          >
-            <span className="nh-node-pulse h-2 w-2 rounded-full bg-[#7c6af7]" />
-            Hardware Optimizer
-          </div>
-          <h1 className="mb-6 font-syne text-5xl font-black tracking-tight text-white md:text-7xl">
-            VRAM{" "}
-            <span className="bg-gradient-to-r from-[#22d3ee] to-[#7c6af7] bg-clip-text text-transparent">
-              Calculator
-            </span>
+    <main className="min-h-screen bg-[#0a0a0b] text-[#e8e8f0] pt-32 pb-24 px-6 md:px-12 selection:bg-[#7c6af7]/30">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-12">
+          <p className="font-mono text-xs text-[#7c6af7] tracking-[0.3em] uppercase mb-4">{"// Neuro-Hardware Diagnostics"}</p>
+          <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-6">
+            VRAM <span className="text-[#22d3ee]">Calculator</span>
           </h1>
-          <p className="max-w-2xl text-xl leading-relaxed text-[#8888a0]">
-            Determine if your GPU can handle specific AI models. Our calculator
-            factors in precision (FP8/FP16), batch size, and architecture
-            overhead.
+          <p className="text-[#8888a0] max-w-xl text-lg leading-relaxed">
+            Determine hardware compatibility for local AI workloads. Instantly calculates memory footprint across architectures.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[450px_1fr]">
-          {/* Controls */}
-          <div className="sticky top-40 rounded-3xl border border-[#2a2a30] bg-[#111113] p-8">
-            <Dropdown
-              label="01 — Select AI Model"
-              options={MODELS}
-              selected={modelId}
-              onSelect={setModelId}
-            />
-
-            <Dropdown
-              label="02 — Target Hardware (GPU)"
-              options={GPUS}
-              selected={gpuId}
-              onSelect={setGpuId}
-            />
-
-            <div className="mb-6">
-              <div className="mb-4 flex items-center justify-between px-1">
-                <label className="font-mono text-[10px] uppercase tracking-widest text-[#4ade80]">
-                  03 — Batch Size
-                </label>
-                <span className="font-syne font-black text-white">
-                  {batchSize}
-                </span>
-              </div>
-              <input
-                type="range"
-                min={1}
-                max={16}
-                value={batchSize}
-                onChange={(e) => setBatchSize(parseInt(e.target.value))}
-                className="w-full accent-[#4ade80]"
-              />
-              <div className="mt-2 flex justify-between font-mono text-[9px] text-[#8888a0]">
-                <span>SOLO</span>
-                <span>MASSIVE BATCH</span>
-              </div>
+        {/* INPUTS GRID */}
+        <div className="grid md:grid-cols-2 gap-6 mb-10">
+          {/* Model Select */}
+          <div className="bg-[#111113] border border-[#2a2a30] p-6 rounded-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <Zap className="w-12 h-12 text-[#22d3ee]" />
             </div>
-
-            <div className="mt-10 rounded-2xl border border-[#2a2a30] bg-[#0a0a0b] p-6">
-              <div className="flex items-start gap-4">
-                <Info className="flex-shrink-0 text-[#22d3ee]" size={20} />
-                <p className="text-xs leading-relaxed text-[#8888a0]">
-                  Calculations assume ComfyUI/Forge overhead. Using Windows can
-                  consume ~1-2GB of VRAM for display management.
-                </p>
-              </div>
-            </div>
+            <label className="block font-mono text-[10px] uppercase tracking-[0.2em] text-[#8888a0] mb-3">Model Architecture</label>
+            <select 
+              value={modelId}
+              onChange={(e) => setModelId(e.target.value)}
+              className="w-full bg-[#0a0a0b] border border-[#3f3f46] rounded-xl px-4 py-3 outline-none focus:border-[#7c6af7] transition-all font-mono text-sm"
+            >
+              {MODELS.map(m => (
+                <option key={m.id} value={m.id}>{m.name}</option>
+              ))}
+            </select>
+            <p className="mt-3 font-mono text-[10px] text-zinc-600 uppercase tracking-widest">{model.desc}</p>
           </div>
 
-          {/* Output */}
-          <div className="space-y-8">
-            {/* Result Card */}
-            <div
-              className={`relative overflow-hidden rounded-3xl border p-10 transition-all duration-500 ${
-                canRun
-                  ? "border-[#4ade80]/30 bg-[#4ade80]/5"
-                  : tightFit
-                    ? "border-orange-500/30 bg-orange-500/5"
-                    : "border-red-500/30 bg-red-500/5"
-              }`}
+          {/* GPU Select */}
+          <div className="bg-[#111113] border border-[#2a2a30] p-6 rounded-2xl relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+              <Cpu className="w-12 h-12 text-[#7c6af7]" />
+            </div>
+            <label className="block font-mono text-[10px] uppercase tracking-[0.2em] text-[#8888a0] mb-3">Target Hardware</label>
+            <select 
+              value={gpuId}
+              onChange={(e) => setGpuId(e.target.value)}
+              className="w-full bg-[#0a0a0b] border border-[#3f3f46] rounded-xl px-4 py-3 outline-none focus:border-[#7c6af7] transition-all font-mono text-sm"
             >
-              <div className="absolute right-0 top-0 p-10 opacity-10">
-                {canRun ? (
-                  <Zap size={160} className="text-[#4ade80]" />
-                ) : (
-                  <AlertTriangle size={160} className="text-red-500" />
-                )}
-              </div>
+              {GPUS.map(g => (
+                <option key={g.id} value={g.id}>{g.name}</option>
+              ))}
+            </select>
+            <p className="mt-3 font-mono text-[10px] text-zinc-600 uppercase tracking-widest">{gpu.series} · {gpu.vram}GB Total</p>
+          </div>
+        </div>
 
-              <div className="relative z-10">
-                <p className="mb-2 font-mono text-xs uppercase tracking-widest text-[#8888a0]">
-                  Estimated VRAM Load
-                </p>
-                <div className="mb-8 flex items-baseline gap-4">
-                  <span className="font-syne text-8xl font-black tracking-tighter text-white">
-                    {estimatedVRAM}
-                  </span>
-                  <span className="font-syne text-3xl font-black text-[#8888a0]">
-                    GB
-                  </span>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-10">
-                  <div className="flex items-center gap-3">
-                    {canRun ? (
-                      <CheckCircle2 className="text-[#4ade80]" size={32} />
-                    ) : tightFit ? (
-                      <Info className="text-orange-500" size={32} />
-                    ) : (
-                      <AlertTriangle className="text-red-500" size={32} />
-                    )}
-                    <div>
-                      <h3 className="font-syne text-xl font-bold text-white">
-                        {canRun
-                          ? "System Compatible"
-                          : tightFit
-                            ? "Insufficient VRAM"
-                            : "OOM Imminent"}
-                      </h3>
-                      <p className="text-sm text-[#8888a0]">
-                        {canRun
-                          ? "This model will run comfortably at FP8 precision."
-                          : tightFit
-                            ? "Likely to trigger shared system memory (latency hit)."
-                            : "This model requires a GPU upgrade to run."}
-                      </p>
+        {/* RESULTS DASHBOARD */}
+        <div className="bg-[#111113] border border-[#2a2a30] p-8 rounded-3xl mb-12 shadow-2xl relative">
+          <div className="grid md:grid-cols-[1fr_auto] gap-12 items-center">
+            
+            <div className="space-y-8">
+              {/* STATUS */}
+              <div>
+                <div className="inline-flex items-center gap-3 mb-4">
+                  {result.status === "green" && (
+                    <div className="flex items-center gap-2 text-[#4ade80] font-mono text-xs uppercase tracking-widest font-black bg-[#4ade80]/10 px-3 py-1.5 rounded-full border border-[#4ade80]/20">
+                      <CheckCircle2 className="w-4 h-4" /> Ready to Load
                     </div>
-                  </div>
-
-                  <div className="hidden h-12 w-px bg-[#2a2a30] md:block" />
-
-                  <div>
-                    <h4 className="mb-1 font-mono text-[10px] uppercase tracking-widest text-[#8888a0]">
-                      Recommended Setting
-                    </h4>
-                    <p className="font-syne font-bold text-white">
-                      {canRun ? "FP16 (High Quality)" : "GGUF / Quantized"}
-                    </p>
-                  </div>
+                  )}
+                  {result.status === "yellow" && (
+                    <div className="flex items-center gap-2 text-amber-500 font-mono text-xs uppercase tracking-widest font-black bg-amber-500/10 px-3 py-1.5 rounded-full border border-amber-500/20">
+                      <AlertTriangle className="w-4 h-4" /> Tight Margin
+                    </div>
+                  )}
+                  {result.status === "red" && (
+                    <div className="flex items-center gap-2 text-rose-500 font-mono text-xs uppercase tracking-widest font-black bg-rose-500/10 px-3 py-1.5 rounded-full border border-rose-500/20">
+                      <XCircle className="w-4 h-4" /> Memory Overload
+                    </div>
+                  )}
                 </div>
+                <h2 className="text-4xl font-syne font-black text-white tracking-tight">
+                  Status: {result.status === "green" ? "Confirmed" : result.status === "yellow" ? "Risk Warning" : "Failed Load"}
+                </h2>
+              </div>
+
+              {/* DETAILS */}
+              <div className="grid grid-cols-2 gap-y-6 gap-x-8">
+                <div>
+                  <label className="block font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-widest">Recommended Res</label>
+                  <p className="text-white font-mono">{result.settings.res}</p>
+                </div>
+                <div>
+                  <label className="block font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-widest">Inference Steps</label>
+                  <p className="text-white font-mono">{result.settings.steps}</p>
+                </div>
+                <div>
+                  <label className="block font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-widest">Launch Flags</label>
+                  <code className="text-[#22d3ee] font-mono text-sm bg-[#22d3ee]/5 px-2 py-0.5 rounded">{result.settings.flags}</code>
+                </div>
+                <div>
+                  <label className="block font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-widest">Optimal Batch</label>
+                  <p className="text-white font-mono">{result.settings.batch}</p>
+                </div>
+              </div>
+
+              {/* TIP */}
+              <div className="p-4 bg-white/[0.03] border border-white/5 rounded-2xl flex gap-4 items-start">
+                <Info className="w-5 h-5 text-[#7c6af7] mt-0.5" />
+                <p className="text-sm text-[#8888a0] leading-relaxed italic">{result.tip}</p>
               </div>
             </div>
 
-            {/* ComputeAtlas Recommendation */}
-            <div className="group overflow-hidden rounded-3xl border border-[#7c6af7]/20 bg-[#111113]">
-              <div className="flex flex-col md:flex-row">
-                <div className="relative aspect-square w-full md:aspect-auto md:w-1/3">
-                  <Image
-                    src="/images/computeatlas-partner.png"
-                    alt="ComputeAtlas Hardware"
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#111113]" />
-                </div>
-                <div className="flex-1 p-10">
-                  <div
-                    className="nh-section-label mb-6"
-                    style={{
-                      background: "rgba(124, 106, 247, 0.1)",
-                      border: "1px solid rgba(124, 106, 247, 0.2)",
-                      color: "#7c6af7",
-                    }}
-                  >
-                    Official Hardware Partner
-                  </div>
-                  <h3 className="mb-4 font-syne text-3xl font-black text-white">
-                    Upgrade to{" "}
-                    {estimatedVRAM > 24
-                      ? "H100"
-                      : estimatedVRAM > 12
-                        ? "4090"
-                        : "5080"}
-                  </h3>
-                  <p className="mb-8 max-w-xl leading-relaxed text-[#8888a0]">
-                    Don&apos;t let VRAM limits bottleneck your creativity.
-                    ComputeAtlas calculates the best GPU for your specific
-                    workflow—from LORA training to cinematic video
-                    generation—before you buy.
-                  </p>
-                  <a
-                    href="https://computeatlas.ai?ref=neuraldrift"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-4 rounded-xl bg-white px-8 py-4 text-xs font-bold uppercase tracking-widest text-black shadow-[0_0_30px_rgba(124,106,247,0.3)] transition-all hover:bg-[#7c6af7] hover:text-white"
-                  >
-                    Build Your Rig on ComputeAtlas{" "}
-                    <Zap size={14} fill="currentColor" />
-                  </a>
-                </div>
+            {/* VRAM GAUGE */}
+            <div className="flex flex-col items-center justify-center p-8 bg-[#0a0a0b] rounded-[40px] border border-white/5 w-64 h-64 relative">
+              <div className="absolute inset-0 flex items-center justify-center">
+                 <div className={`w-40 h-40 rounded-full border-2 border-dashed opacity-20 ${result.status === "red" ? "border-rose-500" : "border-[#7c6af7]"}`} />
               </div>
-            </div>
-
-            {/* Quick Specs Table */}
-            <div className="rounded-3xl border border-[#2a2a30] bg-[#111113] p-10">
-              <h3 className="mb-8 font-syne text-xl font-bold text-white">
-                Model Architecture Details
-              </h3>
-              <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-                <div>
-                  <h4 className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[#22d3ee]">
-                    Model Files
-                  </h4>
-                  <p className="border-l border-[#22d3ee]/30 py-2 pl-4 text-sm text-[#8888a0]">
-                    Flux models are ~23GB (FP16) or ~12GB (FP8).
-                  </p>
-                </div>
-                <div>
-                  <h4 className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[#7c6af7]">
-                    Context Window
-                  </h4>
-                  <p className="border-l border-[#7c6af7]/30 py-2 pl-4 text-sm text-[#8888a0]">
-                    Higher batch sizes increase peak memory during the sampling
-                    phase.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="mb-3 font-mono text-[10px] uppercase tracking-widest text-[#4ade80]">
-                    OS Overhead
-                  </h4>
-                  <p className="border-l border-[#4ade80]/30 py-2 pl-4 text-sm text-[#8888a0]">
-                    Windows WDDM reserve takes ~15% of total VRAM. Linux is
-                    recommended for pro builds.
-                  </p>
-                </div>
+              <p className="font-mono text-[10px] uppercase text-[#8888a0] mb-2 tracking-tighter">VRAM Utilization</p>
+              <div className="font-syne text-5xl font-black text-white">{model.vramNeeded.toFixed(1)}</div>
+              <div className="font-mono text-xs text-zinc-500 mt-2">/ {gpu.vram} GB Total </div>
+              <div className="mt-4 w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+                <div 
+                  className={`h-full transition-all duration-700 ${result.status === "green" ? "bg-[#4ade80]" : result.status === "yellow" ? "bg-amber-500" : "bg-rose-500"}`} 
+                  style={{ width: `${Math.min((model.vramNeeded / gpu.vram) * 100, 100)}%` }} 
+                />
               </div>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+
+        {/* COMPUTEATLAS PARTNER CARD */}
+        <div className="bg-gradient-to-br from-[#7c6af7]/20 via-[#111113] to-[#111113] border border-[#7c6af7]/20 p-10 rounded-[2.5rem] flex flex-col md:flex-row items-center justify-between gap-8">
+          <div>
+            <h3 className="font-syne text-2xl font-bold text-white mb-2">Need a GPU upgrade?</h3>
+            <p className="text-[#8888a0] max-w-sm mb-0">ComputeAtlas.ai finds the best real-world deals for local AI workstation builds.</p>
+          </div>
+          <a 
+            href="https://computeatlas.ai" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="group flex items-center gap-3 bg-[#7c6af7] text-white px-8 py-4 rounded-2xl font-bold text-sm hover:translate-y-[-2px] hover:shadow-[0_10px_30px_rgba(124,106,247,0.4)] transition-all uppercase tracking-widest"
+          >
+            Find Deals <ExternalLink className="w-4 h-4 transition-transform group-hover:rotate-45" />
+          </a>
+        </div>
+      </div>
+
+      <style jsx global>{`
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Syne:wght@800;Black&display=swap');
+        :root {
+          --font-fira: 'Fira Code', monospace;
+          --font-syne: 'Syne', sans-serif;
+        }
+        body { font-family: var(--font-fira); }
+        .font-syne { font-family: var(--font-syne) !important; }
+        .font-mono { font-family: var(--font-fira) !important; }
+      `}</style>
+    </main>
   );
 }
