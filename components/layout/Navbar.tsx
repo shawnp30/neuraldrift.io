@@ -449,7 +449,7 @@ export default function Navbar() {
           mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         aria-hidden={!mobileOpen}
-        inert={!mobileOpen || undefined}
+        {...(!mobileOpen ? { inert: "" as any } : {})}
       >
         <div className="h-full pt-28 pb-12 px-6 overflow-y-auto">
           {/* Mobile Search */}
