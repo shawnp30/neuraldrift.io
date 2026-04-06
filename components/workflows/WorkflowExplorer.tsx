@@ -16,6 +16,11 @@ import {
   ZoomIn,
   ZoomOut,
   Maximize2,
+  Copy,
+  Check,
+  ShieldCheck,
+  Gauge,
+  Zap,
 } from "lucide-react";
 import { WorkflowNode } from "@/lib/github";
 import { getWorkflowMeta, getCategoryColor } from "@/lib/workflowMeta";
@@ -52,6 +57,15 @@ export default function WorkflowExplorer({
     setExpandedFolders((prev) => ({ ...prev, [path]: !prev[path] }));
   };
 
+  const [copiedPath, setCopiedPath] = useState<string | null>(null);
+
+  const handleCopyLink = (path: string) => {
+    const url = `${window.location.origin}/workflows?id=${path.replace(/\.json$/, "")}`;
+    navigator.clipboard.writeText(url);
+    setCopiedPath(path);
+    setTimeout(() => setCopiedPath(null), 2000);
+  };
+
   const handleDownload = async (downloadUrl: string, filename: string) => {
     const response = await fetch(downloadUrl);
     const blob = await response.blob();
@@ -78,6 +92,13 @@ export default function WorkflowExplorer({
     };
     return findFile(initialTree);
   }, [selectedPath, initialTree]);
+
+  const workflowData = useMemo(() => {
+    if (!selectedFile) return null;
+    const idMatch = selectedFile.name.match(/^(\d+)/);
+    const id = idMatch ? idMatch[1] : selectedFile.name.replace(".json", "");
+    return WORKFLOWS.find(w => w.id === id);
+  }, [selectedFile]);
 
   const meta = selectedFile ? getWorkflowMeta(selectedFile.name) : null;
 
@@ -161,6 +182,18 @@ export default function WorkflowExplorer({
                 </div>
 
                 <div className="flex flex-wrap gap-3">
+                   <button
+                    onClick={() => handleCopyLink(selectedFile.path)}
+                    className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3 font-bold text-white transition-all hover:bg-white/10"
+                    title="Copy direct link to this workflow"
+                  >
+                    {copiedPath === selectedFile.path ? (
+                      <Check className="h-4 w-4 text-emerald-400" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                    {copiedPath === selectedFile.path ? "Copied" : "Copy Link"}
+                  </button>
                   <button
                     onClick={() =>
                       selectedFile.downloadUrl &&
@@ -176,18 +209,19 @@ export default function WorkflowExplorer({
                       href={`https://github.com/shawnp30/neuraldrift.io/blob/main/${selectedFile.path}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-6 py-3 font-bold text-white transition-all hover:bg-white/10"
+                      className="flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 h-[48px] font-bold text-white transition-all hover:bg-white/10"
+                      title="View on GitHub"
                     >
                       <ExternalLink className="h-4 w-4" />
-                      View on GitHub
                     </a>
                   )}
                 </div>
               </div>
 
-              {/* ── Workflow Description ── */}
+              {/* ── Workflow Description & Dashboard ── */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mb-10">
                 <div className="flex flex-col gap-6">
+                  {/* Overview Card */}
                   <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6 lg:p-8">
                     <div className="mb-4 flex items-center gap-2 text-[#7c6af7]">
                        <Wrench className="w-4 h-4" />
@@ -196,23 +230,37 @@ export default function WorkflowExplorer({
                     <p className="text-[17px] font-medium leading-relaxed text-[#F3F4F6] mb-6">
                       {meta.description}
                     </p>
-                    <div className="flex flex-wrap gap-2 mb-8">
+                    <div className="flex flex-wrap gap-2 mb-4">
                       <span className={`rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest ${meta.categoryColor} ${meta.categoryBg} border border-white/5`}>
                         {meta.categoryLabel}
+                      </span>
+                      <span className="rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-[#F3F4F6] bg-white/5 border border-white/10">
+                        v{workflowData?.version || "1.0"}
                       </span>
                     </div>
                   </div>
 
+                  {/* Tech Specs Grid */}
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6">
-                      <Cpu className="mb-3 h-5 w-5 text-[#22d3ee]" />
-                      <h4 className="mb-1 font-syne text-xs font-bold uppercase tracking-wide text-white">Hardware</h4>
-                      <p className="font-mono text-[10px] text-zinc-400">Optimized for RTX 40+</p>
+                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6 hover:border-accent/30 transition-colors">
+                      <Zap className="mb-3 h-5 w-5 text-[#22d3ee]" />
+                      <h4 className="mb-1 font-syne text-[10px] font-bold uppercase tracking-wide text-zinc-500">Hardware</h4>
+                      <p className="font-mono text-sm font-bold text-white uppercase">{workflowData?.vram || "8GB"} VRAM</p>
                     </div>
-                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6">
-                      <Activity className="mb-3 h-5 w-5 text-[#4ade80]" />
-                      <h4 className="mb-1 font-syne text-xs font-bold uppercase tracking-wide text-white">Performance</h4>
-                      <p className="font-mono text-[10px] text-zinc-400">Local-First / 0 Fees</p>
+                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6 hover:border-emerald-400/30 transition-colors">
+                      <Gauge className="mb-3 h-5 w-5 text-[#4ade80]" />
+                      <h4 className="mb-1 font-syne text-[10px] font-bold uppercase tracking-wide text-zinc-500">Speed</h4>
+                      <p className="font-mono text-sm font-bold text-white uppercase">{workflowData?.genTime.split(' on')[0] || "FAST"}</p>
+                    </div>
+                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6 hover:border-amber-400/30 transition-colors">
+                      <ShieldCheck className="mb-3 h-5 w-5 text-amber-400" />
+                      <h4 className="mb-1 font-syne text-[10px] font-bold uppercase tracking-wide text-zinc-500">Tier</h4>
+                      <p className="font-mono text-sm font-bold text-white uppercase">{workflowData?.difficulty || "BEGINNER"}</p>
+                    </div>
+                    <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6 hover:border-rose-400/30 transition-colors">
+                      <Cpu className="mb-3 h-5 w-5 text-rose-400" />
+                      <h4 className="mb-1 font-syne text-[10px] font-bold uppercase tracking-wide text-zinc-500">Base Model</h4>
+                      <p className="font-mono text-sm font-bold text-white uppercase truncate">{workflowData?.model.split('.')[0] || "SDXL"}</p>
                     </div>
                   </div>
                 </div>
@@ -220,7 +268,7 @@ export default function WorkflowExplorer({
                 <div className="relative group overflow-hidden rounded-3xl border border-white/10 bg-black aspect-square md:aspect-auto">
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10 opacity-60"></div>
                     <Image 
-                      src={meta.previewImage || "/images/workflows/thumbs/flux.png"} 
+                      src={workflowData?.imageUrl || meta.previewImage || "/images/workflows/thumbs/flux.png"} 
                       alt="Workflow Preview" 
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"

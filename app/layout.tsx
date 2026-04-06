@@ -58,9 +58,6 @@ export const metadata: Metadata = {
     description: "Free ComfyUI workflows, AI model guides, VRAM calculator and GPU tools for image and video generation",
     images: ["/og-image.png"],
   },
-  icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-  },
 };
 
 export default function RootLayout({

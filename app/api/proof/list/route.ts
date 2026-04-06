@@ -56,8 +56,6 @@ const WORKFLOW_TITLES: Record<string, string> = {
   "50-flux-dev-portrait-v2": "FLUX Cinematic Portrait",
 };
 
-export const runtime = "edge";
-
 export async function GET() {
   try {
     const { blobs } = await list({ prefix: "proof/" });

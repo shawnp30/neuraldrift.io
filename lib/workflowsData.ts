@@ -739,7 +739,7 @@ export const WORKFLOWS: WorkflowEntry[] = [
     customNodes: [], genTime: "~22s on RTX 5080", resolution: "1024×1024",
     tags: ["food", "photography", "FLUX", "restaurant", "16GB"],
     version: "v1.0",
-    imageUrl: `/workflow-thumbs/01.png`,
+    imageUrl: `/workflow-thumbs/44.png`,
     workflowJsonUrl: null, altImages: [],
     proofPrompt: "Product photography of a fresh gourmet burger on a wooden plate, studio lighting, macro",
     proTip: "Use 'bokeh' or 'shallow depth of field' to make the food pop from the background."
