@@ -171,7 +171,7 @@ export default async function GuidePage({ params }: Props) {
 
   if (!existsSync(filePath)) {
     return (
-      <div className="bg-[#0a0a0b] min-h-screen text-[#e8e8f0]">
+      <div className="bg-transparent min-h-screen text-[#e8e8f0]">
         <Navbar />
         <main className="max-w-4xl mx-auto pt-40 px-6 text-center">
           <h1 className="text-4xl font-black mb-8">Guide Not Found</h1>
@@ -239,7 +239,7 @@ export default async function GuidePage({ params }: Props) {
   const nextSlug = currentIndex < allFiles.length - 1 ? allFiles[currentIndex + 1].replace(".mdx", "") : null;
 
   return (
-    <div className="bg-[#0a0a0b] min-h-screen text-[#e8e8f0] selection:bg-[#7c6af7]/30 selection:text-white">
+    <div className="bg-transparent min-h-screen text-[#e8e8f0] selection:bg-transparent/30 selection:text-white">
       <Navbar />
 
       <style dangerouslySetInnerHTML={{ __html: `

@@ -30,9 +30,9 @@ interface GuideMeta {
 async function getLatestGuides(): Promise<GuideMeta[]> {
   try {
     const guidesDir = join(process.cwd(), "content/guides");
-    const files = readdirSync(guidesDir).filter(f => f.endsWith(".mdx"));
-    
-    const guides = files.map(filename => {
+    const files = readdirSync(guidesDir).filter((f) => f.endsWith(".mdx"));
+
+    const guides = files.map((filename) => {
       const filePath = join(guidesDir, filename);
       const fileContent = readFileSync(filePath, "utf-8");
       const { data } = matter(fileContent);
@@ -47,7 +47,10 @@ async function getLatestGuides(): Promise<GuideMeta[]> {
     });
 
     return guides
-      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+      .sort(
+        (a, b) =>
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      )
       .slice(0, 4);
   } catch (error) {
     console.error("Error fetching guides:", error);
@@ -60,7 +63,7 @@ export default async function HomePage() {
   const latestGuides = await getLatestGuides();
 
   return (
-    <div className="bg-[#07090e] text-[#e8e8f0] selection:bg-[#7c6af7]/30">
+    <div className="bg-transparent text-[#e8e8f0] selection:bg-[#7c6af7]/30">
       {/* Hero: The cinematic entry point */}
       <HomeHero />
 
@@ -92,7 +95,9 @@ export default async function HomePage() {
       <NewsletterSignup />
 
       {/* Global Styles for the entire Neuraldrift aesthetic */}
-      <style dangerouslySetInnerHTML={{ __html: `
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
         @font-face {
           font-family: 'Berkeley Mono';
           src: local('Berkeley Mono'), local('Fira Code');
@@ -121,7 +126,9 @@ export default async function HomePage() {
         .animate-fade-up {
           animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-      `}} />
+      `,
+        }}
+      />
     </div>
   );
 }

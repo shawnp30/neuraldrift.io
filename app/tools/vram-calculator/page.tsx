@@ -110,7 +110,7 @@ export default function VRAMCalculatorPage() {
   }, [modelId, gpuId]);
 
   return (
-    <main className="min-h-screen bg-[#0a0a0b] text-[#e8e8f0] pt-32 pb-24 px-6 md:px-12 selection:bg-[#7c6af7]/30">
+    <main className="min-h-screen bg-transparent text-[#e8e8f0] pt-32 pb-24 px-6 md:px-12 selection:bg-transparent/30">
       <div className="max-w-4xl mx-auto">
         <div className="mb-12">
           <p className="font-mono text-xs text-[#7c6af7] tracking-[0.3em] uppercase mb-4">{"// Neuro-Hardware Diagnostics"}</p>

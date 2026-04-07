@@ -134,7 +134,7 @@ export default function ProofGalleryPage() {
   };
 
   return (
-    <div className="min-h-screen overflow-hidden bg-[#030712] pb-32 pt-32 font-sans text-slate-50">
+    <div className="min-h-screen overflow-hidden bg-transparent pb-32 pt-32 font-sans text-slate-50">
       {/* ── LIGHTBOX ── */}
       <AnimatePresence>
         {lightbox && (

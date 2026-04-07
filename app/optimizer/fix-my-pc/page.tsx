@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function FixMyPcPage() {
   return (
-    <main className="min-h-screen bg-[#0a0a0f] px-6 py-24">
+    <main className="min-h-screen bg-transparent px-6 py-24">
       <div className="max-w-3xl mx-auto">
         <div className="mb-10">
           <Link

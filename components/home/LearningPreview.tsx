@@ -7,7 +7,8 @@ import { ArrowRight, Play, BookOpen, Settings } from "lucide-react";
 
 const CARDS = [
   {
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
     level: "Beginner",
     levelColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
     icon: <Settings size={16} className="text-emerald-400" />,
@@ -17,7 +18,8 @@ const CARDS = [
     desc: "Install, configure, and benchmark your first ComfyUI workflow. From zero to generating in under 30 minutes.",
   },
   {
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
     level: "Intermediate",
     levelColor: "bg-orange-500/10 text-orange-400 border-orange-500/20",
     icon: <BookOpen size={16} className="text-orange-400" />,
@@ -27,7 +29,8 @@ const CARDS = [
     desc: "Dataset prep, Kohya config, training loop, and quality evaluation. Exact settings for RTX 5080 and 3080.",
   },
   {
-    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
     level: "Advanced",
     levelColor: "bg-violet-500/10 text-violet-400 border-violet-500/20",
     icon: <Play size={16} className="text-violet-400" />,
@@ -40,7 +43,7 @@ const CARDS = [
 
 export const LearningPreview = () => {
   return (
-    <section className="border-t border-white/5 bg-[#080b0f] py-16">
+    <section className="border-t border-white/5 bg-transparent py-16">
       <div className="nh-container">
         <div className="mb-16 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
@@ -63,7 +66,7 @@ export const LearningPreview = () => {
             <Link
               href={card.href}
               key={idx}
-              className="nh-glass-card group overflow-hidden rounded-2xl flex flex-col hover:border-white/20 transition-all hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+              className="nh-glass-card group flex flex-col overflow-hidden rounded-2xl transition-all hover:border-white/20 hover:shadow-[0_0_30px_rgba(255,255,255,0.05)]"
             >
               {/* Image Container */}
               <div className="relative h-48 w-full overflow-hidden border-b border-white/5">
@@ -74,10 +77,12 @@ export const LearningPreview = () => {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                   unoptimized // Simplifies demo
                 />
-                
+
                 {/* Level Badge Overlay */}
-                <div className="absolute top-4 left-4 z-10">
-                  <span className={`inline-block rounded-md border px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-widest backdrop-blur-md ${card.levelColor}`}>
+                <div className="absolute left-4 top-4 z-10">
+                  <span
+                    className={`inline-block rounded-md border px-2.5 py-1 font-mono text-[10px] font-bold uppercase tracking-widest backdrop-blur-md ${card.levelColor}`}
+                  >
                     {card.level}
                   </span>
                 </div>
@@ -86,22 +91,23 @@ export const LearningPreview = () => {
               {/* Content Container */}
               <div className="flex flex-1 flex-col p-6">
                 <div className="mb-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-zinc-400">
-                   <div className="flex items-center gap-2">
-                     {card.icon}
-                     {card.readTime}
-                   </div>
+                  <div className="flex items-center gap-2">
+                    {card.icon}
+                    {card.readTime}
+                  </div>
                 </div>
-                
-                <h3 className="mb-3 font-syne text-lg font-[800] text-white leading-tight group-hover:text-accent-cyan transition-colors">
+
+                <h3 className="group-hover:text-accent-cyan mb-3 font-syne text-lg font-[800] leading-tight text-white transition-colors">
                   {card.title}
                 </h3>
-                
+
                 <p className="mb-6 flex-1 text-xs font-[500] leading-relaxed text-zinc-400">
                   {card.desc}
                 </p>
-                
-                <div className="mt-auto flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-300 group-hover:text-white transition-colors">
-                  Read Lesson <ArrowRight className="h-3 w-3 group-hover:translate-x-1 transition-transform" />
+
+                <div className="mt-auto flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-widest text-zinc-300 transition-colors group-hover:text-white">
+                  Read Lesson{" "}
+                  <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
                 </div>
               </div>
             </Link>

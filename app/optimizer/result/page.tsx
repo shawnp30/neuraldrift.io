@@ -12,7 +12,7 @@ export default function ResultPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex min-h-screen items-center justify-center bg-[#0a0a0f]">
+        <div className="flex min-h-screen items-center justify-center bg-transparent">
           <div className="animate-pulse text-sm text-zinc-500">
             Matching workflows to your hardware…
           </div>

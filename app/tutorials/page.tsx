@@ -116,7 +116,7 @@ export default function TutorialsPage() {
     : VIDEOS.filter((v) => v.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-slate-50 pt-32 pb-24 font-sans selection:bg-[#7c6af7]/30">
+    <div className="min-h-screen bg-transparent text-slate-50 pt-32 pb-24 font-sans selection:bg-transparent/30">
       <Navbar />
 
       {/* SEO STRUCTURED DATA */}

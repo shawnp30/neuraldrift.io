@@ -295,7 +295,7 @@ export default function ProofUploadPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#030712] pb-32 pt-20 font-sans text-slate-50">
+    <div className="relative min-h-screen bg-transparent pb-32 pt-20 font-sans text-slate-50">
       <div className="mx-auto max-w-4xl px-6 md:px-12">
         {/* ── HEADER ── */}
         <div className="mb-12 text-center">

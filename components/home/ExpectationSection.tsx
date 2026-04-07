@@ -31,23 +31,32 @@ const EXAMPLE_FLOW = [
 
 export function ExpectationSection() {
   return (
-    <section className="relative overflow-hidden border-y border-white/6 bg-[#0a0d13] py-24">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute left-[8%] top-12 h-40 w-40 rounded-full bg-accent-cyan/8 blur-[110px]" />
+    <section className="border-white/6 relative overflow-hidden border-y bg-transparent py-24">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="bg-accent-cyan/8 absolute left-[8%] top-12 h-40 w-40 rounded-full blur-[110px]" />
         <div className="absolute bottom-0 right-[10%] h-52 w-52 rounded-full bg-accent-purple/10 blur-[130px]" />
       </div>
 
       <div className="nh-container relative z-10">
         <div className="mb-12 max-w-3xl">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-accent-cyan">
-            <span className="h-2 w-2 rounded-full bg-accent-cyan" />
+          <div className="text-accent-cyan mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em]">
+            <span className="bg-accent-cyan h-2 w-2 rounded-full" />
             What To Expect
           </div>
           <h2 className="font-syne text-4xl font-[800] leading-tight tracking-tight text-white md:text-5xl">
             One place to create, refine, and ship AI work.
           </h2>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-zinc-300">
-            NeuralDrift is a complete creative AI environment designed for people who want to build, experiment, and produce without technical barriers. The platform brings music generation, image and video creation, character design, dataset building, LoRA workflows, and automation tools into one unified space. Everything is structured for speed and simplicity: generate content, refine it, and export directly to ComfyUI, your workstation, or any external pipeline. Whether you&apos;re a beginner or an advanced builder, NeuralDrift gives you the freedom to explore ideas and turn them into production-ready assets with minimal effort.
+            NeuralDrift is a complete creative AI environment designed for
+            people who want to build, experiment, and produce without technical
+            barriers. The platform brings music generation, image and video
+            creation, character design, dataset building, LoRA workflows, and
+            automation tools into one unified space. Everything is structured
+            for speed and simplicity: generate content, refine it, and export
+            directly to ComfyUI, your workstation, or any external pipeline.
+            Whether you&apos;re a beginner or an advanced builder, NeuralDrift
+            gives you the freedom to explore ideas and turn them into
+            production-ready assets with minimal effort.
           </p>
         </div>
 
@@ -62,13 +71,13 @@ export function ExpectationSection() {
                   A fast first run
                 </h3>
               </div>
-              <div className="rounded-full border border-accent-cyan/20 bg-accent-cyan/10 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em] text-accent-cyan">
+              <div className="border-accent-cyan/20 bg-accent-cyan/10 text-accent-cyan rounded-full border px-3 py-1 font-mono text-[11px] uppercase tracking-[0.18em]">
                 Example
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-3xl border border-white/8 bg-[#05070b]">
-              <div className="flex items-center gap-2 border-b border-white/8 px-5 py-4">
+            <div className="border-white/8 overflow-hidden rounded-3xl border bg-[#05070b]">
+              <div className="border-white/8 flex items-center gap-2 border-b px-5 py-4">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#fb7185]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#f59e0b]" />
                 <span className="h-2.5 w-2.5 rounded-full bg-[#22c55e]" />
@@ -78,7 +87,7 @@ export function ExpectationSection() {
               </div>
 
               <div className="grid gap-4 p-5 md:grid-cols-[0.9fr_1.1fr]">
-                <div className="rounded-2xl border border-white/8 bg-white/[0.02] p-4">
+                <div className="border-white/8 rounded-2xl border bg-white/[0.02] p-4">
                   <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-zinc-400">
                     Start Here
                   </p>
@@ -95,7 +104,7 @@ export function ExpectationSection() {
                   {EXAMPLE_FLOW.map((item, index) => (
                     <div
                       key={item}
-                      className="rounded-2xl border border-white/8 bg-white/[0.025] px-4 py-3"
+                      className="border-white/8 rounded-2xl border bg-white/[0.025] px-4 py-3"
                     >
                       <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent-purple">
                         Step 0{index + 1}
@@ -119,10 +128,10 @@ export function ExpectationSection() {
                 {EXPECTATIONS.map((item) => (
                   <div
                     key={item.step}
-                    className="rounded-2xl border border-white/8 bg-[#0d1219] px-4 py-4"
+                    className="border-white/8 rounded-2xl border bg-[#0d1219] px-4 py-4"
                   >
                     <div className="flex items-center gap-3">
-                      <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-accent-cyan/20 bg-accent-cyan/10 font-mono text-xs font-[700] text-accent-cyan">
+                      <span className="border-accent-cyan/20 bg-accent-cyan/10 text-accent-cyan inline-flex h-9 w-9 items-center justify-center rounded-full border font-mono text-xs font-[700]">
                         {item.step}
                       </span>
                       <h3 className="font-syne text-xl font-[800] text-white">
@@ -149,7 +158,7 @@ export function ExpectationSection() {
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/workflows"
-                  className="rounded-xl bg-accent-cyan px-5 py-3 text-center text-sm font-[800] text-black transition-transform hover:scale-[1.01]"
+                  className="bg-accent-cyan rounded-xl px-5 py-3 text-center text-sm font-[800] text-black transition-transform hover:scale-[1.01]"
                 >
                   Explore Workflows
                 </Link>

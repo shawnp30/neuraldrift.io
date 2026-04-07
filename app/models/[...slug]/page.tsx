@@ -50,13 +50,13 @@ export default function ModelDetailPage() {
 
   if (loading)
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#030712] font-mono text-accent">
+      <div className="flex min-h-screen items-center justify-center bg-transparent font-mono text-accent">
         Synchronizing Neural Node...
       </div>
     );
 
   return (
-    <main className="min-h-screen bg-[#030712] pb-32 pt-32 text-slate-50">
+    <main className="min-h-screen bg-transparent pb-32 pt-32 text-slate-50">
       {/* HEADER / NAV */}
       <div className="mx-auto mb-12 max-w-7xl px-6 lg:px-12">
         <Link

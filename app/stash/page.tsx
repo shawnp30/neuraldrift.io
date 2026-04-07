@@ -38,7 +38,7 @@ export default function StashPage() {
   }, [stash]);
 
   return (
-    <main className="min-h-screen bg-[#0d1117] pb-24 pt-32 text-slate-50">
+    <main className="min-h-screen bg-transparent pb-24 pt-32 text-slate-50">
       <div className="mx-auto max-w-[1200px] px-6 lg:px-12">
         {/* HEADER */}
         <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">

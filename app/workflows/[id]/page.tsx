@@ -50,7 +50,7 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
 
   if (!workflow) {
     return (
-      <div className="min-h-screen bg-[#0a0a0b] flex items-center justify-center pt-20">
+      <div className="min-h-screen bg-transparent flex items-center justify-center pt-20">
         <div className="text-center">
           <h1 className="text-4xl font-mono font-black text-white mb-4 uppercase tracking-tighter leading-none">Access Denied</h1>
           <p className="text-[#555565] mb-8 font-mono text-sm uppercase tracking-widest">Workflow Index: {params.id}</p>
@@ -94,7 +94,7 @@ export default function WorkflowDetailPage({ params }: { params: { id: string } 
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-[#e8e8f0] pb-24 pt-32">
+    <div className="min-h-screen bg-transparent text-[#e8e8f0] pb-24 pt-32">
       {/* ── BACKGROUND FX ─────────────────────────────────────────────────── */}
       <div className="fixed inset-0 bg-grid opacity-5 pointer-events-none" />
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#7c6af7]/5 rounded-full blur-[120px] pointer-events-none" />

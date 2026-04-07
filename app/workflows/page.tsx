@@ -63,7 +63,7 @@ export default function WorkflowsPage() {
   }, [filteredWorkflows]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-[#e8e8f0] pb-20">
+    <div className="min-h-screen bg-transparent text-[#e8e8f0] pb-20">
       {/* ── HERO HEADER ────────────────────────────────────────────────────── */}
       <section className="relative pt-32 pb-20 overflow-hidden border-b border-[#2a2a30]">
         <div className="absolute inset-0 bg-grid opacity-10" />

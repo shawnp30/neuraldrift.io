@@ -50,7 +50,7 @@ export default function HardwareHubPage() {
   }, [score]);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0b] text-[#e8e8f0] pb-24 selection:bg-[#7c6af7]/30">
+    <div className="min-h-screen bg-transparent text-[#e8e8f0] pb-24 selection:bg-transparent/30">
       <Navbar />
       
       {/* HERO SECTION */}

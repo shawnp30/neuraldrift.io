@@ -98,7 +98,7 @@ export default function ModelsHubPage() {
   const displayModels = filteredModels.slice(0, visibleCount);
 
   return (
-    <main className="min-h-screen bg-[#0d1117] pb-24 pt-32 text-slate-50">
+    <main className="min-h-screen bg-transparent pb-24 pt-32 text-slate-50">
       <div className="mx-auto flex max-w-[1600px] gap-8 px-6 lg:px-12">
         {/* SIDEBAR */}
         <HubSidebar

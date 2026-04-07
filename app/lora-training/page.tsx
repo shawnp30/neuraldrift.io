@@ -100,7 +100,7 @@ export default function LoraTrainingPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#030712] pb-24 pt-32 text-slate-50">
+    <main className="min-h-screen bg-transparent pb-24 pt-32 text-slate-50">
       <div className="mx-auto max-w-7xl px-6 lg:px-12">
         {/* HEADER */}
         <div className="mb-12 flex flex-col justify-between gap-6 border-b border-white/5 pb-8 md:flex-row md:items-end">

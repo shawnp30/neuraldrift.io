@@ -24,7 +24,7 @@ export default function DatasetViewer() {
   const datasetId = idArray.map(segment => decodeURIComponent(segment as string)).join("/");
 
   return (
-    <main className="min-h-screen bg-[#030712] text-slate-50 pt-32 pb-32">
+    <main className="min-h-screen bg-transparent text-slate-50 pt-32 pb-32">
       
       {/* HEADER / NAV */}
       <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-12">

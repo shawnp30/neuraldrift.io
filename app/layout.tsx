@@ -4,7 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Navbar from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import "@/styles/globals.css";
-import { ColorDrift } from "@/components/layout/ColorDrift";
+import { NeuralBackground } from "@/components/shared/NeuralBackground";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -38,7 +38,8 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "NeuralDrift — Master Local AI Creation",
-    description: "ComfyUI workflows, guides, and tools for high-fidelity AI generation.",
+    description:
+      "ComfyUI workflows, guides, and tools for high-fidelity AI generation.",
     url: "https://neuraldrift.io",
     siteName: "NeuralDrift",
     images: [
@@ -55,7 +56,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "NeuralDrift — ComfyUI Workflows, Guides & Tools",
-    description: "Free ComfyUI workflows, AI model guides, VRAM calculator and GPU tools for image and video generation",
+    description:
+      "Free ComfyUI workflows, AI model guides, VRAM calculator and GPU tools for image and video generation",
     images: ["/og-image.png"],
   },
 };
@@ -71,9 +73,9 @@ export default function RootLayout({
       className={`${syne.variable} ${ibmPlexMono.variable} ${crimsonPro.variable} scroll-smooth`}
     >
       <body className="relative min-h-screen overflow-x-hidden bg-[#06080d] font-sans text-slate-50 antialiased selection:bg-accent/30">
-        <ColorDrift />
+        <NeuralBackground />
         <Navbar />
-        <main className="relative z-10">{children}</main>
+        <main className="relative z-[20]">{children}</main>
         <Footer />
         <Analytics />
       </body>

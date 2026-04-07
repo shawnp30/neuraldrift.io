@@ -86,7 +86,7 @@ export function ArchitectsSpotlight() {
   if (!creator) return null;
 
   return (
-    <section className="border-b border-[#30363d] bg-gradient-to-b from-[#0d1117] to-[#161b22] px-[20px] py-[60px]">
+    <section className="border-b border-[#30363d] bg-transparent px-[20px] py-[60px]">
       <div className="mx-auto mb-10 max-w-7xl text-center">
         <h2 className="mb-2 font-syne text-4xl font-black text-white drop-shadow-[0_0_10px_#00f2ff]">
           Architects of the Drift

@@ -32,7 +32,7 @@ export default function ResultClient() {
   const matches = getMatches(vram, goal)
 
   return (
-    <main className="min-h-screen bg-[#0a0a0f] px-6 py-16">
+    <main className="min-h-screen bg-transparent px-6 py-16">
       <div className="max-w-3xl mx-auto">
         <div className="mb-10">
           <button

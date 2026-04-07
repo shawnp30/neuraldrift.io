@@ -72,7 +72,7 @@ const PLATFORMS = [
 
 export default function CloudGeneratorsPage() {
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-50 pt-32 pb-24 font-sans">
+    <div className="min-h-screen bg-transparent text-slate-50 pt-32 pb-24 font-sans">
       
       {/* ── HEADER ── */}
       <div className="max-w-4xl mx-auto px-6 md:px-12 mb-20 text-center">

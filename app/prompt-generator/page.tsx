@@ -670,7 +670,7 @@ export default function PromptGenerator() {
   const stepNum = (n: number) => <span className="text-slate-500 font-mono font-black text-xs mr-2">0{n} /</span>;
 
   return (
-    <div className="min-h-screen bg-[#08090d] text-slate-200 pt-32 pb-32 font-sans relative">
+    <div className="min-h-screen bg-transparent text-slate-200 pt-32 pb-32 font-sans relative">
       <div className="fixed inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)', backgroundSize: '80px 80px' }} />
 
       <div className="max-w-[1440px] mx-auto px-4 md:px-8 xl:px-12 relative z-10">

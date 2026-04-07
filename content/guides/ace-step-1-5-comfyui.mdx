@@ -10,6 +10,7 @@ publishedAt: "2024-04-01"
 ---
 
 **In this guide you will learn:**
+
 - Connect Audio Ace rhythmic data to ComfyUI samplers
 - Orchestrate frame-perfect transitions using BPM-synced latent interpolation
 - Manage high-bandwidth audio-visual data flows without VRAM bottlenecks
@@ -42,6 +43,7 @@ Audio Ace produces a structured metadata stream (BPM, frequency weights, and ons
 ## 2 — Exporting from Audio Ace
 
 Before moving to ComfyUI, ensure your Audio Ace export is configured for **"Integration Mode"**:
+
 1. Open your project in Audio Ace.
 2. Select the **Integration Tab**.
 3. Export as `sync_metadata.json`.
@@ -65,6 +67,7 @@ In your ComfyUI workspace, you'll need the `Neuraldrift Audio Nodes` (or equival
 ## 4 — Handling VRAM Pressure
 
 Running both audio analysis metadata and heavy FLUX/SDXL models can be taxing.
+
 - Use **Latent Caching** to avoid re-generating frames that don't have significant rhythmic changes.
 - Set your `Preview Mode` to "Low Quality" to save 1.5GB of VRAM during the sync process.
 
@@ -77,6 +80,7 @@ For complex 4K renders, export the audio metadata as a **ControlNet weight map**
 ## 5 — Troubleshooting Sync Issues
 
 If your visuals appear out of time:
+
 - **Check Frame Rate**: Ensure your ComfyUI generation FPS matches the "Target FPS" set in Audio Ace.
 - **Normalization**: If the "pumping" effect is too subtle, add a `Math: Multiply` node to the Audio Ace output signal.
 
@@ -89,6 +93,7 @@ Step 1.5 is about precision. Once the handshake between Audio Ace and ComfyUI is
 ---
 
 ## References
+
 - [Audio Ace Documentation](https://audioace.ai/docs/integration)
 - [Advanced Rhythmic Nodes on GitHub](https://github.com/neuraldrift/comfy-audio-nodes)
 - [BPM to Frame Rate Calculator](https://computeatlas.ai/tools/bpm-calculator)

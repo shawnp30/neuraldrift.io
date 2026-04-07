@@ -26,7 +26,7 @@ export default function AdminUploadWorkflow() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-50 pt-32 pb-32">
+    <div className="min-h-screen bg-transparent text-slate-50 pt-32 pb-32">
       <div className="max-w-3xl mx-auto px-6">
         <h1 className="text-4xl font-[900] mb-8">Upload New Workflow</h1>
         

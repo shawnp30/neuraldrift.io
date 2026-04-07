@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORTEX // Live Neural Interface</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #05060a;
+      --surface: rgba(12, 16, 24, 0.45);
+      --border: rgba(255, 255, 255, 0.06);
+      --text-main: #e8edf5;
+      --text-muted: #6a7b8f;
+      --accent-cyan: #00e5ff;
+      --accent-magenta: #b829e3;
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --font-head: 'Space Grotesk', system-ui, sans-serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: var(--font-body); color: var(--text-main); }
+    
+    /* Canvas Layer */
+    #neural-canvas { position: fixed; inset: 0; z-index: 1; cursor: none; }
+    
+    /* Grain Overlay */
+    .grain {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+
+    /* Custom Cursor */
+    .cursor-dot, .cursor-ring {
+      position: fixed; pointer-events: none; z-index: 10000;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-dot { width: 8px; height: 8px; background: var(--accent-cyan); border-radius: 50%; box-shadow: 0 0 12px var(--accent-cyan); }
+    .cursor-ring {
+      width: 38px; height: 38px; border: 1.5px solid rgba(255,255,255,0.25); border-radius: 50%;
+      transition: width 0.35s var(--ease), height 0.35s var(--ease), background 0.35s var(--ease);
+      will-change: width, height, background;
+    }
+    .cursor-hover .cursor-ring { width: 54px; height: 54px; background: rgba(0,229,255,0.08); border-color: var(--accent-cyan); }
+
+    /* UI Panels */
+    .ui-layer { position: fixed; inset: 0; z-index: 10; padding: clamp(1rem, 3vw, 2rem); display: grid; grid-template-rows: auto 1fr auto; pointer-events: none; }
+    .ui-layer > * { pointer-events: auto; }
+
+    .glass-panel {
+      background: var(--surface);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    }
+    .glass-panel:hover { transform: translateY(-3px) scale(1.015); box-shadow: 0 12px 40px rgba(0,0,0,0.5); border-color: rgba(0,229,255,0.15); }
+
+    .header-panel {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    .logo { font-family: var(--font-head); font-size: 1.4rem; letter-spacing: 0.08em; color: #fff; }
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.05em;
+      padding: 0.4rem 0.8rem; border-radius: 20px;
+      background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.2);
+      color: var(--accent-cyan);
+    }
+    .status-dot { width: 6px; height: 6px; background: var(--accent-cyan); border-radius: 50%; box-shadow: 0 0 8px var(--accent-cyan); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.4; transform:scale(0.8); } }
+
+    .main-grid {
+      display: grid; grid-template-columns: 320px 1fr 320px; gap: 1.5rem;
+      align-items: start;
+    }
+
+    .metrics h3 { font-family: var(--font-head); font-size: 1rem; margin-bottom: 0.9rem; color: var(--text-main); letter-spacing: 0.02em; }
+    .metric-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.7rem; font-size: 0.9rem; }
+    .metric-label { color: var(--text-muted); }
+    .metric-val { font-family: var(--font-head); font-weight: 500; color: #fff; }
+    .progress-track { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; margin-top: 0.3rem; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-magenta)); width: 0%; transition: width 0.6s var(--ease); }
+
+    .terminal {
+      font-family: 'Courier New', monospace; font-size: 0.82rem; line-height: 1.6;
+      height: 220px; overflow-y: auto; padding-right: 8px;
+    }
+    .terminal::-webkit-scrollbar { width: 4px; }
+    .terminal::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+    .log-line { margin-bottom: 0.4rem; opacity: 0.85; }
+    .log-time { color: var(--accent-magenta); margin-right: 0.4rem; }
+    .log-msg { color: var(--text-muted); }
+    .log-msg.warn { color: #fbbf24; }
+    .log-msg.ok { color: #34d399; }
+
+    .footer-panel {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 1.5rem; font-size: 0.8rem; color: var(--text-muted);
+    }
+    .footer-links a { color: var(--text-muted); text-decoration: none; margin-left: 1.5rem; transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+
+    @media (max-width: 1024px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .header-panel { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .glass-panel { margin-bottom: 1rem; }
+    }
+    @media (max-width: 640px) {
+      .cursor-dot, .cursor-ring { display: none; }
+      #neural-canvas { cursor: auto; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="neural-canvas"></canvas>
+  <div class="grain"></div>
+  <div class="cursor-dot"></div>
+  <div class="cursor-ring"></div>
+
+  <div class="ui-layer">
+    <header class="header-panel glass-panel">
+      <div class="logo">CORTEX_OS</div>
+      <div class="status-badge"><span class="status-dot"></span> NEURAL SYNC ACTIVE</div>
+    </header>
+
+    <main class="main-grid">
+      <section class="metrics glass-panel">
+        <h3>CORE METRICS</h3>
+        <div class="metric-row"><span class="metric-label">Cognitive Load</span><span class="metric-val" id="m-load">0%</span></div>
+        <div class="progress-track"><div class="progress-fill" id="p-load"></div></div>
+        <div class="metric-row" style="margin-top:1rem"><span class="metric-label">Synaptic Density</span><span class="metric-val" id="m-dens">0%</span></div>
+        <div class="progress-track"><div class="progress-fill" id="p-dens"></div></div>
+        <div class="metric-row" style="margin-top:1rem"><span class="metric-label">Memory Indexing</span><span class="metric-val" id="m-mem">0%</span></div>
+        <div class="progress-track"><div class="progress-fill" id="p-mem"></div></div>
+        <div class="metric-row" style="margin-top:1rem"><span class="metric-label">Latency</span><span class="metric-val" id="m-lat">0ms</span></div>
+      </section>
+
+      <div class="glass-panel" style="min-height: 340px; display:flex; align-items:center; justify-content:center; text-align:center;">
+        <div>
+          <h2 style="font-family:var(--font-head); font-size:2.2rem; margin-bottom:0.5rem; letter-spacing:-0.02em;">Neural Topology</h2>
+          <p style="color:var(--text-muted); max-width: 480px; margin:0 auto; line-height:1.6;">Move cursor to influence signal propagation. System dynamically routes cognitive flow across active nodes. Real-time mesh adaptation enabled.</p>
+        </div>
+      </div>
+
+      <section class="glass-panel">
+        <h3 style="font-family:var(--font-head); font-size:1rem; margin-bottom:0.9rem;">SYSTEM LOG</h3>
+        <div class="terminal" id="log-terminal">
+          <div class="log-line"><span class="log-time">[00:00:00]</span><span class="log-msg ok">Core kernel initialized.</span></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer-panel glass-panel">
+      <span>© 2035 CORTEX SYSTEMS // ALL RIGHTS RESERVED</span>
+      <div class="footer-links">
+        <a href="#">Diagnostics</a>
+        <a href="#">Security</a>
+        <a href="#">Export</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ── Canvas Setup ──
+    const canvas = document.getElementById('neural-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, cx, cy;
+    const resize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; cx = w/2; cy = h/2; };
+    window.addEventListener('resize', resize); resize();
+
+    // ── Mouse Tracking ──
+    const mouse = { x: cx, y: cy, active: false };
+    window.addEventListener('mousemove', e => {
+      mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true;
+    });
+    window.addEventListener('touchmove', e => {
+      mouse.x = e.touches[0].clientX; mouse.y = e.touches[0].clientY; mouse.active = true;
+    }, { passive: true });
+
+    // ── Custom Cursor ──
+    const dot = document.querySelector('.cursor-dot'), ring = document.querySelector('.cursor-ring');
+    let rX = cx, rY = cy;
+    const isTouch = 'ontouchstart' in window;
+    if (!isTouch) {
+      document.addEventListener('mousemove', e => {
+        dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
+      });
+      function animateRing() {
+        rX += (mouse.x - rX) * 0.14;
+        rY += (mouse.y - rY) * 0.14;
+        ring.style.transform = `translate(${rX}px, ${rY}px) translate(-50%, -50%)`;
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+      document.querySelectorAll('.glass-panel, a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+      });
+    }
+
+    // ── Brain Mesh Generation ──
+    const NODES = [];
+    const NODE_COUNT = 160;
+    const isBrain = (x, y) => {
+      const nx = (x - cx) / (w * 0.32), ny = (y - cy) / (h * 0.36);
+      const l = Math.pow((nx + 0.35) * 1.05, 2) + Math.pow(ny * 1.25, 2) < 1;
+      const r = Math.pow((nx - 0.35) * 1.05, 2) + Math.pow(ny * 1.25, 2) < 1;
+      const c = Math.pow(nx * 1.4, 2) + Math.pow((ny - 0.85) * 2.1, 2) < 1;
+      return (l || r || c) && Math.abs(nx) > 0.08;
+    };
+
+    for (let i = 0; i < NODE_COUNT; i++) {
+      let x, y, attempts = 0;
+      do { x = Math.random() * w; y = Math.random() * h; attempts++; } while (!isBrain(x, y) && attempts < 50);
+      NODES.push({
+        x, y, baseR: 2 + Math.random() * 1.5, z: 0.5 + Math.random() * 0.5, // z = depth/brightness
+        phase: Math.random() * Math.PI * 2,
+        connections: [],
+        pulse: 0
+      });
+    }
+
+    // Build Connections
+    const MAX_DIST = w * 0.11;
+    NODES.forEach(n => {
+      NODES.forEach(m => {
+        if (n === m) return;
+        const dx = n.x - m.x, dy = n.y - m.y, dist = Math.hypot(dx, dy);
+        if (dist < MAX_DIST) n.connections.push(m);
+      });
+    });
+
+    // ── Pulse System ──
+    const PULSES = [];
+    class Pulse {
+      constructor(a, b) {
+        this.a = a; this.b = b;
+        this.t = 0; this.speed = 0.015 + Math.random() * 0.025;
+      }
+      update() {
+        this.t += this.speed;
+        if (this.t >= 1) return true; // finished
+        return false;
+      }
+      draw() {
+        const x = this.a.x + (this.b.x - this.a.x) * this.t;
+        const y = this.a.y + (this.b.y - this.a.y) * this.t;
+        const distToMouse = mouse.active ? Math.hypot(x - mouse.x, y - mouse.y) : 999;
+        const glow = distToMouse < 200 ? 1.8 : 1;
+        
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(x, y, 2.8 * glow, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0, 229, 255, ${0.85 * glow})`;
+        ctx.shadowColor = '#00e5ff';
+        ctx.shadowBlur = 14 * glow;
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function spawnPulse() {
+      if (PULSES.length > 350) return;
+      const from = NODES[Math.floor(Math.random() * NODES.length)];
+      if (from.connections.length > 0) {
+        const to = from.connections[Math.floor(Math.random() * from.connections.length)];
+        PULSES.push(new Pulse(from, to));
+      }
+    }
+    setInterval(spawnPulse, 80); // Keep pulses flowing
+
+    // ── Animation Loop ──
+    let time = 0;
+    function draw() {
+      time += 0.005;
+      const breathe = 1 + Math.sin(time * 1.5) * 0.018;
+      const parallax = mouse.active ? { x: (mouse.x - cx) * 0.015, y: (mouse.y - cy) * 0.015 } : { x: 0, y: 0 };
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Transform for breathing + parallax
+      ctx.save();
+      ctx.translate(cx + parallax.x, cy + parallax.y);
+      ctx.scale(breathe, breathe);
+      ctx.translate(-cx, -cy);
+
+      // Draw Connections
+      ctx.lineWidth = 1;
+      NODES.forEach(n => {
+        n.connections.forEach(m => {
+          const dist = Math.hypot(n.x - m.x, n.y - m.y) / MAX_DIST;
+          ctx.strokeStyle = `rgba(100, 140, 200, ${0.12 * (1 - dist) * n.z})`;
+          ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(m.x, m.y); ctx.stroke();
+        });
+      });
+
+      // Draw Nodes
+      NODES.forEach(n => {
+        const distToMouse = mouse.active ? Math.hypot(n.x - mouse.x, n.y - mouse.y) : 999;
+        const proximity = Math.max(0, 1 - distToMouse / 220);
+        const pulseVal = Math.sin(time * 4 + n.phase) * 0.5 + 0.5;
+        const r = n.baseR + proximity * 2 + pulseVal * 1.2;
+        const alpha = 0.3 + proximity * 0.6 + pulseVal * 0.2;
+
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(160, 200, 255, ${alpha * n.z})`;
+        if (proximity > 0.1) {
+          ctx.shadowColor = 'rgba(0, 229, 255, 0.6)';
+          ctx.shadowBlur = 8 * proximity;
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      // Update & Draw Pulses
+      for (let i = PULSES.length - 1; i >= 0; i--) {
+        if (PULSES[i].update()) {
+          // Chain to next node
+          const dest = PULSES[i].b;
+          if (dest.connections.length > 0) {
+            const next = dest.connections[Math.floor(Math.random() * dest.connections.length)];
+            PULSES[i] = new Pulse(dest, next);
+          } else {
+            PULSES.splice(i, 1);
+          }
+        } else {
+          PULSES[i].draw();
+        }
+      }
+
+      ctx.restore();
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    // ── Live UI Simulation ──
+    const logs = [
+      'Routing signal packets...', 'Synaptic density stabilizing.', 'Memory consolidation cycle.',
+      'Edge cache refreshed.', 'Neural weight adjustment complete.', 'Anomaly scan: negative.',
+      'Bandwidth throttled to nominal.', 'Cognitive buffer flushed.', 'Predictive model updated.'
+    ];
+    const term = document.getElementById('log-terminal');
+    let logCount = 0;
+
+    function updateMetrics() {
+      const load = Math.floor(45 + Math.random() * 35);
+      const dens = Math.floor(78 + Math.random() * 18);
+      const mem = Math.floor(62 + Math.random() * 28);
+      const lat = Math.floor(11 + Math.random() * 6);
+
+      document.getElementById('m-load').textContent = load + '%';
+      document.getElementById('p-load').style.width = load + '%';
+      document.getElementById('m-dens').textContent = dens + '%';
+      document.getElementById('p-dens').style.width = dens + '%';
+      document.getElementById('m-mem').textContent = mem + '%';
+      document.getElementById('p-mem').style.width = mem + '%';
+      document.getElementById('m-lat').textContent = lat + 'ms';
+
+      // Random Logs
+      if (Math.random() > 0.6) {
+        const now = new Date().toLocaleTimeString('en-US', { hour12: false });
+        const msg = logs[Math.floor(Math.random() * logs.length)];
+        const line = document.createElement('div');
+        line.className = 'log-line';
+        line.innerHTML = `<span class="log-time">[${now}]</span><span class="log-msg">${msg}</span>`;
+        term.appendChild(line);
+        term.scrollTop = term.scrollHeight;
+        if (term.children.length > 50) term.removeChild(term.firstChild);
+      }
+    }
+    setInterval(updateMetrics, 1200);
+    updateMetrics();
+  </script>
+</body>
+</html>

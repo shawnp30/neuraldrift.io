@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function SDXLBasicsGuide() {
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-50 pt-32 pb-24 font-sans selection:bg-sky-500/30">
+    <div className="min-h-screen bg-transparent text-slate-50 pt-32 pb-24 font-sans selection:bg-sky-500/30">
       
       {/* ── HEADER ── */}
       <div className="max-w-4xl mx-auto px-6 md:px-12 mb-20 text-center relative z-10">

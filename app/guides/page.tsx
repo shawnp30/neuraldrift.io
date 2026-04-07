@@ -256,7 +256,7 @@ export default function GuidesPage() {
   };
 
   return (
-    <div className="bg-[#0a0a0b] min-h-screen text-white font-sans selection:bg-[#7c6af7]/30">
+    <div className="bg-transparent min-h-screen text-white font-sans selection:bg-transparent/30">
       <Navbar />
 
       {/* SEO STRUCTURED DATA */}
