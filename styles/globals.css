@@ -11,9 +11,9 @@
   --accent-purple: #7c3aed;
   --accent-orange: #ea16f9;
   --green: #10b981;
-  --text: #e2e8f0;
-  --muted: #e3e8f1;
-  --muted2: #7a8090;
+  --text: #ffffff;
+  --muted: #f8fafc;
+  --muted2: #cbd5e1;
   --accent-cyan: #00e5ff;
   --accent-purple-tech: #a78bfa;
   --bg-deep: #080b0f;
@@ -27,6 +27,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 115%;
 }
 
 body {

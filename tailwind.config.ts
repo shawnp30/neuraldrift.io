@@ -21,9 +21,19 @@ const config: Config = {
         accent: {
           DEFAULT: "#00e5ff",
           purple: "#7c3aed",
-          
         },
         muted: "#4a5568",
+        zinc: {
+          300: "#f8fafc",
+          400: "#f1f5f9",
+          500: "#cbd5e1",
+          600: "#94a3b8",
+        },
+        slate: {
+          300: "#f8fafc",
+          400: "#f1f5f9",
+          500: "#cbd5e1",
+        },
       },
       animation: {
         "pulse-dot": "pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
