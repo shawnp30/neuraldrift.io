@@ -1,10 +1,12 @@
 import React from "react";
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Pricing | NeuralDrift",
-  description: "Simple pricing for premium workflows and tools.",
-};
+export const metadata: Metadata = pageMeta(
+  "/pricing",
+  "Pricing | NeuralDrift",
+  "Simple pricing for premium workflows and tools on NeuralDrift."
+);
 
 export default function PricingPage() {
   return (

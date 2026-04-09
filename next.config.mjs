@@ -13,11 +13,16 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      { source: '/gpu-guide', destination: '/hardware', permanent: true },
-      { source: '/tools/vram-calculator', destination: '/hardware', permanent: true },
-      { source: '/tools/benchmark-lookup', destination: '/hardware', permanent: true },
-      { source: '/optimizer', destination: '/hardware', permanent: true },
-    ]
+      // Legacy paths → canonical URLs (single hop, avoid chains)
+      { source: "/proof", destination: "/proofs", permanent: true },
+      { source: "/proof/upload", destination: "/proofs/upload", permanent: true },
+      { source: "/loras", destination: "/lora-training", permanent: true },
+      {
+        source: "/tools/prompt-generator",
+        destination: "/prompt-generator",
+        permanent: true,
+      },
+    ];
   },
 };
 export default nextConfig;

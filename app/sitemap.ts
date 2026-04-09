@@ -1,53 +1,75 @@
-import type { MetadataRoute } from 'next'
-import { readdirSync, existsSync } from 'fs'
-import { join } from 'path'
-import { WORKFLOWS } from '@/lib/workflowsData'
+import type { MetadataRoute } from "next";
+import { readdirSync, existsSync } from "fs";
+import { join } from "path";
+import { WORKFLOWS } from "@/lib/workflowsData";
 
-export const dynamic = 'force-dynamic';
+const base = "https://neuraldrift.io";
+
+function entry(
+  path: string,
+  priority: number,
+  changeFrequency: MetadataRoute.Sitemap[0]["changeFrequency"] = "weekly"
+): MetadataRoute.Sitemap[0] {
+  const url =
+    path === "/" ? `${base}/` : `${base}${path.startsWith("/") ? path : `/${path}`}`;
+  return {
+    url,
+    lastModified: new Date(),
+    changeFrequency,
+    priority,
+  };
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = 'https://neuraldrift.io'
-  
-  // Dynamic Guide Slugs
-  const guidesDir = join(process.cwd(), 'content/guides')
-  let guideUrls: MetadataRoute.Sitemap = []
-  
+  const guidesDir = join(process.cwd(), "content/guides");
+  let guideUrls: MetadataRoute.Sitemap = [];
+
   if (existsSync(guidesDir)) {
-    const files = readdirSync(guidesDir)
+    const files = readdirSync(guidesDir);
     guideUrls = files
-      .filter(f => f.endsWith('.mdx'))
-      .map(f => ({
-        url: `${base}/guides/${f.replace('.mdx', '')}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.8
-      }))
+      .filter((f) => f.endsWith(".mdx"))
+      .map((f) =>
+        entry(`/guides/${f.replace(".mdx", "")}`, 0.8, "weekly")
+      );
   }
 
-  // Dynamic Workflow Slugs
-  const workflowUrls: MetadataRoute.Sitemap = WORKFLOWS.map(w => ({
-    url: `${base}/workflows/${w.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.9
-  }))
+  const workflowUrls: MetadataRoute.Sitemap = WORKFLOWS.map((w) =>
+    entry(`/workflows/${w.id}`, 0.9, "weekly")
+  );
 
+  // Only list URLs that return 200 at that path (no redirect-only sources).
   const staticPages: MetadataRoute.Sitemap = [
-    { url: base, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 },
-    { url: `${base}/workflows`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/guides`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/tutorials`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${base}/tutorials/monetizing-comfyui`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/tutorials/stable-diffusion-basics`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/hardware`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/lora-training`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${base}/datasets`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${base}/prompt-generator`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${base}/models`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/gpu-guide`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/tools`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${base}/cloud-generators`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-  ]
+    entry("/", 1, "weekly"),
+    entry("/workflows", 0.9, "weekly"),
+    entry("/workflows/create", 0.85, "weekly"),
+    entry("/guides", 0.9, "weekly"),
+    entry("/guides/best-workflows-8gb", 0.75, "monthly"),
+    entry("/gpu-guide", 0.85, "weekly"),
+    entry("/gpu-guide/runpod", 0.7, "monthly"),
+    entry("/tools", 0.75, "monthly"),
+    entry("/tools/vram-calculator", 0.8, "monthly"),
+    entry("/tools/benchmark-lookup", 0.75, "monthly"),
+    entry("/tools/caption-generator", 0.75, "monthly"),
+    entry("/prompt-generator", 0.8, "weekly"),
+    entry("/hardware", 0.9, "weekly"),
+    entry("/optimizer", 0.8, "weekly"),
+    entry("/optimizer/fix-my-pc", 0.65, "monthly"),
+    entry("/optimizer/result", 0.5, "monthly"),
+    entry("/dashboard", 0.5, "monthly"),
+    entry("/datasets", 0.75, "weekly"),
+    entry("/lora-training", 0.75, "weekly"),
+    entry("/proofs", 0.65, "weekly"),
+    entry("/proofs/upload", 0.55, "monthly"),
+    entry("/models", 0.75, "monthly"),
+    entry("/cloud-generators", 0.7, "monthly"),
+    entry("/tutorials", 0.8, "weekly"),
+    entry("/tutorials/monetizing-comfyui", 0.7, "monthly"),
+    entry("/tutorials/stable-diffusion-basics", 0.7, "monthly"),
+    entry("/about", 0.5, "yearly"),
+    entry("/changelog", 0.5, "weekly"),
+    entry("/pricing", 0.5, "monthly"),
+    entry("/glossary", 0.55, "monthly"),
+  ];
 
-  return [...staticPages, ...guideUrls, ...workflowUrls]
+  return [...staticPages, ...guideUrls, ...workflowUrls];
 }

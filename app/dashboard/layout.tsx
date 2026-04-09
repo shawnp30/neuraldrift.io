@@ -1,5 +1,13 @@
+import type { Metadata } from "next";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Topbar } from "@/components/dashboard/Topbar";
+import { pageMeta } from "@/lib/seo";
+
+export const metadata: Metadata = pageMeta(
+  "/dashboard",
+  "Dashboard — NeuralDrift",
+  "Monitor jobs, models, and activity for your NeuralDrift workspace."
+);
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (

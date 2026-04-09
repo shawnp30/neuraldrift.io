@@ -130,7 +130,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
   const filePath = join(process.cwd(), "content/guides", `${slug}.mdx`);
   
-  if (!existsSync(filePath)) return { title: "Guide Not Found" };
+  if (!existsSync(filePath)) {
+    return {
+      title: "Guide Not Found | NeuralDrift",
+      robots: { index: false, follow: true },
+      alternates: {
+        canonical: `https://neuraldrift.io/guides/${slug}`,
+      },
+    };
+  }
 
   const raw = readFileSync(filePath, "utf-8");
   const { frontmatter } = await compileMDX<Frontmatter>({
@@ -138,14 +146,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     options: { parseFrontmatter: true },
   });
 
+  const canonical = `https://neuraldrift.io/guides/${slug}`;
+
   return {
     title: frontmatter.title,
     description: frontmatter.description,
+    alternates: {
+      canonical,
+    },
     openGraph: {
       title: frontmatter.title,
       description: frontmatter.description,
       type: "article",
-      url: `https://neuraldrift.io/guides/${slug}`,
+      url: canonical,
       images: [
         {
           url: "/og-image.png",

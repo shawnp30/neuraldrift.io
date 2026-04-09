@@ -34,13 +34,13 @@ export const metadata: Metadata = {
   description:
     "High-performance ComfyUI workflows, technical AI guides, and hardware optimization tools for local image and video generation. Built for builders.",
   alternates: {
-    canonical: "/",
+    canonical: "https://neuraldrift.io/",
   },
   openGraph: {
     title: "NeuralDrift — Master Local AI Creation",
     description:
       "ComfyUI workflows, guides, and tools for high-fidelity AI generation.",
-    url: "https://neuraldrift.io",
+    url: "https://neuraldrift.io/",
     siteName: "NeuralDrift",
     images: [
       {

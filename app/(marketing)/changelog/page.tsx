@@ -1,10 +1,12 @@
 import React from "react";
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Changelog | NeuralDrift",
-  description: "Recent updates and new workflows added to NeuralDrift.",
-};
+export const metadata: Metadata = pageMeta(
+  "/changelog",
+  "Changelog | NeuralDrift",
+  "Recent updates and new workflows added to NeuralDrift."
+);
 
 export default function ChangelogPage() {
   return (

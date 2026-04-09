@@ -4,8 +4,6 @@ import { GPUMonitor } from "@/components/dashboard/GPUMonitor";
 import { ModelList } from "@/components/dashboard/ModelList";
 import { ActivityLog } from "@/components/dashboard/ActivityLog";
 
-export const metadata = { title: "Dashboard" };
-
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-6">

@@ -1,10 +1,11 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "AI Architect | Master Prompt Studio | NeuralDrift",
-  description: "Professional-grade prompt engineering for Image, Video, Music, and Lyrics. Optimized for local ComfyUI workflows and high-fidelity generative media.",
-  keywords: ["AI Prompt Generator", "ComfyUI Prompts", "Stable Diffusion Prompts", "Video Generation Prompts", "Music AI Prompts", "Prompt Engineering"],
-};
+export const metadata: Metadata = pageMeta(
+  "/prompt-generator",
+  "AI Prompt Studio — Image, Video & Audio Prompts | NeuralDrift",
+  "Professional-grade prompt engineering for image, video, music, and lyrics. Optimized for ComfyUI and local generation."
+);
 
 export default function PromptGeneratorLayout({
   children,

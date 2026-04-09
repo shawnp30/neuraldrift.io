@@ -1,7 +1,15 @@
 import React from "react";
+import type { Metadata } from "next";
 import { readdirSync, readFileSync } from "fs";
 import { join } from "path";
 import matter from "gray-matter";
+import { pageMeta } from "@/lib/seo";
+
+export const metadata: Metadata = pageMeta(
+  "/",
+  "NeuralDrift — ComfyUI Workflows, Guides, and Tools",
+  "High-performance ComfyUI workflows, technical AI guides, and hardware optimization tools for local image and video generation."
+);
 
 // High-Fidelity Components
 import { HomeHero } from "@/components/home/HomeHero";

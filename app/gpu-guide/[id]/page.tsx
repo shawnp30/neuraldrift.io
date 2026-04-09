@@ -300,7 +300,9 @@ export default function GPUDetailPage({ params }: GPUDetailProps) {
             Visit {detail.name} to set up your GPU instance and start generating
           </p>
           <a 
-            href="#" 
+            href="https://www.runpod.io" 
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-black font-semibold rounded-lg transition-colors"
           >
             <span>Visit {detail.name}</span>

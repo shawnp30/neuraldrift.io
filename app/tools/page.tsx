@@ -1,8 +1,6 @@
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 
-export const metadata = { title: "Tools" };
-
 const TOOLS = [
   { href: "/tools/vram-calculator", icon: "🖥️", title: "VRAM Calculator", desc: "Estimate VRAM needs for any model + batch size combo." },
   { href: "/tools/caption-generator", icon: "💬", title: "Caption Generator", desc: "Auto-caption datasets using WD14, BLIP2, or LLaVA." },

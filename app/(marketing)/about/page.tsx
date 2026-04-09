@@ -1,10 +1,12 @@
 import React from "react";
 import type { Metadata } from "next";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "About NeuralDrift",
-  description: "Learn more about the mission behind NeuralDrift.",
-};
+export const metadata: Metadata = pageMeta(
+  "/about",
+  "About NeuralDrift",
+  "Learn more about the mission behind NeuralDrift — ComfyUI workflows, guides, and tools for local AI."
+);
 
 export default function AboutPage() {
   return (
