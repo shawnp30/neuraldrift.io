@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Navbar from "@/components/layout/Navbar";
 import { 
   GPUS, 
   BENCHMARKS, 
@@ -50,36 +49,38 @@ export default function HardwareHubPage() {
   }, [score]);
 
   return (
-    <div className="min-h-screen bg-transparent text-[#e8e8f0] pb-24 selection:bg-transparent/30">
-      <Navbar />
-      
-      {/* HERO SECTION */}
-      <section className="relative pt-40 pb-20 overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-gradient-to-b from-[#7c6af7]/10 via-transparent to-transparent pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-10 relative z-10">
+    <div className="min-h-screen bg-transparent text-[#e8e8f0] pb-24 selection:bg-[#7c6af7]/30">
+      {/* HERO — aligned with /workflows hub */}
+      <section className="relative pt-28 pb-16 overflow-hidden md:pt-32 md:pb-20">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[520px] bg-gradient-to-b from-[#7c6af7]/12 via-transparent to-transparent pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
           <div className="flex flex-col items-center text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 mb-6 group cursor-default">
+            <p className="font-mono text-xs text-[#7c6af7] tracking-[0.35em] uppercase mb-4">
+              // Hardware hub
+            </p>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111113] border border-[#2a2a30] mb-6">
               <span className="w-2 h-2 rounded-full bg-[#7c6af7] animate-pulse" />
-              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-400 group-hover:text-white transition-colors">
-                Neuro-Hardware Capability Hub
+              <span className="text-[10px] font-mono uppercase tracking-[0.28em] text-[#a8b0c4]">
+                Neuro-Hardware capability
               </span>
             </div>
-            <h1 className="font-syne text-7xl font-black tracking-tight text-white mb-6 leading-[0.9]">
-              CAN YOU <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7c6af7] to-[#22d3ee]">RUN IT?</span>
+            <h1 className="font-mono text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter text-white mb-6 leading-[0.95] uppercase">
+              CAN YOU{" "}
+              <span className="text-[#7c6af7]">RUN IT?</span>
             </h1>
-            <p className="max-w-xl text-[#8888a0] text-lg leading-relaxed mb-10">
-              The definitive diagnostic for ComfyUI hardware. Score your machine, calculate VRAM resolution ceilings, and discover your strategic upgrade path.
+            <p className="max-w-2xl text-[#a8b0c4] text-base md:text-lg leading-relaxed mb-4 font-mono">
+              The definitive diagnostic for ComfyUI hardware. Score your GPU, see model fit at a glance, and plan upgrades without guesswork.
             </p>
           </div>
         </div>
       </section>
 
       {/* DIAGNOSTIC CENTER */}
-      <section className="max-w-7xl mx-auto px-10 grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
+      <section className="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-8">
         
         {/* LEFT: CALCULATOR */}
         <div className="space-y-6">
-          <div className="bg-[#111113] border border-white/5 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+          <div className="bg-[#111113] border border-[#2a2a30] rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none">
               <Zap className="w-32 h-32 text-[#7c6af7]" />
             </div>
@@ -92,11 +93,11 @@ export default function HardwareHubPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
               {/* GPU SELECT */}
               <div className="space-y-3">
-                <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-500">Current / Target GPU</label>
+                <label className="block font-mono text-[10px] uppercase tracking-widest text-[#8888a0]">Current / Target GPU</label>
                 <select 
                   value={selectedGpu}
                   onChange={(e) => setSelectedGpu(e.target.value)}
-                  className="w-full bg-[#0a0a0b] border border-white/10 rounded-xl px-4 py-3.5 text-white font-mono text-sm focus:border-[#7c6af7] transition-all outline-none"
+                  className="w-full bg-[#0a0a0b] border border-[#2a2a30] rounded-xl px-4 py-3.5 text-white font-mono text-sm focus:border-[#7c6af7] transition-all outline-none"
                 >
                   {Object.keys(GPUS).map(g => <option key={g} value={g}>{g}</option>)}
                 </select>
@@ -104,14 +105,14 @@ export default function HardwareHubPage() {
 
               {/* BUDGET SELECT */}
               <div className="space-y-3">
-                <label className="block font-mono text-[10px] uppercase tracking-widest text-zinc-500">Upgrade Budget</label>
-                <div className="flex bg-[#0a0a0b] border border-white/10 rounded-xl p-1">
+                <label className="block font-mono text-[10px] uppercase tracking-widest text-[#8888a0]">Upgrade Budget</label>
+                <div className="flex bg-[#0a0a0b] border border-[#2a2a30] rounded-xl p-1">
                   {(["$500", "$1500", "$3000"] as const).map(b => (
                     <button
                       key={b}
                       onClick={() => setBudget(b)}
                       className={`flex-1 py-2 rounded-lg font-mono text-xs transition-all ${
-                        budget === b ? "bg-[#7c6af7] text-white" : "text-zinc-500 hover:text-white"
+                        budget === b ? "bg-[#7c6af7] text-white" : "text-[#8888a0] hover:text-white"
                       }`}
                     >
                       {b}
@@ -124,28 +125,28 @@ export default function HardwareHubPage() {
               <div 
                 onClick={() => setIsLaptop(!isLaptop)}
                 className={`col-span-1 md:col-span-2 flex items-center justify-between p-4 rounded-xl border border-dashed transition-all cursor-pointer ${
-                  isLaptop ? "border-[#7c6af7] bg-[#7c6af7]/5" : "border-white/10 bg-white/2 hover:border-white/20"
+                  isLaptop ? "border-[#7c6af7] bg-[#7c6af7]/5" : "border-[#2a2a30] bg-[#0a0a0b]/80 hover:border-[#7c6af7]/40"
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <div className={`p-2 rounded-lg ${isLaptop ? "bg-[#7c6af7]/20 text-[#7c6af7]" : "bg-white/5 text-zinc-500"}`}>
+                  <div className={`p-2 rounded-lg ${isLaptop ? "bg-[#7c6af7]/20 text-[#7c6af7]" : "bg-[#111113] text-[#8888a0] border border-[#2a2a30]"}`}>
                     <Laptop className="w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="text-sm font-bold text-white">Running on Laptop?</h4>
-                    <p className="text-[10px] text-zinc-500 uppercase tracking-widest">Calculates mobile TDP and thermal scaling penalties</p>
+                    <p className="text-[10px] text-[#8888a0] uppercase tracking-widest">Mobile TDP and thermal scaling</p>
                   </div>
                 </div>
-                <div className={`w-10 h-5 rounded-full relative transition-all ${isLaptop ? "bg-[#7c6af7]" : "bg-white/10"}`}>
+                <div className={`w-10 h-5 rounded-full relative transition-all ${isLaptop ? "bg-[#7c6af7]" : "bg-[#2a2a30]"}`}>
                   <div className={`absolute top-1 w-3 h-3 rounded-full bg-white transition-all ${isLaptop ? "left-6" : "left-1"}`} />
                 </div>
               </div>
             </div>
 
             {/* MONETIZATION RESULTS */}
-            <div className="p-6 rounded-2xl bg-gradient-to-br from-white/3 to-transparent border border-white/5">
+            <div className="p-6 rounded-2xl bg-gradient-to-br from-[#7c6af7]/5 to-transparent border border-[#2a2a30]">
               <div className="flex items-start gap-6">
-                <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-16 h-16 rounded-2xl bg-[#111113] border border-[#2a2a30] flex items-center justify-center flex-shrink-0">
                   <Rocket className="w-8 h-8 text-[#f59e0b]" />
                 </div>
                 <div className="flex-1">
@@ -155,7 +156,7 @@ export default function HardwareHubPage() {
                       ? (gpuData.vram < 12 ? "Laptop Path: Hybrid Cloud" : "Laptop Path: Local Power") 
                       : budgetData.label}
                   </h4>
-                  <p className="text-sm text-[#8888a0] leading-relaxed mb-4">
+                  <p className="text-sm text-[#a8b0c4] leading-relaxed mb-4">
                     {budget === "$500" 
                       ? "At this price, local hardware is a 'Dead-End' for Flux and Video. We recommend offloading 100% of your inference to Cloud Pods for a professional experience."
                       : (isLaptop && gpuData.vram < 12)
@@ -181,7 +182,7 @@ export default function HardwareHubPage() {
               const isComp = gpuData.vram >= m.vramNeeded;
               const isTight = gpuData.vram >= m.vramNeeded * 0.8 && gpuData.vram < m.vramNeeded;
               return (
-                <div key={m.id} className="bg-[#111113] border border-white/5 rounded-2xl p-5 group hover:border-[#7c6af7]/20 transition-all">
+                <div key={m.id} className="bg-[#111113] border border-[#2a2a30] rounded-2xl p-5 group hover:border-[#7c6af7]/30 transition-all">
                   <div className="flex items-center justify-between mb-4">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-mono uppercase ${
                       m.type === "image" ? "bg-amber-500/10 text-amber-500" :
@@ -199,9 +200,9 @@ export default function HardwareHubPage() {
                     )}
                   </div>
                   <h4 className="font-syne font-bold text-white mb-1">{m.name}</h4>
-                  <p className="text-[10px] text-zinc-500 uppercase tracking-widest">{m.vramNeeded}GB VRAM REQ</p>
-                  <div className="mt-3 pt-3 border-t border-white/5 flex items-center justify-between">
-                    <span className="text-[10px] text-zinc-500">{isComp ? "Ready Local" : isTight ? "Use --low-vram" : "Requires Cloud"}</span>
+                  <p className="text-[10px] text-[#8888a0] uppercase tracking-widest">{m.vramNeeded}GB VRAM REQ</p>
+                  <div className="mt-3 pt-3 border-t border-[#2a2a30] flex items-center justify-between">
+                    <span className="text-[10px] text-[#a8b0c4]">{isComp ? "Ready Local" : isTight ? "Use --low-vram" : "Requires Cloud"}</span>
                     {!isComp && (
                       <Link href={CLOUD_PROVIDERS[0].url} className="text-[10px] text-[#7c6af7] font-bold hover:underline">RENT POD →</Link>
                     )}
@@ -215,14 +216,14 @@ export default function HardwareHubPage() {
         {/* RIGHT: TIER LIST & SCORE */}
         <div className="space-y-6">
           {/* GRADE DISPLAY */}
-          <div className={`bg-[#111113] border border-white/5 rounded-3xl p-8 text-center relative overflow-hidden transition-all ${grade.glow}`}>
+          <div className={`bg-[#111113] border border-[#2a2a30] rounded-3xl p-8 text-center relative overflow-hidden transition-all ${grade.glow}`}>
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#7c6af7] to-transparent opacity-50" />
-            <span className="font-mono text-[10px] uppercase text-zinc-500 tracking-[0.3em] mb-4 block">Inference Potential</span>
+            <span className="font-mono text-[10px] uppercase text-[#8888a0] tracking-[0.3em] mb-4 block">Inference Potential</span>
             <div className={`font-syne text-8xl font-black mb-2 ${grade.color}`}>
               {grade.label}
             </div>
             <div className="flex items-center justify-center gap-2 mb-6">
-              <div className="w-32 h-1.5 bg-white/5 rounded-full overflow-hidden">
+              <div className="w-32 h-1.5 bg-[#2a2a30] rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-gradient-to-r from-[#7c6af7] to-[#22d3ee] transition-all duration-1000"
                   style={{ width: `${score}%` }}
@@ -230,7 +231,7 @@ export default function HardwareHubPage() {
               </div>
               <span className="font-mono text-xs text-white">{score}/100</span>
             </div>
-            <p className="text-xs text-[#8888a0] leading-relaxed italic">
+            <p className="text-xs text-[#a8b0c4] leading-relaxed italic">
               &quot;Based on core VRAM throughput and thermal architectural efficiency.&quot;
             </p>
           </div>
@@ -241,7 +242,7 @@ export default function HardwareHubPage() {
               <Monitor className="w-4 h-4" />
               Build with ComputeAtlas
             </h4>
-            <p className="text-xs text-zinc-400 leading-relaxed mb-4">
+            <p className="text-xs text-[#a8b0c4] leading-relaxed mb-4">
               Don&apos;t guess on your next AI rig. Get a precision-engineered workstation guaranteed to run Flux at peak-fidelity.
             </p>
             <a 
@@ -255,21 +256,21 @@ export default function HardwareHubPage() {
 
           {/* CLOUD PARTNERS */}
           <div className="space-y-3">
-            <p className="font-mono text-[10px] uppercase text-zinc-500 tracking-widest px-2">Cloud Power Backup</p>
+            <p className="font-mono text-[10px] uppercase text-[#8888a0] tracking-widest px-2">Cloud Power Backup</p>
             {CLOUD_PROVIDERS.map(p => (
               <a 
                 key={p.id}
                 href={p.url}
                 target="_blank"
-                className="block bg-white/2 border border-white/5 rounded-2xl p-4 hover:border-[#7c6af7]/20 transition-all group"
+                className="block bg-[#111113] border border-[#2a2a30] rounded-2xl p-4 hover:border-[#7c6af7]/30 transition-all group"
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xl">{p.icon}</span>
                   <span className="text-[10px] font-mono text-[#7c6af7] uppercase tracking-widest">{p.tag}</span>
                 </div>
                 <h4 className="font-syne font-bold text-white text-sm">{p.name}</h4>
-                <p className="text-[10px] text-zinc-500 mb-3">{p.pricing}</p>
-                <span className="text-[10px] font-bold text-zinc-400 group-hover:text-white transition-colors">LAUNCH PORTAL →</span>
+                <p className="text-[10px] text-[#8888a0] mb-3">{p.pricing}</p>
+                <span className="text-[10px] font-bold text-[#a8b0c4] group-hover:text-white transition-colors">LAUNCH PORTAL →</span>
               </a>
             ))}
           </div>
@@ -277,16 +278,17 @@ export default function HardwareHubPage() {
       </section>
 
       {/* BENCHMARK DATA SECTION */}
-      <section className="max-w-7xl mx-auto px-10 mt-20">
+      <section className="max-w-7xl mx-auto px-6 md:px-10 mt-20">
         <div className="mb-10">
+          <p className="font-mono text-xs text-[#7c6af7] tracking-[0.25em] uppercase mb-2">// Benchmarks</p>
           <h2 className="font-syne text-3xl font-black text-white mb-2">Real-World <span className="text-[#7c6af7]">Benchmarks</span></h2>
-          <p className="text-[#8888a0] text-sm font-mono tracking-widest uppercase">Verified Inference Speeds (img/m)</p>
+          <p className="text-[#a8b0c4] text-sm font-mono tracking-widest uppercase">Verified inference speeds (img/m)</p>
         </div>
         
-        <div className="overflow-hidden rounded-3xl border border-white/5 bg-[#111113]">
-          <table className="w-full text-left font-mono text-[11px]">
+        <div className="overflow-hidden rounded-3xl border border-[#2a2a30] bg-[#111113]">
+          <table className="w-full text-left font-mono text-xs md:text-sm">
             <thead>
-              <tr className="bg-white/2 text-zinc-500 border-b border-white/5">
+              <tr className="bg-[#0a0a0b] text-[#8888a0] border-b border-[#2a2a30]">
                 <th className="px-6 py-4 font-bold uppercase tracking-widest">GPU</th>
                 <th className="px-6 py-4 font-bold uppercase tracking-widest">Model</th>
                 <th className="px-6 py-4 font-bold uppercase tracking-widest">Res</th>
@@ -294,14 +296,14 @@ export default function HardwareHubPage() {
                 <th className="px-6 py-4 font-bold uppercase tracking-widest">Precision</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-[#2a2a30]">
               {BENCHMARKS.map((b, i) => (
-                <tr key={i} className="hover:bg-white/2 transition-colors">
+                <tr key={i} className="hover:bg-[#0a0a0b]/80 transition-colors">
                   <td className="px-6 py-4 text-white font-bold">{b.gpu}</td>
-                  <td className="px-6 py-4 text-zinc-400">{b.model}</td>
-                  <td className="px-6 py-4 text-zinc-400">{b.resolution}</td>
+                  <td className="px-6 py-4 text-[#a8b0c4]">{b.model}</td>
+                  <td className="px-6 py-4 text-[#a8b0c4]">{b.resolution}</td>
                   <td className="px-6 py-4 text-[#10b981] font-bold">{b.imagesPerMinute || b.framesPerSecond} {b.imagesPerMinute ? "img/m" : "fps"}</td>
-                  <td className="px-6 py-4 text-zinc-500">{b.precision}</td>
+                  <td className="px-6 py-4 text-[#8888a0]">{b.precision}</td>
                 </tr>
               ))}
             </tbody>

@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  ExternalLink,
   Video,
   Download,
   Maximize2,
@@ -14,6 +13,7 @@ import {
   Clock,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { PROOF_SHOWCASE_FALLBACK } from "@/lib/data/proofShowcaseFallback";
 
 const CATEGORIES = [
   "All",
@@ -91,6 +91,7 @@ interface ProofItem {
   type: string;
   uploadedAt: string;
   pathname: string;
+  isDemo?: boolean;
 }
 
 export default function ProofGalleryPage() {
@@ -113,12 +114,17 @@ export default function ProofGalleryPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const sourceItems =
+    items.length > 0 ? items : PROOF_SHOWCASE_FALLBACK;
+
   const filtered =
     activeCategory === "All"
-      ? items
-      : items.filter(
+      ? sourceItems
+      : sourceItems.filter(
           (i) => WORKFLOW_CATEGORIES[i.workflowId] === activeCategory
         );
+
+  const showingDemoFallback = items.length === 0 && !loading;
 
   const handleDownload = async (workflowId: string, workflowName: string) => {
     const response = await fetch(`/workflows/${workflowId}.json`);
@@ -237,10 +243,10 @@ export default function ProofGalleryPage() {
           <div className="flex flex-wrap items-center gap-4">
             <div className="flex flex-col rounded-[2rem] border border-white/5 bg-white/[0.02] px-8 py-6 backdrop-blur-md">
               <span className="mb-1 text-4xl font-black leading-none text-white">
-                {items.length}
+                {showingDemoFallback ? PROOF_SHOWCASE_FALLBACK.length : items.length}
               </span>
               <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">
-                Active Proofs
+                {showingDemoFallback ? "Demo tiles" : "Active proofs"}
               </span>
             </div>
             <Link
@@ -254,6 +260,50 @@ export default function ProofGalleryPage() {
         </div>
 
         {/* ── CATEGORY BAR ── */}
+        {showingDemoFallback && (
+          <div className="mt-8 rounded-2xl border border-amber-500/25 bg-amber-500/10 px-6 py-4 text-sm text-amber-100/90">
+            {error ? (
+              <span>
+                Live gallery unavailable ({error}). Showing{" "}
+                <strong>three demo thumbnails</strong> from the NeuralDrift workflow
+                catalog (
+                <code className="rounded bg-black/30 px-1.5 py-0.5 text-xs">
+                  /workflow-thumbs/01–03.png
+                </code>
+                ) — same workflows as{" "}
+                <code className="rounded bg-black/30 px-1.5 py-0.5 text-xs">
+                  01-flux-dev-t2i.json
+                </code>
+                ,{" "}
+                <code className="rounded bg-black/30 px-1.5 py-0.5 text-xs">
+                  02-flux-schnell-fast.json
+                </code>
+                ,{" "}
+                <code className="rounded bg-black/30 px-1.5 py-0.5 text-xs">
+                  03-sdxl-standard.json
+                </code>{" "}
+                under <code className="rounded bg-black/30 px-1.5 py-0.5 text-xs">public/workflows/</code>.
+              </span>
+            ) : (
+              <span>
+                No uploads yet — showing <strong>three demo tiles</strong> from{" "}
+                <code className="rounded bg-black/30 px-1.5 py-0.5 text-xs">
+                  /workflow-thumbs/01.png
+                </code>
+                ,{" "}
+                <code className="rounded bg-black/30 px-1.5 py-0.5 text-xs">
+                  02.png
+                </code>
+                ,{" "}
+                <code className="rounded bg-black/30 px-1.5 py-0.5 text-xs">
+                  03.png
+                </code>{" "}
+                (paired with workflow JSON slugs above). Upload real proofs anytime.
+              </span>
+            )}
+          </div>
+        )}
+
         <div className="mt-16 flex flex-wrap items-center gap-3">
           {CATEGORIES.map((cat) => (
             <button
@@ -269,8 +319,8 @@ export default function ProofGalleryPage() {
               <span className="ml-2 font-mono opacity-30">
                 /
                 {cat === "All"
-                  ? items.length
-                  : items.filter(
+                  ? sourceItems.length
+                  : sourceItems.filter(
                       (i) => WORKFLOW_CATEGORIES[i.workflowId] === cat
                     ).length}
               </span>
@@ -292,28 +342,7 @@ export default function ProofGalleryPage() {
           </div>
         )}
 
-        {!loading && error && (
-          <div className="mx-auto max-w-4xl rounded-[3rem] border border-rose-500/10 bg-rose-500/5 p-16 text-center shadow-2xl md:p-24">
-            <h3 className="mb-6 font-syne text-3xl font-black tracking-tight text-rose-400">
-              System Configuration Error
-            </h3>
-            <p className="mx-auto mb-12 max-w-2xl text-lg font-medium leading-relaxed text-zinc-400">
-              The Engine Room requires a valid{" "}
-              <code className="rounded bg-rose-500/10 px-2 py-0.5 text-rose-300">
-                BLOB_READ_WRITE_TOKEN
-              </code>{" "}
-              to access the global proof database.
-            </p>
-            <Link
-              href="/proofs/upload"
-              className="inline-flex items-center gap-2 rounded-2xl bg-white px-10 py-5 text-xs font-black uppercase tracking-widest text-black transition-colors hover:bg-rose-400"
-            >
-              Configure Protocol <ExternalLink className="h-4 w-4" />
-            </Link>
-          </div>
-        )}
-
-        {!loading && !error && filtered.length === 0 && (
+        {!loading && filtered.length === 0 && sourceItems.length > 0 && (
           <div className="mx-auto max-w-5xl rounded-[4rem] border border-white/5 bg-white/[0.02] px-12 py-40 text-center">
             <div className="mx-auto mb-10 flex h-24 w-24 items-center justify-center rounded-full border border-white/10 bg-white/5">
               <Clock className="h-10 w-10 text-zinc-600" />
@@ -334,7 +363,7 @@ export default function ProofGalleryPage() {
           </div>
         )}
 
-        {!loading && !error && filtered.length > 0 && (
+        {!loading && filtered.length > 0 && (
           <div className="columns-1 gap-8 space-y-8 md:columns-2 lg:columns-3 xl:columns-4">
             <AnimatePresence mode="popLayout">
               {filtered.map((item, i) => {
@@ -394,6 +423,10 @@ export default function ProofGalleryPage() {
                           <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-black/80 px-4 py-2 text-[8px] font-black tracking-[0.2em] text-white shadow-2xl backdrop-blur-xl">
                             <Video className="h-3 w-3 text-sky-400" /> VIDEO
                             PROOF
+                          </div>
+                        ) : item.isDemo ? (
+                          <div className="flex items-center gap-2 rounded-xl border border-amber-500/30 bg-black/80 px-4 py-2 text-[8px] font-black tracking-[0.2em] text-amber-200 shadow-2xl backdrop-blur-xl">
+                            DEMO
                           </div>
                         ) : (
                           <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-black/80 px-4 py-2 text-[8px] font-black tracking-[0.2em] text-white shadow-2xl backdrop-blur-xl">
