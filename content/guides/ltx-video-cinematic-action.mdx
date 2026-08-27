@@ -1,167 +1,76 @@
 ---
-title: "LTX Video 2.3: Cinematic Action Sequences"
-description: "Build chase and action scenes with consistent motion and camera lock in LTX Video 2.3."
+title: "LTX Video: Cinematic Action Sequences"
+description: "Build chase and action scenes with consistent motion and camera lock using Lightricks' LTX-Video in ComfyUI."
 difficulty: "Advanced"
-readTime: "35 min"
+readTime: "18 min"
 tag: "Video Gen"
-publishedAt: "2025-03-01"
+publishedAt: "2026-08-26"
 ---
 
 <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop" alt="Cinema" style={{ width: '100%', borderRadius: '12px', marginBottom: '2rem' }} />
 
-# LTX Video 2.3: Cinematic Action Sequences
+# LTX Video: Cinematic Action Sequences
 
-LTX Video 2.3 is the gold standard for high-motion consistency in AI video. This guide covers how to lock camera movement and maintain character consistency across high-speed action shots.
+This guide covers the workflows in our [LTX Video library](/workflows?category=video) — how to lock camera motion, keep a character consistent across cuts, and build a multi-clip action sequence instead of one isolated generation.
 
-## Hardware Requirements
+> ℹ️ **Which LTX model is this?** These workflows run on Lightricks' original **2B checkpoint (v0.9.5)** — the lightweight release that runs on 12–16GB cards. Lightricks shipped **LTX-2.5** (22B, native multishot, up to 4K HDR) in August 2026 as their new flagship. If you're on a 24GB+ card and want the best possible quality, start there instead — these lighter workflows are for everyone else, and for fast iteration even if you do have the VRAM to spare.
 
-| GPU | VRAM | Recommended Use |
-|-----|------|----------------|
-| RTX 5080 | 16GB | Full quality, all models |
-| RTX 4090 | 24GB | Full quality, batch generation |
-| RTX 3080 16GB | 16GB | Full quality, slower |
-| RTX 3080 10GB | 10GB | Reduced resolution |
-| RTX 3060 | 12GB | Standard models only |
+Already have ComfyUI running? Skip to [Step 1](#step-1--the-motion-scale-parameter). If not, follow [ComfyUI Complete Setup](/guides/comfyui-complete-setup) first — this guide assumes ComfyUI, ComfyUI-LTXVideo, and ComfyUI-VideoHelperSuite are already installed.
 
-Minimum: **6GB VRAM** for SD1.5. FLUX requires at least **12GB**.
+## Step 1 — The motion_scale parameter
 
-## Step 1 — Install Prerequisites
+Every LTX Video workflow in our library exposes a `motion_scale` value on the `LTXVSampler` node. This is the single biggest lever for how "cinematic" a clip feels:
 
-### Python 3.10.x (required)
-Download from python.org — use exactly **3.10.x**, not 3.11 or 3.12.
+| motion_scale | Feel | Use it for |
+|---|---|---|
+| 0.8 | Stable, minimal drift | [Fast Draft](/workflows/14) — validating a prompt before a full render |
+| 1.0 | Neutral, default | General text-to-video, product shots |
+| 1.2 | Cinematic momentum | [Cinematic 9:16](/workflows/12) — Shorts/TikTok pacing |
+| 1.4 | Aggressive, kinetic | [Action Chase](/workflows/13) — chase and combat scenes |
 
-```bash
-# Verify after install
-python --version
-# Should show: Python 3.10.x
-```
+Push past 1.4 and you'll start seeing warping artifacts on fast-moving edges — that's the ceiling for the 2B checkpoint. If you need more headroom before artifacts kick in, that's one of the areas LTX-2.5 improves on.
 
-### Git
-```bash
-git --version
-# Should show: git version 2.x.x
-```
+## Step 2 — Camera lock across a sequence
 
-### CUDA Toolkit
-Download CUDA 12.1 from nvidia.com/cuda-downloads. Match your driver version.
+"Camera lock" here doesn't mean a literal camera node — LTX Video doesn't expose camera extrinsics directly. It means keeping the *scene* consistent from clip to clip so a cut reads as one continuous sequence instead of four unrelated generations. Three things control that:
 
-```bash
-nvcc --version
-# Should show: release 12.1
-```
+1. **Fixed seed within a shot.** Changing the seed between takes of the *same* shot is why re-rolls look like a different scene. Lock the seed while you dial in a shot, only re-roll once you're ready to move to the next one.
+2. **A consistent subject description.** Keep the character/vehicle/environment tokens identical across every clip in the sequence — put them first in the prompt, and don't paraphrase them between shots.
+3. **A per-shot `motion_scale`.** Establishing shots read better at 1.0–1.2; the payoff shot (impact, near-miss, reveal) is where you push to 1.4.
 
-## Step 2 — Clone ComfyUI
+## Step 3 — Build a 5-clip action sequence
 
-```bash
-cd C:\
-git clone https://github.com/comfyanonymous/ComfyUI
-cd ComfyUI
-```
+Structure a short action beat as five 97-frame clips (~8 seconds each at 12fps, 768×1344 for vertical), each using the [Action Chase](/workflows/13) workflow with the same subject description and a shot-specific `motion_scale`:
 
-## Step 3 — Install Dependencies
+| # | Shot | motion_scale | Prompt focus |
+|---|---|---|---|
+| 1 | Establish | 1.0 | Wide shot, subject and environment, camera static |
+| 2 | Build | 1.2 | Subject starts moving, environment starts blurring |
+| 3 | Peak | 1.4 | Full-speed chase, GoPro POV cues, motion blur |
+| 4 | Complication | 1.3 | Near-miss or obstacle, slight motion pullback |
+| 5 | Resolution | 1.0 | Motion settles, camera steadies |
 
-```bash
-# Create virtual environment
-python -m venv venv
+Render each clip separately, then assemble in any video editor (VideoHelperSuite exports each clip as MP4). Keep every clip's resolution and frame count identical so the cut doesn't jump.
 
-# Activate it
-.\venv\Scripts\activate
+## Step 4 — Pick the right workflow for your hardware
 
-# Install PyTorch for CUDA 12.1
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+| Workflow | VRAM | Frames | Resolution | Use it for |
+|---|---|---|---|---|
+| [Fast Draft](/workflows/14) | 12GB | 25 | 512×512 | Prompt testing, under 15s per render |
+| [Basic T2V](/workflows/11) | 12GB | 25 | 768×512 | Single clips, landscape |
+| [Cinematic 9:16](/workflows/12) | 16GB | 97 | 768×1344 | Shorts/TikTok, single shot |
+| [Action Chase](/workflows/13) | 16GB | 97 | 768×1344 | High-motion shots, sequence building |
 
-# Install ComfyUI requirements
-pip install -r requirements.txt
-```
+## Common issues
 
-## Step 4 — Install ComfyUI Manager
+**Motion looks warped or smeary at high motion_scale** — you're past the 2B checkpoint's stable range. Drop to 1.2–1.3, or move to LTX-2.5 if your hardware supports it.
 
-ComfyUI Manager lets you install custom nodes with one click.
+**Clips don't match across cuts** — check that the seed was re-rolled between shots (it should differ) but the subject description wasn't reworded (it shouldn't).
 
-```bash
-cd custom_nodes
-git clone https://github.com/ltdrdata/ComfyUI-Manager
-cd ..
-```
+**"CUDA out of memory" on the 16GB workflows** — drop to the 12GB [Basic T2V](/workflows/11) workflow, or add `--lowvram` to your ComfyUI launch command.
 
-## Step 5 — Download Your First Model
+**Nodes missing** — open ComfyUI Manager → "Install Missing Custom Nodes" to pull in ComfyUI-LTXVideo and ComfyUI-VideoHelperSuite.
 
-Place models in `ComfyUI/models/checkpoints/`
+---
 
-**Recommended starter model:**
-```bash
-# SDXL (best quality/speed balance)
-# Download from: https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0
-# File: sd_xl_base_1.0.safetensors (6.5GB)
-```
-
-## Step 6 — Launch ComfyUI
-
-```bash
-# Standard launch
-python main.py
-
-# RTX 5080 optimized (recommended)
-python main.py --gpu-only --highvram
-
-# Low VRAM mode (under 8GB)
-python main.py --lowvram
-```
-
-Open your browser to: `http://127.0.0.1:8188`
-
-## RTX 5080 Optimal Settings
-
-These settings maximize quality and speed on 16GB VRAM:
-
-```
-Batch size: 2–4 images
-Resolution: 1024x1024 (SDXL) / 768x512 (video)
-Steps: 20–30
-CFG Scale: 7.0 (images) / 3.0 (video)
-Sampler: dpmpp_2m
-Scheduler: karras
-VAE: Built-in (bake into checkpoint)
-Precision: fp16
-```
-
-## Installing Essential Custom Nodes
-
-In ComfyUI Manager, install these nodes first:
-
-1. **ComfyUI-Impact-Pack** — face detailing, segmentation
-2. **ComfyUI_IPAdapter_plus** — image prompt adapter
-3. **ComfyUI-AnimateDiff-Evolved** — video animation
-4. **ComfyUI-VideoHelperSuite** — video input/output
-5. **rgthree-comfy** — better node organization
-
-## Your First Workflow
-
-Once launched, load the default workflow:
-1. Click **Load** in the top menu
-2. Select `default_workflow.json`
-3. Change the checkpoint to your downloaded model
-4. Click **Queue Prompt**
-
-You should see your first image generate in 15–30 seconds on an RTX 5080.
-
-## Performance Benchmarks
-
-Tested on RTX 5080 16GB:
-
-| Model | Resolution | Steps | Time |
-|-------|-----------|-------|------|
-| SDXL | 1024x1024 | 20 | ~3.2s |
-| FLUX Dev FP8 | 1024x1024 | 20 | ~8.1s |
-| SD 1.5 | 512x512 | 20 | ~0.8s |
-| LTX Video | 768x512 97f | 25 | ~5.4s |
-
-## Common Issues
-
-**"CUDA out of memory"** — Add `--lowvram` to launch command, or reduce batch size to 1.
-
-**Black images** — Wrong VAE. Download the correct VAE for your model.
-
-**Slow generation** — Ensure `--gpu-only` flag is set and venv is activated.
-
-**Nodes missing** — Open ComfyUI Manager and click "Install Missing Custom Nodes".
+Ready to render? Jump into the [Action Chase workflow](/workflows/13) or [score your GPU](/optimizer) against the full LTX Video library first.

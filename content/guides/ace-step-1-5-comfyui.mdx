@@ -4,7 +4,7 @@ description: "Master the professional bridge between Audio Ace's rhythmic analys
 difficulty: "Intermediate"
 readTime: "15 min"
 tag: "Audio Gen"
-publishedAt: "2024-04-01"
+publishedAt: "2026-02-01"
 ---
 
 ---
@@ -22,12 +22,11 @@ publishedAt: "2024-04-01"
 
 Bridging audio analysis with visual generation is the "Holy Grail" of modern AI artistry. While Audio Ace excels at breaking down stems and rhythms, ComfyUI provides the canvas. This guide focuses on Step 1.5: The Handshake.
 
-:::stats
-:::stat 15 min | Setup Time
-:::stat Intermediate | Difficulty
-:::stat Audio Ace | Engine
-:::stat Sync | Primary Goal
-:::
+- **15 min** — Setup Time
+- **Intermediate** — Difficulty
+- **Audio Ace** — Engine
+- **Sync** — Primary Goal
+
 
 ---
 
@@ -48,9 +47,8 @@ Before moving to ComfyUI, ensure your Audio Ace export is configured for **"Inte
 2. Select the **Integration Tab**.
 3. Export as `sync_metadata.json`.
 
-:::tip Latency Offset
-Always check your "Global Offset" in Audio Ace. A 50ms delay in export can result in visuals that feel "sluggish" relative to the beat.
-:::
+> 💡 **Latency Offset** — Always check your "Global Offset" in Audio Ace. A 50ms delay in export can result in visuals that feel "sluggish" relative to the beat.
+
 
 ---
 
@@ -71,9 +69,8 @@ Running both audio analysis metadata and heavy FLUX/SDXL models can be taxing.
 - Use **Latent Caching** to avoid re-generating frames that don't have significant rhythmic changes.
 - Set your `Preview Mode` to "Low Quality" to save 1.5GB of VRAM during the sync process.
 
-:::pro Optimization
-For complex 4K renders, export the audio metadata as a **ControlNet weight map** rather than driving the sampler directly. This keeps the generation stable while allowing the "energy" of the music to shape the geometry.
-:::
+> ⚡ **Optimization** — For complex 4K renders, export the audio metadata as a **ControlNet weight map** rather than driving the sampler directly. This keeps the generation stable while allowing the "energy" of the music to shape the geometry.
+
 
 ---
 

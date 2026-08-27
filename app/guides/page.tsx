@@ -115,19 +115,8 @@ const GUIDES = [
     minVram: 8,
     modelId: "sdxl"
   },
-  { 
-    slug: "workflow-errors", 
-    difficulty: "Intermediate" as GuideDifficulty, 
-    title: "Understanding and Fixing Workflow Errors", 
-    desc: "Master troubleshooting for node not found, version conflicts, and loading failures.", 
-    time: "12 min", 
-    tag: "Maintenance", 
-    image: "/images/learn/intermediate.png",
-    minVram: 8,
-    modelId: "any"
-  },
-  { 
-    slug: "ace-step-1-5-comfyui", 
+  {
+    slug: "ace-step-1-5-comfyui",
     difficulty: "Intermediate" as GuideDifficulty, 
     title: "Audio Ace: Spatial Synthesis", 
     desc: "Master the bridge between Audio Ace and ComfyUI for premium AV generation.", 
@@ -161,19 +150,8 @@ const GUIDES = [
     minVram: 8,
     modelId: "sdxl"
   },
-  { 
-    slug: "gpu-errors", 
-    difficulty: "Advanced" as GuideDifficulty, 
-    title: "Fixing GPU Errors", 
-    desc: "Deep dive into solving CUDA out of memory errors and VRAM overflow issues.", 
-    time: "10 min", 
-    tag: "Hardware", 
-    image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?q=80&w=2070&auto=format&fit=crop",
-    minVram: 4,
-    modelId: "any"
-  },
-  { 
-    slug: "train-flux-lora", 
+  {
+    slug: "train-flux-lora",
     difficulty: "Advanced" as GuideDifficulty, 
     title: "Train Your First FLUX LoRA", 
     desc: "Dataset prep, Kohya_ss configuration, and evaluation loop in under 6 hours.", 
@@ -195,28 +173,73 @@ const GUIDES = [
     modelId: "cloud"
   },
   { 
-    slug: "ltx-video-cinematic-action", 
-    difficulty: "Advanced" as GuideDifficulty, 
-    title: "Cinematic Action Sequences", 
-    desc: "Build chase and action scenes with consistent motion using LTX-Video-2.3.", 
-    time: "35 min", 
-    tag: "Video Engine", 
+    slug: "ltx-video-cinematic-action",
+    difficulty: "Advanced" as GuideDifficulty,
+    title: "Cinematic Action Sequences",
+    desc: "Build chase and action scenes with consistent motion using LTX Video.",
+    time: "18 min",
+    tag: "Video Engine",
     image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2069&auto=format&fit=crop",
-    minVram: 24,
-    modelId: "ltx-2.3-22b"
+    minVram: 12,
+    modelId: "ltx-2.3-2b"
   },
 
-  // --- TROUBLESHOOTING ---
-  { 
-    slug: "why-choose-desktop", 
-    difficulty: "Troubleshooting" as GuideDifficulty, 
-    title: "Desktop Setup Troubleshooting", 
-    desc: "Common roadblocks when installing the official ComfyUI desktop application.", 
-    time: "5 min", 
-    tag: "Support", 
+  {
+    slug: "why-choose-desktop",
+    difficulty: "Advanced" as GuideDifficulty,
+    title: "Why Choose ComfyUI Desktop Install",
+    desc: "Deep dive into the power-user installation — when the desktop app beats portable.",
+    time: "5 min",
+    tag: "Decision",
     image: "/images/guides/workflow-errors.png",
     minVram: 4,
     modelId: "base"
+  },
+
+  // --- TROUBLESHOOTING ---
+  {
+    slug: "workflow-errors",
+    difficulty: "Troubleshooting" as GuideDifficulty,
+    title: "Understanding and Fixing Workflow Errors",
+    desc: "Solve node not found, black images, type mismatches, and silent failures.",
+    time: "9 min",
+    tag: "Maintenance",
+    image: "/images/learn/intermediate.png",
+    minVram: 8,
+    modelId: "any"
+  },
+  {
+    slug: "gpu-errors",
+    difficulty: "Troubleshooting" as GuideDifficulty,
+    title: "Fixing GPU Errors",
+    desc: "Deep dive into solving CUDA out of memory errors and VRAM overflow issues.",
+    time: "10 min",
+    tag: "Hardware",
+    image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?q=80&w=2070&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "any"
+  },
+  {
+    slug: "fix-dependencies",
+    difficulty: "Troubleshooting" as GuideDifficulty,
+    title: "Fixing Missing Dependencies",
+    desc: "Solve pip install failures, missing Python packages, and FFmpeg errors.",
+    time: "10 min",
+    tag: "Maintenance",
+    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "any"
+  },
+  {
+    slug: "troubleshooting-assistant",
+    difficulty: "Troubleshooting" as GuideDifficulty,
+    title: "ComfyUI Troubleshooting Assistant",
+    desc: "Diagnose any ComfyUI problem and get routed to the exact fix guide.",
+    time: "6 min",
+    tag: "Support",
+    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop",
+    minVram: 4,
+    modelId: "any"
   }
 ];
 

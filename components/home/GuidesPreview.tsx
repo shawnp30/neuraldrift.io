@@ -7,7 +7,7 @@ const GUIDES = [
   { slug: "ai-workflow-setup-guide", difficulty: "Advanced", title: "AI Workflow Setup Guide: Node Architectures", desc: "Build scalable, modular AI architectures in ComfyUI for production systems.", time: "22 min", tag: "Workflows" },
   { slug: "comfyui-complete-setup", difficulty: "Beginner", title: "ComfyUI Complete Setup: RTX 5080 Edition", desc: "Install, configure, and benchmark your first ComfyUI workflow with optimal VRAM settings.", time: "12 min", tag: "Image Gen" },
   { slug: "train-flux-lora", difficulty: "Intermediate", title: "Train Your First FLUX LoRA in Under 6 Hours", desc: "Dataset prep, Kohya config, training loop, and quality evaluation from scratch.", time: "28 min", tag: "LoRA Training" },
-  { slug: "ltx-video-cinematic-action", difficulty: "Advanced", title: "LTX Video 2.3: Cinematic Action Sequences", desc: "Build chase and action scenes with consistent motion, camera lock, and temporal coherence.", time: "35 min", tag: "Video Gen" },
+  { slug: "ltx-video-cinematic-action", difficulty: "Advanced", title: "LTX Video: Cinematic Action Sequences", desc: "Build chase and action scenes with consistent motion, camera lock, and temporal coherence.", time: "18 min", tag: "Video Gen" },
   { slug: "ai_article_with_images", difficulty: "Advanced", title: "The State of Generative AI: From Legacy to Spatial Control", desc: "Deep dive into generative AI architectures and the shift towards spatial control.", time: "15 min", tag: "Guide" },
 ];
 

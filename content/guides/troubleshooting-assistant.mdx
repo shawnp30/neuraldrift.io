@@ -1,0 +1,71 @@
+---
+title: 'ComfyUI Troubleshooting Assistant'
+description: 'Diagnose any ComfyUI problem and get routed to the exact fix guide'
+category: 'Troubleshooting'
+readTime: '6 min'
+difficulty: 'Beginner'
+featured: true
+publishedAt: '2026-08-26'
+author: 'NeuralDrift'
+---
+
+![Troubleshooting](https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop)
+
+**Start here when something's broken and you're not sure why**
+
+---
+
+## Step 1 — When does it break?
+
+### Before you can even open ComfyUI
+
+Something failed during install or launch. Jump to [Installation](/guides/installation) if `python main.py` won't start at all, or to [Fix Missing Dependencies](/guides/fix-dependencies) if it starts but crashes on a specific import error.
+
+### When you load a workflow
+
+The workflow itself won't open, shows red/broken nodes, or throws an error the moment it loads (before you click Queue Prompt). That's [Workflow Errors](/guides/workflow-errors) — missing custom nodes and wrong model types live there.
+
+### When you click "Queue Prompt"
+
+The workflow loaded fine, but generation itself fails, crashes, or runs out of memory. That's [GPU Errors](/guides/gpu-errors) for CUDA/VRAM issues, or [Fix Missing Dependencies](/guides/fix-dependencies) if the error is about a Python package rather than memory.
+
+### It runs, but the output is wrong or too slow
+
+Black images, garbled output, or generation that "works" but takes forever — see the decision table below.
+
+## Step 2 — Match your symptom
+
+| Symptom | Most likely cause | Fix guide |
+|---|---|---|
+| ComfyUI won't launch at all | Python/CUDA/venv setup issue | [Installation](/guides/installation) |
+| "Node not found" when loading a workflow | Missing custom node | [Workflow Errors](/guides/workflow-errors) |
+| "Input type mismatch" | Wrong checkpoint for the workflow (e.g. SD1.5 checkpoint in an SDXL workflow) | [Workflow Errors](/guides/workflow-errors) |
+| Output is solid black or garbled noise | Wrong VAE, bad sampler/scheduler pair | [Workflow Errors](/guides/workflow-errors) |
+| "CUDA out of memory" mid-generation | VRAM exceeded for your resolution/batch size | [GPU Errors](/guides/gpu-errors) |
+| Generation is technically working but painfully slow | No `--lowvram`/`--highvram` flag set for your tier, or missing xformers | [Optimize Performance On Any GPU](/guides/performance-optimization) |
+| `ModuleNotFoundError` or a custom node crashes on import | A Python dependency didn't install | [Fix Missing Dependencies](/guides/fix-dependencies) |
+| Video export fails but images generate fine | FFmpeg not installed or not on PATH | [Fix Missing Dependencies](/guides/fix-dependencies) |
+| Can't decide between the portable build and desktop app | Not a bug — a setup choice | [Portable vs. Desktop](/guides/portable-vs-desktop) |
+
+## Step 3 — Still stuck? Gather this before asking for help
+
+Whether you're posting in a Discord, a GitHub issue, or asking an AI assistant, these five things resolve 90% of "it doesn't work" reports instantly:
+
+1. **The exact error text** from the ComfyUI *console window*, not just the red banner in the browser UI — the console has the real stack trace.
+2. **Your GPU and VRAM** (`nvidia-smi` in a terminal shows both).
+3. **Whether it ever worked** — did this break after installing a new custom node or model, or has it never worked?
+4. **Your launch command** (`python main.py --lowvram`, etc.) — half of "won't run" reports are missing the flag their hardware needs.
+5. **What changed most recently** — a new custom node, a driver update, a Windows update. Recency is the single best predictor of the cause.
+
+## Common false leads
+
+- **"My GPU must be too weak"** — check [GPU Errors](/guides/gpu-errors) and the VRAM tables in [Optimize Performance On Any GPU](/guides/performance-optimization) first. Most "too weak" cases are a missing flag, not the hardware.
+- **"The workflow JSON is corrupted"** — 9 times out of 10 this is a missing custom node or a model swapped for the wrong version, not a broken file. See [Workflow Errors](/guides/workflow-errors).
+- **"I need to reinstall everything"** — almost never necessary. Dependency conflicts (see [Fix Missing Dependencies](/guides/fix-dependencies)) look identical to a broken install but are fixed in one `pip install`, not a full wipe.
+
+## Related Guides
+
+- [Fixing GPU Errors](/guides/gpu-errors)
+- [Understanding and Fixing Workflow Errors](/guides/workflow-errors)
+- [Fixing Missing Dependencies](/guides/fix-dependencies)
+- [Optimize Performance On Any GPU](/guides/performance-optimization)

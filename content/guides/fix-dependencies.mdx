@@ -1,0 +1,108 @@
+---
+title: 'Fixing Missing Dependencies in ComfyUI'
+description: 'Solve pip install failures, missing Python packages, and FFmpeg errors'
+category: 'Troubleshooting'
+readTime: '10 min'
+difficulty: 'Intermediate'
+featured: false
+publishedAt: '2026-08-26'
+author: 'NeuralDrift'
+---
+
+![Dependencies](https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop)
+
+**Fix the dependency errors that block custom nodes from loading**
+
+---
+
+## How to tell it's a dependency problem
+
+If ComfyUI Manager's "Install Missing Custom Nodes" doesn't fix a red/broken node, or the node loads but throws an error the first time you queue a prompt, the custom node's *code* is installed but one of its Python or system dependencies isn't. Check the ComfyUI console window — the real error is almost always a few lines above the line ComfyUI prints in the UI.
+
+## "ModuleNotFoundError: No module named 'X'"
+
+**Cause:** The custom node's `requirements.txt` never ran, or ran against the wrong Python environment.
+
+**Fix:**
+```bash
+cd ComfyUI
+.\venv\Scripts\activate
+cd custom_nodes\the-node-that-failed
+pip install -r requirements.txt
+```
+
+If that still fails, you likely have two Pythons on your system and installed the node while the wrong one was active. Confirm with:
+```bash
+where python
+python -c "import sys; print(sys.executable)"
+```
+The path printed should point inside your ComfyUI `venv` folder. If it doesn't, re-activate the venv and reinstall.
+
+## FFmpeg not found (video export, VideoHelperSuite)
+
+**Cause:** VideoHelperSuite, AnimateDiff exports, and most LTX Video workflows call the `ffmpeg` binary directly — it's a system dependency, not a Python package, so `pip install` can't fix it.
+
+**Fix (Windows):**
+```bash
+winget install Gyan.FFmpeg
+```
+Close and reopen your terminal, then verify:
+```bash
+ffmpeg -version
+```
+If `winget` isn't available, download a build from [ffmpeg.org](https://ffmpeg.org/download.html), unzip it, and add the `bin` folder to your system `PATH`.
+
+**Fix (Linux):**
+```bash
+sudo apt install ffmpeg
+```
+
+## Face/detection nodes fail on import (insightface, onnxruntime, mediapipe)
+
+**Cause:** These packages need compiled binaries that match your exact Python version and OS. A pip install that "succeeds" can still fail to import if the wheel doesn't match.
+
+**Fix:**
+```bash
+pip install --upgrade pip setuptools wheel
+pip install insightface onnxruntime-gpu mediapipe
+```
+On Windows, `insightface` sometimes needs the Microsoft C++ Build Tools if no precompiled wheel exists for your Python version — install "Desktop development with C++" from the Visual Studio Installer, then retry.
+
+If you have a CUDA GPU, make sure you installed `onnxruntime-gpu`, not plain `onnxruntime` — the CPU-only package installs silently and just makes face nodes very slow instead of erroring.
+
+## "CUDA driver version is insufficient" or torch/CUDA mismatch
+
+**Cause:** A custom node pinned a `torch` version that doesn't match the CUDA build you installed ComfyUI with, and reinstalling it silently swapped your PyTorch build.
+
+**Fix:** Reinstall the CUDA-matched PyTorch build explicitly, after any custom node installs:
+```bash
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 --force-reinstall
+```
+Confirm it stuck:
+```bash
+python -c "import torch; print(torch.__version__, torch.cuda.is_available())"
+```
+`torch.cuda.is_available()` must print `True`. If it prints `False` after this, your NVIDIA driver is older than the CUDA build requires — update the driver first.
+
+## Two custom nodes conflict on the same package version
+
+**Cause:** Node A needs `numpy<2.0`, Node B needs `numpy>=2.0`. Whichever installed last wins, and the other silently breaks.
+
+**Fix:** There's no universal fix here — check each node's GitHub issues for the specific version pin, and prefer forks/nodes that are actively maintained. As a last resort, keep the two nodes in separate ComfyUI installs rather than fighting version pins in one environment.
+
+## Quick diagnostic checklist
+
+| Symptom | Likely cause | Guide |
+|---|---|---|
+| Red node, "Install Missing Nodes" doesn't fix it | requirements.txt didn't run | This guide, above |
+| Video export nodes error, images work fine | FFmpeg not on PATH | This guide, above |
+| Face/detailer nodes crash on first run | onnxruntime/insightface wheel mismatch | This guide, above |
+| Everything worked yesterday, now `torch.cuda.is_available()` is False | A node install swapped your torch build | This guide, above |
+| Error happens loading the *workflow*, not a specific node | Wrong model type, not a dependency | [Workflow Errors](/guides/workflow-errors) |
+| "CUDA out of memory" during generation | VRAM, not a missing package | [GPU Errors](/guides/gpu-errors) |
+
+## Related Guides
+
+- [Custom Nodes: Install & Fix](/guides/custom-nodes)
+- [Fixing GPU Errors](/guides/gpu-errors)
+- [Troubleshooting Assistant](/guides/troubleshooting-assistant)

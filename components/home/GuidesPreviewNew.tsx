@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 const GUIDES = [
   { slug: "comfyui-complete-setup", difficulty: "Beginner", title: "ComfyUI Complete Setup: RTX 5080 Edition", desc: "Install, configure, and benchmark your first ComfyUI workflow. From zero to generating in under 30 minutes.", time: "12 min", tag: "Image Gen", color: "text-[#a3e635]", bg: "bg-[rgba(163,230,53,0.1)]" },
   { slug: "train-flux-lora", difficulty: "Intermediate", title: "Train Your First FLUX LoRA in Under 6 Hours", desc: "Dataset prep, Kohya config, training loop, and quality evaluation. Exact settings for RTX 5080 and 3080.", time: "28 min", tag: "LoRA Training", color: "text-[#f97316]", bg: "bg-[rgba(249,115,22,0.1)]" },
-  { slug: "ltx-video-cinematic-action", difficulty: "Advanced", title: "LTX Video 2.3: Cinematic Action Sequences", desc: "Build chase and action scenes with consistent motion, camera lock, and temporal coherence between clips.", time: "35 min", tag: "Video Gen", color: "text-[#a78bfa]", bg: "bg-[rgba(124,58,237,0.1)]" },
+  { slug: "ltx-video-cinematic-action", difficulty: "Advanced", title: "LTX Video: Cinematic Action Sequences", desc: "Build chase and action scenes with consistent motion, camera lock, and temporal coherence between clips.", time: "18 min", tag: "Video Gen", color: "text-[#a78bfa]", bg: "bg-[rgba(124,58,237,0.1)]" },
 ];
 
 export function GuidesPreviewNew() {

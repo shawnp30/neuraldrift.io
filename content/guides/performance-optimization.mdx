@@ -2,10 +2,10 @@
 title: 'How to Optimize Performance on Any GPU'
 description: 'GPU-tier specific optimization for 4GB to 24GB+ VRAM with step-by-step settings'
 category: 'Advanced'
-readTime: '8 min'
+readTime: '11 min'
 difficulty: 'Intermediate'
 featured: false
-publishedAt: '2026-03-24'
+publishedAt: '2026-08-26'
 author: 'NeuralDrift'
 ---
 
@@ -34,8 +34,6 @@ python main.py --lowvram
 - Steps: 20-25 max
 - Avoid SDXL completely
 
----
-
 ### Medium VRAM (8-12GB): RTX 3060, RTX 4060
 
 **Settings:**
@@ -50,9 +48,7 @@ python main.py --normalvram
 - Steps: 25-30
 - Use fp16 models when available
 
----
-
-### High VRAM (16-24GB): RTX 4080, RTX 4090
+### High VRAM (16-24GB): RTX 4080, RTX 4090, RTX 5080
 
 **Settings:**
 ```bash
@@ -64,10 +60,21 @@ python main.py --highvram
 - Batch size: 2-4
 - Steps: 30-50
 - High-res upscaling supported
-- Video generation supported
-- Multiple model loading
+- Video generation supported (LTX Video, AnimateDiff)
+- Multiple model loading (checkpoint + LoRA + upscaler resident at once)
 
----
+### Enthusiast (24GB+): RTX 4090, RTX 5090
+
+**Settings:**
+```bash
+python main.py --highvram --gpu-only
+```
+
+**Recommendations:**
+- Flux Dev at full FP16, no offloading needed
+- Batch size 4-8 for SDXL
+- Run two models concurrently (e.g. a captioning model alongside generation) without swapping
+- `--gpu-only` keeps everything resident on the GPU instead of shuttling tensors to system RAM between steps — this is the setting that most affects speed at this tier, more than resolution or batch size
 
 ## Speed Optimization Tips
 
@@ -75,23 +82,39 @@ python main.py --highvram
    ```bash
    pip install xformers
    ```
-   +20-30% speed boost
+   +20-30% speed boost on attention-heavy models (SD1.5, SDXL). Flux and newer DiT-based models benefit less since they use different attention patterns — don't expect the same gain there.
 
 2. **Use NVIDIA GPU scheduling** (Windows)
    - NVIDIA Control Panel → Manage 3D Settings
    - Low Latency Mode: Ultra
    - Power Management: Prefer Maximum Performance
 
-3. **Close background apps** during generation
+3. **Close background apps** during generation — browsers with hardware acceleration and game launchers are the most common silent VRAM users; check `nvidia-smi` before assuming your GPU is "too weak."
 
-4. **Use SSD for model storage** (not HDD)
+4. **Use SSD for model storage** (not HDD) — checkpoint/LoRA loading is disk-bound, and a large model on a mechanical drive can add 10-30+ seconds before generation even starts.
 
-5. **Keep drivers updated**
+5. **Keep drivers updated** — but pin to a Studio Driver if you hit regressions after a Game Ready Driver update; ComfyUI's CUDA calls are more sensitive to driver quirks than most games.
 
----
+## Where the time actually goes
+
+If a generation feels slow, it helps to know which stage is the bottleneck before changing settings blindly:
+
+| Stage | What's slow if this is the bottleneck | Fix |
+|---|---|---|
+| Model loading (before the first step) | Slow disk, or reloading the checkpoint every run | Move models to SSD; keep the same checkpoint loaded across generations instead of switching each time |
+| Sampling steps (the progress bar during generation) | Compute-bound — this is where GPU tier actually matters | Reduce steps, use a faster sampler (`dpmpp_2m` over `ddim`), or upgrade hardware |
+| VAE decode (a pause right at the end, after steps finish) | VAE running in fp32 or not tiled | Install Tiled VAE; some checkpoints support fp16 VAE decode |
+| Everything is slow and `nvidia-smi` shows low GPU utilization | Bottlenecked by CPU/disk, not the GPU at all | Check for background disk I/O; confirm `--gpu-only` isn't being skipped |
+
+## Common overcorrections to avoid
+
+- **Cranking steps past 30-40** rarely improves quality on modern samplers and just costs time linearly — if a result looks off at 25 steps, the fix is usually the prompt or CFG scale, not more steps.
+- **Maxing batch size "for speed"** — a larger batch amortizes fixed overhead but linearly increases VRAM; past your VRAM tier's sweet spot you'll trigger `--lowvram` fallbacks that are slower than just batching 1 at a time.
+- **Disabling xformers because "attention is disabled" warnings show up** — that warning is often about a specific optional kernel, not xformers itself; check `torch.cuda.is_available()` and generation speed before/after to confirm it's actually helping in your case.
 
 ## Related Guides
 
 - [GPU and CUDA Errors](/guides/gpu-errors)
-- [Model Types Explained](/guides/model-types)
+- [SD Model Types Explained](/guides/model-types)
 - [Custom Nodes Management](/guides/custom-nodes)
+- [Troubleshooting Assistant](/guides/troubleshooting-assistant)

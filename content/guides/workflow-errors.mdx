@@ -1,16 +1,15 @@
 ---
 title: 'Understanding and Fixing Workflow Errors'
-description: 'Solve node not found, black images, and type mismatches'
+description: 'Solve node not found, black images, type mismatches, and silent failures'
 category: 'Troubleshooting'
-readTime: '5 min'
+readTime: '9 min'
 difficulty: 'Beginner'
 featured: false
-publishedAt: '2026-03-24'
+publishedAt: '2026-08-26'
 author: 'NeuralDrift'
 ---
 
 ![Troubleshooting](https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop)
-
 
 **Solve the most common workflow loading and execution problems**
 
@@ -20,69 +19,80 @@ author: 'NeuralDrift'
 
 ### Error: "Node not found in workflow"
 
-**Cause:** Missing custom node
+**Cause:** Missing custom node — someone built this workflow with a custom node pack you don't have installed.
 
 **Fix:**
-1. Install ComfyUI Manager
-2. Load workflow → Manager will show "Install Missing Nodes"
-3. Click install → Restart
+1. Install ComfyUI Manager if you haven't already
+2. Load the workflow → Manager will show "Install Missing Nodes"
+3. Click install → Restart ComfyUI
 
----
+If Manager can't find the node, the workflow JSON's `properties.cnr_id` or node title usually names the pack — search for it directly on GitHub or the Manager's node registry.
 
 ### Error: "Input type mismatch"
 
-**Cause:** Wrong model type for workflow
+**Cause:** Wrong model type for workflow.
 
-**Example:**
-- SDXL workflow + SD 1.5 checkpoint = fails
+**Example:** SDXL workflow + SD 1.5 checkpoint = fails, because SDXL uses two CLIP encoders and a different latent size than SD 1.5.
 
-**Fix:**
-Check workflow description for required model type
+**Fix:** Check the workflow's description for the required model type.
 
 **Quick reference:**
-- SD 1.5 workflows → Use SD 1.5 checkpoints
-- SDXL workflows → Use SDXL checkpoints  
-- Flux workflows → Use Flux models
-
----
+- SD 1.5 workflows → SD 1.5 checkpoints
+- SDXL workflows → SDXL checkpoints
+- Flux workflows → Flux checkpoints (and a matching CLIP/T5 text encoder — Flux won't load a standard SD CLIP)
 
 ### Error: Workflow loads but produces black images
 
 **Causes:**
-1. Wrong VAE
-2. Incompatible sampler
-3. Resolution too high
+1. Wrong VAE (or no VAE — some checkpoints don't bake one in)
+2. Incompatible sampler/scheduler pairing
+3. Resolution too high for the model (SD 1.5 above ~768px commonly breaks down)
 
 **Fixes:**
-1. Add VAE Loader node with `vae-ft-mse-840000-ema-pruned.safetensors`
-2. Try different sampler (euler, dpm++ 2m)
+1. Add a `VAELoader` node with `vae-ft-mse-840000-ema-pruned.safetensors` (SD1.5) or the SDXL VAE for SDXL checkpoints
+2. Try a different sampler (`euler`, `dpmpp_2m`) with a matching scheduler (`normal` or `karras`)
 3. Reduce resolution to 512×512 (SD1.5) or 1024×1024 (SDXL)
-
----
 
 ### Error: "VRAM out of memory" mid-generation
 
-**Fix:**
-See [Guide 2: GPU Errors](./02-gpu-errors.md)
+**Fix:** See [Fixing GPU Errors](/guides/gpu-errors) for the full breakdown.
 
 Quick solution:
-- Reduce resolution
-- Add `--lowvram` flag
-- Install Tiled VAE node
+- Reduce resolution or batch size
+- Add the `--lowvram` launch flag
+- Install the Tiled VAE custom node
 
----
+### Error: Workflow finishes but nothing appears in the output folder
+
+**Cause:** The workflow ends in a `PreviewImage` node instead of a `SaveImage` node. Preview-only nodes render in the ComfyUI browser tab but never write to `ComfyUI/output/`.
+
+**Fix:** Add a `SaveImage` node at the end of the pipeline, or right-click the final image in the UI and choose "Save Image" manually.
+
+### Error: Sharing a workflow breaks it for the other person (API calls fail, but the UI works fine)
+
+**Cause:** ComfyUI has two save formats. **Regular Save** stores the UI layout (node positions, colors) and is what you get from the normal Save button — it's meant for opening in the ComfyUI editor. **Save (API Format)** exports the execution graph other tools and scripts actually run. If you send someone a regular-save JSON expecting them to run it through the API or a script, it will fail or behave unpredictably — the two formats aren't interchangeable.
+
+**Fix:** In the ComfyUI menu, use **Save (API Format)** specifically when the JSON is going to be consumed programmatically (a script, another app, our [workflow downloads](/workflows)). Use regular **Save** when you just want to reopen it in the ComfyUI UI yourself.
+
+### Error: LoRA has no visible effect (or a wildly overpowered effect)
+
+**Cause:** LoRA strength is set too low/high, or the LoRA was trained against a different base model than the one loaded in the workflow (e.g. an SDXL LoRA applied to an SD1.5 checkpoint — it'll load without erroring, but do nothing useful).
+
+**Fix:**
+- Confirm the LoRA's base model matches your checkpoint's base model
+- Start `strength_model` and `strength_clip` around 0.6–0.8 and adjust from there
+- If the LoRA does nothing at any strength, it's almost always a base-model mismatch, not a strength problem
 
 ## Workflow Best Practices
 
-1. **Always use .safetensors models** (safer than .ckpt)
-2. **Match LoRAs to base model version**
-3. **Save workflows frequently**
-4. **Test with default workflow first** before loading complex ones
-5. **Check custom nodes are installed** before importing workflows
-
----
+1. **Always use `.safetensors` models** (safer than `.ckpt`, which can execute arbitrary code on load)
+2. **Match LoRAs to their base model version** — check the LoRA's model card before downloading
+3. **Save workflows frequently**, and know the difference between regular Save and Save (API Format) above
+4. **Test with the default workflow first** before loading anything complex, to isolate whether an issue is your setup or the specific workflow
+5. **Check custom nodes are installed** before importing a workflow you didn't build yourself
 
 ## Related Guides
-- [Guide 3: Model Folders](./03-model-folders.md)
-- [Guide 4: Custom Nodes](./04-custom-nodes.md)
-- [Guide 6: Model Types](./06-model-types.md)
+- [Model Folders](/guides/model-folders)
+- [Custom Nodes: Install & Fix](/guides/custom-nodes)
+- [SD Model Types Explained](/guides/model-types)
+- [Troubleshooting Assistant](/guides/troubleshooting-assistant)
