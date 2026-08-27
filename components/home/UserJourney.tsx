@@ -7,7 +7,7 @@ const PATHS = [
     icon: '🚀',
     title: 'Start Here',
     desc: 'New to AI generation? Get a working setup in under 10 minutes.',
-    href: '/start-here',
+    href: '/guides/comfyui-complete-setup',
     color: 'from-emerald-500/20 to-emerald-500/5 border-emerald-500/30',
     badge: 'emerald',
   },
@@ -25,7 +25,7 @@ const PATHS = [
     icon: '🧠',
     title: 'Build Custom Workflow',
     desc: 'Design multi-model pipelines, train LoRAs, automate batch outputs.',
-    href: '/workflows/generate',
+    href: '/workflows/create',
     color: 'from-violet-500/20 to-violet-500/5 border-violet-500/30',
     badge: 'violet',
   },
@@ -38,7 +38,7 @@ export default function UserJourney() {
         Where do you want to start?
       </h2>
       <p className="text-zinc-400 text-center mb-10">
-        Pick your path. We'll get you to results fast.
+        Pick your path. We&apos;ll get you to results fast.
       </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {PATHS.map((p) => (

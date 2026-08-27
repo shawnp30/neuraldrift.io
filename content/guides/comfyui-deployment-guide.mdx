@@ -22,12 +22,11 @@ publishedAt: "2024-03-27"
 
 Deploying ComfyUI isn't just about running a script—it's about building a robust, repeatable infrastructure for AI generation. Whether you're building a private creative studio or a public-facing API, this guide covers the engineering required to move from experimental workflows to production power.
 
-:::stats
-:::stat 16GB+ | Recommended VRAM
-:::stat 18 min | Reading Time
-:::stat Docker | Scale Method
-:::stat Production | Readiness
-:::
+- **16GB+** — Recommended VRAM
+- **18 min** — Reading Time
+- **Docker** — Scale Method
+- **Production** — Readiness
+
 
 ## 1 — Overview
 
@@ -74,9 +73,8 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 pip install -r requirements.txt
 ```
 
-:::tip Use Symbolic Links
-For large model files, use `mklink` (Windows) or `ln -s` (Linux) to point `models/` to a shared drive. This prevents duplicating multi-GB checkpoints across your repo.
-:::
+> 💡 **Use Symbolic Links** — For large model files, use `mklink` (Windows) or `ln -s` (Linux) to point `models/` to a shared drive. This prevents duplicating multi-GB checkpoints across your repo.
+
 
 ---
 
@@ -104,9 +102,8 @@ To deploy a workflow, you must export it as an **API-formatted JSON**.
 2. Click "Save (API Format)".
 3. Store this file in `/workflows/` in your repository.
 
-:::warning Regular Save vs API Format
-A standard "Save" includes UI metadata like node positions. The "API Format" removes this, making it significantly smaller and faster for headless execution.
-:::
+> ⚠️ **Regular Save vs API Format** — A standard "Save" includes UI metadata like node positions. The "API Format" removes this, making it significantly smaller and faster for headless execution.
+
 
 ---
 
@@ -134,9 +131,8 @@ Once deployed, interact with ComfyUI via the `/prompt` endpoint. Your request bo
 curl http://your-gpu-ip:8188/history
 ```
 
-:::note Securing Access
-Always run ComfyUI behind a reverse proxy (like Nginx) or a VPN. Do not expose port 8188 directly to the public internet.
-:::
+> ℹ️ **Securing Access** — Always run ComfyUI behind a reverse proxy (like Nginx) or a VPN. Do not expose port 8188 directly to the public internet.
+
 
 ---
 
@@ -175,9 +171,8 @@ Production deployments require visibility into GPU usage and error rates.
 
 ## 10 — Troubleshooting
 
-:::warning Avoid "OOM" Errors
-If your API returns a 500 error during generation, check the console for "Out of Memory". Reduce your resolution or use a lower-bit quantized model (GGUF).
-:::
+> ⚠️ **Avoid "OOM" Errors** — If your API returns a 500 error during generation, check the console for "Out of Memory". Reduce your resolution or use a lower-bit quantized model (GGUF).
+
 
 **Common Node Errors:**
 - `ImportError`: Ensure you've run `pip install -r requirements.txt` inside the specific custom node's folder.

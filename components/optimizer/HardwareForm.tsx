@@ -76,7 +76,7 @@ export function HardwareForm({ onSubmit, loading }: Props) {
     <div className="bg-card border border-border rounded-xl overflow-hidden">
       <div className="px-5 py-4 border-b border-border">
         <h3 className="font-syne text-sm font-bold text-white">Your Hardware</h3>
-        <p className="font-mono text-xs text-muted mt-0.5">Tell us your GPU and we'll score every workflow</p>
+        <p className="font-mono text-xs text-muted mt-0.5">Tell us your GPU and we&apos;ll score every workflow</p>
       </div>
 
       <div className="p-5 space-y-5">

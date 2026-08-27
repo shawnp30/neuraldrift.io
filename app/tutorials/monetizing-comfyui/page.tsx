@@ -39,7 +39,7 @@ export default function MonetizingComfyUIGuide() {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <Target className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
-                  <p className="text-sm font-[500] text-zinc-300"><strong className="text-white">Product Photography Replacement:</strong> Train a LoRA on a client's specific product (e.g., a perfume bottle). Use ComfyUI to generate the product in impossible, high-end environments (glaciers, luxury marble bathrooms). Charge $50-$100 per final image.</p>
+                  <p className="text-sm font-[500] text-zinc-300"><strong className="text-white">Product Photography Replacement:</strong> Train a LoRA on a client&apos;s specific product (e.g., a perfume bottle). Use ComfyUI to generate the product in impossible, high-end environments (glaciers, luxury marble bathrooms). Charge $50-$100 per final image.</p>
                 </li>
                 <li className="flex items-start gap-3">
                   <Target className="w-5 h-5 text-indigo-400 shrink-0 mt-0.5" />
@@ -79,7 +79,7 @@ export default function MonetizingComfyUIGuide() {
           </h2>
           <div className="space-y-6 relative z-10">
             <p className="text-zinc-300 font-[500] leading-relaxed text-lg">
-              If client work isn't your speed, build assets once and sell them infinitely on platforms like Etsy, Gumroad, and Adobe Stock.
+              If client work isn&apos;t your speed, build assets once and sell them infinitely on platforms like Etsy, Gumroad, and Adobe Stock.
             </p>
             
             <ul className="space-y-4 mb-8">

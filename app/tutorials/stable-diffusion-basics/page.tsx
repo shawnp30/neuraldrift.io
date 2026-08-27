@@ -39,7 +39,7 @@ export default function SDXLBasicsGuide() {
               <div className="bg-black/40 border border-white/5 p-5 rounded-2xl">
                 <span className="text-xs font-[900] text-sky-400 uppercase tracking-widest mb-1 block">Component 01</span>
                 <h4 className="text-white font-[800] mb-2 text-lg">Load Checkpoint</h4>
-                <p className="text-sm text-zinc-400 font-[500] leading-relaxed">This loads the main "brain" (the `.safetensors` model file like SDXL or FLUX). It contains the vast database of visual knowledge.</p>
+                <p className="text-sm text-zinc-400 font-[500] leading-relaxed">This loads the main &quot;brain&quot; (the `.safetensors` model file like SDXL or FLUX). It contains the vast database of visual knowledge.</p>
               </div>
               <div className="bg-black/40 border border-white/5 p-5 rounded-2xl">
                 <span className="text-xs font-[900] text-pink-400 uppercase tracking-widest mb-1 block">Component 02</span>
@@ -54,7 +54,7 @@ export default function SDXLBasicsGuide() {
               <div className="bg-black/40 border border-white/5 p-5 rounded-2xl">
                 <span className="text-xs font-[900] text-amber-400 uppercase tracking-widest mb-1 block">Component 04</span>
                 <h4 className="text-white font-[800] mb-2 text-lg">The KSampler</h4>
-                <p className="text-sm text-zinc-400 font-[500] leading-relaxed">The engine room. It takes the text vectors, the blank canvas, and the Checkpoint data, and runs the "denoising" steps to physically form the image.</p>
+                <p className="text-sm text-zinc-400 font-[500] leading-relaxed">The engine room. It takes the text vectors, the blank canvas, and the Checkpoint data, and runs the &quot;denoising&quot; steps to physically form the image.</p>
               </div>
             </div>
           </div>

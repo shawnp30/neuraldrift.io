@@ -6,7 +6,6 @@ export const NeuralBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    console.log("NeuralBackground: useEffect started");
     const canvas = canvasRef.current;
     if (!canvas) return;
 

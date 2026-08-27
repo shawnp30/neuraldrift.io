@@ -159,7 +159,7 @@ export default function GuideBody({ slug }: { slug: string }) {
         padding: "3rem 0", color: "#4a5a6a",
         fontFamily: "monospace", fontSize: 13, textAlign: "center"
       }}>
-        // Guide content coming soon — check back shortly.
+        {"// Guide content coming soon — check back shortly."}
       </div>
     );
   }
@@ -188,7 +188,7 @@ export default function GuideBody({ slug }: { slug: string }) {
       }}>
         <div>
           <div style={{ fontFamily: "monospace", fontSize: 11, color: "#f59e0b", marginBottom: 6 }}>
-            // Next step
+            {"// Next step"}
           </div>
           <p style={{ color: "#7a8a9a", fontSize: 13, margin: 0 }}>
             Score your hardware against this workflow in the Optimizer →

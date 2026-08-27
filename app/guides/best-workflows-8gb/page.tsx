@@ -6,7 +6,7 @@ export default function Guide() {
       </h1>
 
       <p className="mb-6">
-        If you're running 8GB VRAM, you need optimized workflows to avoid crashes.
+        If you&apos;re running 8GB VRAM, you need optimized workflows to avoid crashes.
       </p>
 
       <ul className="list-disc ml-6">

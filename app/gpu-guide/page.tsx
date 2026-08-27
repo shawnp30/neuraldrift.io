@@ -792,9 +792,9 @@ function HardwareDetail({ gpu, cpu, ram, onBack }: HardwareDetailProps) {
           padding: 24, borderRadius: 12, background: "linear-gradient(135deg, rgba(245,158,11,0.08), rgba(59,130,246,0.08))",
           border: "1px solid rgba(245,158,11,0.15)", marginBottom: 28,
         }}>
-          <h3 style={{ fontSize: 16, fontWeight: 600, color: "#f59e0b", marginBottom: 8, fontFamily: "'Playfair Display', serif" }}>💡 Don't have the right hardware? Use cloud GPUs</h3>
+          <h3 style={{ fontSize: 16, fontWeight: 600, color: "#f59e0b", marginBottom: 8, fontFamily: "'Playfair Display', serif" }}>💡 Don&apos;t have the right hardware? Use cloud GPUs</h3>
           <p style={{ color: "#d1d5db", fontSize: 14, margin: 0, lineHeight: 1.6, fontFamily: "'Space Grotesk', sans-serif" }}>
-            You don't need expensive hardware to create with AI. Cloud GPU services like RunPod and Vast.ai let you rent an RTX 4090 for as little as $0.20/hr. Check the providers below.
+            You don&apos;t need expensive hardware to create with AI. Cloud GPU services like RunPod and Vast.ai let you rent an RTX 4090 for as little as $0.20/hr. Check the providers below.
           </p>
         </div>
       )}
@@ -809,18 +809,16 @@ function HardwareDetail({ gpu, cpu, ram, onBack }: HardwareDetailProps) {
 
 function CloudCard({ provider }: CloudCardProps) {
   const [hovered, setHovered] = useState(false);
+  const detailHref = provider.name === "RunPod" ? "/gpu-guide/runpod" : null;
   return (
-    <a
-      href={provider.url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display: "block", textDecoration: "none", padding: 24,
+        display: "block", padding: 24,
         background: hovered ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)",
         border: `1px solid ${hovered ? "rgba(245,158,11,0.3)" : "rgba(255,255,255,0.06)"}`,
-        borderRadius: 14, transition: "all 0.25s", cursor: "pointer",
+        borderRadius: 14, transition: "all 0.25s",
         transform: hovered ? "translateY(-2px)" : "none",
         boxShadow: hovered ? "0 8px 32px rgba(0,0,0,0.3)" : "none",
       }}
@@ -856,10 +854,25 @@ function CloudCard({ provider }: CloudCardProps) {
           </span>
         ))}
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 16, color: hovered ? "#f59e0b" : "#6b7280", fontSize: 13, fontWeight: 600, transition: "color 0.2s", fontFamily: "'JetBrains Mono', monospace" }}>
-        Visit {provider.name} <ExternalLink />
+      <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 16 }}>
+        <a
+          href={provider.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: "flex", alignItems: "center", gap: 6, color: hovered ? "#f59e0b" : "#6b7280", fontSize: 13, fontWeight: 600, transition: "color 0.2s", fontFamily: "'JetBrains Mono', monospace", textDecoration: "none" }}
+        >
+          Visit {provider.name} <ExternalLink />
+        </a>
+        {detailHref && (
+          <Link
+            href={detailHref}
+            style={{ fontSize: 13, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace", color: "#6b7280", textDecoration: "underline" }}
+          >
+            Full breakdown →
+          </Link>
+        )}
       </div>
-    </a>
+    </div>
   );
 }
 
@@ -916,7 +929,7 @@ export default function GPUComputePage() {
             <span style={{ color: "#f59e0b" }}>handle AI?</span>
           </h1>
           <p style={{ fontSize: 16, color: "#6b7280", maxWidth: 520, margin: "0 auto", lineHeight: 1.6 }}>
-            Select your GPU, CPU, and RAM below. We'll show you exactly what AI models your hardware can run — and what it can't.
+            Select your GPU, CPU, and RAM below. We&apos;ll show you exactly what AI models your hardware can run — and what it can&apos;t.
           </p>
         </div>
 
@@ -1038,7 +1051,7 @@ export default function GPUComputePage() {
         {/* Footer note */}
         <div style={{ textAlign: "center", marginTop: 48, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <p style={{ fontSize: 12, color: "#4b5563", fontFamily: "'JetBrains Mono', monospace" }}>
-            Prices and specs are approximate and subject to change. Last updated March 2026.
+            Prices and specs are approximate and subject to change. Last updated August 2026.
           </p>
         </div>
       </div>

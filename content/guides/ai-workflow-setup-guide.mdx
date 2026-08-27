@@ -22,12 +22,11 @@ publishedAt: "2024-03-27"
 
 AI workflows are the professional "pipelines" of modern generative art. Unlike linear scripts, node-based systems allow you to build complex, branching logic that can be swapped, scaled, and shared with ease. This guide helps you move from "just clicking buttons" to architecting AI systems.
 
-:::stats
-:::stat 22 min | Reading Time
-:::stat Advanced | Complexity
-:::stat SDXL / FLUX | Engine
-:::stat Github | Versioned
-:::
+- **22 min** — Reading Time
+- **Advanced** — Complexity
+- **SDXL / FLUX** — Engine
+- **Github** — Versioned
+
 
 ---
 
@@ -61,9 +60,8 @@ Let's build a standard **SDXL Reference Workflow** using this repository's struc
 5.  **VAE Decode**: Turn the sampled latent back into pixels.
 6.  **Save Image**: Outputs to your `output/` directory.
 
-:::tip Repo Integration
-Always store your `.json` version of this flow in the `/workflows/` folder of this repository for easy access across devices.
-:::
+> 💡 **Repo Integration** — Always store your `.json` version of this flow in the `/workflows/` folder of this repository for easy access across devices.
+
 
 ---
 
@@ -133,9 +131,8 @@ The final step is connecting your `/workflows/*.json` to the Neuraldrift API or 
 - **Webhooks**: Configure ComfyUI to post the image URL to your backend once "Save Image" is complete.
 - **API Endpoints**: Use the `/prompt` POST request to trigger the entire chain from a mobile app or website.
 
-:::pro Trigger Action
-Automate your triggers. When a user uploads a photo to your site, your backend can automatically inject that image path into the "Load Image" node of your ComfyUI workflow.
-:::
+> ⚡ **Trigger Action** — Automate your triggers. When a user uploads a photo to your site, your backend can automatically inject that image path into the "Load Image" node of your ComfyUI workflow.
+
 
 ---
 

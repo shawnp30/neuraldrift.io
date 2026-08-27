@@ -23,12 +23,11 @@ publishedAt: "2025-03-01"
 
 ComfyUI is the most powerful node-based interface for running local AI image and video generation. This guide gets you from zero to a working workflow on Windows with an NVIDIA GPU — tested live on an RTX 5080 and RTX 3080 16GB.
 
-:::stats
-:::stat 16GB | VRAM Required
-:::stat 12 min | Setup Time
-:::stat 3.2s | SDXL per image
-:::stat Free | Open Source
-:::
+- **16GB** — VRAM Required
+- **12 min** — Setup Time
+- **3.2s** — SDXL per image
+- **Free** — Open Source
+
 
 ## Hardware Requirements
 
@@ -41,9 +40,8 @@ ComfyUI is the most powerful node-based interface for running local AI image and
 | RTX 3060      | 12GB | Standard models, SD1.5 and SDXL      |
 | GTX 1660 Ti   | 6GB  | SD1.5 only, very slow                |
 
-:::note Minimum Requirements
-**6GB VRAM** for SD1.5. FLUX and LTX Video require at least **12GB**. For best results with modern models, 16GB is the sweet spot.
-:::
+> ℹ️ **Minimum Requirements** — **6GB VRAM** for SD1.5. FLUX and LTX Video require at least **12GB**. For best results with modern models, 16GB is the sweet spot.
+
 
 ## Step 1 — Install Prerequisites
 
@@ -59,9 +57,8 @@ python --version
 # Expected: Python 3.10.11
 ```
 
-:::warning Version matters
-Do NOT install Python 3.11 or 3.12. Custom nodes like AnimateDiff and VideoHelperSuite require 3.10.x. Using a newer version will cause cryptic import errors.
-:::
+> ⚠️ **Version matters** — Do NOT install Python 3.11 or 3.12. Custom nodes like AnimateDiff and VideoHelperSuite require 3.10.x. Using a newer version will cause cryptic import errors.
+
 
 ### Git
 
@@ -87,9 +84,8 @@ git clone https://github.com/comfyanonymous/ComfyUI
 cd ComfyUI
 ```
 
-:::tip Keep it at C:\ComfyUI
-Installing at the root avoids Windows path length issues that break certain custom node installs. Deeply nested paths cause silent failures.
-:::
+> 💡 **Keep it at C:\ComfyUI** — Installing at the root avoids Windows path length issues that break certain custom node installs. Deeply nested paths cause silent failures.
+
 
 ## Step 3 — Install Dependencies
 
@@ -121,9 +117,8 @@ cd ..
 
 After this, every time you find a workflow that needs missing nodes, ComfyUI Manager will detect and install them automatically.
 
-:::pro Install Order
-Install Manager BEFORE downloading any models. When you load a workflow that requires missing custom nodes, Manager will prompt you to install them all at once.
-:::
+> ⚡ **Install Order** — Install Manager BEFORE downloading any models. When you load a workflow that requires missing custom nodes, Manager will prompt you to install them all at once.
+
 
 ## Step 5 — Download Your First Model
 
@@ -163,9 +158,8 @@ python main.py --lowvram
 
 Open your browser to: `http://127.0.0.1:8188`
 
-:::note Bookmark this URL
-ComfyUI runs as a local server. Bookmark `127.0.0.1:8188` — it's faster than typing it each time.
-:::
+> ℹ️ **Bookmark this URL** — ComfyUI runs as a local server. Bookmark `127.0.0.1:8188` — it's faster than typing it each time.
+
 
 ## RTX 5080 Optimal Settings
 
@@ -202,9 +196,8 @@ In ComfyUI Manager, search and install these first:
 
 You should see your first image in 15–30 seconds on an RTX 5080.
 
-:::tip Speed up iteration
-While testing prompts, use batch size 1 and 15 steps. Once you find a direction you like, bump to 25 steps and batch 4 for the final run.
-:::
+> 💡 **Speed up iteration** — While testing prompts, use batch size 1 and 15 steps. Once you find a direction you like, bump to 25 steps and batch 4 for the final run.
+
 
 ## Performance Benchmarks
 
@@ -217,12 +210,11 @@ Tested on RTX 5080 16GB, `--gpu-only --highvram`:
 | SD 1.5        | 512×512     | 20    | ~0.8s |
 | LTX Video 2.3 | 768×512 97f | 25    | ~5.4s |
 
-:::stats
-:::stat 3.2s | SDXL per image
-:::stat 8.1s | FLUX Dev FP8
-:::stat 5.4s | LTX Video clip
-:::stat 0.8s | SD 1.5 image
-:::
+- **3.2s** — SDXL per image
+- **8.1s** — FLUX Dev FP8
+- **5.4s** — LTX Video clip
+- **0.8s** — SD 1.5 image
+
 
 ## Common Issues
 

@@ -56,7 +56,7 @@ export default function HardwareHubPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
           <div className="flex flex-col items-center text-center">
             <p className="font-mono text-xs text-[#7c6af7] tracking-[0.35em] uppercase mb-4">
-              // Hardware hub
+              {"// Hardware hub"}
             </p>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111113] border border-[#2a2a30] mb-6">
               <span className="w-2 h-2 rounded-full bg-[#7c6af7] animate-pulse" />
@@ -280,7 +280,7 @@ export default function HardwareHubPage() {
       {/* BENCHMARK DATA SECTION */}
       <section className="max-w-7xl mx-auto px-6 md:px-10 mt-20">
         <div className="mb-10">
-          <p className="font-mono text-xs text-[#7c6af7] tracking-[0.25em] uppercase mb-2">// Benchmarks</p>
+          <p className="font-mono text-xs text-[#7c6af7] tracking-[0.25em] uppercase mb-2">{"// Benchmarks"}</p>
           <h2 className="font-syne text-3xl font-black text-white mb-2">Real-World <span className="text-[#7c6af7]">Benchmarks</span></h2>
           <p className="text-[#a8b0c4] text-sm font-mono tracking-widest uppercase">Verified inference speeds (img/m)</p>
         </div>

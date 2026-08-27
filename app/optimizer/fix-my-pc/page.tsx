@@ -48,7 +48,7 @@ export default function FixMyPcPage() {
           <div className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-zinc-900/40">
             <h2 className="text-xl font-bold text-white mb-2">3. Hardware Upgrades</h2>
             <p className="text-zinc-400 text-sm leading-relaxed mb-4">
-              Local AI is heavily dependent on VRAM bandwidth and capacity. If you're consistently hitting bounds on 8GB cards, upgrading to a 16GB tier (such as the RTX 4070 Ti Super or 5080) or an enthusiast 24GB card (RTX 3090/4090) is the best reliable long-term solution.
+              Local AI is heavily dependent on VRAM bandwidth and capacity. If you&apos;re consistently hitting bounds on 8GB cards, upgrading to a 16GB tier (such as the RTX 4070 Ti Super or 5080) or an enthusiast 24GB card (RTX 3090/4090) is the best reliable long-term solution.
             </p>
             <a href="https://computeatlas.ai" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 text-sm font-medium">
               Plan your hardware upgrade with ComputeAtlas.ai ↗

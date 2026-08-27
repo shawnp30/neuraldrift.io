@@ -115,7 +115,7 @@ function NoMatches({ vram, goal }: { vram: VramTier; goal: GoalType }) {
           Fix My PC
         </Link>
         <Link
-          href="/guides/fix-out-of-memory"
+          href="/guides/gpu-errors"
           className="px-5 py-2.5 rounded-xl border border-zinc-700 hover:border-zinc-500 text-zinc-300 text-sm font-semibold transition-all"
         >
           Out of Memory Fix Guide

@@ -166,7 +166,9 @@ export function ArchitectsSpotlight() {
 
       <div className="mx-auto mt-8 flex max-w-[900px] justify-center">
         <Link
-          href="/monetization/featured"
+          href="https://github.com/shawnp30/neuraldrift.io/issues/new"
+          target="_blank"
+          rel="noopener noreferrer"
           className="font-mono text-[10px] uppercase tracking-widest text-zinc-400 transition-colors hover:text-accent"
         >
           Apply to be Featured →
