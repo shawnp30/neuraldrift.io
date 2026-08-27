@@ -56,6 +56,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry("/optimizer/fix-my-pc", 0.65, "monthly"),
     entry("/optimizer/result", 0.5, "monthly"),
     entry("/dashboard", 0.5, "monthly"),
+    entry("/stash", 0.4, "monthly"),
+    entry("/train", 0.6, "monthly"),
     entry("/datasets", 0.75, "weekly"),
     entry("/lora-training", 0.75, "weekly"),
     entry("/proofs", 0.65, "weekly"),
@@ -68,6 +70,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     entry("/about", 0.5, "yearly"),
     entry("/changelog", 0.5, "weekly"),
     entry("/pricing", 0.5, "monthly"),
+    entry("/privacy", 0.3, "yearly"),
+    entry("/terms", 0.3, "yearly"),
     entry("/glossary", 0.55, "monthly"),
   ];
 

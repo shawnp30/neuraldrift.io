@@ -13,7 +13,7 @@ export async function generateMetadata({
 
   if (!workflow) {
     return {
-      title: "Workflow Not Found | NeuralDrift",
+      title: "Workflow Not Found",
       description: "This workflow ID is not in the NeuralDrift index.",
       robots: { index: false, follow: true },
       alternates: { canonical: url },
@@ -21,7 +21,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${workflow.title} | NeuralDrift`,
+    title: workflow.title,
     description: workflow.description,
     alternates: { canonical: url },
     openGraph: {

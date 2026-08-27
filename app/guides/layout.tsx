@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/guides",
-  "ComfyUI Guides — Technical Docs & Tutorials | NeuralDrift",
+  "ComfyUI Guides — Technical Docs & Tutorials",
   "In-depth ComfyUI guides: setup, custom nodes, performance, and troubleshooting for local AI generation."
 );
 

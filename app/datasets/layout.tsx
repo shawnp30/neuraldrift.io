@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/datasets",
-  "Datasets Hub — Training Data for Local AI | NeuralDrift",
+  "Datasets Hub — Training Data for Local AI",
   "Explore community datasets for LoRA training and fine-tuning with ComfyUI and open models."
 );
 

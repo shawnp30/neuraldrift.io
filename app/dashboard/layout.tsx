@@ -5,7 +5,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/dashboard",
-  "Dashboard — NeuralDrift",
+  "Dashboard",
   "Monitor jobs, models, and activity for your NeuralDrift workspace."
 );
 

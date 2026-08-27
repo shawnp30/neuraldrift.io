@@ -5,6 +5,7 @@ import { join } from "path";
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import CopyButton from "@/components/CopyButton";
+import { GuideQuickActions } from "@/components/GuideQuickActions";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
@@ -16,8 +17,10 @@ interface Props {
 interface Frontmatter {
   title: string;
   description: string;
-  date: string;
-  tags: string[];
+  category?: string;
+  difficulty?: string;
+  publishedAt?: string;
+  author?: string;
 }
 
 // ComputeAtlas Ad Component
@@ -132,7 +135,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!existsSync(filePath)) {
     return {
-      title: "Guide Not Found | NeuralDrift",
+      title: "Guide Not Found",
       robots: { index: false, follow: true },
       alternates: {
         canonical: `https://neuraldrift.io/guides/${slug}`,
@@ -161,7 +164,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonical,
       images: [
         {
-          url: "/og-image.png",
+          url: "/opengraph-image",
           width: 1200,
           height: 630,
           alt: frontmatter.title,
@@ -172,7 +175,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: frontmatter.title,
       description: frontmatter.description,
-      images: ["/og-image.png"],
+      images: ["/opengraph-image"],
     },
   };
 }
@@ -251,8 +254,34 @@ export default async function GuidePage({ params }: Props) {
   const prevSlug = currentIndex > 0 ? allFiles[currentIndex - 1].replace(".mdx", "") : null;
   const nextSlug = currentIndex < allFiles.length - 1 ? allFiles[currentIndex + 1].replace(".mdx", "") : null;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    headline: frontmatter.title,
+    description: frontmatter.description,
+    datePublished: frontmatter.publishedAt,
+    dateModified: frontmatter.publishedAt,
+    author: {
+      "@type": "Organization",
+      name: frontmatter.author || "NeuralDrift",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "NeuralDrift",
+      url: "https://neuraldrift.io",
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://neuraldrift.io/guides/${slug}`,
+    },
+  };
+
   return (
     <div className="bg-transparent min-h-screen text-[#e8e8f0] selection:bg-transparent/30 selection:text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
 
       <style dangerouslySetInnerHTML={{ __html: `
@@ -271,7 +300,7 @@ export default async function GuidePage({ params }: Props) {
             {/* Header */}
             <header className="mb-16">
               <div className="flex flex-wrap gap-2 mb-6">
-                {(frontmatter.tags || []).map(tag => (
+                {[frontmatter.category, frontmatter.difficulty].filter(Boolean).map((tag) => (
                   <span key={tag} className="px-3 py-1 rounded-full bg-[#7c6af7]/10 border border-[#7c6af7]/20 text-[#7c6af7] font-mono text-[10px] tracking-widest uppercase">
                     {tag}
                   </span>
@@ -288,10 +317,17 @@ export default async function GuidePage({ params }: Props) {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]" />
                   {readingTime} min read
                 </span>
-                <span className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#7c6af7]" />
-                  {frontmatter.date}
-                </span>
+                {frontmatter.publishedAt && (
+                  <span className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#7c6af7]" />
+                    {new Date(frontmatter.publishedAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      timeZone: "UTC",
+                    })}
+                  </span>
+                )}
               </div>
             </header>
 
@@ -347,14 +383,7 @@ export default async function GuidePage({ params }: Props) {
 
               <div className="mt-12 pt-8 border-t border-[#2a2a30]">
                 <p className="font-mono text-[10px] text-[#8888a0] tracking-widest uppercase mb-4">Quick Actions</p>
-                <div className="space-y-3">
-                  <a href="#" className="flex items-center gap-2 text-xs text-[#8888a0] hover:text-[#22d3ee] transition-colors">
-                    <span className="text-[#22d3ee]">☇</span> Download Workflow
-                  </a>
-                  <a href="#" className="flex items-center gap-2 text-xs text-[#8888a0] hover:text-[#4ade80] transition-colors">
-                    <span className="text-[#4ade80]">↑</span> Share Guide
-                  </a>
-                </div>
+                <GuideQuickActions title={frontmatter.title} />
               </div>
             </div>
           </aside>

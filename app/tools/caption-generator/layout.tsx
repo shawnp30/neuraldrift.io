@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/tools/caption-generator",
-  "Dataset Caption Generator — NeuralDrift",
+  "Dataset Caption Generator",
   "Auto-caption training images for LoRA and fine-tunes using vision captioning models."
 );
 

@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/workflows",
-  "ComfyUI Workflows — Ready-to-Run JSON Pipelines | NeuralDrift",
+  "ComfyUI Workflows — Ready-to-Run JSON Pipelines",
   "Browse curated ComfyUI workflows for image, video, and enhancement. Filter by VRAM, difficulty, and category."
 );
 

@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/guides/best-workflows-8gb",
-  "Best ComfyUI Workflows for 8GB VRAM | NeuralDrift",
+  "Best ComfyUI Workflows for 8GB VRAM",
   "Curated ComfyUI workflows that fit 8GB GPUs, with practical model and settings notes."
 );
 

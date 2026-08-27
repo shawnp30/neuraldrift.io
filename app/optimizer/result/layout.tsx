@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/optimizer/result",
-  "Optimizer Results — NeuralDrift",
+  "Optimizer Results",
   "Saved optimizer recommendations for your GPU and workload goals."
 );
 

@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/optimizer/fix-my-pc",
-  "Fix My PC — ComfyUI Performance Help | NeuralDrift",
+  "Fix My PC — ComfyUI Performance Help",
   "Practical steps to stabilize ComfyUI on Windows: drivers, memory, and workflow settings."
 );
 

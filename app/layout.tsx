@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     siteName: "NeuralDrift",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "NeuralDrift — ComfyUI Workflows, Guides & Tools",
@@ -58,7 +58,28 @@ export const metadata: Metadata = {
     title: "NeuralDrift — ComfyUI Workflows, Guides & Tools",
     description:
       "Free ComfyUI workflows, AI model guides, VRAM calculator and GPU tools for image and video generation",
-    images: ["/og-image.png"],
+    images: ["/opengraph-image"],
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "NeuralDrift",
+  url: "https://neuraldrift.io",
+  logo: "https://neuraldrift.io/favicon.png",
+  sameAs: ["https://github.com/shawnp30/neuraldrift.io"],
+};
+
+const websiteJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "NeuralDrift",
+  url: "https://neuraldrift.io",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: "https://neuraldrift.io/guides?q={search_term_string}",
+    "query-input": "required name=search_term_string",
   },
 };
 
@@ -73,6 +94,14 @@ export default function RootLayout({
       className={`${syne.variable} ${ibmPlexMono.variable} ${crimsonPro.variable} scroll-smooth`}
     >
       <body className="relative min-h-screen overflow-x-hidden bg-[#06080d] font-sans text-slate-50 antialiased selection:bg-accent/30">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         <NeuralBackground />
         <Navbar />
         <main className="relative z-[20]">{children}</main>

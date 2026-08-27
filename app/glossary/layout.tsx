@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/glossary",
-  "Glossary — NeuralDrift",
+  "Glossary",
   "Definitions for ComfyUI, diffusion, and local AI terms used across NeuralDrift guides."
 );
 
