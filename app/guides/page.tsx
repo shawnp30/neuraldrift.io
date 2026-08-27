@@ -181,7 +181,7 @@ const GUIDES = [
     tag: "Video Engine",
     image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2069&auto=format&fit=crop",
     minVram: 12,
-    modelId: "ltx-2.3-2b"
+    modelId: "ltx-2b"
   },
 
   {

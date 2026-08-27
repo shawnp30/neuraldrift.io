@@ -1,72 +1,114 @@
 "use client";
 
 import Link from "next/link";
-import { CloudRain, Video, Image as ImageIcon, Sparkles, BookOpen, Layers, DollarSign, Target } from "lucide-react";
+import { CloudRain, Video, Image as ImageIcon, Sparkles, BookOpen, Layers, DollarSign, Target, AlertTriangle } from "lucide-react";
+
+// Verified August 2026. Cloud model versions move fast — re-check before relying on
+// version numbers or pricing tiers.
+const LAST_VERIFIED = "August 2026";
 
 const PLATFORMS = [
   {
-    name: "Midjourney v6",
+    name: "Midjourney V8.2",
     type: "Image",
     company: "Midjourney",
-    description: "The undisputed king of artistic, conceptual, and highly-detailed photorealistic static images. If you need a still frame with perfect aesthetic composition, this is the gold standard.",
-    accuracyVerdict: "9.5/10 — Industry leader for prompt adherence and micro-details.",
-    bestFor: "Concept Art, Photorealism, Editorial Fashion, Text rendering.",
-    pricing: "Basic ($10/mo) • Standard ($30/mo) • Pro ($60/mo)",
+    status: "current" as const,
+    description: "Still the strongest option for artistic, conceptual, and editorial-grade stills. V8.2 (default since July 2026) pushes harder on aesthetics and personalization, and cuts down the low-quality misses earlier versions produced.",
+    accuracyVerdict: "Excellent prompt adherence and micro-detail. Personalization profiles now meaningfully shape output style.",
+    bestFor: "Concept art, photorealism, editorial fashion, in-image text.",
+    pricing: "Basic / Standard / Pro / Mega tiers — check midjourney.com for current rates.",
     promptingGuide: [
-      "Use natural, descriptive language.",
-      "Detail the focal point immediately.",
-      "Specify aesthetic terms (e.g., 'editorial photography', 'macro shot', 'minimalist').",
-      "Use parameters like --ar 16:9 for aspect ratio or --style raw for less stylization."
+      "Use natural, descriptive language — not comma-separated keyword dumps.",
+      "Lead with the focal point, then work outward to context.",
+      "Specify aesthetic terms ('editorial photography', 'macro shot', 'minimalist').",
+      "Use --ar for aspect ratio and --style raw when you want less Midjourney house-style."
     ],
-    example: "Editorial photography of a futuristic fashion model wearing a holographic jacket, dramatic studio lighting, harsh shadows, Vogue style, ultra-detailed --ar 4:5 --style raw --v 6"
+    example: "Editorial photography of a futuristic fashion model wearing a holographic jacket, dramatic studio lighting, harsh shadows, Vogue style, ultra-detailed --ar 4:5 --style raw"
+  },
+  {
+    name: "Seedance 2.0",
+    type: "Video",
+    company: "ByteDance",
+    status: "current" as const,
+    description: "Currently sitting at the top of the independent Artificial Analysis video leaderboard. Strong all-round motion quality and prompt adherence, and the model most likely to get a shot right on the first generation.",
+    accuracyVerdict: "Top-ranked on independent benchmarks as of mid-2026. Very strong first-try hit rate.",
+    bestFor: "General-purpose text-to-video, motion-heavy shots, fast iteration.",
+    pricing: "Available via ByteDance / partner APIs — pricing varies by provider.",
+    promptingGuide: [
+      "Describe the action first, then the camera, then the setting.",
+      "Keep one clear subject per shot — multi-subject prompts drift.",
+      "Name the shot type explicitly ('medium tracking shot', 'static wide').",
+      "Add lighting last; it anchors the overall look without fighting the motion."
+    ],
+    example: "A medium tracking shot of a lone cyclist riding along a coastal cliff road at sunrise, sea mist in the air, warm rim lighting, cinematic."
+  },
+  {
+    name: "Veo 3.1",
+    type: "Video",
+    company: "Google",
+    status: "current" as const,
+    description: "The strongest all-rounder for narrative work. Leads on prompt adherence, generates native synchronized audio, and outputs up to 4K in both landscape and portrait — which makes it the safest default for story-driven sequences.",
+    accuracyVerdict: "Best-in-class prompt adherence. Native audio and 4K output are the differentiators.",
+    bestFor: "Narrative scenes, establishing shots, physics-heavy action, anything needing sound.",
+    pricing: "Via Google Vertex AI / Gemini plans — metered by generation.",
+    promptingGuide: [
+      "Write in plain natural language; Veo responds poorly to keyword spam.",
+      "Use precise verbs for physics ('water splashing', 'fabric billowing').",
+      "Keep it linear: Subject → Action → Environment → Lighting.",
+      "Describe the audio you want — Veo 3.1 generates it natively."
+    ],
+    example: "A close-up of a glass of milk spilling across a marble countertop in slow motion, morning sunlight through a window, detailed liquid simulation, soft ambient kitchen sound."
+  },
+  {
+    name: "Runway Gen-4.5",
+    type: "Video",
+    company: "Runway",
+    status: "current" as const,
+    description: "The professional's control surface. Gen-4 added native audio, and the Gen-4.x line remains the pick when you need real directorial control — camera moves, motion brush, and reference-driven character consistency across shots.",
+    accuracyVerdict: "Not the raw quality leader anymore, but unmatched for granular creative control.",
+    bestFor: "Image-to-video, character consistency across cuts, VFX work, commercial B-roll.",
+    pricing: "Standard / Pro / Unlimited tiers — check runwayml.com for current rates.",
+    promptingGuide: [
+      "Specify motion speed ('slow motion', 'timelapse').",
+      "Detail the camera angle ('low angle', 'bird's-eye view').",
+      "Use image-to-video when composition matters more than novelty.",
+      "Lean on Motion Brush for targeted movement instead of over-describing it in text."
+    ],
+    example: "A low angle shot of an astronaut walking slowly across a desolate martian landscape, dust blowing in the wind, cinematic depth of field, 24fps."
+  },
+  {
+    name: "Kling 3.0",
+    type: "Video",
+    company: "Kuaishou",
+    status: "current" as const,
+    description: "The go-to for character dialogue work. Kling 3.0 added multilingual lip sync, which makes it the practical choice when a person on screen actually has to speak convincingly.",
+    accuracyVerdict: "Strong human motion and facial work; multilingual lip sync is the standout feature.",
+    bestFor: "Talking-head shots, character dialogue, human motion, localized content.",
+    pricing: "Credit-based tiers via klingai.com.",
+    promptingGuide: [
+      "Describe the performance, not just the appearance ('speaking earnestly', 'laughing mid-sentence').",
+      "Supply a reference image for character consistency wherever possible.",
+      "Keep camera movement modest — Kling favors subject motion over camera motion.",
+      "For lip sync, provide clean audio and a front-facing subject."
+    ],
+    example: "A medium close-up of a woman in a cafe speaking earnestly to camera, natural window light, shallow depth of field, subtle head movement."
   },
   {
     name: "Sora",
     type: "Video",
     company: "OpenAI",
-    description: "The heaviest lifter in AI video. Known for extreme temporal consistency, cinematic camera movements, and world-model simulation capabilities.",
-    accuracyVerdict: "9/10 — Peerless temporal consistency, but struggles with complex physics interactions.",
-    bestFor: "Cinematic establishing shots, Drone flyovers, Complex character movements.",
-    pricing: "Included in ChatGPT Plus / Pro ($20/mo to $200/mo APIs limits).",
+    status: "discontinued" as const,
+    description: "OpenAI shut Sora down. The web and app experiences went dark on April 26, 2026, and the Sora API is scheduled to be discontinued on September 24, 2026. If you have work still stored in Sora, export it before that date — OpenAI has said the data will be permanently deleted afterward.",
+    accuracyVerdict: "No longer available. Listed here only so anyone still searching for it gets a straight answer.",
+    bestFor: "Nothing — migrate to Veo 3.1, Seedance 2.0, or Runway Gen-4.5 above.",
+    pricing: "Discontinued.",
     promptingGuide: [
-      "Start with the core action and subject.",
-      "Define the camera movement explicitly (e.g., 'A slow tracking shot', 'drone flyover').",
-      "Specify the film stock or lighting (e.g., 'Shot on 35mm film', 'golden hour lighting').",
-      "End with environmental context to ground the scene."
+      "Sora is being retired — don't build a workflow on it.",
+      "For cinematic establishing shots, Veo 3.1 is the closest replacement.",
+      "For raw quality and first-try hit rate, try Seedance 2.0.",
+      "For directorial control over camera and character, use Runway Gen-4.5."
     ],
-    example: "A cinematic tracking shot following a neon-lit cyberpunk car speeding down a wet Tokyo street at midnight, reflections of pink and cyan lights on the puddles, hyper-realistic, shot on RED monstro."
-  },
-  {
-    name: "Veo 3",
-    type: "Video",
-    company: "Google",
-    description: "Highly realistic, physically accurate video generation. Google's answer to Sora, focusing extremely heavily on how objects interact and move within space.",
-    accuracyVerdict: "8.5/10 — Phenomenal liquid and cloth physics, highly responsive to natural text.",
-    bestFor: "Physics simulations (water, fire), Close-up macro action, Fluid dynamics.",
-    pricing: "Varies via Google Vertex AI / Workspace integration.",
-    promptingGuide: [
-      "Focus heavily on the physics and movement.",
-      "Use descriptive verbs for action (e.g., 'water splashing', 'fabric billowing').",
-      "Keep the prompt linear: Subject -> Action -> Environment -> Lighting.",
-      "Veo 3 responds well to natural language rather than keyword dumping."
-    ],
-    example: "A close-up shot of a glass of milk spilling on a marble countertop in slow motion, morning sunlight streaming through a window, highly detailed liquid simulation."
-  },
-  {
-    name: "Runway Gen-3 Alpha",
-    type: "Video",
-    company: "Runway",
-    description: "Fast, highly controllable video generation. The best choice for editors who need image-to-video looping, rapid iteration, and direct VFX integrations.",
-    accuracyVerdict: "8/10 — Incredible Image-to-Video fidelity, sometimes hallucinates on Text-to-Video.",
-    bestFor: "Image-to-Video motion, Fast Drafts, Stylized VFX, Commercial B-Roll.",
-    pricing: "Standard ($15/mo) • Pro ($35/mo) • Unlimited ($95/mo)",
-    promptingGuide: [
-      "Specify motion speed (e.g., 'slow motion', 'timelapse').",
-      "Detail the camera angle (e.g., 'low angle', 'birds-eye view').",
-      "Keep subjects relatively simple for best temporal consistency.",
-      "Use image-to-video for maximum control over the initial composition."
-    ],
-    example: "A low angle shot of an astronaut walking slowly across a desolate martian landscape, dust blowing in the wind, cinematic depth of field, 24fps."
+    example: "Export any remaining Sora work at sora.chatgpt.com/sunset before the API shutdown."
   }
 ];
 
@@ -86,23 +128,36 @@ export default function CloudGeneratorsPage() {
         <p className="text-lg md:text-xl font-[500] text-zinc-400 max-w-2xl mx-auto leading-relaxed">
           Comprehensive knowledge on closed-source models. Discover which platform is best for your specific use case, what it costs, and precisely how to command it.
         </p>
+        <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 font-mono text-[11px] uppercase tracking-widest text-zinc-500">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+          Model lineup verified {LAST_VERIFIED}
+        </p>
       </div>
 
       {/* ── PLATFORM DRILLDOWNS ── */}
       <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-12 mb-32">
         {PLATFORMS.map((plat) => (
-          <div key={plat.name} className="bg-[#080b0f] border border-white/10 rounded-3xl overflow-hidden shadow-2xl hover:border-indigo-500/30 transition-colors duration-500 relative">
+          <div key={plat.name} className={`bg-[#080b0f] border rounded-3xl overflow-hidden shadow-2xl transition-colors duration-500 relative ${plat.status === "discontinued" ? "border-amber-500/30 opacity-90" : "border-white/10 hover:border-indigo-500/30"}`}>
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[120px] -mr-40 -mt-20 pointer-events-none mix-blend-screen" />
-            
+
+            {plat.status === "discontinued" && (
+              <div className="relative z-10 flex items-center gap-3 border-b border-amber-500/30 bg-amber-500/10 px-8 py-4 md:px-12">
+                <AlertTriangle className="h-5 w-5 shrink-0 text-amber-400" />
+                <p className="text-sm font-[700] text-amber-200">
+                  Discontinued by {plat.company} — do not build new workflows on this.
+                </p>
+              </div>
+            )}
+
             <div className="p-8 md:p-12 flex flex-col lg:flex-row gap-10 lg:gap-16 relative z-10">
-              
+
               {/* Left Column (Info & Stats) */}
               <div className="w-full lg:w-[45%]">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={`p-2 rounded-xl ${plat.type === "Video" ? "bg-sky-500/20 text-sky-400" : "bg-green-500/20 text-green-400"}`}>
+                  <div className={`p-2 rounded-xl ${plat.status === "discontinued" ? "bg-amber-500/20 text-amber-400" : plat.type === "Video" ? "bg-sky-500/20 text-sky-400" : "bg-green-500/20 text-green-400"}`}>
                     {plat.type === "Video" ? <Video className="w-6 h-6" /> : <ImageIcon className="w-6 h-6" />}
                   </div>
-                  <h3 className="text-3xl md:text-4xl font-[800] text-white">{plat.name}</h3>
+                  <h3 className={`text-3xl md:text-4xl font-[800] ${plat.status === "discontinued" ? "text-zinc-400 line-through decoration-amber-500/50" : "text-white"}`}>{plat.name}</h3>
                 </div>
                 <p className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-6">Built By {plat.company}</p>
                 <p className="text-zinc-300 font-[500] leading-relaxed mb-8 text-lg">{plat.description}</p>

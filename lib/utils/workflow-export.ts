@@ -52,7 +52,7 @@ type NodeInjection = {
 
 // Injection maps for each workflow
 const INJECTION_MAPS: Record<string, NodeInjection[]> = {
-  // LTX 2.3 - subgraph node, inject dimensions and frames only
+  // LTX Video - subgraph node, inject dimensions and frames only
   // Prompt must be set inside the subgraph in ComfyUI
   "ltx-cinematic-chase": [
     {

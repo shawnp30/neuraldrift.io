@@ -5,7 +5,7 @@ import styles from "./LiveNewsTicker.module.css";
 const statusItems = [
   "⚡ RTX 5080 — Primary test rig",
   "🔧 ComfyUI — Workflow engine",
-  "🎬 LTX Video 2.3 — Cinematic generation",
+  "🎬 LTX Video — Cinematic generation",
   "🧠 FLUX Dev/Schnell — Image models",
   "📦 6 LoRA Models — Ready to download",
   "⚙️ 50 ComfyUI Workflows — Plug & play",

@@ -129,7 +129,7 @@ const BUILDS = [
     status: "Complete",
     statusColor: "text-[#10b981]",
     date: "March 2025",
-    model: "LTX Video 2.3",
+    model: "LTX Video",
     description:
       "A first-person motorcycle chase sequence built for YouTube Shorts. Developed over 3 sessions, 47 test renders.",
     devlog: [

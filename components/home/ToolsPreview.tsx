@@ -50,7 +50,7 @@ export function ToolsPreview() {
             icon: "⚡",
             title: "GPU Benchmark Lookup",
             desc: "Real inference and training benchmarks across consumer GPUs.",
-            features: ["FLUX Dev FP8, SDXL, LTX Video 2.3, FLUX LoRA Training", "Filter by model, GPU, category", "Sort by speed, VRAM, or GPU name", "Your rigs highlighted across all benchmark rows"],
+            features: ["FLUX Dev FP8, SDXL, LTX Video, FLUX LoRA Training", "Filter by model, GPU, category", "Sort by speed, VRAM, or GPU name", "Your rigs highlighted across all benchmark rows"],
             color: "border-[#10b981]/20",
             accent: "text-[#10b981]",
           },

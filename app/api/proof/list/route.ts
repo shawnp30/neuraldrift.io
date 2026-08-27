@@ -16,7 +16,7 @@ const WORKFLOW_TITLES: Record<string, string> = {
   "08-sdxl-lora-style": "SDXL + Style LoRA",
   "09-sdxl-landscape": "SDXL Landscape & Nature",
   "10-sd15-anime": "SD 1.5 Anime (AnythingV5)",
-  "11-ltx-video-t2v-basic": "LTX Video 2.3 — Basic T2V",
+  "11-ltx-video-t2v-basic": "LTX Video — Basic T2V",
   "12-ltx-video-cinematic": "LTX Video — Cinematic 9:16",
   "13-ltx-video-action-chase": "LTX Video — Action Chase",
   "14-ltx-video-fast-draft": "LTX Video — Fast Draft",

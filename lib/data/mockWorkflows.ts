@@ -72,7 +72,7 @@ export const MOCK_WORKFLOWS: EnhancedWorkflowMetadata[] = [
     id: "5", 
     name: "Cinematic Video LTX", 
     slug: "cinematic-ltx", 
-    description: "Convert text to high-quality 24fps cinematic video using LTX Video 2.3.", 
+    description: "Convert text to high-quality 24fps cinematic video using LTX Video.", 
     tags: ["Video", "LTX", "Motion"], 
     preview_image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?w=800", 
     preview_video: null, 

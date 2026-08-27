@@ -196,7 +196,7 @@ const GPU_DATA = {
     models: [
       { name: "Flux.1 Dev", type: "Image Gen", notes: "Full model, no quantization needed. Fast batch generation." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Multiple LoRAs stacked. Train custom LoRAs locally." },
-      { name: "LTX Video 2.3", type: "Video Gen", notes: "High-res video at full quality. Extended clip lengths." },
+      { name: "LTX Video", type: "Video Gen", notes: "High-res video at full quality. Extended clip lengths." },
       { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Full 70B quantized fits. Fast inference." },
       { name: "Whisper Large V3", type: "Audio", notes: "Real-time transcription with headroom to spare." },
     ],
@@ -207,7 +207,7 @@ const GPU_DATA = {
     models: [
       { name: "Flux.1 Dev (FP8)", type: "Image Gen", notes: "Runs great with FP8 quantization. Near-lossless quality." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Comfortable with 2-3 LoRAs stacked." },
-      { name: "LTX Video 2.3", type: "Video Gen", notes: "Short clips work well. Medium res recommended." },
+      { name: "LTX Video", type: "Video Gen", notes: "Short clips work well. Medium res recommended." },
       { name: "Llama 3.1 8B", type: "LLM", notes: "Full precision. Blazing fast inference." },
       { name: "Whisper Large V3", type: "Audio", notes: "No issues. Plenty of VRAM." },
     ],
@@ -240,7 +240,7 @@ const GPU_DATA = {
     models: [
       { name: "Flux.1 Dev", type: "Image Gen", notes: "Runs at full FP16. Excellent speed." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Stack LoRAs freely. Train them too." },
-      { name: "LTX Video 2.3", type: "Video Gen", notes: "Handles full quality. Longer clips possible." },
+      { name: "LTX Video", type: "Video Gen", notes: "Handles full quality. Longer clips possible." },
       { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Tight fit but works with 4-bit quantization." },
       { name: "Whisper Large V3", type: "Audio", notes: "No issues whatsoever." },
     ],
@@ -310,7 +310,7 @@ const GPU_DATA = {
     models: [
       { name: "Flux.1 Dev", type: "Image Gen", notes: "24GB VRAM fits full model. Slower than 40-series but works." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Comfortable. LoRA training possible." },
-      { name: "LTX Video 2.3", type: "Video Gen", notes: "Works. Expect longer render times vs newer cards." },
+      { name: "LTX Video", type: "Video Gen", notes: "Works. Expect longer render times vs newer cards." },
       { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Fits quantized. Slower inference." },
     ],
     verdict: "Still a powerhouse thanks to 24GB VRAM. Model compatibility matches the 4090 — you just wait longer. Excellent used-market value for AI creators on a budget.",
@@ -451,7 +451,7 @@ const GPU_DATA = {
       { name: "Flux.1 Dev", type: "Image Gen", notes: "Plenty of room. Full quality." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Stack whatever you want." },
       { name: "Llama 3.3 70B", type: "LLM", notes: "Near full precision via MLX." },
-      { name: "LTX Video 2.3", type: "Video Gen", notes: "Works via MPS. Slower but functional." },
+      { name: "LTX Video", type: "Video Gen", notes: "Works via MPS. Slower but functional." },
       { name: "Whisper Large V3", type: "Audio", notes: "No issues." },
     ],
     verdict: "48GB unified memory rivals workstation GPUs for model compatibility. The MLX ecosystem makes this a legitimate AI development machine. Slower than desktop NVIDIA but remarkably capable.",

@@ -37,7 +37,7 @@ export const GUIDE_CONTENT: GuideData[] = [
             ["GTX 1660 Ti", "6GB", "SDXL 512px, SD1.5, small batches"],
             ["RTX 3080 10GB", "10GB", "SDXL 768px, AnimateDiff short clips"],
             ["RTX 3080 16GB", "16GB", "SDXL full, FLUX Schnell, LTX Video"],
-            ["RTX 4090 / 5080", "16–24GB", "FLUX Dev, LTX 2.3 full quality"],
+            ["RTX 4090 / 5080", "16–24GB", "FLUX Dev, LTX Video full quality"],
             ["RTX 5090", "32GB", "Everything, no compromise"],
           ],
         },
@@ -85,7 +85,7 @@ export const GUIDE_CONTENT: GuideData[] = [
             ["SDXL Base 1.0", "6.9GB", "8GB min", "~3s / image RTX 5080"],
             ["FLUX Schnell", "23GB", "12GB min", "~4s / image RTX 5080"],
             ["FLUX Dev", "23GB", "16GB min", "~22s / image RTX 5080"],
-            ["LTX Video 2.3", "9.7GB", "12GB min", "~47s / 8s clip RTX 5080"],
+            ["LTX Video", "9.7GB", "12GB min", "~47s / 8s clip RTX 5080"],
           ],
         },
       },
@@ -345,15 +345,15 @@ export const GUIDE_CONTENT: GuideData[] = [
   },
 
   // ─────────────────────────────────────────────────────────────────────────────
-  // GUIDE 3 — LTX Video 2.3: Cinematic Action Sequences
+  // GUIDE 3 — LTX Video: Cinematic Action Sequences
   // ─────────────────────────────────────────────────────────────────────────────
   {
     slug: "ltx-video-cinematic-action",
-    title: "LTX Video 2.3: Cinematic Action Sequences",
+    title: "LTX Video: Cinematic Action Sequences",
     workflowId: "03",
     sections: [
       {
-        title: "What LTX Video 2.3 Does",
+        title: "What LTX Video Does",
         content:
           "LTX Video is a diffusion video model that generates 2–10 second clips from text prompts at up to 768×1344 resolution (9:16 vertical for Shorts/TikTok). Version 2.3 introduced motion scale control, better temporal coherence, and a new cinematic scheduler that dramatically improves action sequences.",
         table: {
@@ -371,7 +371,7 @@ export const GUIDE_CONTENT: GuideData[] = [
       {
         title: "Step 1 — Install LTX Video in ComfyUI",
         content:
-          "Download the LTX Video 2.3 model and place it in ComfyUI/models/video_models/. Then install the required custom nodes:",
+          "Download the LTX Video model and place it in ComfyUI/models/video_models/. Then install the required custom nodes:",
         code: {
           filename: "terminal",
           language: "bash",

@@ -24,19 +24,23 @@ interface Model {
 }
 
 const MODELS: Model[] = [
-  { id: "flux-dev", name: "Flux Dev", vramNeeded: 12.1, type: "image", desc: "SOTA Open Image Model" },
-  { id: "flux-schnell", name: "Flux Schnell", vramNeeded: 6.8, type: "image", desc: "4-step Distilled Image Gen" },
+  { id: "flux-dev", name: "Flux.1 Dev", vramNeeded: 12.1, type: "image", desc: "Flagship Open Image Model" },
+  { id: "flux-schnell", name: "Flux.1 Schnell", vramNeeded: 6.8, type: "image", desc: "4-step Distilled Image Gen" },
+  { id: "qwen-image", name: "Qwen-Image (Q4)", vramNeeded: 8.0, type: "image", desc: "Apache 2.0 — Best In-Image Text" },
+  { id: "sd-3.5-large", name: "SD 3.5 Large", vramNeeded: 9.9, type: "image", desc: "Stability Flagship — Deep LoRA Support" },
   { id: "sdxl", name: "SDXL 1.0", vramNeeded: 6.5, type: "image", desc: "Standard High Res Diffusion" },
   { id: "sdxl-turbo", name: "SDXL Turbo", vramNeeded: 4.2, type: "image", desc: "Single-step Real-time Gen" },
-  { id: "ltx-2.3-22b", name: "LTX Video 2.3 22B", vramNeeded: 24.5, type: "video", desc: "High-Fidelity Video Gen" },
-  { id: "ltx-2.3-2b", name: "LTX Video 2.3 2B", vramNeeded: 5.4, type: "video", desc: "Fast Mobile-ready Video" },
+  { id: "ltx-22b", name: "LTX Video 22B", vramNeeded: 24.5, type: "video", desc: "High-Fidelity Video Gen" },
+  { id: "ltx-2b", name: "LTX Video 2B", vramNeeded: 5.4, type: "video", desc: "Fast Low-VRAM Video" },
   { id: "ace-step-1.5", name: "ACE-Step 1.5", vramNeeded: 8.2, type: "audio", desc: "Audio Synthesis Foundation" },
   { id: "wan-14b", name: "Wan Video 14B", vramNeeded: 16.5, type: "video", desc: "Video-First Latent Diffusion" },
   { id: "animatediff", name: "AnimateDiff", vramNeeded: 9.5, type: "video", desc: "SD1.5 Motion Module Extension" },
   { id: "llama-3.1-8b", name: "Llama 3.1 8B (4-bit)", vramNeeded: 5.5, type: "llm", desc: "Efficient Tech Assistant" },
-  { id: "llama-3.3-70b", name: "Llama 3.3 70B (4-bit)", vramNeeded: 42.0, type: "llm", desc: "SOTA Open Weights Language" },
-  { id: "qwen-2.5-32b", name: "Qwen 2.5 Coder 32B", vramNeeded: 19.5, type: "llm", desc: "Advanced Coding Assistant" },
-  { id: "deepseek-r1-32b", name: "DeepSeek R1 32B", vramNeeded: 19.5, type: "llm", desc: "Reasoning-Optimized LLM" },
+  { id: "llama-3.3-70b", name: "Llama 3.3 70B (4-bit)", vramNeeded: 42.0, type: "llm", desc: "Large Open Weights Language" },
+  { id: "qwen3-14b", name: "Qwen3 14B (4-bit)", vramNeeded: 10.0, type: "llm", desc: "Strong Mid-Size All-Rounder" },
+  { id: "qwen3-30b-a3b", name: "Qwen3 30B-A3B (4-bit)", vramNeeded: 17.0, type: "llm", desc: "MoE — 3B Active, Fast Inference" },
+  { id: "qwen3-32b", name: "Qwen3 32B (4-bit)", vramNeeded: 20.0, type: "llm", desc: "Apache 2.0 Dense Flagship" },
+  { id: "deepseek-r1-32b", name: "DeepSeek R1 32B (4-bit)", vramNeeded: 19.5, type: "llm", desc: "Reasoning-Optimized LLM" },
 ];
 
 interface GPU {

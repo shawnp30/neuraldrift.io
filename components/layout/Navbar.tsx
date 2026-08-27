@@ -33,7 +33,7 @@ const NAV = [
     children: [
       { name: "Workflows", href: "/workflows", desc: "Pre-built ComfyUI JSON" },
       { name: "Prompt Gen", href: "/prompt-generator", desc: "Build better prompts" },
-      { name: "Cloud Gens", href: "/cloud-generators", desc: "Sora, Veo, Midjourney" },
+      { name: "Cloud Gens", href: "/cloud-generators", desc: "Veo, Midjourney, Runway" },
       { name: "Training Suite", href: "/train", desc: "Caption & tag LoRA datasets" },
     ],
   },

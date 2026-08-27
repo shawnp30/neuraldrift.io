@@ -28,7 +28,7 @@ const WORKFLOWS = [
   },
   {
     id: "11-ltx-video-t2v-basic",
-    title: "LTX Video 2.3 — Basic T2V",
+    title: "LTX Video — Basic T2V",
     category: "Video",
   },
   {

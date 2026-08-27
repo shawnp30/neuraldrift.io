@@ -57,7 +57,7 @@ export const GPUS: Record<string, GPURegistryItem> = {
     models: [
       { name: "Flux.1 Dev", type: "Image Gen", notes: "Full model, no quantization needed. Fast batch generation." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Multiple LoRAs stacked. Train custom LoRAs locally." },
-      { name: "LTX Video 2.3", type: "Video Gen", notes: "High-res video at full quality. Extended clip lengths." },
+      { name: "LTX Video", type: "Video Gen", notes: "High-res video at full quality. Extended clip lengths." },
     ],
     buy_url: "https://computeatlas.ai/builds/flagship-5090"
   },
@@ -67,7 +67,7 @@ export const GPUS: Record<string, GPURegistryItem> = {
     canHandle: true,
     models: [
       { name: "Flux.1 Dev (FP8)", type: "Image Gen", notes: "Runs great with FP8 quantization. Near-lossless quality." },
-      { name: "LTX Video 2.3", type: "Video Gen", notes: "Short clips work well. Medium res recommended." },
+      { name: "LTX Video", type: "Video Gen", notes: "Short clips work well. Medium res recommended." },
     ],
     buy_url: "https://computeatlas.ai/builds/pro-5080"
   },
@@ -139,7 +139,7 @@ export const BENCHMARKS: Benchmark[] = [
 export const MODELS: AIModel[] = [
   { id: "flux-dev", name: "Flux Dev", vramNeeded: 12.1, type: "image", desc: "SOTA Open Image Model" },
   { id: "sdxl", name: "SDXL 1.0", vramNeeded: 6.5, type: "image", desc: "Standard High Res Diffusion" },
-  { id: "ltx-2.3-22b", name: "LTX Video 2.3 22B", vramNeeded: 24.5, type: "video", desc: "High-Fidelity Video Gen" },
+  { id: "ltx-22b", name: "LTX Video 22B", vramNeeded: 24.5, type: "video", desc: "High-Fidelity Video Gen" },
   { id: "llama-3.3-70b", name: "Llama 3.3 70B (4-bit)", vramNeeded: 42.0, type: "llm", desc: "SOTA Open Weights Language" },
 ];
 
