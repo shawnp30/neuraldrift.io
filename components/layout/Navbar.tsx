@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { AudioWaveform, Music, BrainCircuit, ChevronDown, Search, X } from "lucide-react";
 import Link from "next/link";
 import DualTicker from "@/components/DualTicker";
+import { AuthNavButton } from "@/components/auth/AuthNavButton";
 
 // ─────────────────────────────────────────────────────────────────
 // NAV STRUCTURE
@@ -15,8 +16,8 @@ const NAV = [
       { name: "Hardware Hub", href: "/hardware", desc: "Can your PC run AI?", badge: "HOT" },
       { name: "Academy", href: "/tutorials", desc: "Video masterclasses" },
       { name: "Guides", href: "/guides", desc: "Written technical docs" },
-      { name: "LTX Video 2.3", href: "/guides/ltx-video-cinematic-action", desc: "SOTA Video generation", badge: "NEW" },
-      { name: "ACE-Step 1.5", href: "/guides/ace-step-1-5-comfyui", desc: "Advanced audio synthesis", badge: "NEW" },
+      { name: "LTX Video", href: "/guides/ltx-video-cinematic-action", desc: "Cinematic video generation", badge: "NEW" },
+      { name: "ACE-Step 1.5", href: "/guides/ace-step-1-5-comfyui", desc: "Advanced audio synthesis" },
     ],
   },
   {
@@ -24,6 +25,7 @@ const NAV = [
     children: [
       { name: "Datasets Hub", href: "/datasets", desc: "Community training data" },
       { name: "Model Library", href: "/models", desc: "Neural architecture hub" },
+      { name: "Drift Stash", href: "/stash", desc: "Your saved models & LoRAs" },
     ],
   },
   {
@@ -32,6 +34,7 @@ const NAV = [
       { name: "Workflows", href: "/workflows", desc: "Pre-built ComfyUI JSON" },
       { name: "Prompt Gen", href: "/prompt-generator", desc: "Build better prompts" },
       { name: "Cloud Gens", href: "/cloud-generators", desc: "Sora, Veo, Midjourney" },
+      { name: "Training Suite", href: "/train", desc: "Caption & tag LoRA datasets" },
     ],
   },
   {
@@ -418,6 +421,8 @@ export default function Navbar() {
             >
               CAN I RUN IT?
             </Link>
+
+            <AuthNavButton />
 
             <button
               onClick={() => {

@@ -1,5 +1,7 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 const TITLES: Record<string, string> = {
   "/dashboard": "Dashboard",
@@ -12,7 +14,21 @@ const TITLES: Record<string, string> = {
 
 export function Topbar() {
   const path = usePathname();
+  const router = useRouter();
   const title = TITLES[path] || "Dashboard";
+  const [email, setEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? null));
+  }, []);
+
+  async function handleSignOut() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/");
+    router.refresh();
+  }
 
   return (
     <header className="bg-sidebar flex h-[52px] flex-shrink-0 items-center justify-between border-b border-border px-6">
@@ -32,6 +48,19 @@ export function Topbar() {
           🔔
           <span className="border-sidebar absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full border bg-accent-orange" />
         </button>
+        {email && (
+          <div className="flex items-center gap-2 border-l border-border pl-3">
+            <span className="font-mono text-xs text-muted max-w-[160px] truncate" title={email}>
+              {email}
+            </span>
+            <button
+              onClick={handleSignOut}
+              className="rounded border border-border bg-surface px-3 py-1.5 font-mono text-xs text-muted transition-colors hover:border-accent/30 hover:text-accent"
+            >
+              Sign Out
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );
