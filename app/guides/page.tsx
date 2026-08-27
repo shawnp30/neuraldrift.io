@@ -8,6 +8,7 @@ import Navbar from "@/components/layout/Navbar";
 import type { Difficulty } from "@/types";
 
 import { DynamicCTA } from "@/components/DynamicCTA";
+import { GuideVisual } from "@/components/GuideVisual";
 
 type GuideDifficulty = Difficulty | "Troubleshooting";
 
@@ -43,7 +44,6 @@ const GUIDES = [
     desc: "Install, configure, and benchmark your first ComfyUI node network with optimal VRAM settings.", 
     time: "12 min", 
     tag: "Foundation", 
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
     minVram: 8,
     modelId: "sdxl"
   },
@@ -54,7 +54,6 @@ const GUIDES = [
     desc: "Complete setup for Windows/Linux. From Python environment to the first successful generation.", 
     time: "15 min", 
     tag: "Foundation", 
-    image: "/images/guides/comfyui-install.jpg",
     minVram: 4,
     modelId: "sdxl-turbo"
   },
@@ -65,7 +64,6 @@ const GUIDES = [
     desc: "Properly organizing your Checkpoints, LoRAs, and VAEs for speed and easy management.", 
     time: "10 min", 
     tag: "Foundation", 
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop",
     minVram: 4,
     modelId: "base"
   },
@@ -76,7 +74,6 @@ const GUIDES = [
     desc: "Side-by-side comparison. Which version works best for your specific GPU stack?", 
     time: "8 min", 
     tag: "Foundation", 
-    image: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=2040&auto=format&fit=crop",
     minVram: 4,
     modelId: "base"
   },
@@ -87,7 +84,6 @@ const GUIDES = [
     desc: "Exploring the benefits of the standalone version for flexibility and mobility across systems.", 
     time: "5 min", 
     tag: "Foundation", 
-    image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop",
     minVram: 4,
     modelId: "base"
   },
@@ -98,7 +94,6 @@ const GUIDES = [
     desc: "SDXL vs Flux vs DeepSeek. Choose the right core for your local pipeline.", 
     time: "10 min", 
     tag: "Masterclass", 
-    image: "/images/learn/beginner.png",
     minVram: 12,
     modelId: "flux-dev"
   },
@@ -111,7 +106,6 @@ const GUIDES = [
     desc: "Squeeze every last bit of power from your local GPU with specific tier tuning strategies.", 
     time: "15 min", 
     tag: "Optimization", 
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=2068&auto=format&fit=crop",
     minVram: 8,
     modelId: "sdxl"
   },
@@ -122,7 +116,6 @@ const GUIDES = [
     desc: "Master the bridge between Audio Ace and ComfyUI for premium AV generation.", 
     time: "15 min", 
     tag: "Audio Engine", 
-    image: "/images/guides/ace-node-prompt.png",
     minVram: 8,
     modelId: "ace-step-1.5"
   },
@@ -133,7 +126,6 @@ const GUIDES = [
     desc: "Mastering the art of building scalable, modular AI architectures from scratch.", 
     time: "20 min", 
     tag: "Node Ops", 
-    image: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?q=80&w=2070&auto=format&fit=crop",
     minVram: 12,
     modelId: "flux-dev"
   },
@@ -146,7 +138,6 @@ const GUIDES = [
     desc: "Unlock ComfyUI extensions like Manager and IPAdapter. Building custom logic blocks.", 
     time: "15 min", 
     tag: "Extensions", 
-    image: "/images/learn/advanced.png",
     minVram: 8,
     modelId: "sdxl"
   },
@@ -157,7 +148,6 @@ const GUIDES = [
     desc: "Dataset prep, Kohya_ss configuration, and evaluation loop in under 6 hours.", 
     time: "28 min", 
     tag: "Masterclass", 
-    image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
     minVram: 16,
     modelId: "flux-dev"
   },
@@ -168,7 +158,6 @@ const GUIDES = [
     desc: "Deploy production-ready cloud APIs on RunPod, Modal, and AWS at scale.", 
     time: "25 min", 
     tag: "Architecture", 
-    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop",
     minVram: 24,
     modelId: "cloud"
   },
@@ -179,7 +168,6 @@ const GUIDES = [
     desc: "Build chase and action scenes with consistent motion using LTX Video.",
     time: "18 min",
     tag: "Video Engine",
-    image: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2069&auto=format&fit=crop",
     minVram: 12,
     modelId: "ltx-2b"
   },
@@ -191,7 +179,6 @@ const GUIDES = [
     desc: "Deep dive into the power-user installation — when the desktop app beats portable.",
     time: "5 min",
     tag: "Decision",
-    image: "/images/guides/workflow-errors.png",
     minVram: 4,
     modelId: "base"
   },
@@ -204,7 +191,6 @@ const GUIDES = [
     desc: "Solve node not found, black images, type mismatches, and silent failures.",
     time: "9 min",
     tag: "Maintenance",
-    image: "/images/learn/intermediate.png",
     minVram: 8,
     modelId: "any"
   },
@@ -215,7 +201,6 @@ const GUIDES = [
     desc: "Deep dive into solving CUDA out of memory errors and VRAM overflow issues.",
     time: "10 min",
     tag: "Hardware",
-    image: "https://images.unsplash.com/photo-1591405351990-4726e331f141?q=80&w=2070&auto=format&fit=crop",
     minVram: 4,
     modelId: "any"
   },
@@ -226,7 +211,6 @@ const GUIDES = [
     desc: "Solve pip install failures, missing Python packages, and FFmpeg errors.",
     time: "10 min",
     tag: "Maintenance",
-    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop",
     minVram: 4,
     modelId: "any"
   },
@@ -237,7 +221,6 @@ const GUIDES = [
     desc: "Diagnose any ComfyUI problem and get routed to the exact fix guide.",
     time: "6 min",
     tag: "Support",
-    image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=2070&auto=format&fit=crop",
     minVram: 4,
     modelId: "any"
   }
@@ -427,11 +410,10 @@ export default function GuidesPage() {
                         />
 
                         <Link href={`/guides/${guide.slug}`} className="block aspect-[16/10] relative overflow-hidden bg-black/50 border-b border-white/5">
-                          <Image 
-                            src={guide.image} 
-                            alt={guide.title} 
-                            fill
-                            className="object-cover group-hover:scale-105 transition-all duration-700 opacity-80" 
+                          <GuideVisual
+                            slug={guide.slug}
+                            variant={guide.difficulty}
+                            className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />
                           <div className="absolute top-4 left-4 flex gap-2">
                              <span className={`inline-flex items-center gap-1.5 font-mono text-[9px] px-2.5 py-1 rounded-full tracking-widest uppercase backdrop-blur-md shadow-lg ${DIFF_STYLES[guide.difficulty].badge}`}>

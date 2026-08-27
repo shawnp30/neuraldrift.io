@@ -794,7 +794,7 @@ function HardwareDetail({ gpu, cpu, ram, onBack }: HardwareDetailProps) {
         }}>
           <h3 style={{ fontSize: 16, fontWeight: 600, color: "#f59e0b", marginBottom: 8, fontFamily: "'Playfair Display', serif" }}>💡 Don&apos;t have the right hardware? Use cloud GPUs</h3>
           <p style={{ color: "#d1d5db", fontSize: 14, margin: 0, lineHeight: 1.6, fontFamily: "'Space Grotesk', sans-serif" }}>
-            You don&apos;t need expensive hardware to create with AI. Cloud GPU services like RunPod and Vast.ai let you rent an RTX 4090 for as little as $0.20/hr. Check the providers below.
+            You don&apos;t need expensive hardware to create with AI. Cloud GPU services like RunPod and Vast.ai rent RTX 4090s by the second, typically in the $0.20–0.40/hr range. Rates move constantly — always confirm on the provider before committing.
           </p>
         </div>
       )}

@@ -1,14 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import React from "react";
+import { GuideVisual } from "@/components/GuideVisual";
 import { ArrowRight, Play, BookOpen, Settings } from "lucide-react";
 
 const CARDS = [
   {
-    image:
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
     level: "Beginner",
     levelColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
     icon: <Settings size={16} className="text-emerald-400" />,
@@ -18,8 +16,6 @@ const CARDS = [
     desc: "Install, configure, and benchmark your first ComfyUI workflow. From zero to generating in under 30 minutes.",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2070&auto=format&fit=crop",
     level: "Intermediate",
     levelColor: "bg-orange-500/10 text-orange-400 border-orange-500/20",
     icon: <BookOpen size={16} className="text-orange-400" />,
@@ -29,8 +25,6 @@ const CARDS = [
     desc: "Dataset prep, Kohya config, training loop, and quality evaluation. Exact settings for RTX 5080 and 3080.",
   },
   {
-    image:
-      "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2059&auto=format&fit=crop",
     level: "Advanced",
     levelColor: "bg-violet-500/10 text-violet-400 border-violet-500/20",
     icon: <Play size={16} className="text-violet-400" />,
@@ -70,12 +64,10 @@ export const LearningPreview = () => {
             >
               {/* Image Container */}
               <div className="relative h-48 w-full overflow-hidden border-b border-white/5">
-                <Image
-                  src={card.image}
-                  alt={card.title}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  unoptimized // Simplifies demo
+                <GuideVisual
+                  slug={card.href}
+                  variant={card.level}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
 
                 {/* Level Badge Overlay */}

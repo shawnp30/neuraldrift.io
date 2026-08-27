@@ -6,6 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import CopyButton from "@/components/CopyButton";
 import { GuideQuickActions } from "@/components/GuideQuickActions";
+import { BENCHMARKS } from "@/lib/hardware/registry";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
@@ -22,6 +23,13 @@ interface Frontmatter {
   publishedAt?: string;
   author?: string;
 }
+
+// Real benchmark figures pulled from the site's own hardware registry, so this
+// panel can't drift out of sync with the numbers published on /hardware.
+const BENCH_PREVIEW = BENCHMARKS.filter((b) => b.imagesPerMinute)
+  .sort((a, b) => (b.imagesPerMinute ?? 0) - (a.imagesPerMinute ?? 0))
+  .slice(0, 4);
+const BENCH_MAX = Math.max(...BENCH_PREVIEW.map((b) => b.imagesPerMinute ?? 0), 1);
 
 // ComputeAtlas Ad Component
 function ComputeAtlasAd({ variant = "inline" }: { variant?: "inline" | "bottom" }) {
@@ -46,10 +54,24 @@ function ComputeAtlasAd({ variant = "inline" }: { variant?: "inline" | "bottom" 
             Check GPU Prices →
           </a>
         </div>
-        <div className="hidden md:block w-48 h-48 bg-[#0a0a0b] rounded-2xl border border-[#2a2a30] p-4 flex-shrink-0">
-          <div className="w-full h-full border border-dashed border-[#2a2a30] rounded-lg flex items-center justify-center text-[#2a2a30] font-mono text-[10px] text-center">
-            [AD VISUAL: GPU BENCHMARKS]
-          </div>
+        <div className="hidden md:flex w-48 flex-shrink-0 flex-col gap-2 rounded-2xl border border-[#2a2a30] bg-[#0a0a0b] p-5">
+          {BENCH_PREVIEW.map((r) => (
+            <div key={r.gpu} className="flex flex-col gap-1">
+              <div className="flex items-baseline justify-between font-mono text-[9px] text-[#8888a0]">
+                <span>{r.gpu}</span>
+                <span className="text-[#7c6af7]">{r.imagesPerMinute}</span>
+              </div>
+              <div className="h-1 w-full overflow-hidden rounded-full bg-[#1a1a20]">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-[#7c6af7] to-[#22d3ee]"
+                  style={{ width: `${Math.round(((r.imagesPerMinute ?? 0) / BENCH_MAX) * 100)}%` }}
+                />
+              </div>
+            </div>
+          ))}
+          <p className="mt-1 font-mono text-[8px] uppercase tracking-widest text-[#4a4a55]">
+            FLUX Dev FP8 · img/min
+          </p>
         </div>
       </div>
     </div>

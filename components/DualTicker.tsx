@@ -1,10 +1,31 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 // Blade Runner hologram dual AI ticker
 // Drop this file into: /components/DualTicker.tsx
 
 export default function DualTicker() {
-  const line1 = [
+  // Live AI headlines, with the curated list below as the seed/fallback so the
+  // ticker is never empty on first paint or if the upstream is unreachable.
+  const [live, setLive] = useState<string[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/ai-news")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (!cancelled && d?.headlines?.length >= 4) setLive(d.headlines);
+      })
+      .catch(() => {
+        /* keep the curated fallback */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const seed1 = [
     "🎬 LTX-2.5 Release: Lightricks ships a 22B open-weights video model with native multishot and 4K HDR...",
     "🛡️ ComfyUI v0.33: Wan 3.0 text/image/audio-to-video and Meshy-7 3D generation land in core...",
     "🎵 ACE-Step 1.5 XL: New 4B-parameter DiT decoder brings higher-fidelity local music generation...",
@@ -13,6 +34,10 @@ export default function DualTicker() {
     "🎬 LTX-2.5 Release: Lightricks ships a 22B open-weights video model with native multishot and 4K HDR...", // Duplicate for loop
     "🛡️ ComfyUI v0.33: Wan 3.0 text/image/audio-to-video and Meshy-7 3D generation land in core...",
   ];
+
+  // Live headlines arrive unprefixed; duplicate the list so the marquee loops
+  // seamlessly the same way the curated seed does.
+  const line1 = live ? [...live, ...live].map((t) => `📡 ${t}`) : seed1;
 
   const line2 = [
     "📈 AMD Ryzen 9 9950X3D2: 192MB L3 cache confirmed, launch window still TBD...",
