@@ -49,6 +49,7 @@ const GUIDES = [
   },
   { 
     slug: "installation", 
+    image: "/images/guides/comfyui-install.jpg",
     difficulty: "Beginner" as GuideDifficulty, 
     title: "How to install ComfyUI Correctly", 
     desc: "Complete setup for Windows/Linux. From Python environment to the first successful generation.", 
@@ -89,6 +90,7 @@ const GUIDES = [
   },
   { 
     slug: "model-types", 
+    image: "/images/learn/beginner.png",
     difficulty: "Beginner" as GuideDifficulty, 
     title: "SD Model Types Explained", 
     desc: "SDXL vs Flux vs DeepSeek. Choose the right core for your local pipeline.", 
@@ -111,6 +113,7 @@ const GUIDES = [
   },
   {
     slug: "ace-step-1-5-comfyui",
+    image: "/images/guides/ace-node-prompt.png",
     difficulty: "Intermediate" as GuideDifficulty, 
     title: "Audio Ace: Spatial Synthesis", 
     desc: "Master the bridge between Audio Ace and ComfyUI for premium AV generation.", 
@@ -133,6 +136,7 @@ const GUIDES = [
   // --- ADVANCED SYSTEMS ---
   { 
     slug: "custom-nodes", 
+    image: "/images/learn/advanced.png",
     difficulty: "Advanced" as GuideDifficulty, 
     title: "Custom Nodes: install & fix", 
     desc: "Unlock ComfyUI extensions like Manager and IPAdapter. Building custom logic blocks.", 
@@ -174,6 +178,7 @@ const GUIDES = [
 
   {
     slug: "why-choose-desktop",
+    image: "/images/guides/workflow-errors.png",
     difficulty: "Advanced" as GuideDifficulty,
     title: "Why Choose ComfyUI Desktop Install",
     desc: "Deep dive into the power-user installation — when the desktop app beats portable.",
@@ -186,6 +191,7 @@ const GUIDES = [
   // --- TROUBLESHOOTING ---
   {
     slug: "workflow-errors",
+    image: "/images/learn/intermediate.png",
     difficulty: "Troubleshooting" as GuideDifficulty,
     title: "Understanding and Fixing Workflow Errors",
     desc: "Solve node not found, black images, type mismatches, and silent failures.",
@@ -196,6 +202,7 @@ const GUIDES = [
   },
   {
     slug: "gpu-errors",
+    image: "/images/guides/gpu-errors.png",
     difficulty: "Troubleshooting" as GuideDifficulty,
     title: "Fixing GPU Errors",
     desc: "Deep dive into solving CUDA out of memory errors and VRAM overflow issues.",
@@ -413,6 +420,7 @@ export default function GuidesPage() {
                           <GuideVisual
                             slug={guide.slug}
                             variant={guide.difficulty}
+                            image={"image" in guide ? (guide.image as string) : undefined}
                             className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                           />
                           <div className="absolute top-4 left-4 flex gap-2">

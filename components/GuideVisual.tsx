@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
 
 /**
  * Branded, deterministic guide artwork.
@@ -30,15 +32,24 @@ function hash(str: string): number {
   return Math.abs(h);
 }
 
+/**
+ * Pass `image` to use a real render for a guide (any path under /public, any
+ * extension). The generated artwork below acts as the backdrop and as the
+ * fallback: if the file is missing or fails to decode, the SVG stays visible
+ * rather than leaving a broken image.
+ */
 export function GuideVisual({
   slug,
   variant = "default",
   className = "",
+  image,
 }: {
   slug: string;
   variant?: string;
   className?: string;
+  image?: string;
 }) {
+  const [renderOk, setRenderOk] = useState(true);
   const seed = hash(slug);
   const [from, to] = PALETTES[variant] ?? PALETTES.default;
   const id = `gv-${seed.toString(36)}`;
@@ -54,6 +65,22 @@ export function GuideVisual({
   });
 
   return (
+    <>
+      {/* Real render, layered over the generated artwork. Falls back to the
+          SVG automatically if the file is missing or fails to decode. */}
+      {image && renderOk && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={image}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          onError={() => setRenderOk(false)}
+          className={className}
+          style={{ zIndex: 1 }}
+        />
+      )}
     <svg
       viewBox="0 0 160 100"
       preserveAspectRatio="xMidYMid slice"
@@ -101,6 +128,7 @@ export function GuideVisual({
           <circle cx={n.x} cy={n.y} r={n.r} fill={from} fillOpacity="0.85" />
         </g>
       ))}
-    </svg>
+      </svg>
+    </>
   );
 }
