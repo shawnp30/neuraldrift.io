@@ -1,0 +1,425 @@
+From 7103f8ba30da647f14a289ca85cb0f1b70e0ac1d Mon Sep 17 00:00:00 2001
+From: Codex <codex@openai.com>
+Date: Wed, 2 Sep 2026 12:36:16 -0700
+Subject: [PATCH] fix: make workflow pages indexable
+
+---
+ app/layout.tsx                       |  8 ----
+ app/robots.ts                        | 11 +++++-
+ app/sitemap.ts                       |  5 ---
+ app/workflows/[id]/layout.tsx        | 59 ++++++++++++++++++++++++----
+ app/workflows/[id]/page.tsx          | 35 ++++++++---------
+ components/home/HomeHero.tsx         | 24 ++++++-----
+ components/home/PlatformSections.tsx |  5 ++-
+ middleware.ts                        | 29 ++++++++++----
+ 8 files changed, 115 insertions(+), 61 deletions(-)
+
+diff --git a/app/layout.tsx b/app/layout.tsx
+index 95e30d6..a3874f6 100644
+--- a/app/layout.tsx
++++ b/app/layout.tsx
+@@ -33,9 +33,6 @@ export const metadata: Metadata = {
+   },
+   description:
+     "High-performance ComfyUI workflows, technical AI guides, and hardware optimization tools for local image and video generation. Built for builders.",
+-  alternates: {
+-    canonical: "https://neuraldrift.io/",
+-  },
+   openGraph: {
+     title: "NeuralDrift — Master Local AI Creation",
+     description:
+@@ -76,11 +73,6 @@ const websiteJsonLd = {
+   "@type": "WebSite",
+   name: "NeuralDrift",
+   url: "https://neuraldrift.io",
+-  potentialAction: {
+-    "@type": "SearchAction",
+-    target: "https://neuraldrift.io/guides?q={search_term_string}",
+-    "query-input": "required name=search_term_string",
+-  },
+ };
+ 
+ export default function RootLayout({
+diff --git a/app/robots.ts b/app/robots.ts
+index 4af9e09..e46e153 100644
+--- a/app/robots.ts
++++ b/app/robots.ts
+@@ -6,9 +6,18 @@ export default function robots(): MetadataRoute.Robots {
+       {
+         userAgent: "*",
+         allow: "/",
+-        disallow: ["/api/", "/admin/", "/dashboard", "/auth/", "/stash", "/optimizer/result"],
++        disallow: [
++          "/api/",
++          "/admin/",
++          "/dashboard/",
++          "/auth/",
++          "/stash/",
++          "/optimizer/result",
++          "/proofs/upload",
++        ],
+       },
+     ],
+     sitemap: "https://neuraldrift.io/sitemap.xml",
++    host: "https://neuraldrift.io",
+   };
+ }
+diff --git a/app/sitemap.ts b/app/sitemap.ts
+index 3858936..b032244 100644
+--- a/app/sitemap.ts
++++ b/app/sitemap.ts
+@@ -14,7 +14,6 @@ function entry(
+     path === "/" ? `${base}/` : `${base}${path.startsWith("/") ? path : `/${path}`}`;
+   return {
+     url,
+-    lastModified: new Date(),
+     changeFrequency,
+     priority,
+   };
+@@ -54,14 +53,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
+     entry("/hardware", 0.9, "weekly"),
+     entry("/optimizer", 0.8, "weekly"),
+     entry("/optimizer/fix-my-pc", 0.65, "monthly"),
+-    entry("/optimizer/result", 0.5, "monthly"),
+-    entry("/dashboard", 0.5, "monthly"),
+-    entry("/stash", 0.4, "monthly"),
+     entry("/train", 0.6, "monthly"),
+     entry("/datasets", 0.75, "weekly"),
+     entry("/lora-training", 0.75, "weekly"),
+     entry("/proofs", 0.65, "weekly"),
+-    entry("/proofs/upload", 0.55, "monthly"),
+     entry("/models", 0.75, "monthly"),
+     entry("/cloud-generators", 0.7, "monthly"),
+     entry("/tutorials", 0.8, "weekly"),
+diff --git a/app/workflows/[id]/layout.tsx b/app/workflows/[id]/layout.tsx
+index 0146c4f..e4ac9d7 100644
+--- a/app/workflows/[id]/layout.tsx
++++ b/app/workflows/[id]/layout.tsx
+@@ -1,7 +1,14 @@
+ import type { Metadata } from "next";
++import { notFound } from "next/navigation";
+ import { WORKFLOWS } from "@/lib/workflowsData";
+ import { SITE_URL } from "@/lib/seo";
+ 
++export const dynamicParams = false;
++
++export function generateStaticParams() {
++  return WORKFLOWS.map((workflow) => ({ id: workflow.id }));
++}
++
+ export async function generateMetadata({
+   params,
+ }: {
+@@ -21,12 +28,12 @@ export async function generateMetadata({
+   }
+ 
+   return {
+-    title: workflow.title,
+-    description: workflow.description,
++    title: `${workflow.title} ComfyUI Workflow — ${workflow.vram} GPU JSON`,
++    description: `Download the ${workflow.title} ComfyUI workflow JSON. Includes ${workflow.vram} VRAM requirements, model files, custom nodes, settings, and an output preview.`,
+     alternates: { canonical: url },
+     openGraph: {
+-      title: workflow.title,
+-      description: workflow.description,
++      title: `${workflow.title} ComfyUI Workflow — ${workflow.vram} GPU JSON`,
++      description: `Download the ${workflow.title} ComfyUI workflow JSON with exact requirements and settings.`,
+       url,
+       siteName: "NeuralDrift",
+       type: "article",
+@@ -43,8 +50,8 @@ export async function generateMetadata({
+     },
+     twitter: {
+       card: "summary_large_image",
+-      title: workflow.title,
+-      description: workflow.description,
++      title: `${workflow.title} ComfyUI Workflow — ${workflow.vram} GPU JSON`,
++      description: `Download the ${workflow.title} ComfyUI workflow JSON with exact requirements and settings.`,
+       images: [
+         workflow.imageUrl.startsWith("http")
+           ? workflow.imageUrl
+@@ -56,8 +63,46 @@ export async function generateMetadata({
+ 
+ export default function WorkflowDetailLayout({
+   children,
++  params,
+ }: {
+   children: React.ReactNode;
++  params: { id: string };
+ }) {
+-  return <>{children}</>;
++  const workflow = WORKFLOWS.find((item) => item.id === params.id);
++
++  if (!workflow) notFound();
++
++  const url = `${SITE_URL}/workflows/${workflow.id}`;
++  const structuredData = {
++    "@context": "https://schema.org",
++    "@graph": [
++      {
++        "@type": "BreadcrumbList",
++        itemListElement: [
++          { "@type": "ListItem", position: 1, name: "Workflows", item: `${SITE_URL}/workflows` },
++          { "@type": "ListItem", position: 2, name: workflow.title, item: url },
++        ],
++      },
++      {
++        "@type": "SoftwareSourceCode",
++        name: workflow.title,
++        description: workflow.description,
++        codeSampleType: "ComfyUI workflow",
++        programmingLanguage: "JSON",
++        runtimePlatform: "ComfyUI",
++        url,
++        version: workflow.version,
++      },
++    ],
++  };
++
++  return (
++    <>
++      <script
++        type="application/ld+json"
++        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
++      />
++      {children}
++    </>
++  );
+ }
+diff --git a/app/workflows/[id]/page.tsx b/app/workflows/[id]/page.tsx
+index f970e99..27e5cb7 100644
+--- a/app/workflows/[id]/page.tsx
++++ b/app/workflows/[id]/page.tsx
+@@ -31,13 +31,12 @@ import WorkflowCard from '@/components/workflows/WorkflowCard';
+ export default function WorkflowDetailPage({ params }: { params: { id: string } }) {
+   const [copiedPrompt, setCopiedPrompt] = useState(false);
+   const [copiedJSON, setCopiedJSON] = useState(false);
+-  const [workflow, setWorkflow] = useState<WorkflowEntry | null>(null);
+   const [previewMode, setPreviewMode] = useState<'proof' | 'nodes'>('proof');
++  // Resolve during the server render. Previously this happened in useEffect,
++  // which sent an "Access Denied" page to crawlers until JavaScript hydrated.
++  const workflow: WorkflowEntry | undefined = WORKFLOWS.find(w => w.id === params.id);
+ 
+   useEffect(() => {
+-    const found = WORKFLOWS.find(w => w.id === params.id);
+-    if (found) setWorkflow(found);
+-
+     // Block browser default: prevent dropped files from opening in a new tab
+     const blockDrop = (e: DragEvent) => { e.preventDefault(); };
+     window.addEventListener('dragover', blockDrop);
+@@ -46,16 +45,16 @@ export default function WorkflowDetailPage({ params }: { params: { id: string }
+       window.removeEventListener('dragover', blockDrop);
+       window.removeEventListener('drop', blockDrop);
+     };
+-  }, [params.id]);
++  }, []);
+ 
+   if (!workflow) {
+     return (
+       <div className="min-h-screen bg-transparent flex items-center justify-center pt-20">
+         <div className="text-center">
+-          <h1 className="text-4xl font-mono font-black text-white mb-4 uppercase tracking-tighter leading-none">Access Denied</h1>
+-          <p className="text-[#555565] mb-8 font-mono text-sm uppercase tracking-widest">Workflow Index: {params.id}</p>
++          <h1 className="text-4xl font-mono font-black text-white mb-4 uppercase tracking-tighter leading-none">Workflow Not Found</h1>
++          <p className="text-[#555565] mb-8 font-mono text-sm uppercase tracking-widest">Workflow ID: {params.id}</p>
+           <Link href="/workflows" className="px-6 py-2 bg-[#7c6af7]/10 border border-[#7c6af7]/30 text-[#7c6af7] font-mono font-black text-xs uppercase hover:bg-[#7c6af7] hover:text-white transition-all">
+-            ← SYSTEM RESET
++            ← Browse workflows
+           </Link>
+         </div>
+       </div>
+@@ -221,9 +220,9 @@ export default function WorkflowDetailPage({ params }: { params: { id: string }
+                   </div>
+                </div>
+                <div className="px-6 py-3 bg-[#0a0a0b] border-t border-[#2a2a30] flex flex-wrap gap-4 justify-center items-center">
+-                  <span className="text-[9px] font-mono text-[#333340] uppercase tracking-widest">Metadata Hash: 0x{workflow.id}F7A...</span>
++                  <span className="text-[9px] font-mono text-[#555565] uppercase tracking-widest">Workflow ID: {workflow.id}</span>
+                   <div className="h-1 w-1 bg-[#333340] rounded-full" />
+-                  <span className="text-[9px] font-mono text-[#333340] uppercase tracking-widest">Sample Count: 30_Steps</span>
++                  <span className="text-[9px] font-mono text-[#555565] uppercase tracking-widest">Version: {workflow.version}</span>
+                </div>
+             </div>
+ 
+@@ -270,7 +269,7 @@ export default function WorkflowDetailPage({ params }: { params: { id: string }
+                   </span>
+                   <div className="h-1 w-1 bg-[#2a2a30] rounded-full" />
+                   <span className="text-[10px] font-mono font-bold text-[#555565] uppercase tracking-widest">
+-                    v{workflow.version}
++                    {workflow.version}
+                   </span>
+                 </div>
+               </div>
+@@ -279,19 +278,19 @@ export default function WorkflowDetailPage({ params }: { params: { id: string }
+               </p>
+             </div>
+ 
+-            {/* 2. SYSTEM STATUS (SOCIAL PROOF SIM) */}
++            {/* 2. VERIFIABLE WORKFLOW FACTS */}
+             <div className="p-5 bg-[#0a0a0b] border border-[#2a2a30] rounded-xl grid grid-cols-3 gap-4">
+                <div className="text-center">
+-                  <span className="block text-[8px] font-mono font-black text-[#333340] uppercase tracking-tighter mb-1">Registry Hits</span>
+-                  <span className="text-sm font-mono font-bold text-white">4.2K</span>
++                  <span className="block text-[8px] font-mono font-black text-[#555565] uppercase tracking-tighter mb-1">Model Files</span>
++                  <span className="text-sm font-mono font-bold text-white">{workflow.modelPaths.length}</span>
+                </div>
+                <div className="text-center border-x border-[#2a2a30]">
+-                  <span className="block text-[8px] font-mono font-black text-[#333340] uppercase tracking-tighter mb-1">Downloads</span>
+-                  <span className="text-sm font-mono font-bold text-white">1.8K</span>
++                  <span className="block text-[8px] font-mono font-black text-[#555565] uppercase tracking-tighter mb-1">Custom Nodes</span>
++                  <span className="text-sm font-mono font-bold text-white">{workflow.customNodes.length}</span>
+                </div>
+                <div className="text-center">
+-                  <span className="block text-[8px] font-mono font-black text-[#7c6af7] uppercase tracking-tighter mb-1">Uptime</span>
+-                  <span className="text-sm font-mono font-bold text-[#7c6af7]">100%</span>
++                  <span className="block text-[8px] font-mono font-black text-[#7c6af7] uppercase tracking-tighter mb-1">Version</span>
++                  <span className="text-sm font-mono font-bold text-[#7c6af7]">{workflow.version}</span>
+                </div>
+             </div>
+ 
+diff --git a/components/home/HomeHero.tsx b/components/home/HomeHero.tsx
+index f619699..13ae8e4 100644
+--- a/components/home/HomeHero.tsx
++++ b/components/home/HomeHero.tsx
+@@ -4,6 +4,7 @@ import Link from "next/link";
+ import Image from "next/image";
+ import React from "react";
+ import { Counter } from "@/components/shared/Counter";
++import { WORKFLOWS } from "@/lib/workflowsData";
+ 
+ export const HomeHero = () => {
+   return (
+@@ -24,24 +25,23 @@ export const HomeHero = () => {
+             </div>
+ 
+             <h1 className="mb-6 font-syne text-5xl font-[800] leading-[1.05] tracking-tight text-white md:text-7xl">
+-              Build, Optimize, and <br />
++              ComfyUI Workflows That <br />
+               <span className="from-accent-cyan to-accent-cyan animate-gradient-x bg-gradient-to-r via-accent-purple bg-[length:200%_auto] bg-clip-text text-transparent">
+-                Run AI Locally
++                Run on Your GPU
+               </span>
+             </h1>
+ 
+             <p className="mb-10 max-w-xl text-xl font-[500] leading-relaxed text-zinc-400">
+-              Structured ComfyUI pipelines, GPU-tested workflows, and
+-              step-by-step guides for local creation across image, video, and
+-              audio.
++              Download tested image, video, and audio workflows with exact
++              VRAM requirements, models, nodes, settings, and failure fixes.
+             </p>
+ 
+             <div className="flex flex-col gap-4 sm:flex-row">
+               <Link
+-                href="/workflows"
++                href="/optimizer"
+                 className="bg-accent-cyan nh-border-glow-cyan rounded-xl px-8 py-4 text-center font-[800] text-black transition-all hover:scale-[1.02]"
+               >
+-                Start Your First Workflow
++                Find Workflows for My GPU
+               </Link>
+               <Link
+                 href="/workflows"
+@@ -55,18 +55,16 @@ export const HomeHero = () => {
+             <div className="mt-12 flex items-center gap-8 border-t border-white/5 pt-8">
+               <div>
+                 <div className="flex items-center text-2xl font-[800] text-white">
+-                  <Counter value={50} />+
++                  <Counter value={WORKFLOWS.length} />
+                 </div>
+                 <div className="font-mono text-xs uppercase tracking-widest text-zinc-400">
+                   Workflows
+                 </div>
+               </div>
+-              <div>
+-                <div className="flex items-center text-2xl font-[800] text-white">
+-                  <Counter value={0} />
+-                </div>
++              <div className="border-l border-white/10 pl-8">
++                <div className="text-2xl font-[800] text-white">Free</div>
+                 <div className="font-mono text-xs uppercase tracking-widest text-zinc-400">
+-                  Ads Ever
++                  JSON Downloads
+                 </div>
+               </div>
+             </div>
+diff --git a/components/home/PlatformSections.tsx b/components/home/PlatformSections.tsx
+index 116797c..0065e39 100644
+--- a/components/home/PlatformSections.tsx
++++ b/components/home/PlatformSections.tsx
+@@ -1,6 +1,7 @@
+ "use client";
+ import Link from "next/link";
+ import { useEffect, useRef } from "react";
++import { WORKFLOWS } from "@/lib/workflowsData";
+ 
+ const SECTIONS = [
+   {
+@@ -20,7 +21,7 @@ const SECTIONS = [
+     color: "text-[#00e5ff]",
+     bg: "bg-[rgba(0,229,255,0.04)]",
+     border: "border-[#00e5ff]/20",
+-    tag: "6 Workflows",
++    tag: `${WORKFLOWS.length} Workflows`,
+   },
+   {
+     number: "02",
+@@ -58,7 +59,7 @@ const SECTIONS = [
+     color: "text-[#a3e635]",
+     bg: "bg-[rgba(163,230,53,0.04)]",
+     border: "border-[#a3e635]/20",
+-    tag: "6 Guides",
++    tag: "Guide Library",
+   },
+   {
+     number: "04",
+diff --git a/middleware.ts b/middleware.ts
+index 6ef0853..58c2fd6 100644
+--- a/middleware.ts
++++ b/middleware.ts
+@@ -4,21 +4,36 @@ import { updateSession } from "@/lib/supabase/middleware";
+ const PROTECTED = ["/dashboard"];
+ 
+ export async function middleware(request: NextRequest) {
+-  const { response, user } = await updateSession(request);
+-
+   const isProtected = PROTECTED.some((path) =>
+     request.nextUrl.pathname.startsWith(path)
+   );
+ 
+-  if (isProtected && !user) {
+-    const loginUrl = new URL("/auth/login", request.url);
+-    loginUrl.searchParams.set("next", request.nextUrl.pathname);
+-    return NextResponse.redirect(loginUrl);
++  if (isProtected) {
++    const { response, user } = await updateSession(request);
++
++    if (!user) {
++      const loginUrl = new URL("/auth/login", request.url);
++      loginUrl.searchParams.set("next", request.nextUrl.pathname);
++      return NextResponse.redirect(loginUrl);
++    }
++
++    return response;
++  }
++
++  const response = NextResponse.next();
++
++  // Filter/search combinations are useful to visitors but duplicate the
++  // canonical workflow library for search engines.
++  if (
++    request.nextUrl.pathname === "/workflows" &&
++    request.nextUrl.searchParams.size > 0
++  ) {
++    response.headers.set("X-Robots-Tag", "noindex, follow");
+   }
+ 
+   return response;
+ }
+ 
+ export const config = {
+-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
++  matcher: ["/dashboard/:path*", "/workflows"],
+ };
+-- 
+2.51.1
+
