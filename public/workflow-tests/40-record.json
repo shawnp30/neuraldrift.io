@@ -1,0 +1,29 @@
+{
+  "workflowId": "40",
+  "status": "completed",
+  "workflowSha256": "791bebf40e72728082e1a611e44fb6ceb3dd23c246abae06c77efd79312eb2d4",
+  "testDate": "2026-09-08T04:04:08.650Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 20,
+    "cfg": 1,
+    "sampler": "euler",
+    "scheduler": "simple"
+  },
+  "resolution": "512 × 512",
+  "batchSize": 1,
+  "generationSeconds": 16.062,
+  "peakMemory": null,
+  "model": "flux1-dev-fp8.safetensors",
+  "modelSha256": null,
+  "customNodes": "None; core nodes only",
+  "preview": "/workflow-tests/40-output.png",
+  "prompt": "A realistic portrait of an elderly fisherman with a weathered face, sunset lighting, DSLR photography",
+  "outputKind": "image"
+}

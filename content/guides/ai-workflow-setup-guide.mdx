@@ -16,15 +16,18 @@ publishedAt: "2024-03-27"
 - Debug complex node errors and resolve type mismatches
 - Connect your workflows to external apps via APIs and webhooks
 
+![AI Workflow](https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=2070&auto=format&fit=crop)
+
 # AI Workflow Setup Guide: Mastering Node Architectures
 
 AI workflows are the professional "pipelines" of modern generative art. Unlike linear scripts, node-based systems allow you to build complex, branching logic that can be swapped, scaled, and shared with ease. This guide helps you move from "just clicking buttons" to architecting AI systems.
 
-- **22 min** — Reading Time
-- **Advanced** — Complexity
-- **SDXL / FLUX** — Engine
-- **Github** — Versioned
-
+:::stats
+:::stat 22 min | Reading Time
+:::stat Advanced | Complexity
+:::stat SDXL / FLUX | Engine
+:::stat Github | Versioned
+:::
 
 ---
 
@@ -58,8 +61,9 @@ Let's build a standard **SDXL Reference Workflow** using this repository's struc
 5.  **VAE Decode**: Turn the sampled latent back into pixels.
 6.  **Save Image**: Outputs to your `output/` directory.
 
-> 💡 **Repo Integration** — Always store your `.json` version of this flow in the `/workflows/` folder of this repository for easy access across devices.
-
+:::tip Repo Integration
+Always store your `.json` version of this flow in the `/workflows/` folder of this repository for easy access across devices.
+:::
 
 ---
 
@@ -129,8 +133,9 @@ The final step is connecting your `/workflows/*.json` to the Neuraldrift API or 
 - **Webhooks**: Configure ComfyUI to post the image URL to your backend once "Save Image" is complete.
 - **API Endpoints**: Use the `/prompt` POST request to trigger the entire chain from a mobile app or website.
 
-> ⚡ **Trigger Action** — Automate your triggers. When a user uploads a photo to your site, your backend can automatically inject that image path into the "Load Image" node of your ComfyUI workflow.
-
+:::pro Trigger Action
+Automate your triggers. When a user uploads a photo to your site, your backend can automatically inject that image path into the "Load Image" node of your ComfyUI workflow.
+:::
 
 ---
 

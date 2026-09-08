@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/hardware",
-  "Hardware Hub — Can Your PC Run ComfyUI?",
+  "Hardware Hub — Can Your PC Run ComfyUI? | NeuralDrift",
   "GPU tiers, VRAM guidance, and practical advice for running ComfyUI workflows on local hardware."
 );
 

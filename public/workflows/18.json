@@ -1,19 +1,17 @@
 {
-  "id": "90469c7e-4751-418c-9bd5-e43b3745a118",
-  "revision": 0,
-  "last_node_id": 37,
-  "last_link_id": 72,
+  "last_node_id": 11,
+  "last_link_id": 10,
   "nodes": [
     {
-      "id": 34,
-      "type": "DualCLIPLoader",
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
       "pos": [
-        -190,
-        -86
+        40,
+        40
       ],
       "size": [
         315,
-        130
+        98
       ],
       "flags": {},
       "order": 0,
@@ -21,323 +19,253 @@
       "inputs": [],
       "outputs": [
         {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            10
+          ]
+        },
+        {
           "name": "CLIP",
           "type": "CLIP",
           "links": [
-            62
+            2,
+            3
+          ]
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            8
           ]
         }
       ],
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "DualCLIPLoader",
-        "models": [
-          {
-            "name": "clip_l.safetensors",
-            "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors?download=true",
-            "directory": "text_encoders"
-          },
-          {
-            "name": "t5xxl_fp16.safetensors",
-            "url": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors?download=true",
-            "directory": "text_encoders"
-          }
-        ]
+        "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "clip_l.safetensors",
-        "t5xxl_fp16.safetensors",
-        "flux",
-        "default"
+        "deliberate_v6.safetensors"
       ]
     },
     {
-      "id": 37,
-      "type": "ConditioningZeroOut",
+      "id": 10,
+      "type": "ADE_AnimateDiffLoaderWithContext",
       "pos": [
-        380,
-        100
-      ],
-      "size": [
-        197.712890625,
-        26
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "conditioning",
-          "type": "CONDITIONING",
-          "link": 71
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            72
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "ConditioningZeroOut"
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 31,
-      "type": "UNETLoader",
-      "pos": [
-        -190,
-        -210
+        40,
+        180
       ],
       "size": [
         315,
-        82
+        180
       ],
       "flags": {},
       "order": 1,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 10
+        }
+      ],
       "outputs": [
         {
           "name": "MODEL",
           "type": "MODEL",
-          "slot_index": 0,
           "links": [
-            57
+            1
           ]
         }
       ],
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "UNETLoader",
-        "models": [
-          {
-            "name": "flux1-canny-dev.safetensors",
-            "url": "https://huggingface.co/Comfy-Org/flux1-dev/resolve/main/split_files/diffusion_models/flux1-canny-dev.safetensors",
-            "directory": "diffusion_models"
-          }
-        ]
+        "Node name for S&R": "ADE_AnimateDiffLoaderWithContext"
       },
       "widgets_values": [
-        "flux1-canny-dev.safetensors",
-        "default"
+        "mm_sd_v15_v3.ckpt",
+        "autoselect",
+        1,
+        true
       ]
     },
     {
-      "id": 32,
-      "type": "VAELoader",
+      "id": 2,
+      "type": "CLIPTextEncode",
       "pos": [
-        -190,
-        86
+        400,
+        40
       ],
       "size": [
-        315,
-        58
+        422,
+        164
       ],
       "flags": {},
       "order": 2,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "slot_index": 0,
-          "links": [
-            60,
-            69
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "VAELoader",
-        "models": [
-          {
-            "name": "ae.safetensors",
-            "url": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors",
-            "directory": "vae"
-          }
-        ]
-      },
-      "widgets_values": [
-        "ae.safetensors"
-      ]
-    },
-    {
-      "id": 26,
-      "type": "FluxGuidance",
-      "pos": [
-        260,
-        0
-      ],
-      "size": [
-        317.3999938964844,
-        58
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
       "inputs": [
         {
-          "name": "conditioning",
-          "type": "CONDITIONING",
-          "link": 41
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
         }
       ],
       "outputs": [
         {
           "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "slot_index": 0,
           "links": [
-            67
+            4
           ]
         }
       ],
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "FluxGuidance"
+        "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        30
+        "rotating product on white pedestal, studio lighting, professional, smooth 360 rotation"
       ]
     },
     {
-      "id": 18,
-      "type": "Canny",
+      "id": 3,
+      "type": "CLIPTextEncode",
       "pos": [
-        -190,
-        610
+        400,
+        230
       ],
       "size": [
-        315,
-        82
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 49
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "slot_index": 0,
-          "links": [
-            26,
-            70
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "Canny"
-      },
-      "widgets_values": [
-        0.15,
-        0.3
-      ]
-    },
-    {
-      "id": 17,
-      "type": "LoadImage",
-      "pos": [
-        -190,
-        240
-      ],
-      "size": [
-        315,
-        314
+        422,
+        164
       ],
       "flags": {},
       "order": 3,
       "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "blurry, low quality, bad lighting, shadow"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "EmptyLatentImage",
+      "pos": [
+        40,
+        400
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
       "inputs": [],
       "outputs": [
         {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "slot_index": 0,
+          "name": "LATENT",
+          "type": "LATENT",
           "links": [
-            49
+            6
           ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
         }
       ],
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "LoadImage"
+        "Node name for S&R": "EmptyLatentImage"
       },
       "widgets_values": [
-        "flux_canny_model_example_input_image.png",
-        "image"
+        512,
+        512,
+        16
       ]
     },
     {
-      "id": 9,
-      "type": "SaveImage",
+      "id": 5,
+      "type": "KSampler",
       "pos": [
-        980,
-        -230
+        870,
+        40
       ],
       "size": [
-        828.9500122070312,
-        893.8499755859375
+        315,
+        262
       ],
       "flags": {},
-      "order": 13,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 9
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 4
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 5
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 6
         }
       ],
-      "outputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            7
+          ]
+        }
+      ],
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64"
+        "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        "ComfyUI"
+        42,
+        "fixed",
+        25,
+        7.5,
+        "dpmpp_2m",
+        "karras",
+        1
       ]
     },
     {
-      "id": 8,
+      "id": 6,
       "type": "VAEDecode",
       "pos": [
-        720,
-        330
+        1230,
+        40
       ],
       "size": [
         210,
         46
       ],
       "flags": {},
-      "order": 12,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -348,439 +276,180 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 60
+          "link": 8
         }
       ],
       "outputs": [
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "slot_index": 0,
           "links": [
             9
           ]
         }
       ],
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
         "Node name for S&R": "VAEDecode"
       },
       "widgets_values": []
     },
     {
-      "id": 3,
-      "type": "KSampler",
+      "id": 7,
+      "type": "VHS_VideoCombine",
       "pos": [
-        620,
-        -230
+        1480,
+        40
       ],
       "size": [
-        320,
-        510
+        315,
+        200
       ],
       "flags": {},
-      "order": 11,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 57
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 64
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 65
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 66
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "slot_index": 0,
-          "links": [
-            7
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "KSampler"
-      },
-      "widgets_values": [
-        1125476660951871,
-        "randomize",
-        20,
-        1,
-        "euler",
-        "normal",
-        1
-      ]
-    },
-    {
-      "id": 35,
-      "type": "InstructPixToPixConditioning",
-      "pos": [
-        350,
-        230
-      ],
-      "size": [
-        235.1999969482422,
-        86
-      ],
-      "flags": {},
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 67
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 72
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 69
-        },
-        {
-          "name": "pixels",
-          "type": "IMAGE",
-          "link": 70
-        }
-      ],
-      "outputs": [
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "slot_index": 0,
-          "links": [
-            64
-          ]
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "slot_index": 1,
-          "links": [
-            65
-          ]
-        },
-        {
-          "name": "latent",
-          "type": "LATENT",
-          "slot_index": 2,
-          "links": [
-            66
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "InstructPixToPixConditioning"
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 19,
-      "type": "PreviewImage",
-      "pos": [
-        190,
-        390
-      ],
-      "size": [
-        330,
-        330
-      ],
-      "flags": {},
-      "order": 9,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 26
+          "link": 9
         }
       ],
       "outputs": [],
       "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "PreviewImage"
-      },
-      "widgets_values": []
-    },
-    {
-      "id": 23,
-      "type": "CLIPTextEncode",
-      "pos": [
-        160,
-        -210
-      ],
-      "size": [
-        422.8500061035156,
-        164.30999755859375
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 62
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "slot_index": 0,
-          "links": [
-            41,
-            71
-          ]
-        }
-      ],
-      "title": "CLIP Text Encode (Positive Prompt)",
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.64",
-        "Node name for S&R": "CLIPTextEncode"
+        "Node name for S&R": "VHS_VideoCombine"
       },
       "widgets_values": [
-        "A vibrant red ladybug rests on a blooming deep purple rose with lush, velvety petals. The background is a soft pink, filled with subtly blurred roses of the same pink shade, creating a dreamy and romantic atmosphere."
-      ],
-      "color": "#232",
-      "bgcolor": "#353"
+        8,
+        0,
+        "nh_animatediff_prod",
+        "video/h264-mp4",
+        false,
+        true
+      ]
     },
     {
-      "id": 36,
-      "type": "MarkdownNote",
+      "id": 11,
+      "type": "Note",
       "pos": [
-        -640,
-        -250
+        40,
+        538
       ],
       "size": [
-        430,
-        410
+        540,
+        380
       ],
       "flags": {},
-      "order": 4,
+      "order": 8,
       "mode": 0,
       "inputs": [],
       "outputs": [],
-      "title": "Note: Model links",
-      "properties": {},
+      "properties": {
+        "text": "NeuralDrift workflow. Review dependencies on the workflow page. Hardware compatibility and generation speed require an actual test."
+      },
       "widgets_values": [
-        "[Tutorial](https://docs.comfy.org/tutorials/flux/flux-1-controlnet)\n\n\n## Model links\n\n**text_encoders**\n\n- [clip_l.safetensors](https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors?download=true)\n- [t5xxl_fp16.safetensors](https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors?download=true)\n\n**diffusion_models**\n\n- [flux1-canny-dev.safetensors](https://huggingface.co/Comfy-Org/flux1-dev/resolve/main/split_files/diffusion_models/flux1-canny-dev.safetensors)\n\n**vae**\n\n- [ae.safetensors](https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors)\n\n\nModel Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 text_encoders/\n│   │      ├── clip_l.safetensors\n│   │      └── t5xxl_fp16.safetensors\n│   ├── 📂 diffusion_models/\n│   │      └── flux1-canny-dev.safetensors\n│   └── 📂 vae/\n│          └── ae.safetensors\n```\n"
-      ],
-      "color": "#432",
-      "bgcolor": "#000"
+        "NeuralDrift workflow. Review dependencies on the workflow page. Hardware compatibility and generation speed require an actual test."
+      ]
     }
   ],
   "links": [
     [
-      7,
-      3,
+      1,
+      10,
       0,
-      8,
-      0,
-      "LATENT"
-    ],
-    [
-      9,
-      8,
-      0,
-      9,
-      0,
-      "IMAGE"
-    ],
-    [
-      26,
-      18,
-      0,
-      19,
-      0,
-      "IMAGE"
-    ],
-    [
-      41,
-      23,
-      0,
-      26,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      49,
-      17,
-      0,
-      18,
-      0,
-      "IMAGE"
-    ],
-    [
-      57,
-      31,
-      0,
-      3,
+      5,
       0,
       "MODEL"
     ],
     [
-      60,
-      32,
-      0,
-      8,
+      2,
       1,
-      "VAE"
-    ],
-    [
-      62,
-      34,
-      0,
-      23,
+      1,
+      2,
       0,
       "CLIP"
     ],
     [
-      64,
-      35,
+      3,
+      1,
+      1,
+      3,
       0,
-      3,
+      "CLIP"
+    ],
+    [
+      4,
+      2,
+      0,
+      5,
       1,
       "CONDITIONING"
     ],
     [
-      65,
-      35,
-      1,
+      5,
       3,
+      0,
+      5,
       2,
       "CONDITIONING"
     ],
     [
-      66,
-      35,
-      2,
-      3,
+      6,
+      4,
+      0,
+      5,
       3,
       "LATENT"
     ],
     [
-      67,
-      26,
+      7,
+      5,
       0,
-      35,
+      6,
       0,
-      "CONDITIONING"
+      "LATENT"
     ],
     [
-      69,
-      32,
-      0,
-      35,
+      8,
+      1,
       2,
+      6,
+      1,
       "VAE"
     ],
     [
-      70,
-      18,
+      9,
+      6,
       0,
-      35,
-      3,
+      7,
+      0,
       "IMAGE"
     ],
     [
-      71,
-      23,
-      0,
-      37,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      72,
-      37,
-      0,
-      35,
+      10,
       1,
-      "CONDITIONING"
+      0,
+      10,
+      0,
+      "MODEL"
     ]
   ],
-  "groups": [
-    {
-      "id": 1,
-      "title": "Step 1 - Load models",
-      "bounding": [
-        -200,
-        -280,
-        335,
-        437.6000061035156
-      ],
-      "color": "#3f789e",
-      "font_size": 24,
-      "flags": {}
-    },
-    {
-      "id": 2,
-      "title": "Step 3 - Prompt",
-      "bounding": [
-        150,
-        -280,
-        440,
-        440
-      ],
-      "color": "#3f789e",
-      "font_size": 24,
-      "flags": {}
-    },
-    {
-      "id": 3,
-      "title": "Step 2 - Upload image",
-      "bounding": [
-        -200,
-        170,
-        335,
-        535.5999755859375
-      ],
-      "color": "#3f789e",
-      "font_size": 24,
-      "flags": {}
-    }
-  ],
+  "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.4411459484463057,
+      "scale": 0.7,
       "offset": [
-        1082.28391560426,
-        901.0101579642593
+        0,
+        0
       ]
     },
-    "frontendVersion": "1.27.10",
-    "VHS_latentpreview": false,
-    "VHS_latentpreviewrate": 0,
-    "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "neuraldrift": {
+      "catalogId": "18",
+      "source": "Existing NeuralDrift workflow asset",
+      "sourceAsset": "19-animatediff-product.json",
+      "license": null,
+      "executionTested": false
+    }
   },
   "version": 0.4
 }

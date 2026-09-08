@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { WORKFLOWS } from "@/lib/workflowsData";
+import { CATALOG } from "@/lib/catalog";
 import { SITE_URL } from "@/lib/seo";
 
 export async function generateMetadata({
@@ -7,7 +7,7 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const workflow = WORKFLOWS.find((w) => w.id === params.id);
+  const workflow = CATALOG.find((w) => w.id === params.id);
   const path = `/workflows/${params.id}`;
   const url = `${SITE_URL}${path}`;
 
@@ -61,3 +61,4 @@ export default function WorkflowDetailLayout({
 }) {
   return <>{children}</>;
 }
+

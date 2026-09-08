@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/gpu-guide",
-  "GPU Guide — Cloud & Hardware for ComfyUI",
+  "GPU Guide — Cloud & Hardware for ComfyUI | NeuralDrift",
   "Compare GPU and cloud options for running ComfyUI workflows, with pricing context and capability notes."
 );
 

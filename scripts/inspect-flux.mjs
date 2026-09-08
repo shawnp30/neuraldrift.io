@@ -1,0 +1,15 @@
+import fs from 'fs';
+const file = 'D:\\AI\\ComfyUI\\models\\checkpoints\\flux1-dev-fp8.safetensors';
+const fd = fs.openSync(file, 'r');
+const buf = Buffer.alloc(8);
+fs.readSync(fd, buf, 0, 8, 0);
+const headerLen = Number(buf.readBigUInt64LE(0));
+console.log('Header length:', headerLen);
+const headerBuf = Buffer.alloc(Math.min(headerLen, 65536));
+fs.readSync(fd, headerBuf, 0, headerBuf.length, 8);
+const str = headerBuf.toString('utf8');
+fs.closeSync(fd);
+console.log('has double_blocks (flux transformer):', str.includes('double_blocks'));
+console.log('has cond_stage / text_encoders:', str.includes('cond_stage') || str.includes('text_encoders'));
+console.log('has clip:', str.includes('clip'));
+console.log('has first_stage / vae:', str.includes('first_stage') || str.includes('vae'));

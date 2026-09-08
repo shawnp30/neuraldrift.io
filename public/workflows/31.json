@@ -1,19 +1,17 @@
 {
-  "id": "22fbfe6b-e7d7-4193-8409-8599b5dce771",
-  "revision": 0,
-  "last_node_id": 41,
-  "last_link_id": 106,
+  "last_node_id": 14,
+  "last_link_id": 17,
   "nodes": [
     {
-      "id": 39,
-      "type": "CLIPVisionLoader",
+      "id": 1,
+      "type": "CheckpointLoaderSimple",
       "pos": [
-        -470,
-        -240
+        40,
+        40
       ],
       "size": [
         315,
-        58
+        98
       ],
       "flags": {},
       "order": 0,
@@ -21,363 +19,119 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "CLIP_VISION",
-          "type": "CLIP_VISION",
-          "slot_index": 0,
-          "links": [
-            101,
-            102
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPVisionLoader",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65",
-        "models": [
-          {
-            "name": "clip_vision_g.safetensors",
-            "url": "https://huggingface.co/comfyanonymous/clip_vision_g/resolve/main/clip_vision_g.safetensors?download=true",
-            "directory": "clip_vision"
-          }
-        ]
-      },
-      "widgets_values": [
-        "clip_vision_g.safetensors"
-      ]
-    },
-    {
-      "id": 7,
-      "type": "CLIPTextEncode",
-      "pos": [
-        -100,
-        -180
-      ],
-      "size": [
-        425.2799987792969,
-        180.61000061035156
-      ],
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 105
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "slot_index": 0,
-          "links": [
-            6
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
-      },
-      "widgets_values": [
-        "text, watermark"
-      ],
-      "color": "#223",
-      "bgcolor": "#335"
-    },
-    {
-      "id": 34,
-      "type": "LoadImage",
-      "pos": [
-        -480,
-        110
-      ],
-      "size": [
-        330,
-        340
-      ],
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "slot_index": 0,
-          "links": [
-            95
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "LoadImage",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
-      },
-      "widgets_values": [
-        "sdxl_revision_text_prompts_ref_image1.png",
-        "image"
-      ]
-    },
-    {
-      "id": 13,
-      "type": "CLIPVisionEncode",
-      "pos": [
-        -480,
-        490
-      ],
-      "size": [
-        330,
-        78
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip_vision",
-          "type": "CLIP_VISION",
-          "link": 101
-        },
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 95
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CLIP_VISION_OUTPUT",
-          "type": "CLIP_VISION_OUTPUT",
-          "slot_index": 0,
-          "links": [
-            24
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPVisionEncode",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
-      },
-      "widgets_values": [
-        "center"
-      ]
-    },
-    {
-      "id": 19,
-      "type": "unCLIPConditioning",
-      "pos": [
-        -480,
-        610
-      ],
-      "size": [
-        330,
-        102
-      ],
-      "flags": {},
-      "order": 10,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "conditioning",
-          "type": "CONDITIONING",
-          "link": 23
-        },
-        {
-          "name": "clip_vision_output",
-          "type": "CLIP_VISION_OUTPUT",
-          "link": 24
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "slot_index": 0,
-          "links": [
-            96
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "unCLIPConditioning",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
-      },
-      "widgets_values": [
-        0.75,
-        0
-      ]
-    },
-    {
-      "id": 36,
-      "type": "CLIPVisionEncode",
-      "pos": [
-        -70,
-        490
-      ],
-      "size": [
-        340,
-        78
-      ],
-      "flags": {},
-      "order": 9,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip_vision",
-          "type": "CLIP_VISION",
-          "link": 102
-        },
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 98
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CLIP_VISION_OUTPUT",
-          "type": "CLIP_VISION_OUTPUT",
-          "slot_index": 0,
-          "links": [
-            100
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPVisionEncode",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
-      },
-      "widgets_values": [
-        "center"
-      ]
-    },
-    {
-      "id": 37,
-      "type": "unCLIPConditioning",
-      "pos": [
-        -70,
-        610
-      ],
-      "size": [
-        340,
-        102
-      ],
-      "flags": {},
-      "order": 11,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "conditioning",
-          "type": "CONDITIONING",
-          "link": 96
-        },
-        {
-          "name": "clip_vision_output",
-          "type": "CLIP_VISION_OUTPUT",
-          "link": 100
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "slot_index": 0,
-          "links": [
-            97
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "unCLIPConditioning",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
-      },
-      "widgets_values": [
-        0.75,
-        0
-      ]
-    },
-    {
-      "id": 40,
-      "type": "CheckpointLoaderSimple",
-      "pos": [
-        -470,
-        -400
-      ],
-      "size": [
-        315,
-        98
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {
           "name": "MODEL",
           "type": "MODEL",
-          "slot_index": 0,
           "links": [
-            103
+            1
           ]
         },
         {
           "name": "CLIP",
           "type": "CLIP",
-          "slot_index": 1,
           "links": [
-            104,
-            105
+            2,
+            3
           ]
         },
         {
           "name": "VAE",
           "type": "VAE",
-          "slot_index": 2,
           "links": [
-            106
+            8
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "CheckpointLoaderSimple",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65",
-        "models": [
-          {
-            "name": "sd_xl_base_1.0.safetensors",
-            "url": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors?download=true",
-            "directory": "checkpoints"
-          }
-        ]
+        "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
         "sd_xl_base_1.0.safetensors"
       ]
     },
     {
-      "id": 5,
-      "type": "EmptyLatentImage",
+      "id": 2,
+      "type": "CLIPTextEncode",
       "pos": [
-        -480,
-        -90
+        400,
+        40
       ],
       "size": [
-        340,
-        106
+        422,
+        164
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "futuristic city inspired by the edges, cyberpunk, neon lights, detailed, 8k"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "CLIPTextEncode",
+      "pos": [
+        400,
+        230
+      ],
+      "size": [
+        422,
+        164
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "blurry, low quality, watermark"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "LoadImage",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        315,
+        314
       ],
       "flags": {},
       "order": 3,
@@ -385,35 +139,36 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "LATENT",
-          "type": "LATENT",
-          "slot_index": 0,
+          "name": "IMAGE",
+          "type": "IMAGE",
           "links": [
-            2
+            12
           ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
         }
       ],
       "properties": {
-        "Node name for S&R": "EmptyLatentImage",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
+        "Node name for S&R": "LoadImage"
       },
       "widgets_values": [
-        1024,
-        1024,
-        1
+        "control_input.png",
+        "image"
       ]
     },
     {
-      "id": 38,
-      "type": "LoadImage",
+      "id": 12,
+      "type": "ControlNetLoader",
       "pos": [
-        -60,
-        110
+        40,
+        560
       ],
       "size": [
-        330,
-        340
+        315,
+        58
       ],
       "flags": {},
       "order": 4,
@@ -421,156 +176,185 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "slot_index": 0,
+          "name": "CONTROL_NET",
+          "type": "CONTROL_NET",
           "links": [
-            98
+            15
           ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": null
         }
       ],
       "properties": {
-        "Node name for S&R": "LoadImage",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
+        "Node name for S&R": "ControlNetLoader"
       },
       "widgets_values": [
-        "sdxl_revision_text_prompts_ref_image2.png",
-        "image"
+        "controlnet-canny-sdxl-1.0.safetensors"
       ]
     },
     {
-      "id": 3,
-      "type": "KSampler",
+      "id": 13,
+      "type": "ControlNetApplyAdvanced",
       "pos": [
-        370,
-        -430
+        700,
+        40
       ],
       "size": [
-        310,
-        474
+        315,
+        186
       ],
       "flags": {},
-      "order": 12,
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 14
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 5
+        },
+        {
+          "name": "control_net",
+          "type": "CONTROL_NET",
+          "link": 15
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            4
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ControlNetApplyAdvanced"
+      },
+      "widgets_values": [
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 4,
+      "type": "EmptyLatentImage",
+      "pos": [
+        40,
+        700
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "type": "KSampler",
+      "pos": [
+        1060,
+        40
+      ],
+      "size": [
+        315,
+        262
+      ],
+      "flags": {},
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
           "name": "model",
           "type": "MODEL",
-          "link": 103
+          "link": 1
         },
         {
           "name": "positive",
           "type": "CONDITIONING",
-          "link": 97
+          "link": 4
         },
         {
           "name": "negative",
           "type": "CONDITIONING",
-          "link": 6
+          "link": 17
         },
         {
           "name": "latent_image",
           "type": "LATENT",
-          "link": 2
+          "link": 6
         }
       ],
       "outputs": [
         {
           "name": "LATENT",
           "type": "LATENT",
-          "slot_index": 0,
           "links": [
             7
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "KSampler",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
+        "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        900749379955168,
-        "randomize",
-        26,
-        8,
-        "dpmpp_3m_sde_gpu",
-        "exponential",
+        42,
+        "fixed",
+        25,
+        7,
+        "dpmpp_2m",
+        "karras",
         1
       ]
     },
     {
-      "id": 9,
-      "type": "SaveImage",
-      "pos": [
-        710,
-        -420
-      ],
-      "size": [
-        635.1900024414062,
-        692.8200073242188
-      ],
-      "flags": {},
-      "order": 14,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 9
-        }
-      ],
-      "outputs": [],
-      "properties": {
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
-      },
-      "widgets_values": [
-        "ComfyUI"
-      ]
-    },
-    {
-      "id": 41,
-      "type": "MarkdownNote",
-      "pos": [
-        -960,
-        -440
-      ],
-      "size": [
-        460,
-        310
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "🛈 [Learn more about this workflow](https://comfyanonymous.github.io/ComfyUI_examples/sdxl/#revision)\n\n\n## Model links\n\n**checkpoints**\n\n- [sd_xl_base_1.0.safetensors](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors)\n\n**clip_vision**\n\n- [clip_vision_g.safetensors](https://huggingface.co/comfyanonymous/clip_vision_g/resolve/main/clip_vision_g.safetensors)\n\n\nModel Storage Location\n\n```\n📂 ComfyUI/\n├── 📂 models/\n│   ├── 📂 checkpoints/\n│   │      └── sd_xl_base_1.0.safetensors\n│   └── 📂 clip_vision/\n│          └── clip_vision_g.safetensors\n```\n"
-      ],
-      "color": "#432",
-      "bgcolor": "#000"
-    },
-    {
-      "id": 8,
+      "id": 6,
       "type": "VAEDecode",
       "pos": [
-        470,
-        90
+        1420,
+        40
       ],
       "size": [
         210,
         46
       ],
       "flags": {},
-      "order": 13,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -581,275 +365,199 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 106
+          "link": 8
         }
       ],
       "outputs": [
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "slot_index": 0,
           "links": [
-            9
+            16
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "VAEDecode",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
+        "Node name for S&R": "VAEDecode"
       },
       "widgets_values": []
     },
     {
-      "id": 6,
-      "type": "CLIPTextEncode",
+      "id": 7,
+      "type": "SaveImage",
       "pos": [
-        -110,
-        -400
+        1670,
+        40
       ],
       "size": [
-        422.8500061035156,
-        164.30999755859375
+        210,
+        270
       ],
       "flags": {},
-      "order": 7,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 104
+          "name": "images",
+          "type": "IMAGE",
+          "link": 16
         }
       ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "slot_index": 0,
-          "links": [
-            23
-          ]
-        }
-      ],
+      "outputs": [],
       "properties": {
-        "Node name for S&R": "CLIPTextEncode",
-        "cnr_id": "comfy-core",
-        "ver": "0.3.65"
+        "Node name for S&R": "SaveImage"
       },
       "widgets_values": [
-        "car, city, anime style"
+        "nh_cn_canny"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "Note",
+      "pos": [
+        40,
+        838
       ],
-      "color": "#232",
-      "bgcolor": "#353"
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralDrift workflow. Review dependencies on the workflow page. Hardware compatibility and generation speed require an actual test."
+      },
+      "widgets_values": [
+        "NeuralDrift workflow. Review dependencies on the workflow page. Hardware compatibility and generation speed require an actual test."
+      ]
     }
   ],
   "links": [
     [
-      2,
+      1,
+      1,
+      0,
       5,
-      0,
-      3,
-      3,
-      "LATENT"
-    ],
-    [
-      6,
-      7,
-      0,
-      3,
-      2,
-      "CONDITIONING"
-    ],
-    [
-      7,
-      3,
-      0,
-      8,
-      0,
-      "LATENT"
-    ],
-    [
-      9,
-      8,
-      0,
-      9,
-      0,
-      "IMAGE"
-    ],
-    [
-      23,
-      6,
-      0,
-      19,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      24,
-      13,
-      0,
-      19,
-      1,
-      "CLIP_VISION_OUTPUT"
-    ],
-    [
-      95,
-      34,
-      0,
-      13,
-      1,
-      "IMAGE"
-    ],
-    [
-      96,
-      19,
-      0,
-      37,
-      0,
-      "CONDITIONING"
-    ],
-    [
-      97,
-      37,
-      0,
-      3,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      98,
-      38,
-      0,
-      36,
-      1,
-      "IMAGE"
-    ],
-    [
-      100,
-      36,
-      0,
-      37,
-      1,
-      "CLIP_VISION_OUTPUT"
-    ],
-    [
-      101,
-      39,
-      0,
-      13,
-      0,
-      "CLIP_VISION"
-    ],
-    [
-      102,
-      39,
-      0,
-      36,
-      0,
-      "CLIP_VISION"
-    ],
-    [
-      103,
-      40,
-      0,
-      3,
       0,
       "MODEL"
     ],
     [
-      104,
-      40,
+      2,
       1,
+      1,
+      2,
+      0,
+      "CLIP"
+    ],
+    [
+      3,
+      1,
+      1,
+      3,
+      0,
+      "CLIP"
+    ],
+    [
+      4,
+      13,
+      0,
+      5,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      5,
+      3,
+      0,
+      13,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      6,
+      4,
+      0,
+      5,
+      3,
+      "LATENT"
+    ],
+    [
+      7,
+      5,
+      0,
       6,
       0,
-      "CLIP"
+      "LATENT"
     ],
     [
-      105,
-      40,
-      1,
-      7,
-      0,
-      "CLIP"
-    ],
-    [
-      106,
-      40,
-      2,
       8,
       1,
+      2,
+      6,
+      1,
       "VAE"
+    ],
+    [
+      12,
+      9,
+      0,
+      13,
+      3,
+      "IMAGE"
+    ],
+    [
+      14,
+      2,
+      0,
+      13,
+      0,
+      "CONDITIONING"
+    ],
+    [
+      15,
+      12,
+      0,
+      13,
+      2,
+      "CONTROL_NET"
+    ],
+    [
+      16,
+      6,
+      0,
+      7,
+      0,
+      "IMAGE"
+    ],
+    [
+      17,
+      13,
+      1,
+      5,
+      2,
+      "CONDITIONING"
     ]
   ],
-  "groups": [
-    {
-      "id": 1,
-      "title": "Prompt",
-      "bounding": [
-        -120,
-        -470,
-        460,
-        490
-      ],
-      "color": "#3f789e",
-      "font_size": 24,
-      "flags": {}
-    },
-    {
-      "id": 2,
-      "title": "Load models",
-      "bounding": [
-        -490,
-        -470,
-        360,
-        300
-      ],
-      "color": "#3f789e",
-      "font_size": 24,
-      "flags": {}
-    },
-    {
-      "id": 3,
-      "title": "Reference images",
-      "bounding": [
-        -490,
-        40,
-        830,
-        690
-      ],
-      "color": "#3f789e",
-      "font_size": 24,
-      "flags": {}
-    },
-    {
-      "id": 5,
-      "title": "Image size",
-      "bounding": [
-        -490,
-        -160,
-        360,
-        180
-      ],
-      "color": "#3f789e",
-      "font_size": 24,
-      "flags": {}
-    }
-  ],
+  "groups": [],
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.7647939465671223,
+      "scale": 0.7,
       "offset": [
-        827.0055244008744,
-        533.4359512624814
+        0,
+        0
       ]
     },
-    "frontendVersion": "1.29.2",
-    "VHS_latentpreview": false,
-    "VHS_latentpreviewrate": 0,
-    "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "neuraldrift": {
+      "catalogId": "31",
+      "source": "Existing NeuralDrift workflow asset",
+      "sourceAsset": "31-controlnet-canny-sdxl.json",
+      "license": null,
+      "executionTested": false
+    }
   },
   "version": 0.4
 }

@@ -8,7 +8,7 @@ import { FixMyPcButton } from "@/components/optimizer/FixMyPcButton";
 import Link from "next/link";
 import { DynamicCTA } from "@/components/DynamicCTA";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
 const FRONTEND_WORKFLOWS = new Set([
   "13-ltx-video-action-chase",

@@ -15,8 +15,9 @@ export async function POST(req: Request) {
     }
 
     // Try local inference server first (SECTION 7)
-    try {
-      const localRes = await fetch("http://localhost:8000/generate", {
+    const localInferenceUrl = process.env.LOCAL_INFERENCE_URL;
+    if (localInferenceUrl) try {
+      const localRes = await fetch(`${localInferenceUrl}/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

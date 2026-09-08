@@ -1,0 +1,31 @@
+{
+  "workflowId": "34",
+  "status": "completed",
+  "workflowSha256": "ed655113da36bbe82ab37af52fcd25e67993c183c517d5e6a0ef415906f580e9",
+  "testDate": "2026-09-08T13:33:25.049Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 25,
+    "cfg": 7,
+    "sampler": "dpmpp_2m",
+    "scheduler": "karras",
+    "denoise": 1,
+    "controlNetModel": "control_v11p_sd15_lineart.pth"
+  },
+  "resolution": "512 × 512",
+  "batchSize": 1,
+  "generationSeconds": 2.297,
+  "peakMemory": null,
+  "model": "v1-5-pruned-emaonly-fp16.safetensors",
+  "modelSha256": null,
+  "customNodes": "None (ComfyUI Core)",
+  "preview": "/workflow-tests/34-output.png",
+  "prompt": "detailed anime character, vibrant colors, cel shaded, high quality, masterpiece",
+  "outputKind": "image"
+}

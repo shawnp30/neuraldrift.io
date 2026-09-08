@@ -1,22 +1,3 @@
-import { createClient } from "@/lib/supabase/server";
-import { NextResponse } from "next/server";
-
-export async function GET(
-  request: Request,
-  { params }: { params: { slug: string } }
-) {
-  const supabase = createClient();
-  const slug = params.slug;
-
-  const { data: workflow, error } = await supabase
-    .from("workflows")
-    .select("*")
-    .eq("slug", slug)
-    .single();
-
-  if (error || !workflow) {
-    return NextResponse.json({ error: "Workflow not found" }, { status: 404 });
-  }
-
-  return NextResponse.json(workflow);
-}
+import { NextResponse } from 'next/server';
+import { CATALOG } from '@/lib/catalog';
+export async function GET(request: Request, { params }: { params: { slug: string } }) { const workflow = CATALOG.find(w => w.id === params.slug); return workflow ? NextResponse.json(workflow) : NextResponse.json({ error: 'Workflow not found' }, { status: 404 }); }

@@ -3,10 +3,8 @@ import { compileMDX } from "next-mdx-remote/rsc";
 import { readFileSync, existsSync, readdirSync } from "fs";
 import { join } from "path";
 import Link from "next/link";
-import Navbar from "@/components/layout/Navbar";
+import { notFound } from "next/navigation";
 import CopyButton from "@/components/CopyButton";
-import { GuideQuickActions } from "@/components/GuideQuickActions";
-import { BENCHMARKS } from "@/lib/hardware/registry";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
@@ -18,18 +16,9 @@ interface Props {
 interface Frontmatter {
   title: string;
   description: string;
-  category?: string;
-  difficulty?: string;
-  publishedAt?: string;
-  author?: string;
+  date: string;
+  tags: string[];
 }
-
-// Real benchmark figures pulled from the site's own hardware registry, so this
-// panel can't drift out of sync with the numbers published on /hardware.
-const BENCH_PREVIEW = BENCHMARKS.filter((b) => b.imagesPerMinute)
-  .sort((a, b) => (b.imagesPerMinute ?? 0) - (a.imagesPerMinute ?? 0))
-  .slice(0, 4);
-const BENCH_MAX = Math.max(...BENCH_PREVIEW.map((b) => b.imagesPerMinute ?? 0), 1);
 
 // ComputeAtlas Ad Component
 function ComputeAtlasAd({ variant = "inline" }: { variant?: "inline" | "bottom" }) {
@@ -54,24 +43,10 @@ function ComputeAtlasAd({ variant = "inline" }: { variant?: "inline" | "bottom" 
             Check GPU Prices →
           </a>
         </div>
-        <div className="hidden md:flex w-48 flex-shrink-0 flex-col gap-2 rounded-2xl border border-[#2a2a30] bg-[#0a0a0b] p-5">
-          {BENCH_PREVIEW.map((r) => (
-            <div key={r.gpu} className="flex flex-col gap-1">
-              <div className="flex items-baseline justify-between font-mono text-[9px] text-[#8888a0]">
-                <span>{r.gpu}</span>
-                <span className="text-[#7c6af7]">{r.imagesPerMinute}</span>
-              </div>
-              <div className="h-1 w-full overflow-hidden rounded-full bg-[#1a1a20]">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#7c6af7] to-[#22d3ee]"
-                  style={{ width: `${Math.round(((r.imagesPerMinute ?? 0) / BENCH_MAX) * 100)}%` }}
-                />
-              </div>
-            </div>
-          ))}
-          <p className="mt-1 font-mono text-[8px] uppercase tracking-widest text-[#4a4a55]">
-            FLUX Dev FP8 · img/min
-          </p>
+        <div className="hidden md:block w-48 h-48 bg-[#0a0a0b] rounded-2xl border border-[#2a2a30] p-4 flex-shrink-0">
+          <div className="w-full h-full border border-dashed border-[#2a2a30] rounded-lg flex items-center justify-center text-[#2a2a30] font-mono text-[10px] text-center">
+            [AD VISUAL: GPU BENCHMARKS]
+          </div>
         </div>
       </div>
     </div>
@@ -157,7 +132,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!existsSync(filePath)) {
     return {
-      title: "Guide Not Found",
+      title: "Guide Not Found | NeuralDrift",
       robots: { index: false, follow: true },
       alternates: {
         canonical: `https://neuraldrift.io/guides/${slug}`,
@@ -186,7 +161,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       url: canonical,
       images: [
         {
-          url: "/opengraph-image",
+          url: "/og-image.png",
           width: 1200,
           height: 630,
           alt: frontmatter.title,
@@ -197,7 +172,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: frontmatter.title,
       description: frontmatter.description,
-      images: ["/opengraph-image"],
+      images: ["/og-image.png"],
     },
   };
 }
@@ -207,17 +182,7 @@ export default async function GuidePage({ params }: Props) {
   const guidesDir = join(process.cwd(), "content/guides");
   const filePath = join(guidesDir, `${slug}.mdx`);
 
-  if (!existsSync(filePath)) {
-    return (
-      <div className="bg-transparent min-h-screen text-[#e8e8f0]">
-        <Navbar />
-        <main className="max-w-4xl mx-auto pt-40 px-6 text-center">
-          <h1 className="text-4xl font-black mb-8">Guide Not Found</h1>
-          <Link href="/guides" className="text-[#7c6af7] hover:underline">← Back to Guides</Link>
-        </main>
-      </div>
-    );
-  }
+  if (!existsSync(filePath)) notFound();
 
   const raw = readFileSync(filePath, "utf-8");
   
@@ -276,35 +241,9 @@ export default async function GuidePage({ params }: Props) {
   const prevSlug = currentIndex > 0 ? allFiles[currentIndex - 1].replace(".mdx", "") : null;
   const nextSlug = currentIndex < allFiles.length - 1 ? allFiles[currentIndex + 1].replace(".mdx", "") : null;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "TechArticle",
-    headline: frontmatter.title,
-    description: frontmatter.description,
-    datePublished: frontmatter.publishedAt,
-    dateModified: frontmatter.publishedAt,
-    author: {
-      "@type": "Organization",
-      name: frontmatter.author || "NeuralDrift",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "NeuralDrift",
-      url: "https://neuraldrift.io",
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `https://neuraldrift.io/guides/${slug}`,
-    },
-  };
-
   return (
     <div className="bg-transparent min-h-screen text-[#e8e8f0] selection:bg-transparent/30 selection:text-white">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Navbar />
+      
 
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css');
@@ -322,7 +261,7 @@ export default async function GuidePage({ params }: Props) {
             {/* Header */}
             <header className="mb-16">
               <div className="flex flex-wrap gap-2 mb-6">
-                {[frontmatter.category, frontmatter.difficulty].filter(Boolean).map((tag) => (
+                {(frontmatter.tags || []).map(tag => (
                   <span key={tag} className="px-3 py-1 rounded-full bg-[#7c6af7]/10 border border-[#7c6af7]/20 text-[#7c6af7] font-mono text-[10px] tracking-widest uppercase">
                     {tag}
                   </span>
@@ -339,17 +278,10 @@ export default async function GuidePage({ params }: Props) {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#4ade80]" />
                   {readingTime} min read
                 </span>
-                {frontmatter.publishedAt && (
-                  <span className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#7c6af7]" />
-                    {new Date(frontmatter.publishedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      timeZone: "UTC",
-                    })}
-                  </span>
-                )}
+                <span className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#7c6af7]" />
+                  {frontmatter.date}
+                </span>
               </div>
             </header>
 
@@ -405,7 +337,14 @@ export default async function GuidePage({ params }: Props) {
 
               <div className="mt-12 pt-8 border-t border-[#2a2a30]">
                 <p className="font-mono text-[10px] text-[#8888a0] tracking-widest uppercase mb-4">Quick Actions</p>
-                <GuideQuickActions title={frontmatter.title} />
+                <div className="space-y-3">
+                  <a href="#" className="flex items-center gap-2 text-xs text-[#8888a0] hover:text-[#22d3ee] transition-colors">
+                    <span className="text-[#22d3ee]">☇</span> Download Workflow
+                  </a>
+                  <a href="#" className="flex items-center gap-2 text-xs text-[#8888a0] hover:text-[#4ade80] transition-colors">
+                    <span className="text-[#4ade80]">↑</span> Share Guide
+                  </a>
+                </div>
               </div>
             </div>
           </aside>
@@ -424,3 +363,4 @@ export async function generateStaticParams() {
     .filter(f => f.endsWith(".mdx"))
     .map(f => ({ slug: f.replace(".mdx", "") }));
 }
+

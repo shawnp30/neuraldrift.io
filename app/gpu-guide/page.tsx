@@ -196,7 +196,7 @@ const GPU_DATA = {
     models: [
       { name: "Flux.1 Dev", type: "Image Gen", notes: "Full model, no quantization needed. Fast batch generation." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Multiple LoRAs stacked. Train custom LoRAs locally." },
-      { name: "LTX Video", type: "Video Gen", notes: "High-res video at full quality. Extended clip lengths." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "High-res video at full quality. Extended clip lengths." },
       { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Full 70B quantized fits. Fast inference." },
       { name: "Whisper Large V3", type: "Audio", notes: "Real-time transcription with headroom to spare." },
     ],
@@ -207,7 +207,7 @@ const GPU_DATA = {
     models: [
       { name: "Flux.1 Dev (FP8)", type: "Image Gen", notes: "Runs great with FP8 quantization. Near-lossless quality." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Comfortable with 2-3 LoRAs stacked." },
-      { name: "LTX Video", type: "Video Gen", notes: "Short clips work well. Medium res recommended." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "Short clips work well. Medium res recommended." },
       { name: "Llama 3.1 8B", type: "LLM", notes: "Full precision. Blazing fast inference." },
       { name: "Whisper Large V3", type: "Audio", notes: "No issues. Plenty of VRAM." },
     ],
@@ -240,7 +240,7 @@ const GPU_DATA = {
     models: [
       { name: "Flux.1 Dev", type: "Image Gen", notes: "Runs at full FP16. Excellent speed." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Stack LoRAs freely. Train them too." },
-      { name: "LTX Video", type: "Video Gen", notes: "Handles full quality. Longer clips possible." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "Handles full quality. Longer clips possible." },
       { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Tight fit but works with 4-bit quantization." },
       { name: "Whisper Large V3", type: "Audio", notes: "No issues whatsoever." },
     ],
@@ -310,7 +310,7 @@ const GPU_DATA = {
     models: [
       { name: "Flux.1 Dev", type: "Image Gen", notes: "24GB VRAM fits full model. Slower than 40-series but works." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Comfortable. LoRA training possible." },
-      { name: "LTX Video", type: "Video Gen", notes: "Works. Expect longer render times vs newer cards." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "Works. Expect longer render times vs newer cards." },
       { name: "Llama 3.3 70B (Q4)", type: "LLM", notes: "Fits quantized. Slower inference." },
     ],
     verdict: "Still a powerhouse thanks to 24GB VRAM. Model compatibility matches the 4090 — you just wait longer. Excellent used-market value for AI creators on a budget.",
@@ -451,7 +451,7 @@ const GPU_DATA = {
       { name: "Flux.1 Dev", type: "Image Gen", notes: "Plenty of room. Full quality." },
       { name: "SDXL + LoRAs", type: "Image Gen", notes: "Stack whatever you want." },
       { name: "Llama 3.3 70B", type: "LLM", notes: "Near full precision via MLX." },
-      { name: "LTX Video", type: "Video Gen", notes: "Works via MPS. Slower but functional." },
+      { name: "LTX Video 2.3", type: "Video Gen", notes: "Works via MPS. Slower but functional." },
       { name: "Whisper Large V3", type: "Audio", notes: "No issues." },
     ],
     verdict: "48GB unified memory rivals workstation GPUs for model compatibility. The MLX ecosystem makes this a legitimate AI development machine. Slower than desktop NVIDIA but remarkably capable.",
@@ -794,7 +794,7 @@ function HardwareDetail({ gpu, cpu, ram, onBack }: HardwareDetailProps) {
         }}>
           <h3 style={{ fontSize: 16, fontWeight: 600, color: "#f59e0b", marginBottom: 8, fontFamily: "'Playfair Display', serif" }}>💡 Don&apos;t have the right hardware? Use cloud GPUs</h3>
           <p style={{ color: "#d1d5db", fontSize: 14, margin: 0, lineHeight: 1.6, fontFamily: "'Space Grotesk', sans-serif" }}>
-            You don&apos;t need expensive hardware to create with AI. Cloud GPU services like RunPod and Vast.ai rent RTX 4090s by the second, typically in the $0.20–0.40/hr range. Rates move constantly — always confirm on the provider before committing.
+            You don&apos;t need expensive hardware to create with AI. Cloud GPU services like RunPod and Vast.ai let you rent an RTX 4090 for as little as $0.20/hr. Check the providers below.
           </p>
         </div>
       )}
@@ -809,16 +809,18 @@ function HardwareDetail({ gpu, cpu, ram, onBack }: HardwareDetailProps) {
 
 function CloudCard({ provider }: CloudCardProps) {
   const [hovered, setHovered] = useState(false);
-  const detailHref = provider.name === "RunPod" ? "/gpu-guide/runpod" : null;
   return (
-    <div
+    <a
+      href={provider.url}
+      target="_blank"
+      rel="noopener noreferrer"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display: "block", padding: 24,
+        display: "block", textDecoration: "none", padding: 24,
         background: hovered ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.02)",
         border: `1px solid ${hovered ? "rgba(245,158,11,0.3)" : "rgba(255,255,255,0.06)"}`,
-        borderRadius: 14, transition: "all 0.25s",
+        borderRadius: 14, transition: "all 0.25s", cursor: "pointer",
         transform: hovered ? "translateY(-2px)" : "none",
         boxShadow: hovered ? "0 8px 32px rgba(0,0,0,0.3)" : "none",
       }}
@@ -854,25 +856,10 @@ function CloudCard({ provider }: CloudCardProps) {
           </span>
         ))}
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 16 }}>
-        <a
-          href={provider.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ display: "flex", alignItems: "center", gap: 6, color: hovered ? "#f59e0b" : "#6b7280", fontSize: 13, fontWeight: 600, transition: "color 0.2s", fontFamily: "'JetBrains Mono', monospace", textDecoration: "none" }}
-        >
-          Visit {provider.name} <ExternalLink />
-        </a>
-        {detailHref && (
-          <Link
-            href={detailHref}
-            style={{ fontSize: 13, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace", color: "#6b7280", textDecoration: "underline" }}
-          >
-            Full breakdown →
-          </Link>
-        )}
+      <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 16, color: hovered ? "#f59e0b" : "#6b7280", fontSize: 13, fontWeight: 600, transition: "color 0.2s", fontFamily: "'JetBrains Mono', monospace" }}>
+        Visit {provider.name} <ExternalLink />
       </div>
-    </div>
+    </a>
   );
 }
 
@@ -1051,7 +1038,7 @@ export default function GPUComputePage() {
         {/* Footer note */}
         <div style={{ textAlign: "center", marginTop: 48, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <p style={{ fontSize: 12, color: "#4b5563", fontFamily: "'JetBrains Mono', monospace" }}>
-            Prices and specs are approximate and subject to change. Last updated August 2026.
+            Prices and specs are approximate and subject to change. Last updated March 2026.
           </p>
         </div>
       </div>

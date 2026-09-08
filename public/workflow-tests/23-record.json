@@ -1,0 +1,47 @@
+{
+  "workflowId": "23",
+  "status": "completed",
+  "workflowSha256": "26b16192cd2ca2b76abf20dcc02914df47714dad4802f2bb7eafd213970a84e8",
+  "testDate": "2026-09-08T03:41:42.859Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "model": [
+      "1",
+      0
+    ],
+    "seed": 42,
+    "steps": 20,
+    "cfg": 7,
+    "sampler_name": "dpmpp_2m",
+    "scheduler": "karras",
+    "positive": [
+      "2",
+      0
+    ],
+    "negative": [
+      "3",
+      0
+    ],
+    "latent_image": [
+      "11",
+      0
+    ],
+    "denoise": 0.65
+  },
+  "resolution": "1024 × 1024 (Image to Image)",
+  "batchSize": 1,
+  "generationSeconds": 5.852,
+  "peakMemory": null,
+  "model": "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors",
+  "modelSha256": null,
+  "customNodes": "None; core nodes only",
+  "preview": "/workflow-tests/23-output.png",
+  "prompt": "transform into oil painting style, impressionist, rich colors, thick brushstrokes",
+  "outputKind": "image"
+}

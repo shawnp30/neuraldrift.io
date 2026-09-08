@@ -1,0 +1,47 @@
+{
+  "workflowId": "28",
+  "status": "completed",
+  "workflowSha256": "362826945387b3efb9895218a8bf60274de563bbcecffe74d0778cfc9a78d3fd",
+  "testDate": "2026-09-08T03:31:56.018Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "model": [
+      "1",
+      0
+    ],
+    "seed": 42,
+    "steps": 20,
+    "cfg": 7,
+    "sampler_name": "dpmpp_2m",
+    "scheduler": "karras",
+    "positive": [
+      "2",
+      0
+    ],
+    "negative": [
+      "3",
+      0
+    ],
+    "latent_image": [
+      "4",
+      0
+    ],
+    "denoise": 1
+  },
+  "resolution": "1024 × 1024",
+  "batchSize": 1,
+  "generationSeconds": 9.368,
+  "peakMemory": null,
+  "model": "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors",
+  "modelSha256": null,
+  "customNodes": "None; core nodes only",
+  "preview": "/workflow-tests/28-output.png",
+  "prompt": "Product shot: luxury perfume bottle on a white pedestal, soft studio lighting, high-end commercial style",
+  "outputKind": "image"
+}

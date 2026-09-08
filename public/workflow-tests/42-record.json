@@ -1,0 +1,29 @@
+{
+  "workflowId": "42",
+  "status": "completed",
+  "workflowSha256": "fcef20bc127af32804652cd554f9adcf9d4a7a68c2e83a9e022bcfd84bafde5d",
+  "testDate": "2026-09-08T04:04:12.661Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 20,
+    "cfg": 7,
+    "sampler": "euler",
+    "scheduler": "karras"
+  },
+  "resolution": "1024 × 1024",
+  "batchSize": 1,
+  "generationSeconds": 4.008,
+  "peakMemory": null,
+  "model": "v1-5-pruned-emaonly-fp16.safetensors",
+  "modelSha256": null,
+  "customNodes": "None; core nodes only",
+  "preview": "/workflow-tests/42-output.png",
+  "prompt": "A small RPG-style pixel-art hero sprite, 16-bit style, clean isolated background",
+  "outputKind": "image"
+}

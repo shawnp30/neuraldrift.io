@@ -546,7 +546,14 @@
     "VHS_latentpreview": false,
     "VHS_latentpreviewrate": 0,
     "VHS_MetadataImage": true,
-    "VHS_KeepIntermediate": true
+    "VHS_KeepIntermediate": true,
+    "neuraldrift": {
+      "catalogId": "01",
+      "source": "https://github.com/Comfy-Org/workflow_templates",
+      "sourceAsset": "01.json",
+      "license": null,
+      "executionTested": false
+    }
   },
   "version": 0.4
 }

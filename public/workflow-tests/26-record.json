@@ -1,0 +1,29 @@
+{
+  "workflowId": "26",
+  "status": "completed",
+  "workflowSha256": "63da66d81a352abb8fefcbb4ae3f34381060df6b389bd905e647c8498d7569a0",
+  "testDate": "2026-09-08T04:03:10.256Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 20,
+    "cfg": 7,
+    "sampler": "euler",
+    "scheduler": "karras"
+  },
+  "resolution": "1024 × 1024",
+  "batchSize": 1,
+  "generationSeconds": 4.032,
+  "peakMemory": null,
+  "model": "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors",
+  "modelSha256": null,
+  "customNodes": "None; core nodes only",
+  "preview": "/workflow-tests/26-output.png",
+  "prompt": "seamless background fill, photorealistic, consistent lighting, no seams",
+  "outputKind": "image"
+}

@@ -1,0 +1,47 @@
+{
+  "workflowId": "43",
+  "status": "completed",
+  "workflowSha256": "d364f30dab2d79a57811f2d86eb8cf278a4c92c31b90ba8e4e7c5c3b5d6dc1bc",
+  "testDate": "2026-09-08T02:33:37.220Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "model": [
+      "78",
+      0
+    ],
+    "seed": 31,
+    "steps": 8,
+    "cfg": 1,
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "positive": [
+      "94",
+      0
+    ],
+    "negative": [
+      "47",
+      0
+    ],
+    "latent_image": [
+      "98",
+      0
+    ],
+    "denoise": 1
+  },
+  "resolution": "Audio · 120 seconds requested",
+  "batchSize": 1,
+  "generationSeconds": 214.703,
+  "peakMemory": null,
+  "model": "ace_step_1.5_turbo_aio.safetensors",
+  "modelSha256": "67b0f43aa5c51c840bd0228e6a935d8ff416ec87e5df2fc0637da17a561252bc",
+  "customNodes": "None; custom nodes disabled",
+  "preview": "/workflow-tests/43-output.mp3",
+  "prompt": "Neo-Soul: A warm, organic neo-soul track dripping with live instrumentation and effortless groove. A live drummer plays a loose, hip-hop influenced pocket—soft kick drum with lazy swing, snare hits that sit just behind the beat, and brushed hi-hats that breathe and shuffle with human imperfection.",
+  "outputKind": "audio"
+}

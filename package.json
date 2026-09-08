@@ -8,7 +8,16 @@
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
-    "gen-types": "supabase gen types typescript --local > types/supabase.ts"
+    "gen-types": "supabase gen types typescript --local > types/supabase.ts",
+    "evidence:hashes": "node scripts/workflow-hashes.mjs",
+    "prebuild": "npm run evidence:hashes",
+    "predev": "npm run evidence:hashes",
+    "test:compatibility": "node --require ./scripts/register-ts.cjs scripts/test-compatibility.mjs",
+    "test:multi-gpu": "node --require ./scripts/register-ts.cjs scripts/test-multi-gpu.mjs",
+    "test": "npm run test:compatibility && npm run test:multi-gpu && npm run test:runner",
+    "evidence:run": "node scripts/run-execution.mjs",
+    "evidence:hardware": "node --require ./scripts/register-ts.cjs scripts/register-hardware.mjs",
+    "test:runner": "node scripts/test-execution-runner.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

@@ -1,56 +1,16 @@
 {
-  "id": "bf11bf13-0fba-4b6b-9a8d-1680bf10cb09",
-  "revision": 0,
-  "last_node_id": 28,
-  "last_link_id": 54,
+  "last_node_id": 8,
+  "last_link_id": 9,
   "nodes": [
     {
-      "id": 7,
-      "type": "CLIPTextEncode",
-      "pos": [
-        352,
-        176
-      ],
-      "size": [
-        425.28,
-        180.61
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 39
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "slot_index": 0,
-          "links": [
-            20
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "text, watermark"
-      ]
-    },
-    {
-      "id": 20,
+      "id": 1,
       "type": "CheckpointLoaderSimple",
       "pos": [
-        -17,
-        -70
+        40,
+        40
       ],
       "size": [
-        343.7,
+        315,
         98
       ],
       "flags": {},
@@ -61,97 +21,128 @@
         {
           "name": "MODEL",
           "type": "MODEL",
-          "slot_index": 0,
           "links": [
-            41,
-            45
+            1
           ]
         },
         {
           "name": "CLIP",
           "type": "CLIP",
-          "slot_index": 1,
           "links": [
-            38,
-            39
+            2,
+            3
           ]
         },
         {
           "name": "VAE",
           "type": "VAE",
-          "slot_index": 2,
           "links": [
-            40
+            8
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "CheckpointLoaderSimple",
-        "models": [
-          {
-            "name": "sd_xl_turbo_1.0_fp16.safetensors",
-            "url": "https://huggingface.co/stabilityai/sdxl-turbo/resolve/main/sd_xl_turbo_1.0_fp16.safetensors",
-            "directory": "checkpoints"
-          }
-        ]
+        "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "sd_xl_turbo_1.0_fp16.safetensors"
+        "sd_xl_base_1.0.safetensors"
       ]
     },
     {
-      "id": 14,
-      "type": "KSamplerSelect",
+      "id": 2,
+      "type": "CLIPTextEncode",
       "pos": [
-        452,
-        -144
+        400,
+        40
       ],
       "size": [
-        315,
-        58
+        422,
+        164
       ],
       "flags": {},
       "order": 1,
       "mode": 0,
-      "inputs": [],
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 2
+        }
+      ],
       "outputs": [
         {
-          "name": "SAMPLER",
-          "type": "SAMPLER",
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
           "links": [
-            18
+            4
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "KSamplerSelect"
+        "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        "euler_ancestral"
+        "A detailed fire dragon emerging from volcanic ash, orange glowing scales, epic fantasy art"
       ]
     },
     {
-      "id": 5,
-      "type": "EmptyLatentImage",
+      "id": 3,
+      "type": "CLIPTextEncode",
       "pos": [
-        462,
-        398
+        400,
+        230
       ],
       "size": [
-        315,
-        106
+        422,
+        164
       ],
       "flags": {},
       "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "blurry, low quality, watermark, ugly"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "EmptyLatentImage",
+      "pos": [
+        40,
+        200
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {},
+      "order": 3,
       "mode": 0,
       "inputs": [],
       "outputs": [
         {
           "name": "LATENT",
           "type": "LATENT",
-          "slot_index": 0,
           "links": [
-            23
+            6
           ]
         }
       ],
@@ -159,21 +150,21 @@
         "Node name for S&R": "EmptyLatentImage"
       },
       "widgets_values": [
-        512,
-        512,
+        1024,
+        1024,
         1
       ]
     },
     {
-      "id": 22,
-      "type": "SDTurboScheduler",
+      "id": 5,
+      "type": "KSampler",
       "pos": [
-        452,
-        -248
+        870,
+        40
       ],
       "size": [
         315,
-        82
+        262
       ],
       "flags": {},
       "order": 4,
@@ -182,192 +173,78 @@
         {
           "name": "model",
           "type": "MODEL",
-          "link": 45
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 4
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 5
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 6
         }
       ],
       "outputs": [
         {
-          "name": "SIGMAS",
-          "type": "SIGMAS",
-          "slot_index": 0,
+          "name": "LATENT",
+          "type": "LATENT",
           "links": [
-            49
+            7
           ]
         }
       ],
       "properties": {
-        "Node name for S&R": "SDTurboScheduler"
+        "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        1,
+        2024,
+        "fixed",
+        25,
+        7.5,
+        "dpmpp_2m",
+        "karras",
         1
       ]
     },
     {
       "id": 6,
-      "type": "CLIPTextEncode",
-      "pos": [
-        351,
-        -45
-      ],
-      "size": [
-        422.85,
-        164.31
-      ],
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 38
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "slot_index": 0,
-          "links": [
-            19
-          ]
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "beautiful landscape scenery glass bottle with a galaxy inside cute fennec fox snow HDR sunset"
-      ]
-    },
-    {
-      "id": 13,
-      "type": "SamplerCustom",
-      "pos": [
-        800,
-        -66
-      ],
-      "size": [
-        355.2,
-        230
-      ],
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 41
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 19
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 20
-        },
-        {
-          "name": "sampler",
-          "type": "SAMPLER",
-          "link": 18
-        },
-        {
-          "name": "sigmas",
-          "type": "SIGMAS",
-          "link": 49
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 23
-        }
-      ],
-      "outputs": [
-        {
-          "name": "output",
-          "type": "LATENT",
-          "slot_index": 0,
-          "links": [
-            28
-          ]
-        },
-        {
-          "name": "denoised_output",
-          "type": "LATENT",
-          "links": null
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "SamplerCustom"
-      },
-      "widgets_values": [
-        true,
-        0,
-        "fixed",
-        1
-      ]
-    },
-    {
-      "id": 28,
-      "type": "MarkdownNote",
-      "pos": [
-        -15,
-        90
-      ],
-      "size": [
-        225,
-        88
-      ],
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [],
-      "properties": {},
-      "widgets_values": [
-        "🛈 [Learn more about this workflow](https://comfyanonymous.github.io/ComfyUI_examples/sdturbo/)"
-      ],
-      "color": "#432",
-      "bgcolor": "#000"
-    },
-    {
-      "id": 8,
       "type": "VAEDecode",
       "pos": [
-        930,
-        -160
+        1230,
+        40
       ],
       "size": [
         210,
         46
       ],
       "flags": {},
-      "order": 8,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
           "name": "samples",
           "type": "LATENT",
-          "link": 28
+          "link": 7
         },
         {
           "name": "vae",
           "type": "VAE",
-          "link": 40
+          "link": 8
         }
       ],
       "outputs": [
         {
           "name": "IMAGE",
           "type": "IMAGE",
-          "slot_index": 0,
           "links": [
-            54
+            9
           ]
         }
       ],
@@ -377,127 +254,128 @@
       "widgets_values": []
     },
     {
-      "id": 27,
+      "id": 7,
       "type": "SaveImage",
       "pos": [
-        1180,
-        -150
+        1480,
+        40
       ],
       "size": [
-        466.79,
-        516.83
+        210,
+        270
       ],
       "flags": {},
-      "order": 9,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 54
+          "link": 9
         }
       ],
       "outputs": [],
-      "properties": {},
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
       "widgets_values": [
-        "ComfyUI"
+        "nh_sdxl_landscape"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "Note",
+      "pos": [
+        40,
+        434
+      ],
+      "size": [
+        540,
+        380
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {
+        "text": "NeuralDrift workflow. Review dependencies on the workflow page. Hardware compatibility and generation speed require an actual test."
+      },
+      "widgets_values": [
+        "NeuralDrift workflow. Review dependencies on the workflow page. Hardware compatibility and generation speed require an actual test."
       ]
     }
   ],
   "links": [
     [
-      18,
-      14,
+      1,
+      1,
       0,
-      13,
+      5,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      1,
+      1,
+      2,
+      0,
+      "CLIP"
+    ],
+    [
       3,
-      "SAMPLER"
-    ],
-    [
-      19,
-      6,
-      0,
-      13,
       1,
-      "CONDITIONING"
-    ],
-    [
-      20,
-      7,
-      0,
-      13,
-      2,
-      "CONDITIONING"
-    ],
-    [
-      23,
-      5,
-      0,
-      13,
-      5,
-      "LATENT"
-    ],
-    [
-      28,
-      13,
-      0,
-      8,
-      0,
-      "LATENT"
-    ],
-    [
-      38,
-      20,
       1,
-      6,
+      3,
       0,
       "CLIP"
     ],
     [
-      39,
-      20,
-      1,
-      7,
+      4,
+      2,
       0,
-      "CLIP"
+      5,
+      1,
+      "CONDITIONING"
     ],
     [
-      40,
-      20,
+      5,
+      3,
+      0,
+      5,
       2,
+      "CONDITIONING"
+    ],
+    [
+      6,
+      4,
+      0,
+      5,
+      3,
+      "LATENT"
+    ],
+    [
+      7,
+      5,
+      0,
+      6,
+      0,
+      "LATENT"
+    ],
+    [
       8,
+      1,
+      2,
+      6,
       1,
       "VAE"
     ],
     [
-      41,
-      20,
+      9,
+      6,
       0,
-      13,
-      0,
-      "MODEL"
-    ],
-    [
-      45,
-      20,
-      0,
-      22,
-      0,
-      "MODEL"
-    ],
-    [
-      49,
-      22,
-      0,
-      13,
-      4,
-      "SIGMAS"
-    ],
-    [
-      54,
-      8,
-      0,
-      27,
+      7,
       0,
       "IMAGE"
     ]
@@ -506,13 +384,19 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.47583752781392835,
+      "scale": 0.7,
       "offset": [
-        473.6511430961482,
-        776.9716259459615
+        0,
+        0
       ]
     },
-    "frontendVersion": "1.28.6"
+    "neuraldrift": {
+      "catalogId": "48",
+      "source": "Existing NeuralDrift workflow asset",
+      "sourceAsset": "09-sdxl-landscape.json",
+      "license": null,
+      "executionTested": false
+    }
   },
   "version": 0.4
 }

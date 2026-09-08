@@ -1,0 +1,32 @@
+{
+  "workflowId": "18",
+  "status": "completed",
+  "workflowSha256": "8bb035130321512efac13c30d5f284576c224f101f4c1a1321a95a99d91d1622",
+  "testDate": "2026-09-08T04:14:06.013Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 12,
+    "cfg": 7,
+    "sampler": "euler",
+    "scheduler": "normal",
+    "frames": 8,
+    "fps": 8,
+    "motionModule": "mm_sd_v15_v2.ckpt"
+  },
+  "resolution": "512 × 512 (8 frames)",
+  "batchSize": 8,
+  "generationSeconds": 6.032,
+  "peakMemory": null,
+  "model": "realisticVisionV60B1_v60B1VAE.safetensors",
+  "modelSha256": null,
+  "customNodes": "ComfyUI-AnimateDiff-Evolved, ComfyUI-VideoHelperSuite",
+  "preview": "/workflow-tests/18-output.mp4",
+  "prompt": "rotating product on white pedestal, studio lighting, professional, smooth 360 rotation",
+  "outputKind": "video"
+}

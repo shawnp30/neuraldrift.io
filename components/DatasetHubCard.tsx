@@ -23,6 +23,7 @@ interface DatasetProps {
 }
 
 export function DatasetHubCard({ dataset }: { dataset: DatasetProps }) {
+  console.log("DEBUG-DATASET-CARD:", dataset);
   const displayName = dataset.name || dataset.id || "Unknown Dataset";
   
   const author = (displayName.includes("/"))

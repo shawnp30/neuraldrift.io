@@ -1,0 +1,2921 @@
+{
+  "10": {
+    "source": "https://comfyanonymous.github.io/ComfyUI_examples/aura_flow/",
+    "sourceAsset": "aura.json",
+    "license": "/workflows/licenses/comfy-examples-license.txt",
+    "models": [
+      {
+        "file": "aura_flow_0.2.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": null
+      }
+    ],
+    "nodeTypes": [
+      "EmptyLatentImage",
+      "VAEDecode",
+      "KSampler",
+      "SaveImage",
+      "CLIPTextEncode",
+      "CheckpointLoaderSimple"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 5,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 3,
+        "values": [
+          274576428651941,
+          "randomize",
+          20,
+          3.48,
+          "euler",
+          "sgm_uniform",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": [
+      "aura_flow_0.2.safetensors"
+    ]
+  },
+  "11": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/video_ltx2_3_t2v.json",
+    "sourceAsset": "video_ltx2_3_t2v.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "ltx-2.3-22b-dev-fp8.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3-fp8/resolve/main/ltx-2.3-22b-dev-fp8.safetensors"
+      },
+      {
+        "file": "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+        "dir": "ComfyUI/models/loras/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2.3/resolve/main/split_files/loras/ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors"
+      },
+      {
+        "file": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+        "dir": "ComfyUI/models/latent_upscale_models/",
+        "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3/resolve/main/ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+      },
+      {
+        "file": "gemma_3_12B_it_fp4_mixed.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors"
+      },
+      {
+        "file": "gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors",
+        "dir": "ComfyUI/models/loras/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/loras/gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "SaveVideo",
+      "MarkdownNote",
+      "b94257db-cdc1-45d3-8913-ca61e782d9c1",
+      "RandomNoise",
+      "LTXVConcatAVLatent",
+      "LTXVAudioVAELoader",
+      "KSamplerSelect",
+      "ManualSigmas",
+      "CFGGuider",
+      "SamplerCustomAdvanced",
+      "LTXVCropGuides",
+      "LoraLoaderModelOnly",
+      "ResizeImagesByLongerEdge",
+      "LTXVLatentUpsampler",
+      "LTXVImgToVideoInplace",
+      "LTXVPreprocess",
+      "ResizeImageMaskNode",
+      "ComfyMathExpression",
+      "Reroute",
+      "EmptyLTXVLatentVideo",
+      "LTXVAudioVAEDecode",
+      "PrimitiveInt",
+      "PrimitiveBoolean",
+      "CLIPTextEncode",
+      "LTXVConditioning",
+      "LTXVEmptyLatentAudio",
+      "LTXVSeparateAVLatent",
+      "CreateVideo",
+      "LatentUpscaleModelLoader",
+      "VAEDecodeTiled",
+      "CheckpointLoaderSimple",
+      "LTXAVTextEncoderLoader",
+      "PrimitiveStringMultiline",
+      "EmptyImage",
+      "LoraLoader",
+      "TextGenerateLTX2Prompt",
+      "PreviewAny",
+      "ComfySwitchNode"
+    ],
+    "hasSubgraphs": true,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLTXVLatentVideo",
+        "id": 228,
+        "values": [
+          768,
+          512,
+          97,
+          1
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 258,
+        "values": [
+          720,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 260,
+        "values": [
+          25,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 225,
+        "values": [
+          5,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 257,
+        "values": [
+          1280,
+          "fixed"
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "12": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/video_ltx2_3_t2v.json",
+    "sourceAsset": "video_ltx2_3_t2v.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "ltx-2.3-22b-dev-fp8.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3-fp8/resolve/main/ltx-2.3-22b-dev-fp8.safetensors"
+      },
+      {
+        "file": "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+        "dir": "ComfyUI/models/loras/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2.3/resolve/main/split_files/loras/ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors"
+      },
+      {
+        "file": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+        "dir": "ComfyUI/models/latent_upscale_models/",
+        "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3/resolve/main/ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+      },
+      {
+        "file": "gemma_3_12B_it_fp4_mixed.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors"
+      },
+      {
+        "file": "gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors",
+        "dir": "ComfyUI/models/loras/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/loras/gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "SaveVideo",
+      "MarkdownNote",
+      "b94257db-cdc1-45d3-8913-ca61e782d9c1",
+      "RandomNoise",
+      "LTXVConcatAVLatent",
+      "LTXVAudioVAELoader",
+      "KSamplerSelect",
+      "ManualSigmas",
+      "CFGGuider",
+      "SamplerCustomAdvanced",
+      "LTXVCropGuides",
+      "LoraLoaderModelOnly",
+      "ResizeImagesByLongerEdge",
+      "LTXVLatentUpsampler",
+      "LTXVImgToVideoInplace",
+      "LTXVPreprocess",
+      "ResizeImageMaskNode",
+      "ComfyMathExpression",
+      "Reroute",
+      "EmptyLTXVLatentVideo",
+      "LTXVAudioVAEDecode",
+      "PrimitiveInt",
+      "PrimitiveBoolean",
+      "CLIPTextEncode",
+      "LTXVConditioning",
+      "LTXVEmptyLatentAudio",
+      "LTXVSeparateAVLatent",
+      "CreateVideo",
+      "LatentUpscaleModelLoader",
+      "VAEDecodeTiled",
+      "CheckpointLoaderSimple",
+      "LTXAVTextEncoderLoader",
+      "PrimitiveStringMultiline",
+      "EmptyImage",
+      "LoraLoader",
+      "TextGenerateLTX2Prompt",
+      "PreviewAny",
+      "ComfySwitchNode"
+    ],
+    "hasSubgraphs": true,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLTXVLatentVideo",
+        "id": 228,
+        "values": [
+          768,
+          512,
+          97,
+          1
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 258,
+        "values": [
+          1280,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 260,
+        "values": [
+          25,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 225,
+        "values": [
+          5,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 257,
+        "values": [
+          720,
+          "fixed"
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "13": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/video_ltx2_3_t2v.json",
+    "sourceAsset": "video_ltx2_3_t2v.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "ltx-2.3-22b-dev-fp8.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3-fp8/resolve/main/ltx-2.3-22b-dev-fp8.safetensors"
+      },
+      {
+        "file": "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+        "dir": "ComfyUI/models/loras/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2.3/resolve/main/split_files/loras/ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors"
+      },
+      {
+        "file": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+        "dir": "ComfyUI/models/latent_upscale_models/",
+        "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3/resolve/main/ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+      },
+      {
+        "file": "gemma_3_12B_it_fp4_mixed.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors"
+      },
+      {
+        "file": "gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors",
+        "dir": "ComfyUI/models/loras/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/loras/gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "SaveVideo",
+      "MarkdownNote",
+      "b94257db-cdc1-45d3-8913-ca61e782d9c1",
+      "RandomNoise",
+      "LTXVConcatAVLatent",
+      "LTXVAudioVAELoader",
+      "KSamplerSelect",
+      "ManualSigmas",
+      "CFGGuider",
+      "SamplerCustomAdvanced",
+      "LTXVCropGuides",
+      "LoraLoaderModelOnly",
+      "ResizeImagesByLongerEdge",
+      "LTXVLatentUpsampler",
+      "LTXVImgToVideoInplace",
+      "LTXVPreprocess",
+      "ResizeImageMaskNode",
+      "ComfyMathExpression",
+      "Reroute",
+      "EmptyLTXVLatentVideo",
+      "LTXVAudioVAEDecode",
+      "PrimitiveInt",
+      "PrimitiveBoolean",
+      "CLIPTextEncode",
+      "LTXVConditioning",
+      "LTXVEmptyLatentAudio",
+      "LTXVSeparateAVLatent",
+      "CreateVideo",
+      "LatentUpscaleModelLoader",
+      "VAEDecodeTiled",
+      "CheckpointLoaderSimple",
+      "LTXAVTextEncoderLoader",
+      "PrimitiveStringMultiline",
+      "EmptyImage",
+      "LoraLoader",
+      "TextGenerateLTX2Prompt",
+      "PreviewAny",
+      "ComfySwitchNode"
+    ],
+    "hasSubgraphs": true,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLTXVLatentVideo",
+        "id": 228,
+        "values": [
+          768,
+          512,
+          97,
+          1
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 258,
+        "values": [
+          720,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 260,
+        "values": [
+          25,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 225,
+        "values": [
+          5,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 257,
+        "values": [
+          1280,
+          "fixed"
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "14": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/video_ltx2_3_t2v.json",
+    "sourceAsset": "video_ltx2_3_t2v.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "ltx-2.3-22b-dev-fp8.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3-fp8/resolve/main/ltx-2.3-22b-dev-fp8.safetensors"
+      },
+      {
+        "file": "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+        "dir": "ComfyUI/models/loras/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2.3/resolve/main/split_files/loras/ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors"
+      },
+      {
+        "file": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+        "dir": "ComfyUI/models/latent_upscale_models/",
+        "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3/resolve/main/ltx-2.3-spatial-upscaler-x2-1.1.safetensors"
+      },
+      {
+        "file": "gemma_3_12B_it_fp4_mixed.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors"
+      },
+      {
+        "file": "gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors",
+        "dir": "ComfyUI/models/loras/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/loras/gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "SaveVideo",
+      "MarkdownNote",
+      "b94257db-cdc1-45d3-8913-ca61e782d9c1",
+      "RandomNoise",
+      "LTXVConcatAVLatent",
+      "LTXVAudioVAELoader",
+      "KSamplerSelect",
+      "ManualSigmas",
+      "CFGGuider",
+      "SamplerCustomAdvanced",
+      "LTXVCropGuides",
+      "LoraLoaderModelOnly",
+      "ResizeImagesByLongerEdge",
+      "LTXVLatentUpsampler",
+      "LTXVImgToVideoInplace",
+      "LTXVPreprocess",
+      "ResizeImageMaskNode",
+      "ComfyMathExpression",
+      "Reroute",
+      "EmptyLTXVLatentVideo",
+      "LTXVAudioVAEDecode",
+      "PrimitiveInt",
+      "PrimitiveBoolean",
+      "CLIPTextEncode",
+      "LTXVConditioning",
+      "LTXVEmptyLatentAudio",
+      "LTXVSeparateAVLatent",
+      "CreateVideo",
+      "LatentUpscaleModelLoader",
+      "VAEDecodeTiled",
+      "CheckpointLoaderSimple",
+      "LTXAVTextEncoderLoader",
+      "PrimitiveStringMultiline",
+      "EmptyImage",
+      "LoraLoader",
+      "TextGenerateLTX2Prompt",
+      "PreviewAny",
+      "ComfySwitchNode"
+    ],
+    "hasSubgraphs": true,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLTXVLatentVideo",
+        "id": 228,
+        "values": [
+          768,
+          512,
+          97,
+          1
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 258,
+        "values": [
+          512,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 260,
+        "values": [
+          25,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 225,
+        "values": [
+          2,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 257,
+        "values": [
+          768,
+          "fixed"
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "15": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "15-animatediff-simple.json",
+    "license": null,
+    "models": [
+      {
+        "file": "realisticVisionV60B1_v60B1VAE.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/SG_161222/Realistic_Vision_V6.0_B1_noVAE"
+      },
+      {
+        "file": "mm_sd_v15_v3.ckpt",
+        "dir": "ComfyUI/models/animatediff_models/",
+        "downloadUrl": "https://huggingface.co/guoyww/animatediff/tree/main"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "ADE_AnimateDiffLoaderWithContext",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "VHS_VideoCombine",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          512,
+          512,
+          16
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "16": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "17-animatediff-loop.json",
+    "license": null,
+    "models": [
+      {
+        "file": "dreamshaper_8.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/Lykon/DreamShaper"
+      },
+      {
+        "file": "mm_sd_v15_v3.ckpt",
+        "dir": "ComfyUI/models/animatediff_models/",
+        "downloadUrl": "https://huggingface.co/guoyww/animatediff"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "ADE_AnimateDiffLoaderWithContext",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "VHS_VideoCombine",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          512,
+          512,
+          16
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "17": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "18-animatediff-landscape.json",
+    "license": null,
+    "models": [
+      {
+        "file": "realisticVisionV60B1_v60B1VAE.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": null
+      },
+      {
+        "file": "mm_sd_v15_v3.ckpt",
+        "dir": "ComfyUI/models/animatediff_models/",
+        "downloadUrl": "https://huggingface.co/guoyww/animatediff"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "ADE_AnimateDiffLoaderWithContext",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "VHS_VideoCombine",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          512,
+          512,
+          16
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          2024,
+          "fixed",
+          20,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": [
+      "realisticVisionV60B1_v60B1VAE.safetensors"
+    ]
+  },
+  "18": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "19-animatediff-product.json",
+    "license": null,
+    "models": [
+      {
+        "file": "deliberate_v6.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/XpucT/Deliberate"
+      },
+      {
+        "file": "mm_sd_v15_v3.ckpt",
+        "dir": "ComfyUI/models/animatediff_models/",
+        "downloadUrl": "https://huggingface.co/guoyww/animatediff"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "ADE_AnimateDiffLoaderWithContext",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "VHS_VideoCombine",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          512,
+          512,
+          16
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          25,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "19": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "20-animatediff-zoom.json",
+    "license": null,
+    "models": [
+      {
+        "file": "dreamshaper_8.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/Lykon/DreamShaper"
+      },
+      {
+        "file": "mm_sd_v15_v3.ckpt",
+        "dir": "ComfyUI/models/animatediff_models/",
+        "downloadUrl": "https://huggingface.co/guoyww/animatediff"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "ADE_AnimateDiffLoaderWithContext",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "VHS_VideoCombine",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          768,
+          512,
+          16
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          1001,
+          "fixed",
+          20,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "20": {
+    "source": "https://github.com/Comfy-Org/workflow_templates",
+    "sourceAsset": "32.json",
+    "license": null,
+    "models": [
+      {
+        "file": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors?download=true"
+      },
+      {
+        "file": "wan_2.1_vae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/vae/wan_2.1_vae.safetensors?download=true"
+      },
+      {
+        "file": "wan2.1_t2v_1.3B_fp16.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/resolve/main/split_files/diffusion_models/wan2.1_t2v_1.3B_fp16.safetensors?download=true"
+      }
+    ],
+    "nodeTypes": [
+      "CLIPLoader",
+      "VAELoader",
+      "CLIPTextEncode",
+      "UNETLoader",
+      "EmptyHunyuanLatentVideo",
+      "VAEDecode",
+      "CreateVideo",
+      "KSampler",
+      "SaveVideo",
+      "ModelSamplingSD3"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 3,
+        "values": [
+          82628696717253,
+          "randomize",
+          30,
+          6,
+          "uni_pc",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "21": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "21-upscale-4x-esrgan.json",
+    "license": null,
+    "models": [
+      {
+        "file": "RealESRGAN_x4plus.pth",
+        "dir": "ComfyUI/models/upscale_models/",
+        "downloadUrl": "https://huggingface.co/ai-forever/Real-ESRGAN/tree/main"
+      }
+    ],
+    "nodeTypes": [
+      "LoadImage",
+      "UpscaleModelLoader",
+      "ImageUpscaleWithModel",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [],
+    "inputFiles": [
+      "example.png"
+    ],
+    "missingModelSources": []
+  },
+  "22": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "22-upscale-anime.json",
+    "license": null,
+    "models": [
+      {
+        "file": "RealESRGAN_x4plus_anime_6B.pth",
+        "dir": "ComfyUI/models/upscale_models/",
+        "downloadUrl": "https://huggingface.co/ai-forever/Real-ESRGAN/tree/main"
+      }
+    ],
+    "nodeTypes": [
+      "LoadImage",
+      "UpscaleModelLoader",
+      "ImageUpscaleWithModel",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [],
+    "inputFiles": [
+      "example.png"
+    ],
+    "missingModelSources": []
+  },
+  "23": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "23-sdxl-img2img.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "VAEEncode",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7,
+          "dpmpp_2m",
+          "karras",
+          0.65
+        ]
+      }
+    ],
+    "inputFiles": [
+      "input.png"
+    ],
+    "missingModelSources": []
+  },
+  "24": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "24-sd15-style-transfer.json",
+    "license": null,
+    "models": [
+      {
+        "file": "dreamshaper_8.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/Lykon/DreamShaper"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "VAEEncode",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7,
+          "dpmpp_2m",
+          "karras",
+          0.75
+        ]
+      }
+    ],
+    "inputFiles": [
+      "input.png"
+    ],
+    "missingModelSources": []
+  },
+  "25": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "25-sdxl-sketch-to-image.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "VAEEncode",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          1337,
+          "fixed",
+          25,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          0.85
+        ]
+      }
+    ],
+    "inputFiles": [
+      "input.png"
+    ],
+    "missingModelSources": []
+  },
+  "26": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "26-sdxl-inpainting.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "VAEEncodeForInpaint",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [
+      "input_with_mask.png"
+    ],
+    "missingModelSources": []
+  },
+  "27": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "27-sd15-object-removal.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd-v1-5-inpainting.ckpt",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "VAEEncodeForInpaint",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [
+      "input_with_mask.png"
+    ],
+    "missingModelSources": []
+  },
+  "28": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "28-sdxl-product-shot.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          30,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "29": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "29-sdxl-architecture.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          30,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "30": {
+    "source": "https://github.com/Comfy-Org/workflow_templates",
+    "sourceAsset": "01.json",
+    "license": null,
+    "models": [
+      {
+        "file": "ae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors"
+      },
+      {
+        "file": "clip_l.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
+      },
+      {
+        "file": "t5xxl_fp16.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors"
+      },
+      {
+        "file": "flux1-dev.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/flux1-dev/resolve/main/flux1-dev.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "VAELoader",
+      "DualCLIPLoader",
+      "UNETLoader",
+      "EmptySD3LatentImage",
+      "ConditioningZeroOut",
+      "VAEDecode",
+      "KSampler",
+      "CLIPTextEncodeFlux",
+      "SaveImage",
+      "MarkdownNote"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 31,
+        "values": [
+          192044955347061,
+          "randomize",
+          20,
+          1,
+          "euler",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "31": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "31-controlnet-canny-sdxl.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": null
+      },
+      {
+        "file": "controlnet-canny-sdxl-1.0.safetensors",
+        "dir": "ComfyUI/models/controlnet/",
+        "downloadUrl": "https://huggingface.co/diffusers/controlnet-canny-sdxl-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "ControlNetLoader",
+      "ControlNetApplyAdvanced",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          25,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [
+      "control_input.png"
+    ],
+    "missingModelSources": [
+      "sd_xl_base_1.0.safetensors"
+    ]
+  },
+  "32": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "32-controlnet-depth-sdxl.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": null
+      },
+      {
+        "file": "diffusion_pytorch_model.safetensors",
+        "dir": "ComfyUI/models/controlnet/",
+        "downloadUrl": "https://huggingface.co/diffusers/controlnet-depth-sdxl-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "ControlNetLoader",
+      "ControlNetApplyAdvanced",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          25,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [
+      "control_input.png"
+    ],
+    "missingModelSources": [
+      "sd_xl_base_1.0.safetensors"
+    ]
+  },
+  "33": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "33-controlnet-openpose.json",
+    "license": null,
+    "models": [
+      {
+        "file": "v1-5-pruned-emaonly-fp16.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5"
+      },
+      {
+        "file": "control_v11p_sd15_openpose.pth",
+        "dir": "ComfyUI/models/controlnet/",
+        "downloadUrl": "https://huggingface.co/lllyasviel/ControlNet-v1-1"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "ControlNetLoader",
+      "ControlNetApplyAdvanced",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          512,
+          512,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          25,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [
+      "control_input.png"
+    ],
+    "missingModelSources": []
+  },
+  "34": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "34-controlnet-lineart.json",
+    "license": null,
+    "models": [
+      {
+        "file": "dreamshaper_8.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": null
+      },
+      {
+        "file": "control_v11p_sd15_lineart.pth",
+        "dir": "ComfyUI/models/controlnet/",
+        "downloadUrl": "https://huggingface.co/lllyasviel/ControlNet-v1-1"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "ControlNetLoader",
+      "ControlNetApplyAdvanced",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          512,
+          512,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          25,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [
+      "control_input.png"
+    ],
+    "missingModelSources": [
+      "dreamshaper_8.safetensors"
+    ]
+  },
+  "35": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "35-controlnet-tile.json",
+    "license": null,
+    "models": [
+      {
+        "file": "v1-5-pruned-emaonly-fp16.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5"
+      },
+      {
+        "file": "control_v11f1e_sd15_tile.pth",
+        "dir": "ComfyUI/models/controlnet/",
+        "downloadUrl": "https://huggingface.co/lllyasviel/ControlNet-v1-1"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "LoadImage",
+      "ControlNetLoader",
+      "ControlNetApplyAdvanced",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          512,
+          512,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [
+      "control_input.png"
+    ],
+    "missingModelSources": []
+  },
+  "36": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "36-sdxl-batch-4.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          4
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          25,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "37": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "37-sdxl-batch-8.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          768,
+          768,
+          8
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "38": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "38-sdxl-logo-design.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          25,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "39": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "39-sdxl-concept-art.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          30,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "40": {
+    "source": "https://github.com/Comfy-Org/workflow_templates",
+    "sourceAsset": "01.json",
+    "license": null,
+    "models": [
+      {
+        "file": "ae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors"
+      },
+      {
+        "file": "clip_l.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
+      },
+      {
+        "file": "t5xxl_fp16.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors"
+      },
+      {
+        "file": "flux1-dev.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/flux1-dev/resolve/main/flux1-dev.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "VAELoader",
+      "DualCLIPLoader",
+      "UNETLoader",
+      "EmptySD3LatentImage",
+      "ConditioningZeroOut",
+      "VAEDecode",
+      "KSampler",
+      "CLIPTextEncodeFlux",
+      "SaveImage",
+      "MarkdownNote"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 31,
+        "values": [
+          192044955347061,
+          "randomize",
+          20,
+          1,
+          "euler",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "41": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "41-sdxl-interior-design.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          25,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "42": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "42-sd15-pixel-art.json",
+    "license": null,
+    "models": [
+      {
+        "file": "deliberate_v6.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/XpucT/Deliberate"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          512,
+          512,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7.5,
+          "euler",
+          "normal",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "43": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/audio_ace_step_1_5_checkpoint.json",
+    "sourceAsset": "audio_ace_step_1_5_checkpoint.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "ace_step_1.5_turbo_aio.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/resolve/main/checkpoints/ace_step_1.5_turbo_aio.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "TextEncodeAceStepAudio1.5",
+      "ModelSamplingAuraFlow",
+      "VAEDecodeAudio",
+      "EmptyAceStep1.5LatentAudio",
+      "KSampler",
+      "SaveAudioMP3",
+      "PrimitiveNode",
+      "ConditioningZeroOut",
+      "MarkdownNote"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyAceStep1.5LatentAudio",
+        "id": 98,
+        "values": [
+          120,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 3,
+        "values": [
+          31,
+          "fixed",
+          8,
+          1,
+          "euler",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "44": {
+    "source": "https://github.com/Comfy-Org/workflow_templates",
+    "sourceAsset": "01.json",
+    "license": null,
+    "models": [
+      {
+        "file": "ae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors"
+      },
+      {
+        "file": "clip_l.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
+      },
+      {
+        "file": "t5xxl_fp16.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors"
+      },
+      {
+        "file": "flux1-dev.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/flux1-dev/resolve/main/flux1-dev.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "VAELoader",
+      "DualCLIPLoader",
+      "UNETLoader",
+      "EmptySD3LatentImage",
+      "ConditioningZeroOut",
+      "VAEDecode",
+      "KSampler",
+      "CLIPTextEncodeFlux",
+      "SaveImage",
+      "MarkdownNote"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 31,
+        "values": [
+          192044955347061,
+          "randomize",
+          20,
+          1,
+          "euler",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "45": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "45-sdxl-sci-fi-scene.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          30,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "46": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "47-sdxl-abstract-art.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          25,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "47": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "09-sdxl-landscape.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          2024,
+          "fixed",
+          25,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "48": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "09-sdxl-landscape.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          2024,
+          "fixed",
+          25,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "49": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "49-sdxl-night-city.json",
+    "license": null,
+    "models": [
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          30,
+          7.5,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "50": {
+    "source": "https://github.com/Comfy-Org/workflow_templates",
+    "sourceAsset": "01.json",
+    "license": null,
+    "models": [
+      {
+        "file": "ae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors"
+      },
+      {
+        "file": "clip_l.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
+      },
+      {
+        "file": "t5xxl_fp16.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors"
+      },
+      {
+        "file": "flux1-dev.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/flux1-dev/resolve/main/flux1-dev.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "VAELoader",
+      "DualCLIPLoader",
+      "UNETLoader",
+      "EmptySD3LatentImage",
+      "ConditioningZeroOut",
+      "VAEDecode",
+      "KSampler",
+      "CLIPTextEncodeFlux",
+      "SaveImage",
+      "MarkdownNote"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 31,
+        "values": [
+          192044955347061,
+          "randomize",
+          20,
+          1,
+          "euler",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "01": {
+    "source": "https://github.com/Comfy-Org/workflow_templates",
+    "sourceAsset": "01.json",
+    "license": null,
+    "models": [
+      {
+        "file": "ae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors"
+      },
+      {
+        "file": "clip_l.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
+      },
+      {
+        "file": "t5xxl_fp16.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors"
+      },
+      {
+        "file": "flux1-dev.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/flux1-dev/resolve/main/flux1-dev.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "VAELoader",
+      "DualCLIPLoader",
+      "UNETLoader",
+      "EmptySD3LatentImage",
+      "ConditioningZeroOut",
+      "VAEDecode",
+      "KSampler",
+      "CLIPTextEncodeFlux",
+      "SaveImage",
+      "MarkdownNote"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 31,
+        "values": [
+          192044955347061,
+          "randomize",
+          20,
+          1,
+          "euler",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "02": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/flux_schnell_full_text_to_image.json",
+    "sourceAsset": "flux_schnell_full_text_to_image.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "ae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors"
+      },
+      {
+        "file": "clip_l.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors"
+      },
+      {
+        "file": "t5xxl_fp16.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors"
+      },
+      {
+        "file": "flux1-schnell.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/flux1-schnell/resolve/main/flux1-schnell.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "VAELoader",
+      "DualCLIPLoader",
+      "EmptySD3LatentImage",
+      "ConditioningZeroOut",
+      "VAEDecode",
+      "SaveImage",
+      "UNETLoader",
+      "KSampler",
+      "CLIPTextEncodeFlux",
+      "MarkdownNote"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 31,
+        "values": [
+          167447334682596,
+          "randomize",
+          4,
+          1,
+          "euler",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "03": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/sdxl_refiner_prompt_example.json",
+    "sourceAsset": "sdxl_refiner_prompt_example.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "sd_xl_refiner_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors?download=true"
+      },
+      {
+        "file": "sd_xl_base_1.0.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors?download=true"
+      }
+    ],
+    "nodeTypes": [
+      "Note",
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "PrimitiveNode",
+      "EmptyLatentImage",
+      "KSamplerAdvanced",
+      "VAEDecode",
+      "SaveImage",
+      "MarkdownNote"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 5,
+        "values": [
+          1024,
+          1024,
+          1
+        ]
+      },
+      {
+        "node": "KSamplerAdvanced",
+        "id": 10,
+        "values": [
+          "enable",
+          6767725640732,
+          "randomize",
+          25,
+          8,
+          "euler",
+          "normal",
+          0,
+          20,
+          "enable"
+        ]
+      },
+      {
+        "node": "KSamplerAdvanced",
+        "id": 11,
+        "values": [
+          "disable",
+          0,
+          "fixed",
+          25,
+          8,
+          "euler",
+          "normal",
+          20,
+          10000,
+          "disable"
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "04": {
+    "source": "Existing NeuralDrift workflow asset",
+    "sourceAsset": "06-sd15-classic.json",
+    "license": null,
+    "models": [
+      {
+        "file": "v1-5-pruned-emaonly-fp16.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5"
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "CLIPTextEncode",
+      "EmptyLatentImage",
+      "KSampler",
+      "VAEDecode",
+      "SaveImage",
+      "Note"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "EmptyLatentImage",
+        "id": 4,
+        "values": [
+          512,
+          512,
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 5,
+        "values": [
+          42,
+          "fixed",
+          20,
+          7,
+          "dpmpp_2m",
+          "karras",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "05": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/hidream_i1_dev.json",
+    "sourceAsset": "hidream_i1_dev.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "ae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream-I1_ComfyUI/resolve/main/split_files/vae/ae.safetensors?download=true"
+      },
+      {
+        "file": "clip_l_hidream.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream-I1_ComfyUI/resolve/main/split_files/text_encoders/clip_l_hidream.safetensors"
+      },
+      {
+        "file": "clip_g_hidream.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream-I1_ComfyUI/resolve/main/split_files/text_encoders/clip_g_hidream.safetensors"
+      },
+      {
+        "file": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream-I1_ComfyUI/resolve/main/split_files/text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors"
+      },
+      {
+        "file": "llama_3.1_8b_instruct_fp8_scaled.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream-I1_ComfyUI/resolve/main/split_files/text_encoders/llama_3.1_8b_instruct_fp8_scaled.safetensors"
+      },
+      {
+        "file": "hidream_i1_dev_fp8.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream-I1_ComfyUI/resolve/main/split_files/diffusion_models/hidream_i1_dev_fp8.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "VAELoader",
+      "QuadrupleCLIPLoader",
+      "UNETLoader",
+      "EmptySD3LatentImage",
+      "CLIPTextEncode",
+      "VAEDecode",
+      "KSampler",
+      "SaveImage",
+      "MarkdownNote",
+      "ModelSamplingSD3"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 3,
+        "values": [
+          426270906276990,
+          "randomize",
+          28,
+          1,
+          "lcm",
+          "normal",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": []
+  },
+  "06": {
+    "source": "https://comfyanonymous.github.io/ComfyUI_examples/hunyuan_image/",
+    "sourceAsset": "hunyuan.json",
+    "license": "/workflows/licenses/comfy-examples-license.txt",
+    "models": [
+      {
+        "file": "hunyuan_image_2.1_vae_fp16.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": null
+      },
+      {
+        "file": "hunyuanimage2.1_bf16.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": null
+      },
+      {
+        "file": "qwen_2.5_vl_7b.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": null
+      },
+      {
+        "file": "byt5_small_glyphxl_fp16.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": null
+      },
+      {
+        "file": "hunyuan_image_refiner_vae_fp16.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": null
+      },
+      {
+        "file": "hunyuanimage2.1_refiner_bf16.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": null
+      }
+    ],
+    "nodeTypes": [
+      "VAEDecode",
+      "VAELoader",
+      "UNETLoader",
+      "CLIPTextEncode",
+      "EmptyHunyuanImageLatent",
+      "KSampler",
+      "SaveImage",
+      "Note",
+      "DualCLIPLoader",
+      "3b1dc3d6-206f-42f5-9f08-138642fead7a",
+      "VAEEncode",
+      "HunyuanRefinerLatent"
+    ],
+    "hasSubgraphs": true,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 3,
+        "values": [
+          560947545375702,
+          "randomize",
+          20,
+          3.5,
+          "euler",
+          "simple",
+          1
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 63,
+        "values": [
+          770039891896361,
+          "fixed",
+          4,
+          1,
+          "euler",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": [
+      "hunyuan_image_2.1_vae_fp16.safetensors",
+      "hunyuanimage2.1_bf16.safetensors",
+      "qwen_2.5_vl_7b.safetensors",
+      "byt5_small_glyphxl_fp16.safetensors",
+      "hunyuan_image_refiner_vae_fp16.safetensors",
+      "hunyuanimage2.1_refiner_bf16.safetensors"
+    ]
+  },
+  "07": {
+    "source": "https://comfyanonymous.github.io/ComfyUI_examples/lumina2/",
+    "sourceAsset": "lumina.json",
+    "license": "/workflows/licenses/comfy-examples-license.txt",
+    "models": [
+      {
+        "file": "lumina_2.safetensors",
+        "dir": "ComfyUI/models/checkpoints/",
+        "downloadUrl": null
+      }
+    ],
+    "nodeTypes": [
+      "CheckpointLoaderSimple",
+      "VAEDecode",
+      "EmptySD3LatentImage",
+      "SaveImage",
+      "ModelSamplingAuraFlow",
+      "CLIPTextEncode",
+      "Note",
+      "KSampler"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "KSampler",
+        "id": 3,
+        "values": [
+          854547257397629,
+          "randomize",
+          25,
+          4,
+          "res_multistep",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [],
+    "missingModelSources": [
+      "lumina_2.safetensors"
+    ]
+  },
+  "08": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/image_qwen_image_edit.json",
+    "sourceAsset": "image_qwen_image_edit.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "qwen_image_vae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/vae/qwen_image_vae.safetensors"
+      },
+      {
+        "file": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Qwen-Image_ComfyUI/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors"
+      },
+      {
+        "file": "Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors",
+        "dir": "ComfyUI/models/loras/",
+        "downloadUrl": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors"
+      },
+      {
+        "file": "qwen_image_edit_fp8_e4m3fn.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "ImageScaleToTotalPixels",
+      "MarkdownNote",
+      "LoadImage",
+      "SaveImage",
+      "74a8e1e2-9cb8-4112-978e-06ce1b5793f1",
+      "VAELoader",
+      "TextEncodeQwenImageEdit",
+      "CFGNorm",
+      "ModelSamplingAuraFlow",
+      "VAEDecode",
+      "CLIPLoader",
+      "VAEEncode",
+      "LoraLoaderModelOnly",
+      "UNETLoader",
+      "PrimitiveFloat",
+      "PrimitiveInt",
+      "PrimitiveBoolean",
+      "KSampler",
+      "ComfySwitchNode"
+    ],
+    "hasSubgraphs": true,
+    "executionTested": false,
+    "settings": [
+      {
+        "node": "PrimitiveInt",
+        "id": 106,
+        "values": [
+          20,
+          "fixed"
+        ]
+      },
+      {
+        "node": "PrimitiveInt",
+        "id": 103,
+        "values": [
+          4,
+          "fixed"
+        ]
+      },
+      {
+        "node": "KSampler",
+        "id": 3,
+        "values": [
+          344147753686358,
+          "randomize",
+          4,
+          1,
+          "euler",
+          "simple",
+          1
+        ]
+      }
+    ],
+    "inputFiles": [
+      "image_qwen_image_edit_input_image.png"
+    ],
+    "missingModelSources": []
+  },
+  "09": {
+    "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/image_chroma_text_to_image.json",
+    "sourceAsset": "image_chroma_text_to_image.json",
+    "license": "/workflows/licenses/comfy-templates-license.txt",
+    "models": [
+      {
+        "file": "ae.safetensors",
+        "dir": "ComfyUI/models/vae/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Lumina_Image_2.0_Repackaged/resolve/main/split_files/vae/ae.safetensors"
+      },
+      {
+        "file": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+        "dir": "ComfyUI/models/text_encoders/",
+        "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp8_e4m3fn_scaled.safetensors"
+      },
+      {
+        "file": "Chroma1-HD-fp8mixed.safetensors",
+        "dir": "ComfyUI/models/diffusion_models/",
+        "downloadUrl": "https://huggingface.co/Comfy-Org/Chroma1-HD_repackaged/resolve/main/split_files/diffusion_models/Chroma1-HD-fp8mixed.safetensors"
+      }
+    ],
+    "nodeTypes": [
+      "VAEDecode",
+      "CFGGuider",
+      "KSamplerSelect",
+      "ModelSamplingAuraFlow",
+      "VAELoader",
+      "RandomNoise",
+      "CLIPLoader",
+      "BasicScheduler",
+      "EmptySD3LatentImage",
+      "Note",
+      "SaveImage",
+      "T5TokenizerOptions",
+      "SamplerCustomAdvanced",
+      "CLIPTextEncode",
+      "UNETLoader",
+      "MarkdownNote"
+    ],
+    "hasSubgraphs": false,
+    "executionTested": false,
+    "settings": [],
+    "inputFiles": [],
+    "missingModelSources": []
+  }
+}

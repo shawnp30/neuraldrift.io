@@ -1,0 +1,31 @@
+{
+  "workflowId": "35",
+  "status": "completed",
+  "workflowSha256": "eb6166ed524a3d7269fa0424a100e7e65617b684975e66a03952c23267169f58",
+  "testDate": "2026-09-08T13:33:43.050Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 20,
+    "cfg": 7,
+    "sampler": "dpmpp_2m",
+    "scheduler": "karras",
+    "denoise": 1,
+    "controlNetModel": "control_v11f1e_sd15_tile.pth"
+  },
+  "resolution": "512 × 512",
+  "batchSize": 1,
+  "generationSeconds": 2.087,
+  "peakMemory": null,
+  "model": "v1-5-pruned-emaonly-fp16.safetensors",
+  "modelSha256": null,
+  "customNodes": "None (ComfyUI Core)",
+  "preview": "/workflow-tests/35-output.png",
+  "prompt": "ultra high resolution enhanced details, photorealistic, sharp, 8k upscale",
+  "outputKind": "image"
+}

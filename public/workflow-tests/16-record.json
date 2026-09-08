@@ -1,0 +1,32 @@
+{
+  "workflowId": "16",
+  "status": "completed",
+  "workflowSha256": "3b8c1c16976b6ddd3bd4fc5c32deeabf2534061000e0c1590206e148cd7cb142",
+  "testDate": "2026-09-08T04:13:53.930Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 12,
+    "cfg": 7,
+    "sampler": "euler",
+    "scheduler": "normal",
+    "frames": 8,
+    "fps": 8,
+    "motionModule": "mm_sd_v15_v2.ckpt"
+  },
+  "resolution": "512 × 512 (8 frames)",
+  "batchSize": 8,
+  "generationSeconds": 6.035,
+  "peakMemory": null,
+  "model": "realisticVisionV60B1_v60B1VAE.safetensors",
+  "modelSha256": null,
+  "customNodes": "ComfyUI-AnimateDiff-Evolved, ComfyUI-VideoHelperSuite",
+  "preview": "/workflow-tests/16-output.mp4",
+  "prompt": "seamless loop of glowing particles floating in space, nebula background, smooth motion",
+  "outputKind": "video"
+}
