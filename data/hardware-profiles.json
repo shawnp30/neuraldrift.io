@@ -1,0 +1,13 @@
+[
+  {
+    "id": "local-rtx-5080",
+    "gpuId": "rtx-5080",
+    "name": "NVIDIA GeForce RTX 5080",
+    "vendor": "NVIDIA",
+    "formFactor": "desktop",
+    "vramBytes": 17066033152,
+    "systemRamBytes": 66185273344,
+    "source": "/hardware-observations/local-rtx-5080-historical.json",
+    "verification": "observed"
+  }
+]

@@ -28,7 +28,7 @@ const WORKFLOWS = [
   },
   {
     id: "11-ltx-video-t2v-basic",
-    title: "LTX Video — Basic T2V",
+    title: "LTX Video 2.3 — Basic T2V",
     category: "Video",
   },
   {
@@ -48,12 +48,12 @@ const WORKFLOWS = [
   },
   {
     id: "15-animatediff-simple",
-    title: "AnimateDiff Simple Loop",
+    title: "AnimateDiff Walking Character",
     category: "Video",
   },
   {
     id: "17-animatediff-loop",
-    title: "AnimateDiff Seamless Loop",
+    title: "AnimateDiff Looping Particle Preset",
     category: "Video",
   },
   {
@@ -63,7 +63,7 @@ const WORKFLOWS = [
   },
   {
     id: "19-animatediff-product",
-    title: "AnimateDiff 360 Product Spin",
+    title: "AnimateDiff Product Rotation",
     category: "Video",
   },
   {

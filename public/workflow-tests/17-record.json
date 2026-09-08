@@ -1,0 +1,32 @@
+{
+  "workflowId": "17",
+  "status": "completed",
+  "workflowSha256": "fe44af4291697fc00554e39f61992ab9228896c5d901f6bdac7eef38a4f0046e",
+  "testDate": "2026-09-08T04:13:59.978Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 12,
+    "cfg": 7,
+    "sampler": "euler",
+    "scheduler": "normal",
+    "frames": 8,
+    "fps": 8,
+    "motionModule": "mm_sd_v15_v2.ckpt"
+  },
+  "resolution": "512 × 512 (8 frames)",
+  "batchSize": 8,
+  "generationSeconds": 6.043,
+  "peakMemory": null,
+  "model": "realisticVisionV60B1_v60B1VAE.safetensors",
+  "modelSha256": null,
+  "customNodes": "ComfyUI-AnimateDiff-Evolved, ComfyUI-VideoHelperSuite",
+  "preview": "/workflow-tests/17-output.mp4",
+  "prompt": "timelapse of clouds moving over mountain peaks, dramatic sky, cinematic, 4k",
+  "outputKind": "video"
+}

@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/proofs/upload",
-  "Upload Proof",
+  "Upload Proof — NeuralDrift",
   "Submit an output and prompt to the NeuralDrift proof gallery."
 );
 

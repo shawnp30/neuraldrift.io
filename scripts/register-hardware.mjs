@@ -1,0 +1,25 @@
+import fs from 'node:fs';
+import { COMMON_GPUS } from '../lib/hardware/gpuData.ts';
+
+const [id, gpuId, endpoint] = process.argv.slice(2);
+if (!id || !/^[a-z0-9-]+$/.test(id) || !gpuId || !endpoint) throw new Error('Usage: npm run evidence:hardware -- unique-profile-id gpu-slug http://comfy-host:8188');
+const gpu = COMMON_GPUS.find(g => g.id === gpuId);
+if (!gpu) throw new Error('Unknown GPU reference slug. Add its exact form factor and memory variant to gpuData first.');
+const res = await fetch(new URL('/system_stats', endpoint), { signal: AbortSignal.timeout(5000) });
+if (!res.ok) throw new Error(`Hardware discovery failed: HTTP ${res.status}`);
+const stats = await res.json();
+const devices = stats.devices?.filter(d => d.type === 'cuda');
+if (devices?.length !== 1) throw new Error('Expected one CUDA device in the selected ComfyUI runtime.');
+const device = devices[0];
+const normalized = device.name.replace(/^cuda:\d+\s+/, '').replace(/\s+:.*$/, '');
+const model = gpu.shortName.replace(/Laptop | Laptop/gi, '');
+if (!normalized.includes(model) || /laptop/i.test(normalized) !== (gpu.type === 'laptop') || Math.round(device.vram_total / 1024 ** 3) !== gpu.vramGb) throw new Error('Observed model, form factor or memory variant does not match the GPU reference.');
+const profiles = JSON.parse(fs.readFileSync('data/hardware-profiles.json', 'utf8'));
+if (profiles.some(p => p.id === id)) throw new Error('Profile ID already exists; immutable profiles must not be overwritten.');
+const observedAt = new Date().toISOString();
+const source = `public/hardware-observations/${id}.json`;
+fs.mkdirSync('public/hardware-observations', { recursive: true });
+fs.writeFileSync(source, JSON.stringify({ observedAt, system: stats.system, device }, null, 2), { flag: 'wx' });
+profiles.push({ id, gpuId, name: normalized, vendor: gpu.vendor, formFactor: gpu.type, vramBytes: device.vram_total, systemRamBytes: stats.system.ram_total ?? null, source: `/${source.slice(7)}`, verification: 'observed' });
+fs.writeFileSync('data/hardware-profiles.json', JSON.stringify(profiles, null, 2) + '\n');
+console.log(`Registered observed ${id}: ${normalized}. No execution evidence created.`);

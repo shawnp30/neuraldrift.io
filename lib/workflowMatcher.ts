@@ -191,8 +191,8 @@ const REGISTRY: WorkflowMatch[] = [
   {
     id: "15",
     filename: "15-animatediff-simple",
-    name: "AnimateDiff Simple Loop",
-    desc: "Smooth looping animation from SD 1.5. Perfect first video workflow.",
+    name: "AnimateDiff Walking Character",
+    desc: "Natural walking motion from SD 1.5. Great starting video workflow.",
     model: "animatediff-v3",
     steps: 20,
     cfg: 7.0,

@@ -1,0 +1,47 @@
+{
+  "workflowId": "04",
+  "status": "completed",
+  "workflowSha256": "d0f53437d34e49573b79a220eec26d97104d057b830842087c34e4bbdab01f75",
+  "testDate": "2026-09-08T02:28:36.034Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "model": [
+      "1",
+      0
+    ],
+    "seed": 42,
+    "steps": 20,
+    "cfg": 7,
+    "sampler_name": "dpmpp_2m",
+    "scheduler": "karras",
+    "positive": [
+      "2",
+      0
+    ],
+    "negative": [
+      "3",
+      0
+    ],
+    "latent_image": [
+      "4",
+      0
+    ],
+    "denoise": 1
+  },
+  "resolution": "512 × 512",
+  "batchSize": 1,
+  "generationSeconds": 6.258,
+  "peakMemory": null,
+  "model": "v1-5-pruned-emaonly-fp16.safetensors",
+  "modelSha256": "e9476a13728cd75d8279f6ec8bad753a66a1957ca375a1464dc63b37db6e3916",
+  "customNodes": "None; custom nodes disabled",
+  "preview": "/workflow-tests/04-output.png",
+  "prompt": "a fantasy castle on a cliff at sunset, dramatic sky, detailed, artstation trending",
+  "outputKind": "image"
+}

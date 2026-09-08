@@ -1,133 +1,36 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { AudioWaveform, Music, BrainCircuit, ChevronDown, Search, X } from "lucide-react";
+import { AudioWaveform, Music, BrainCircuit, Search, X } from "lucide-react";
 import Link from "next/link";
-import DualTicker from "@/components/DualTicker";
-import { AuthNavButton } from "@/components/auth/AuthNavButton";
+
 
 // ─────────────────────────────────────────────────────────────────
-// NAV STRUCTURE
+// PRIMARY NAV LINKS — flat, focused on the core visitor journey
 // ─────────────────────────────────────────────────────────────────
-const NAV = [
-  {
-    label: "Learn",
-    children: [
-      { name: "Hardware Hub", href: "/hardware", desc: "Can your PC run AI?", badge: "HOT" },
-      { name: "Academy", href: "/tutorials", desc: "Video masterclasses" },
-      { name: "Guides", href: "/guides", desc: "Written technical docs" },
-      { name: "LTX Video", href: "/guides/ltx-video-cinematic-action", desc: "Cinematic video generation", badge: "NEW" },
-      { name: "ACE-Step 1.5", href: "/guides/ace-step-1-5-comfyui", desc: "Advanced audio synthesis" },
-    ],
-  },
-  {
-    label: "Data-Hub",
-    children: [
-      { name: "Datasets Hub", href: "/datasets", desc: "Community training data" },
-      { name: "Model Library", href: "/models", desc: "Neural architecture hub" },
-      { name: "Drift Stash", href: "/stash", desc: "Your saved models & LoRAs" },
-    ],
-  },
-  {
-    label: "Create",
-    children: [
-      { name: "Workflows", href: "/workflows", desc: "Pre-built ComfyUI JSON" },
-      { name: "Prompt Gen", href: "/prompt-generator", desc: "Build better prompts" },
-      { name: "Cloud Gens", href: "/cloud-generators", desc: "Veo, Midjourney, Runway" },
-      { name: "Training Suite", href: "/train", desc: "Caption & tag LoRA datasets" },
-    ],
-  },
-  {
-    label: "Tools",
-    children: [
-      { name: "Caption Generator", href: "/tools/caption-generator", desc: "Auto-caption your images" },
-      { name: "Optimizer", href: "/hardware", desc: "Get peak speed & VRAM" },
-    ],
-  },
+const PRIMARY_LINKS = [
+  { label: "Workflows", href: "/workflows" },
+  { label: "Compatibility", href: "/compatibility" },
+  { label: "Guides", href: "/guides" },
 ];
 
-// ─────────────────────────────────────────────────────────────────
-// DROPDOWN COMPONENT
-// ─────────────────────────────────────────────────────────────────
-function Dropdown({
-  label,
-  items,
-  isOpen,
-  onToggle,
-  onClose,
-}: {
-  label: string;
-  items: { name: string; href: string; desc: string; badge?: string }[];
-  isOpen: boolean;
-  onToggle: () => void;
-  onClose: () => void;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handler = (e: MouseEvent) => {
-      if (!ref.current?.contains(e.target as Node)) onClose();
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, [isOpen, onClose]);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={onToggle}
-        className="group relative flex items-center gap-1 font-mono text-xs uppercase tracking-widest text-[#8888a0] transition-colors hover:text-[#e8e8f0]"
-      >
-        {label}
-        <ChevronDown
-          size={11}
-          className={`transition-transform duration-200 ${isOpen ? "rotate-180 text-[#7c6af7]" : ""}`}
-        />
-        <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-right scale-x-0 rounded-full bg-gradient-to-r from-[#7c6af7] to-[#22d3ee] transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100" />
-      </button>
-
-      <div
-        className={`absolute left-1/2 top-full z-50 mt-4 w-60 -translate-x-1/2 rounded-xl border border-[#2a2a30] bg-[#111113] shadow-[0_20px_60px_rgba(0,0,0,0.8)] transition-all duration-200 ${
-          isOpen
-            ? "pointer-events-auto translate-y-0 opacity-100"
-            : "pointer-events-none translate-y-2 opacity-0"
-        } `}
-      >
-        <div className="absolute -top-1.5 left-1/2 h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t border-[#2a2a30] bg-[#111113]" />
-
-        <div className="p-2">
-          {items.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onClose}
-              className="group flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/5"
-            >
-              <span className="flex items-center justify-between font-syne text-sm font-bold text-[#e8e8f0] transition-colors group-hover:text-[#22d3ee]">
-                {item.name}
-                {item.badge && (
-                  <span
-                    className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-widest border ${
-                      item.badge.toUpperCase() === "NEW"
-                        ? "bg-[#4ade80]/10 text-[#4ade80] border-[#4ade80]/20"
-                        : "bg-[#7c6af7]/10 text-[#7c6af7] border-[#7c6af7]/20"
-                    }`}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </span>
-              <span className="font-mono text-[10px] leading-tight text-[#8888a0]">
-                {item.desc}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+// Searchable pages — includes secondary pages so search still finds them
+const SEARCHABLE_PAGES = [
+  { name: "Workflows", href: "/workflows", desc: "Browse ComfyUI workflow catalog" },
+  { name: "Compatibility", href: "/compatibility", desc: "GPU compatibility evidence" },
+  { name: "Guides", href: "/guides", desc: "Setup and troubleshooting guides" },
+  { name: "Installation Guide", href: "/guides/installation", desc: "Install ComfyUI step by step" },
+  { name: "Model Folders", href: "/guides/model-folders", desc: "Where to place model files" },
+  { name: "Custom Nodes", href: "/guides/custom-nodes", desc: "Install and manage custom nodes" },
+  { name: "GPU Errors", href: "/guides/gpu-errors", desc: "Fix VRAM and GPU errors" },
+  { name: "Workflow Errors", href: "/guides/workflow-errors", desc: "Troubleshoot workflow failures" },
+  { name: "LTX Video 2.3", href: "/guides/ltx-video-cinematic-action", desc: "Cinematic video generation" },
+  { name: "ACE-Step 1.5", href: "/guides/ace-step-1-5-comfyui", desc: "Audio synthesis in ComfyUI" },
+  { name: "RTX 5080 Evidence", href: "/hardware/rtx-5080", desc: "Execution records for RTX 5080" },
+  { name: "Hardware Hub", href: "/hardware", desc: "GPU capability overview" },
+  { name: "Model Library", href: "/models", desc: "Browse available models" },
+  { name: "Datasets", href: "/datasets", desc: "Community training data" },
+];
 
 // ─────────────────────────────────────────────────────────────────
 // MAIN NAVBAR
@@ -135,7 +38,6 @@ function Dropdown({
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -215,9 +117,6 @@ export default function Navbar() {
     }
   };
 
-  const toggleMenu = (label: string) =>
-    setOpenMenu((prev) => (prev === label ? null : label));
-
   // Search logic
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -234,7 +133,6 @@ export default function Navbar() {
       if (e.key === "Escape") {
         setSearchOpen(false);
         setMobileOpen(false);
-        setOpenMenu(null);
       }
     };
     document.addEventListener("keydown", handleKeyDown);
@@ -280,10 +178,9 @@ export default function Navbar() {
     return () => document.removeEventListener('keydown', handleTab);
   }, [mobileOpen]);
 
-  // Handle Search filtering across NAV items
-  const allSearchableItems = NAV.flatMap((g) => g.children);
+  // Search filtering
   const searchResults = searchQuery
-    ? allSearchableItems.filter((item) =>
+    ? SEARCHABLE_PAGES.filter((item) =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.desc.toLowerCase().includes(searchQuery.toLowerCase())
       )
@@ -292,13 +189,13 @@ export default function Navbar() {
   return (
     <>
       <div className="fixed left-0 right-0 top-0 z-[60] bg-[#0a0a0b]">
-        <DualTicker />
+        
       </div>
       
       <nav
-        className={`fixed left-0 right-0 top-[40px] z-50 w-full transition-all duration-300 ${
+        className={`fixed left-0 right-0 top-0 z-50 w-full transition-all duration-300 ${
           scrolled
-            ? "border-b border-[#2a2a30] bg-[#0a0a0b]/85 py-3 backdrop-blur-xl"
+            ? "border-b border-white/[0.08] bg-[#070b12]/80 py-3.5 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
             : "bg-transparent py-5"
         }`}
       >
@@ -308,23 +205,36 @@ export default function Navbar() {
             href="/"
             aria-label="NeuralDrift Home"
             onClick={() => {
-              setOpenMenu(null);
               setMobileOpen(false);
               setSearchOpen(false);
             }}
-            className="group flex flex-shrink-0 items-center gap-2"
+            className="group flex flex-shrink-0 items-center gap-2.5"
           >
-            <div className="relative">
+            <div className="relative flex items-center justify-center">
               <BrainCircuit
-                size={30}
-                className="text-[#7c6af7] transition-transform duration-500 group-hover:rotate-12"
+                size={28}
+                className="text-[#5eead4] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
               />
-              <div className="absolute inset-0 bg-[#7c6af7]/40 opacity-0 blur-md transition-opacity group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-[#5eead4]/30 opacity-0 blur-md transition-opacity group-hover:opacity-100" />
             </div>
-            <span className="hidden font-syne text-xl font-black tracking-tight text-[#e8e8f0] sm:inline">
-              neural<span className="text-[#7c6af7]">drift</span>
+            <span className="hidden font-syne text-xl font-extrabold tracking-tight text-[#f8fafc] sm:inline">
+              neural<span className="text-[#5eead4]">drift</span>
             </span>
           </Link>
+
+          {/* Desktop Nav — flat links */}
+          <div className="hidden items-center gap-8 lg:flex ml-10">
+            {PRIMARY_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="group relative font-mono text-[12.5px] font-semibold uppercase tracking-wider text-[#94a3b8] transition-colors hover:text-[#f8fafc] focus-visible:outline-none focus-visible:text-[#5eead4]"
+              >
+                {link.label}
+                <span className="absolute -bottom-1.5 left-0 h-[2px] w-full origin-right scale-x-0 rounded-full bg-gradient-to-r from-[#5eead4] to-[#38bdf8] transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100" />
+              </Link>
+            ))}
+          </div>
 
           {/* Desktop Search Bar */}
           <div className="hidden lg:flex flex-1 justify-end max-w-sm ml-auto mr-8 relative" ref={searchContainerRef}>
@@ -343,7 +253,7 @@ export default function Navbar() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search guides & workflows..."
+                  placeholder="Search workflows & guides..."
                   className="w-full bg-[#111113] border border-[#2a2a30] rounded-full px-5 py-2 text-xs font-mono text-[#e8e8f0] outline-none focus:border-[#7c6af7] transition-all pl-10"
                 />
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8888a0]">
@@ -352,6 +262,7 @@ export default function Navbar() {
                 <button
                   onClick={() => setSearchOpen(false)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-[#8888a0] hover:text-[#e8e8f0]"
+                  aria-label="Close search"
                 >
                   <X size={14} />
                 </button>
@@ -384,21 +295,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Desktop Nav Actions */}
-          <div className="hidden items-center gap-10 lg:flex">
-            {NAV.map((group) => (
-              <Dropdown
-                key={group.label}
-                label={group.label}
-                items={group.children}
-                isOpen={openMenu === group.label}
-                onToggle={() => toggleMenu(group.label)}
-                onClose={() => setOpenMenu(null)}
-              />
-            ))}
-          </div>
-
-          <div className="flex items-center gap-3 ml-10">
+          <div className="flex items-center gap-3 ml-6">
             {/* Audio Toggle */}
             <button
               onClick={toggleAudio}
@@ -416,22 +313,20 @@ export default function Navbar() {
             </button>
 
             <Link
-              href="/hardware"
-              className="hidden rounded-full bg-[#7c6af7] px-5 py-2 text-xs font-bold uppercase tracking-widest text-black transition-opacity hover:opacity-85 sm:flex"
+              href="/#gpu-finder"
+              className="hidden rounded-full bg-gradient-to-r from-[#5eead4] to-[#2dd4bf] px-5 py-2 font-mono text-xs font-bold uppercase tracking-wider text-[#04121a] shadow-[0_2px_14px_rgba(94,234,212,0.25)] transition-all hover:from-[#7ff0df] hover:to-[#5eead4] hover:shadow-[0_4px_20px_rgba(94,234,212,0.45)] hover:-translate-y-0.5 sm:flex items-center"
             >
-              CAN I RUN IT?
+              CHECK MY GPU
             </Link>
-
-            <AuthNavButton />
 
             <button
               onClick={() => {
                 setMobileOpen((p) => !p);
-                setOpenMenu(null);
                 setSearchOpen(false);
               }}
               className="flex h-8 w-8 flex-col items-center justify-center gap-1.5 lg:hidden z-50 relative"
-              aria-label="Toggle menu"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
             >
               <span
                 className={`block h-0.5 w-5 bg-white transition-all duration-300 ${mobileOpen ? "translate-y-2 rotate-45" : ""}`}
@@ -447,7 +342,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu Slide-down Overlay */}
+      {/* Mobile Menu */}
       <div
         ref={mobileMenuRef}
         className={`fixed left-0 right-0 top-0 bottom-0 z-40 bg-[#0a0a0b]/98 backdrop-blur-xl transition-all duration-300 overflow-hidden lg:hidden ${
@@ -463,7 +358,7 @@ export default function Navbar() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search titles & workflows..."
+              placeholder="Search workflows & guides..."
               className="w-full bg-[#111113] border border-[#2a2a30] rounded-xl px-5 py-4 text-sm font-mono text-[#e8e8f0] outline-none focus:border-[#7c6af7] transition-all pl-12"
             />
             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8888a0]">
@@ -496,54 +391,33 @@ export default function Navbar() {
             )}
           </div>
 
-          <div className="space-y-8">
-            {NAV.map((group) => (
-              <div key={group.label}>
-                <p className="mb-4 font-mono text-xs uppercase tracking-widest text-[#8888a0] flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#7c6af7]"></span>
-                  {group.label}
-                </p>
-                <div className="space-y-1 border-l-2 border-[#2a2a30] pl-4">
-                  {group.children.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="group flex flex-col py-3 border-b border-[#2a2a30]/50 last:border-0"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="font-syne text-[15px] font-bold text-[#e8e8f0] group-active:text-[#22d3ee] transition-colors">
-                          {item.name}
-                        </span>
-                        {item.badge && (
-                          <span
-                            className={`px-1.5 py-0.5 rounded text-[8px] font-bold uppercase tracking-widest border ${
-                              item.badge.toUpperCase() === "NEW"
-                                ? "bg-[#4ade80]/10 text-[#4ade80] border-[#4ade80]/20"
-                                : "bg-[#7c6af7]/10 text-[#7c6af7] border-[#7c6af7]/20"
-                            }`}
-                          >
-                            {item.badge}
-                          </span>
-                        )}
-                      </div>
-                      <span className="font-mono text-xs text-[#8888a0] mt-1">
-                        {item.desc}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
+          {/* Mobile Primary Links */}
+          <div className="space-y-1 mb-8">
+            <p className="mb-4 font-mono text-xs uppercase tracking-widest text-[#8888a0] flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#7c6af7]"></span>
+              Navigate
+            </p>
+            <div className="space-y-1 border-l-2 border-[#2a2a30] pl-4">
+              {PRIMARY_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="block py-3 border-b border-[#2a2a30]/50 last:border-0 font-syne text-[15px] font-bold text-[#e8e8f0] active:text-[#22d3ee] transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
 
           <div className="mt-10">
             <Link
-              href="/hardware"
+              href="/#gpu-finder"
               onClick={() => setMobileOpen(false)}
-              className="block w-full rounded-2xl bg-[#7c6af7] py-4 text-center text-xs font-black uppercase tracking-widest text-[#0a0a0b] shadow-[0_10px_20px_rgba(124,106,247,0.2)]"
+              className="block w-full rounded-xl bg-gradient-to-r from-[#5eead4] to-[#2dd4bf] py-4 text-center text-xs font-bold uppercase tracking-widest text-[#04121a] shadow-[0_8px_24px_rgba(94,234,212,0.3)]"
             >
-              HARDWARE HUB →
+              CHECK MY GPU →
             </Link>
           </div>
         </div>
@@ -551,3 +425,5 @@ export default function Navbar() {
     </>
   );
 }
+
+

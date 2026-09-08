@@ -1,0 +1,29 @@
+{
+  "workflowId": "01",
+  "status": "completed",
+  "workflowSha256": "70d5e91baabd4d9921522e6b1629a98831382a2e5d482b780bc850d5c80ad730",
+  "testDate": "2026-09-08T04:02:56.136Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 20,
+    "cfg": 1,
+    "sampler": "euler",
+    "scheduler": "simple"
+  },
+  "resolution": "512 × 512",
+  "batchSize": 1,
+  "generationSeconds": 10.048,
+  "peakMemory": null,
+  "model": "flux1-dev-fp8.safetensors",
+  "modelSha256": null,
+  "customNodes": "None; core nodes only",
+  "preview": "/workflow-tests/01-output.png",
+  "prompt": "A beautiful fantasy girl with long curly silver hair and big blue eyes, wearing a white transparent fairy dress with lac",
+  "outputKind": "image"
+}

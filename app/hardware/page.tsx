@@ -56,7 +56,7 @@ export default function HardwareHubPage() {
         <div className="max-w-7xl mx-auto px-6 md:px-10 relative z-10">
           <div className="flex flex-col items-center text-center">
             <p className="font-mono text-xs text-[#7c6af7] tracking-[0.35em] uppercase mb-4">
-              {"// Hardware hub"}
+              &#47;&#47; Hardware hub
             </p>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#111113] border border-[#2a2a30] mb-6">
               <span className="w-2 h-2 rounded-full bg-[#7c6af7] animate-pulse" />
@@ -158,9 +158,9 @@ export default function HardwareHubPage() {
                   </h4>
                   <p className="text-sm text-[#a8b0c4] leading-relaxed mb-4">
                     {budget === "$500" 
-                      ? "At this price, local hardware is a 'Dead-End' for Flux and Video. We recommend offloading 100% of your inference to Cloud Pods for a professional experience."
+                      ? "At this budget, local GPU options for Flux and video generation are very limited. Cloud GPU services may be more practical for demanding workflows."
                       : (isLaptop && gpuData.vram < 12)
-                        ? "Your current laptop is below the 12GB 'Utility Floor'. We suggest local generation for light tasks and using Cloud Pods for high-fidelity professional work."
+                        ? "Your current laptop has limited VRAM for larger models. It may handle lighter workflows locally, but cloud GPUs are an option for more demanding tasks."
                         : budgetData.recommendation}
                   </p>
                   <a 
@@ -202,7 +202,7 @@ export default function HardwareHubPage() {
                   <h4 className="font-syne font-bold text-white mb-1">{m.name}</h4>
                   <p className="text-[10px] text-[#8888a0] uppercase tracking-widest">{m.vramNeeded}GB VRAM REQ</p>
                   <div className="mt-3 pt-3 border-t border-[#2a2a30] flex items-center justify-between">
-                    <span className="text-[10px] text-[#a8b0c4]">{isComp ? "Ready Local" : isTight ? "Use --low-vram" : "Requires Cloud"}</span>
+                    <span className="text-[10px] text-[#a8b0c4]">{isComp ? "Estimated: enough VRAM" : isTight ? "Tight — try --low-vram" : "Below VRAM estimate"}</span>
                     {!isComp && (
                       <Link href={CLOUD_PROVIDERS[0].url} className="text-[10px] text-[#7c6af7] font-bold hover:underline">RENT POD →</Link>
                     )}
@@ -243,7 +243,7 @@ export default function HardwareHubPage() {
               Build with ComputeAtlas
             </h4>
             <p className="text-xs text-[#a8b0c4] leading-relaxed mb-4">
-              Don&apos;t guess on your next AI rig. Get a precision-engineered workstation guaranteed to run Flux at peak-fidelity.
+              Planning a dedicated AI workstation? ComputeAtlas offers pre-configured builds designed for local inference workloads.
             </p>
             <a 
               href="https://computeatlas.ai" 
@@ -280,9 +280,9 @@ export default function HardwareHubPage() {
       {/* BENCHMARK DATA SECTION */}
       <section className="max-w-7xl mx-auto px-6 md:px-10 mt-20">
         <div className="mb-10">
-          <p className="font-mono text-xs text-[#7c6af7] tracking-[0.25em] uppercase mb-2">{"// Benchmarks"}</p>
+          <p className="font-mono text-xs text-[#7c6af7] tracking-[0.25em] uppercase mb-2">&#47;&#47; Benchmarks</p>
           <h2 className="font-syne text-3xl font-black text-white mb-2">Real-World <span className="text-[#7c6af7]">Benchmarks</span></h2>
-          <p className="text-[#a8b0c4] text-sm font-mono tracking-widest uppercase">Verified inference speeds (img/m)</p>
+          <p className="text-[#a8b0c4] text-sm font-mono tracking-widest uppercase">Estimated inference speeds from registry data</p>
         </div>
         
         <div className="overflow-hidden rounded-3xl border border-[#2a2a30] bg-[#111113]">

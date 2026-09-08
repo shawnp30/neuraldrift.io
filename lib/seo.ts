@@ -26,7 +26,7 @@ export function pageMeta(path: string, title: string, description: string): Meta
       locale: "en_US",
       images: [
         {
-          url: "/opengraph-image",
+          url: "/og-image.png",
           width: 1200,
           height: 630,
           alt: title,
@@ -37,7 +37,7 @@ export function pageMeta(path: string, title: string, description: string): Meta
       card: "summary_large_image",
       title,
       description,
-      images: ["/opengraph-image"],
+      images: ["/og-image.png"],
     },
   };
 }

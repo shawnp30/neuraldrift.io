@@ -47,7 +47,7 @@ const STATUS_COLORS: Record<string, string> = {
   cannot_run:           "#7f1d1d",
 };
 
-export function FixMyPcButton({ workflowId, hardware, apiBase = (typeof window !== "undefined" && process.env.NEXT_PUBLIC_API_URL) || "http://localhost:5000" }: Props) {
+export function FixMyPcButton({ workflowId, hardware, apiBase = (typeof window !== "undefined" && process.env.NEXT_PUBLIC_API_URL) || "" }: Props) {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<FixResult | null>(null);

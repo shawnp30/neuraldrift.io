@@ -34,29 +34,28 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-sm text-[#a8b0c4] leading-relaxed mt-4 max-w-[300px] font-mono">
-              Open workflows for local AI creation. Built by the community, for the
-              community. No ads. Privacy-friendly analytics only.
+              Find ComfyUI workflows for your GPU. Browse workflows, read setup guides, and check hardware compatibility.
             </p>
           </div>
 
           {/* Links Col 1 */}
           <div className="flex flex-col">
             <h4 className="font-[family-name:var(--font-syne)] font-[600] text-[0.75rem] tracking-[0.06em] uppercase text-[#c8ccd8] mb-4">
-              Platform
+              Workflows
             </h4>
-            <Link href="/workflows" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">Workflows</Link>
-            <Link href="/tutorials" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">Learning Paths</Link>
-            <Link href="/models" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">Model Library</Link>
-            <Link href="/proofs" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">Showcase</Link>
+            <Link href="/workflows" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">Browse catalog</Link>
+            <Link href="/compatibility" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">GPU compatibility</Link>
+            <Link href="/hardware/rtx-5080" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">RTX 5080 evidence</Link>
+            <Link href="/models" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">Model library</Link>
           </div>
 
           {/* Links Col 2 */}
           <div className="flex flex-col">
             <h4 className="font-[family-name:var(--font-syne)] font-[600] text-[0.75rem] tracking-[0.06em] uppercase text-[#c8ccd8] mb-4">
-              Resources
+              Guides
             </h4>
-            <Link href="/guides" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">NeuralDrift guides</Link>
-            <Link href="/gpu-guide" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">GPU compatibility</Link>
+            <Link href="/guides" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">All guides</Link>
+            <Link href="/guides/installation" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">ComfyUI installation</Link>
             <Link href="/guides/custom-nodes" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">Custom nodes</Link>
             <Link href="https://docs.comfy.org/" target="_blank" rel="noopener noreferrer" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">ComfyUI docs (official)</Link>
           </div>
@@ -64,26 +63,21 @@ export function Footer() {
           {/* Links Col 3 */}
           <div className="flex flex-col">
             <h4 className="font-[family-name:var(--font-syne)] font-[600] text-[0.75rem] tracking-[0.06em] uppercase text-[#c8ccd8] mb-4">
-              Community
+              Project
             </h4>
-            <span className="block text-[0.8rem] text-[#7a8498] py-1.5 cursor-default" title="Coming soon">Discord</span>
             <Link href="https://github.com/shawnp30/neuraldrift.io" target="_blank" rel="noopener noreferrer" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">GitHub</Link>
-            <Link href="/about" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">About us</Link>
-            <Link href="/changelog" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">Changelog</Link>
+            <span className="block text-[0.8rem] text-[#7a8498] py-1.5 cursor-default" title="Coming soon">Discord</span>
           </div>
         </div>
 
         <div className="mt-10 pt-5 border-t border-[#1a1e2e] flex flex-col md:flex-row justify-between items-center text-[0.7rem] text-[#9ca6ba] gap-4">
           <span>© {new Date().getFullYear()} NeuralDrift. All rights reserved.</span>
           <div className="flex gap-4">
-            <Link href="/privacy" className="hover:text-[#22d3ee] transition-colors duration-200">Privacy</Link>
-            <span className="text-[#4a5060]">·</span>
-            <Link href="/terms" className="hover:text-[#22d3ee] transition-colors duration-200">Terms</Link>
-            <span className="text-[#4a5060]">·</span>
-            <Link href="/changelog" className="hover:text-[#22d3ee] transition-colors duration-200">Updates</Link>
+            <Link href="/compatibility" className="hover:text-[#22d3ee] transition-colors duration-200">Compatibility methodology</Link>
           </div>
         </div>
       </div>
     </footer>
   );
 }
+

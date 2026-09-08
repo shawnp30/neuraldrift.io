@@ -1,0 +1,489 @@
+{
+  "10": {
+    "id": "10",
+    "name": "AuraFlow Text to Image",
+    "category": "image",
+    "modelFamily": "AuraFlow",
+    "requiredModel": "aura_flow_0.2.safetensors",
+    "requiredVae": "Built-in",
+    "requiredClip": "Built-in",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [],
+    "assetsMissing": [
+      "aura_flow_0.2.safetensors"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "14 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "MODEL_MISSING",
+    "nextIndependentAction": "Acquire AuraFlow v0.2 checkpoint (~14 GB)"
+  },
+  "11": {
+    "id": "11",
+    "name": "LTX Video 2.3 — Basic T2V",
+    "category": "video",
+    "modelFamily": "LTX-Video",
+    "requiredModel": "ltx-video-2b-v0.9.5.safetensors",
+    "requiredVae": "ltx-2.3-22b-distilled_video_vae.safetensors",
+    "requiredClip": "t5xxl_fp8_e4m3fn.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [
+      "ComfyUI-LTXVideo",
+      "ComfyUI-VideoHelperSuite"
+    ],
+    "assetsCurrentlyInstalled": [
+      "ltx-video-2b-v0.9.5.safetensors",
+      "ltx-2.3-22b-distilled_video_vae.safetensors"
+    ],
+    "assetsMissing": [],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "12 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "NODE_SCHEMA_ERROR",
+    "nextIndependentAction": "Graph uses ComfyUI frontend v1.49+ subgraphs; require headless expansion or subgraph compiler"
+  },
+  "12": {
+    "id": "12",
+    "name": "LTX Video — Cinematic 9:16",
+    "category": "video",
+    "modelFamily": "LTX-Video",
+    "requiredModel": "ltx-video-2b-v0.9.5.safetensors",
+    "requiredVae": "ltx-2.3-22b-distilled_video_vae.safetensors",
+    "requiredClip": "t5xxl_fp8_e4m3fn.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [
+      "ComfyUI-LTXVideo",
+      "ComfyUI-VideoHelperSuite"
+    ],
+    "assetsCurrentlyInstalled": [
+      "ltx-video-2b-v0.9.5.safetensors"
+    ],
+    "assetsMissing": [],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "12 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "NODE_SCHEMA_ERROR",
+    "nextIndependentAction": "Requires ComfyUI frontend subgraph expansion"
+  },
+  "13": {
+    "id": "13",
+    "name": "LTX Video — Action Chase",
+    "category": "video",
+    "modelFamily": "LTX-Video",
+    "requiredModel": "ltx-video-2b-v0.9.5.safetensors",
+    "requiredVae": "ltx-2.3-22b-distilled_video_vae.safetensors",
+    "requiredClip": "t5xxl_fp8_e4m3fn.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [
+      "ComfyUI-LTXVideo",
+      "ComfyUI-VideoHelperSuite"
+    ],
+    "assetsCurrentlyInstalled": [
+      "ltx-video-2b-v0.9.5.safetensors"
+    ],
+    "assetsMissing": [],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "12 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "NODE_SCHEMA_ERROR",
+    "nextIndependentAction": "Requires ComfyUI frontend subgraph expansion"
+  },
+  "14": {
+    "id": "14",
+    "name": "LTX Video — Fast Draft",
+    "category": "video",
+    "modelFamily": "LTX-Video",
+    "requiredModel": "ltx-video-2b-v0.9.5.safetensors",
+    "requiredVae": "ltx-2.3-22b-distilled_video_vae.safetensors",
+    "requiredClip": "t5xxl_fp8_e4m3fn.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [
+      "ComfyUI-LTXVideo",
+      "ComfyUI-VideoHelperSuite"
+    ],
+    "assetsCurrentlyInstalled": [
+      "ltx-video-2b-v0.9.5.safetensors"
+    ],
+    "assetsMissing": [],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "12 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "NODE_SCHEMA_ERROR",
+    "nextIndependentAction": "Requires ComfyUI frontend subgraph expansion"
+  },
+  "20": {
+    "id": "20",
+    "name": "Wan 2.1 Video — 480p T2V",
+    "category": "video",
+    "modelFamily": "Wan 2.1",
+    "requiredModel": "wan2.1_t2v_1.3B_fp16.safetensors",
+    "requiredVae": "wan_2.1_vae.safetensors",
+    "requiredClip": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "wan_2.1_vae.safetensors",
+      "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "wan2.1_t2v_14B_fp8_scaled.safetensors"
+    ],
+    "assetsMissing": [
+      "wan2.1_t2v_1.3B_fp16.safetensors"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "10 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "MODEL_MISSING",
+    "nextIndependentAction": "Download lightweight wan2.1_t2v_1.3B_fp16.safetensors (3.2 GB) or adapt graph to installed 14B scaled weights"
+  },
+  "27": {
+    "id": "27",
+    "name": "SD 1.5 Object Removal",
+    "category": "enhance",
+    "modelFamily": "SD 1.5",
+    "requiredModel": "sd-v1-5-inpainting.ckpt",
+    "requiredVae": "Built-in",
+    "requiredClip": "Built-in",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "v1-5-pruned-emaonly-fp16.safetensors"
+    ],
+    "assetsMissing": [
+      "sd-v1-5-inpainting.ckpt"
+    ],
+    "canLoadNow": true,
+    "canExecuteNow": false,
+    "expectedVram": "6 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "MODEL_MISSING",
+    "nextIndependentAction": "Acquire dedicated sd-v1-5-inpainting.ckpt weights (4.2 GB)"
+  },
+  "31": {
+    "id": "31",
+    "name": "ControlNet Canny — SDXL",
+    "category": "controlnet",
+    "modelFamily": "SDXL ControlNet",
+    "requiredModel": "sd_xl_base_1.0.safetensors, controlnet-canny-sdxl-1.0.safetensors",
+    "requiredVae": "Built-in",
+    "requiredClip": "Built-in",
+    "requiredControlNet": "controlnet-canny-sdxl-1.0.safetensors",
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors"
+    ],
+    "assetsMissing": [
+      "controlnet-canny-sdxl-1.0.safetensors"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "12 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "CONTROLNET_MODEL_MISSING",
+    "nextIndependentAction": "Acquire controlnet-canny-sdxl-1.0.safetensors (2.5 GB)"
+  },
+  "32": {
+    "id": "32",
+    "name": "ControlNet Depth — SDXL",
+    "category": "controlnet",
+    "modelFamily": "SDXL ControlNet",
+    "requiredModel": "sd_xl_base_1.0.safetensors, diffusion_pytorch_model.safetensors",
+    "requiredVae": "Built-in",
+    "requiredClip": "Built-in",
+    "requiredControlNet": "controlnet-depth-sdxl-1.0.safetensors",
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors"
+    ],
+    "assetsMissing": [
+      "controlnet-depth-sdxl-1.0.safetensors"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "12 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "CONTROLNET_MODEL_MISSING",
+    "nextIndependentAction": "Acquire controlnet-depth-sdxl-1.0.safetensors (2.5 GB)"
+  },
+  "33": {
+    "id": "33",
+    "name": "ControlNet OpenPose",
+    "category": "controlnet",
+    "modelFamily": "SD 1.5 ControlNet",
+    "requiredModel": "v1-5-pruned-emaonly-fp16.safetensors, control_v11p_sd15_openpose.pth",
+    "requiredVae": "Built-in",
+    "requiredClip": "Built-in",
+    "requiredControlNet": "control_v11p_sd15_openpose.pth",
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "v1-5-pruned-emaonly-fp16.safetensors"
+    ],
+    "assetsMissing": [
+      "control_v11p_sd15_openpose.pth"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "6 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "CONTROLNET_MODEL_MISSING",
+    "nextIndependentAction": "Acquire control_v11p_sd15_openpose.pth (1.45 GB)"
+  },
+  "34": {
+    "id": "34",
+    "name": "ControlNet Lineart — Anime",
+    "category": "controlnet",
+    "modelFamily": "SD 1.5 ControlNet",
+    "requiredModel": "dreamshaper_8.safetensors, control_v11p_sd15_lineart.pth",
+    "requiredVae": "Built-in",
+    "requiredClip": "Built-in",
+    "requiredControlNet": "control_v11p_sd15_lineart.pth",
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "v1-5-pruned-emaonly-fp16.safetensors"
+    ],
+    "assetsMissing": [
+      "control_v11p_sd15_lineart.pth"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "6 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "CONTROLNET_MODEL_MISSING",
+    "nextIndependentAction": "Acquire control_v11p_sd15_lineart.pth (1.45 GB)"
+  },
+  "35": {
+    "id": "35",
+    "name": "ControlNet Tile Upscale",
+    "category": "controlnet",
+    "modelFamily": "SD 1.5 ControlNet",
+    "requiredModel": "v1-5-pruned-emaonly-fp16.safetensors, control_v11f1e_sd15_tile.pth",
+    "requiredVae": "Built-in",
+    "requiredClip": "Built-in",
+    "requiredControlNet": "control_v11f1e_sd15_tile.pth",
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "v1-5-pruned-emaonly-fp16.safetensors"
+    ],
+    "assetsMissing": [
+      "control_v11f1e_sd15_tile.pth"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "8 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "CONTROLNET_MODEL_MISSING",
+    "nextIndependentAction": "Acquire control_v11f1e_sd15_tile.pth (1.45 GB)"
+  },
+  "02": {
+    "id": "02",
+    "name": "Flux.1 Schnell — 4-Step Fast",
+    "category": "image",
+    "modelFamily": "Flux.1",
+    "requiredModel": "flux1-schnell.safetensors",
+    "requiredVae": "ae.safetensors",
+    "requiredClip": "clip_l.safetensors, t5xxl_fp8_e4m3fn.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "clip_l.safetensors",
+      "t5xxl_fp8_e4m3fn.safetensors",
+      "ae.safetensors",
+      "flux1-dev-fp8.safetensors"
+    ],
+    "assetsMissing": [
+      "flux1-schnell.safetensors"
+    ],
+    "canLoadNow": true,
+    "canExecuteNow": false,
+    "expectedVram": "12 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "MODEL_MISSING",
+    "nextIndependentAction": "Download flux1-schnell.safetensors or acquire 4-step distilled Schnell weights"
+  },
+  "03": {
+    "id": "03",
+    "name": "SDXL Base + Refiner",
+    "category": "image",
+    "modelFamily": "SDXL",
+    "requiredModel": "sd_xl_base_1.0.safetensors, sd_xl_refiner_1.0.safetensors",
+    "requiredVae": "Built-in",
+    "requiredClip": "Built-in",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "Juggernaut-XL_v9_RunDiffusionPhoto_v2.safetensors"
+    ],
+    "assetsMissing": [
+      "sd_xl_refiner_1.0.safetensors"
+    ],
+    "canLoadNow": true,
+    "canExecuteNow": false,
+    "expectedVram": "12 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "MODEL_MISSING",
+    "nextIndependentAction": "Acquire official sd_xl_refiner_1.0.safetensors (6.6 GB)"
+  },
+  "05": {
+    "id": "05",
+    "name": "HiDream — 17B Text to Image",
+    "category": "image",
+    "modelFamily": "HiDream",
+    "requiredModel": "hidream_i1_dev_fp8.safetensors",
+    "requiredVae": "ae.safetensors",
+    "requiredClip": "clip_l_hidream.safetensors, llama3_hidream.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "ae.safetensors"
+    ],
+    "assetsMissing": [
+      "hidream_i1_dev_fp8.safetensors",
+      "clip_l_hidream.safetensors"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "16 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "MODEL_MISSING",
+    "nextIndependentAction": "Acquire HiDream 17B FP8 checkpoint and quadruple CLIP text encoders (~15 GB)"
+  },
+  "06": {
+    "id": "06",
+    "name": "Hunyuan Image 2.1",
+    "category": "image",
+    "modelFamily": "HunyuanImage",
+    "requiredModel": "hunyuanimage2.1_bf16.safetensors",
+    "requiredVae": "hunyuan_image_2.1_vae_fp16.safetensors",
+    "requiredClip": "qwen_2.5_vl_7b.safetensors, bytedance_clip.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "qwen_2.5_vl_7b_fp8_scaled.safetensors"
+    ],
+    "assetsMissing": [
+      "hunyuanimage2.1_bf16.safetensors",
+      "hunyuan_image_2.1_vae_fp16.safetensors"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "16 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "MODEL_MISSING",
+    "nextIndependentAction": "Acquire HunyuanImage 2.1 transformer and VAE (~18 GB)"
+  },
+  "07": {
+    "id": "07",
+    "name": "Lumina Image 2.0",
+    "category": "image",
+    "modelFamily": "Lumina",
+    "requiredModel": "lumina_2.safetensors",
+    "requiredVae": "ae.safetensors",
+    "requiredClip": "gemma_2_2b.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "ae.safetensors"
+    ],
+    "assetsMissing": [
+      "lumina_2.safetensors"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "14 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "MODEL_MISSING",
+    "nextIndependentAction": "Acquire Lumina Image 2.0 weights (~14 GB)"
+  },
+  "08": {
+    "id": "08",
+    "name": "Qwen Image Edit (Multimodal)",
+    "category": "image",
+    "modelFamily": "Qwen-VL",
+    "requiredModel": "qwen_image_edit_2509_fp8_e4m3fn.safetensors",
+    "requiredVae": "qwen_image_vae.safetensors",
+    "requiredClip": "qwen_3_4b.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [
+      "ComfyUI-QwenVL-Mod"
+    ],
+    "assetsCurrentlyInstalled": [
+      "qwen_image_edit_2509_fp8_e4m3fn.safetensors",
+      "qwen_image_vae.safetensors"
+    ],
+    "assetsMissing": [],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "16 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "NODE_SCHEMA_ERROR",
+    "nextIndependentAction": "Requires ComfyUI frontend subgraph execution support and QwenVL multimodal nodes"
+  },
+  "09": {
+    "id": "09",
+    "name": "Chroma — Stylized No-Negative",
+    "category": "image",
+    "modelFamily": "Chroma",
+    "requiredModel": "Chroma1-HD-fp8mixed.safetensors",
+    "requiredVae": "ae.safetensors",
+    "requiredClip": "t5xxl_fp8_e4m3fn_scaled.safetensors",
+    "requiredControlNet": null,
+    "requiredLora": null,
+    "requiredUpscale": null,
+    "requiredCustomNodes": [],
+    "assetsCurrentlyInstalled": [
+      "ae.safetensors",
+      "t5xxl_fp8_e4m3fn.safetensors"
+    ],
+    "assetsMissing": [
+      "Chroma1-HD-fp8mixed.safetensors"
+    ],
+    "canLoadNow": false,
+    "canExecuteNow": false,
+    "expectedVram": "12 GB",
+    "externalServiceRequirement": "None",
+    "currentBlocker": "MODEL_MISSING",
+    "nextIndependentAction": "Acquire Chroma1 HD FP8 weights (~10 GB)"
+  }
+}

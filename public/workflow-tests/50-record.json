@@ -1,0 +1,29 @@
+{
+  "workflowId": "50",
+  "status": "completed",
+  "workflowSha256": "0b18d92b77f0c2b7db8e78b2c2e05e337ac7dcadbbee4f9762ce4e592087af52",
+  "testDate": "2026-09-08T04:05:04.902Z",
+  "gpu": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+  "gpuMemoryBytes": 17066033152,
+  "systemRamBytes": 66185273344,
+  "os": "win32",
+  "python": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+  "comfyUI": "0.33.0",
+  "pytorch": "2.11.0.dev20260211+cu128",
+  "settings": {
+    "steps": 20,
+    "cfg": 1,
+    "sampler": "euler",
+    "scheduler": "simple"
+  },
+  "resolution": "512 × 512",
+  "batchSize": 1,
+  "generationSeconds": 18.057,
+  "peakMemory": null,
+  "model": "flux1-dev-fp8.safetensors",
+  "modelSha256": null,
+  "customNodes": "None; core nodes only",
+  "preview": "/workflow-tests/50-output.png",
+  "prompt": "Moody cinematic portrait of a mysterious man in a tuxedo, side lighting, film grain, analog photography",
+  "outputKind": "image"
+}

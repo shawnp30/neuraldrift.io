@@ -25,8 +25,8 @@ const WORKFLOWS = [
     href: "/workflows/03",
   },
   {
-    title: "AnimateDiff Simple Loop",
-    desc: "SD 1.5 + AnimateDiff v3 motion module. 16 frames, seamless loop. 8GB compatible.",
+    title: "AnimateDiff Walking Character",
+    desc: "SD 1.5 + AnimateDiff motion module. Natural subject motion and walking cadence. 8GB compatible.",
     category: "Animation / Video",
     tagColor: "bg-emerald-500/15 text-emerald-400 border-emerald-500/25",
     glowColor: "from-emerald-500/20",
