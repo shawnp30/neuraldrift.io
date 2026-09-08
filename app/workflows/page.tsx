@@ -40,9 +40,12 @@ export default function WorkflowsPage({ searchParams }: Props) {
   return <div className="nd-site nd-shell nd-page">
     <p className="nd-eyebrow">THE WORKFLOW CATALOG</p><h1>Find your next workflow.</h1><p className="nd-lead">{CATALOG.length} starting points for ComfyUI. Select your GPU to view evidence-backed compatibility.</p>
     <form method="get" action="/workflows" id="filters" className="nd-card nd-filters">
-      <div className="nd-search"><label htmlFor="q">Search workflows</label><input id="q" name="q" type="search" defaultValue={filters.q} placeholder="Try Flux, portrait, audio…" /></div>
+      <div className="nd-search">
+        <label htmlFor="q">Search workflows</label>
+        <input id="q" name="q" type="search" defaultValue={filters.q} placeholder="Try Flux, portrait, audio…" />
+      </div>
       
-      <div>
+      <div className="nd-filter-primary">
         <label htmlFor="gpu">My GPU Model</label>
         <select id="gpu" name="gpu" defaultValue={gpuParam}>
           <option value="">Any GPU model</option>
@@ -50,7 +53,7 @@ export default function WorkflowsPage({ searchParams }: Props) {
         </select>
       </div>
 
-      <div>
+      <div className="nd-filter-primary">
         <label htmlFor="vram">My GPU’s VRAM</label>
         <select id="vram" name="vram" defaultValue={filters.vram}>
           <option value="">Any memory</option>
@@ -59,20 +62,23 @@ export default function WorkflowsPage({ searchParams }: Props) {
         </select>
       </div>
 
-      <div>
-        <label htmlFor="evidence">Evidence Status</label>
-        <select id="evidence" name="evidence" defaultValue={evidenceParam}>
-          <option value="">All workflows</option>
-          <option value="tested">Directly execution-tested only</option>
-          <option value="estimated">Estimated from requirements</option>
-          <option value="unknown">Unknown requirements</option>
-        </select>
+      <div className="nd-filter-secondary-group">
+        <div>
+          <label htmlFor="evidence">Evidence Status</label>
+          <select id="evidence" name="evidence" defaultValue={evidenceParam}>
+            <option value="">All workflows</option>
+            <option value="tested">Directly execution-tested only</option>
+            <option value="estimated">Estimated from requirements</option>
+            <option value="unknown">Unknown requirements</option>
+          </select>
+        </div>
+
+        <div><label htmlFor="type">Workflow type</label><select id="type" name="type" defaultValue={filters.type}><option value="">All types</option>{types.map(t => <option key={t}>{t}</option>)}</select></div>
+        <div><label htmlFor="model">Model</label><select id="model" name="model" defaultValue={filters.model}><option value="">All models</option>{models.map(m => <option key={m}>{m}</option>)}</select></div>
+        <div><label htmlFor="difficulty">Difficulty</label><select id="difficulty" name="difficulty" defaultValue={filters.difficulty}><option value="">All levels</option>{['Beginner', 'Intermediate', 'Advanced'].map(d => <option key={d}>{d}</option>)}</select></div>
+        <div><label htmlFor="sort">Sort by</label><select id="sort" name="sort" defaultValue={filters.sort}><option value="">Featured first</option><option value="memory">Lowest VRAM first</option><option value="title">Title A–Z</option></select></div>
       </div>
 
-      <div><label htmlFor="type">Workflow type</label><select id="type" name="type" defaultValue={filters.type}><option value="">All types</option>{types.map(t => <option key={t}>{t}</option>)}</select></div>
-      <div><label htmlFor="model">Model</label><select id="model" name="model" defaultValue={filters.model}><option value="">All models</option>{models.map(m => <option key={m}>{m}</option>)}</select></div>
-      <div><label htmlFor="difficulty">Difficulty</label><select id="difficulty" name="difficulty" defaultValue={filters.difficulty}><option value="">All levels</option>{['Beginner', 'Intermediate', 'Advanced'].map(d => <option key={d}>{d}</option>)}</select></div>
-      <div><label htmlFor="sort">Sort by</label><select id="sort" name="sort" defaultValue={filters.sort}><option value="">Featured first</option><option value="memory">Lowest VRAM first</option><option value="title">Title A–Z</option></select></div>
       <div className="nd-actions"><button className="nd-button" type="submit">Apply filters</button><Link href="/workflows#filters" className="nd-text-link">Reset all</Link></div>
       <p className="nd-subtle nd-filter-note">
         {targetHardware?.gpu 

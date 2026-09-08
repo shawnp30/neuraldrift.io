@@ -85,11 +85,19 @@ export function CompatibilityDashboard({ initialGpuSlug = 'rtx-5080', initialVra
   return (
     <div>
       {/* Authoritative Global Trust Metric Banner (Phase 6B Wording Fix) */}
-      <section className="nd-card nd-card-body" style={{ background: '#0a101d', border: '1px solid #1e293b', marginBottom: '2rem' }}>
-        <p className="nd-eyebrow" style={{ margin: '0 0 0.5rem', color: '#38bdf8' }}>
-          EVIDENCE INTEGRITY METRICS
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem', marginTop: '0.5rem' }}>
+      <section className="nd-card nd-card-body" style={{ background: 'linear-gradient(180deg, rgba(14, 23, 38, 0.95) 0%, rgba(10, 16, 28, 0.95) 100%)', border: '1px solid #23344a', marginBottom: '2rem' }}>
+        <div style={{ borderBottom: '1px solid #1e2c3e', paddingBottom: '1rem', marginBottom: '1.2rem' }}>
+          <p className="nd-eyebrow" style={{ margin: '0 0 0.4rem', color: '#5eead4' }}>
+            LOCAL EXECUTION EVIDENCE
+          </p>
+          <h2 style={{ margin: '0 0 0.4rem', fontSize: '1.35rem', color: '#f8fafc' }}>
+            {executionStats.tested} workflows execution-tested on physical RTX 5080 hardware.
+          </h2>
+          <p className="nd-subtle" style={{ margin: 0, fontSize: '0.85rem' }}>
+            We evaluate real generation runs rather than theoretical online minimums. Check the breakdown below or pick your GPU to inspect compatibility.
+          </p>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1.5rem' }}>
           <div>
             <span style={{ display: 'block', fontSize: '1.8rem', fontWeight: 700, color: '#34d399', fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
               {executionStats.tested}

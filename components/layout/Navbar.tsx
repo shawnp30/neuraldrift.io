@@ -228,7 +228,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="group relative font-mono text-xs uppercase tracking-widest text-[#8888a0] transition-colors hover:text-[#e8e8f0]"
+                className="group relative font-mono text-[13px] font-medium uppercase tracking-wider text-[#cbd5e1] transition-colors hover:text-[#ffffff] focus-visible:outline-none focus-visible:text-[#5eead4]"
               >
                 {link.label}
                 <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-right scale-x-0 rounded-full bg-gradient-to-r from-[#7c6af7] to-[#22d3ee] transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100" />
@@ -314,7 +314,7 @@ export default function Navbar() {
 
             <Link
               href="/#gpu-finder"
-              className="hidden rounded-full bg-[#7c6af7] px-5 py-2 text-xs font-bold uppercase tracking-widest text-black transition-opacity hover:opacity-85 sm:flex"
+              className="hidden rounded-full bg-[#7c6af7] px-5 py-2 font-mono text-xs font-bold uppercase tracking-wider text-[#080c14] shadow-[0_2px_12px_rgba(124,106,247,0.3)] transition-all hover:bg-[#9082f9] hover:shadow-[0_4px_16px_rgba(124,106,247,0.5)] sm:flex items-center"
             >
               CHECK MY GPU
             </Link>
