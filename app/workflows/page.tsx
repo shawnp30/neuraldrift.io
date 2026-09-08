@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CATALOG, CatalogFilters, filterWorkflows, MEMORY_OPTIONS, workflowType, WORKFLOW_TESTS, memoryEstimate } from '@/lib/catalog';
+import { CATALOG, CatalogFilters, filterWorkflows, MEMORY_OPTIONS, workflowType, WORKFLOW_TESTS, memoryEstimate, PRIMARY_CATEGORIES, primaryCategoryLabel } from '@/lib/catalog';
 import WorkflowCard from '@/components/workflows/WorkflowCard';
 import { pageMeta } from '@/lib/seo';
 import { COMMON_GPUS, findGpuBySlug } from '@/lib/hardware/gpuData';
@@ -13,7 +13,7 @@ export default function WorkflowsPage({ searchParams }: Props) {
   const gpuParam = typeof searchParams.gpu === 'string' ? searchParams.gpu : '';
   const evidenceParam = typeof searchParams.evidence === 'string' ? searchParams.evidence : '';
   
-  const filters: CatalogFilters = Object.fromEntries(['q', 'vram', 'type', 'model', 'difficulty', 'sort'].map(key => [key, typeof searchParams[key] === 'string' ? searchParams[key] : '']));
+  const filters: CatalogFilters = Object.fromEntries(['q', 'vram', 'category', 'type', 'model', 'difficulty', 'sort'].map(key => [key, typeof searchParams[key] === 'string' ? searchParams[key] : '']));
   
   const targetHardware = resolveHardwareTarget(gpuParam, filters.vram);
   
@@ -31,15 +31,80 @@ export default function WorkflowsPage({ searchParams }: Props) {
   const active = [
     ...(gpuParam ? [['gpu', findGpuBySlug(gpuParam)?.shortName || gpuParam]] : []),
     ...(evidenceParam ? [['evidence', evidenceParam]] : []),
-    ...Object.entries(filters).filter(([, value]) => value)
+    ...Object.entries(filters).filter(([key, value]) => value && key !== 'category').map(([key, value]) => [key, value]),
+    ...(filters.category ? [['category', primaryCategoryLabel(filters.category as any)]] : [])
   ];
 
   const types = Array.from(new Set(CATALOG.map(workflowType))).sort();
   const models = Array.from(new Set(CATALOG.map(w => w.model))).sort();
 
+  // Helper to compute URL preserving other params when toggling category
+  const makeCategoryUrl = (catId: string) => {
+    const p = new URLSearchParams();
+    if (gpuParam) p.set('gpu', gpuParam);
+    if (evidenceParam) p.set('evidence', evidenceParam);
+    for (const [k, v] of Object.entries(filters)) {
+      if (v && k !== 'category') p.set(k, v);
+    }
+    if (catId) p.set('category', catId);
+    const qs = p.toString();
+    return `/workflows${qs ? `?${qs}` : ''}#categories`;
+  };
+
   return <div className="nd-site nd-shell nd-page">
-    <p className="nd-eyebrow">THE WORKFLOW CATALOG</p><h1>Find your next workflow.</h1><p className="nd-lead">{CATALOG.length} starting points for ComfyUI. Select your GPU to view evidence-backed compatibility.</p>
+    <p className="nd-eyebrow">THE WORKFLOW CATALOG</p>
+    <h1>Find your next workflow.</h1>
+    <p className="nd-lead">{CATALOG.length} starting points for ComfyUI. Select your GPU to view evidence-backed compatibility.</p>
+
+    {/* Primary Category Quick Browse Chips */}
+    <div id="categories" style={{ marginTop: '2rem', display: 'flex', gap: '0.6rem', flexWrap: 'wrap', alignItems: 'center' }}>
+      <Link
+        href={makeCategoryUrl('')}
+        style={{
+          padding: '0.45rem 1rem',
+          borderRadius: '999px',
+          fontSize: '0.8rem',
+          fontFamily: 'var(--font-ibm-plex-mono), monospace',
+          textDecoration: 'none',
+          transition: 'all 0.2s ease',
+          background: !filters.category ? '#5eead4' : 'rgba(17, 26, 41, 0.8)',
+          color: !filters.category ? '#04121a' : '#cbd5e1',
+          fontWeight: !filters.category ? 700 : 500,
+          border: '1px solid ' + (!filters.category ? '#5eead4' : 'rgba(255, 255, 255, 0.1)'),
+          boxShadow: !filters.category ? '0 2px 10px rgba(94, 234, 212, 0.3)' : 'none'
+        }}
+      >
+        All Categories ({CATALOG.length})
+      </Link>
+      {PRIMARY_CATEGORIES.map(cat => {
+        const isSelected = filters.category === cat.id;
+        const count = CATALOG.filter(w => (filterWorkflows({ ...filters, category: cat.id })).some(r => r.id === w.id)).length;
+        return (
+          <Link
+            key={cat.id}
+            href={makeCategoryUrl(isSelected ? '' : cat.id)}
+            style={{
+              padding: '0.45rem 1rem',
+              borderRadius: '999px',
+              fontSize: '0.8rem',
+              fontFamily: 'var(--font-ibm-plex-mono), monospace',
+              textDecoration: 'none',
+              transition: 'all 0.2s ease',
+              background: isSelected ? '#5eead4' : 'rgba(17, 26, 41, 0.8)',
+              color: isSelected ? '#04121a' : '#cbd5e1',
+              fontWeight: isSelected ? 700 : 500,
+              border: '1px solid ' + (isSelected ? '#5eead4' : 'rgba(255, 255, 255, 0.1)'),
+              boxShadow: isSelected ? '0 2px 10px rgba(94, 234, 212, 0.3)' : 'none'
+            }}
+          >
+            {cat.label}
+          </Link>
+        );
+      })}
+    </div>
+
     <form method="get" action="/workflows" id="filters" className="nd-card nd-filters">
+      <input type="hidden" name="category" value={filters.category || ''} />
       <div className="nd-search">
         <label htmlFor="q">Search workflows</label>
         <input id="q" name="q" type="search" defaultValue={filters.q} placeholder="Try Flux, portrait, audio…" />

@@ -337,8 +337,8 @@ export const WORKFLOWS: WorkflowEntry[] = [
   },
   {
     id: "18", title: "AnimateDiff Product Rotation",
-    description: "Studio product rotation animation for showcase and marketing content.",
-    longDescription: "Product showcase workflow with studio lighting prompts and controlled rotational perspective motion. Clean background and focused object animation. Pre-configured for commercial product visualization.",
+    description: "Execution-tested AnimateDiff product rotation preset with visible rotational motion.",
+    longDescription: "Product showcase workflow with studio lighting prompts and rotational perspective motion. Demonstrates visible rotational motion on tested hardware without guaranteeing complete 360-degree turntable closure.",
     category: "video", vram: "10GB", difficulty: "Intermediate",
     model: "deliberate_v6.safetensors",
     modelPaths: [{ file: "deliberate_v6.safetensors", dir: "ComfyUI/models/checkpoints/", downloadUrl: "https://huggingface.co/XpucT/Deliberate" }],
@@ -349,7 +349,7 @@ export const WORKFLOWS: WorkflowEntry[] = [
     imageUrl: `/workflow-thumbs/18.png`,
     workflowJsonUrl: null, altImages: [],
     proofPrompt: "A sleek modern coffee machine rotating on a white pedestal, studio lighting",
-    proTip: "ControlNet Depth can help keep the product shape stable during product rotation."
+    proTip: "ControlNet Depth can help keep the product shape stable during rotational movement."
   },
   {
     id: "19", title: "AnimateDiff Slow Zoom",
@@ -369,24 +369,28 @@ export const WORKFLOWS: WorkflowEntry[] = [
   },
   {
     id: "20", title: "Wan 2.1 Video — 480p T2V",
-    description: "Alibaba Wan 2.1 480p text-to-video. State-of-the-art transformer video generation.",
-    longDescription: "Wan 2.1 is the new standard for open-source video. This workflow generates 480p clips with exceptional motion stability. Requires wan-2.1-t2v-1.3b.safetensors. Optimized for 12GB+ cards.",
+    description: "State-of-the-art open-source video model. 480p 16:9 output, 81 frames (~5s at 16fps).",
+    longDescription: "Wan 2.1 1.3B text-to-video workflow using ComfyUI official native implementation. Outputs 81 frames (5.06s at 16fps) at 832×480 resolution. 1.3B model runs on 12GB VRAM with fp8 text encoder. Exceptional physical motion quality, water dynamics, and character animation.",
     category: "video", vram: "12GB", difficulty: "Intermediate",
-    model: "wan-2.1-t2v-1.3b.safetensors",
-    modelPaths: [{ file: "wan-2.1-t2v-1.3b.safetensors", dir: "ComfyUI/models/checkpoints/", downloadUrl: "https://huggingface.co/Wan-AI/Wan2.1-T2V-1.3B" }],
-    customNodes: ["ComfyUI-WanVideo", "ComfyUI-VideoHelperSuite"],
-    genTime: "~50s on RTX 5080", resolution: "832×480",
-    tags: ["Wan 2.1", "video", "t2v", "transformer", "12GB"],
+    model: "wan2.1_t2v_1.3B_fp16.safetensors",
+    modelPaths: [
+      { file: "wan2.1_t2v_1.3B_fp16.safetensors", dir: "ComfyUI/models/diffusion_models/", downloadUrl: "https://huggingface.co/Wan-AI/Wan2.1-T2V-1.3B" },
+      { file: "umt5_xxl_fp8_e4m3fn_scaled.safetensors", dir: "ComfyUI/models/text_encoders/", downloadUrl: "https://huggingface.co/Comfy-Org/Wan_2.1_ComfyUI_repackaged/tree/main/split_files/text_encoders" },
+      { file: "wan_2.1_vae.safetensors", dir: "ComfyUI/models/vae/", downloadUrl: "https://huggingface.co/Wan-AI/Wan2.1-T2V-1.3B" },
+    ],
+    customNodes: [],
+    genTime: "~4m on RTX 5080", resolution: "832×480, 81 frames",
+    tags: ["wan2.1", "video", "text-to-video", "12gb", "native"],
     version: "v1.0", featured: true,
     imageUrl: `/workflow-thumbs/20.png`,
     workflowJsonUrl: null, altImages: [],
-    proofPrompt: "A small robot exploring a colorful coral reef under the ocean, detailed bubbles, smooth motion",
-    proTip: "Use 'cinematic quality' and 'smooth motion' to get the best results from the Wan transformer architecture."
+    proofPrompt: "A golden retriever puppy splashing through a mountain stream, water droplets catching sunlight, slow motion 60fps feel",
+    proTip: "Wan 2.1 benefits heavily from descriptive prompts — describe the camera motion, lighting, and physics explicitly."
   },
   {
     id: "21", title: "4x ESRGAN Upscale",
-    description: "RealESRGAN 4x upscale for photorealistic images. Runs on 6GB. Load any image, get 4x output.",
-    longDescription: "Drop any image in and get a 4x resolution upscale using RealESRGAN_x4plus. No checkpoint needed — just the upscale model in models/upscale_models/. Works on GTX 1660 Ti. Outputs to SaveImage node. Essential finishing step for all workflows.",
+    description: "General 4x upscale using RealESRGAN_x4plus. Sharp detail enhancement for photos and digital art.",
+    longDescription: "Standard 4x upscaling using the RealESRGAN_x4plus model. Cleanly doubles resolution twice with AI hallucinated high-frequency details. Works on any input image resolution. Only ~3s execution time. Ideal companion to every generation workflow.",
     category: "enhance", vram: "6GB", difficulty: "Beginner",
     model: "RealESRGAN_x4plus.pth",
     modelPaths: [{ file: "RealESRGAN_x4plus.pth", dir: "ComfyUI/models/upscale_models/", downloadUrl: "https://huggingface.co/ai-forever/Real-ESRGAN/tree/main" }],
@@ -399,19 +403,19 @@ export const WORKFLOWS: WorkflowEntry[] = [
     proTip: "ESRGAN is best for photorealistic images; it can over-sharpen artistic or anime content."
   },
   {
-    id: "22", title: "4x Anime Upscale",
-    description: "RealESRGAN x4 Anime optimized upscale. Preserves linework and flat colors.",
-    longDescription: "Anime-specific upscale using RealESRGAN_x4plus_anime_6B. 6-block architecture preserves crisp linework and flat color regions better than the standard model. Essential for SD 1.5 anime outputs before publishing. 6GB VRAM minimum.",
+    id: "22", title: "4x Model Upscale — Real-ESRGAN",
+    description: "Execution-tested general-purpose 4x Real-ESRGAN model upscale.",
+    longDescription: "General 4x model-based spatial upscaling using Real-ESRGAN for photographic and digital images. Enhances image resolution with fine edge preservation.",
     category: "enhance", vram: "6GB", difficulty: "Beginner",
-    model: "RealESRGAN_x4plus_anime_6B.pth",
-    modelPaths: [{ file: "RealESRGAN_x4plus_anime_6B.pth", dir: "ComfyUI/models/upscale_models/", downloadUrl: "https://huggingface.co/ai-forever/Real-ESRGAN/tree/main" }],
+    model: "RealESRGAN_x4plus.pth",
+    modelPaths: [{ file: "RealESRGAN_x4plus.pth", dir: "ComfyUI/models/upscale_models/", downloadUrl: "https://huggingface.co/ai-forever/Real-ESRGAN/tree/main" }],
     customNodes: [], genTime: "~2s on RTX 5080", resolution: "4x input size",
-    tags: ["upscale", "anime", "ESRGAN", "6GB", "linework"],
+    tags: ["upscale", "ESRGAN", "4x", "6GB", "enhancement"],
     version: "v1.0",
     imageUrl: `/workflow-thumbs/22.png`,
     workflowJsonUrl: null, altImages: [],
-    proofPrompt: "Input: 512px anime sketch. Output: 2048px clean, sharp anime illustration",
-    proTip: "Use this specific anime model to avoid artifacts on flat color areas."
+    proofPrompt: "Input: 512px image. Output: 2048px clean, sharp enhanced illustration",
+    proTip: "Use model-based upscaling for quick detail enhancement without re-sampling."
   },
   {
     id: "23", title: "SDXL Image-to-Image",

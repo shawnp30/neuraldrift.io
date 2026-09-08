@@ -53,6 +53,38 @@ const TITLES: Record<string,string> = {
 
 export type WorkflowKind = 'pipeline' | 'preset' | 'utility' | 'enhancement' | 'control' | 'video' | 'audio';
 
+export type PrimaryCategory = 'image-gen' | 'editing-control' | 'upscaling' | 'video' | 'audio' | 'presets';
+
+export interface CategoryInfo {
+  id: PrimaryCategory;
+  label: string;
+  description: string;
+}
+
+export const PRIMARY_CATEGORIES: CategoryInfo[] = [
+  { id: 'image-gen', label: 'Image Generation', description: 'Foundational text-to-image pipelines including SDXL, Flux, and fast generators.' },
+  { id: 'editing-control', label: 'Editing & Control', description: 'Inpainting, ControlNet, img2img, and sketch-to-photo precision control.' },
+  { id: 'upscaling', label: 'Upscaling & Enhancement', description: 'Model-based detail enhancement, Real-ESRGAN, and post-generation scaling.' },
+  { id: 'video', label: 'Video & Animation', description: 'LTX Video, AnimateDiff camera motions, and generative motion pipelines.' },
+  { id: 'audio', label: 'Audio & Music', description: 'Text-to-song generation, sound design, and local audio synthesis.' },
+  { id: 'presets', label: 'Creative Presets', description: 'Specialized aesthetic configurations for editorial, product, architecture, and fantasy.' },
+];
+
+export function primaryCategory(workflow: WorkflowEntry): PrimaryCategory {
+  const kind = workflowKind(workflow);
+  if (kind === 'video') return 'video';
+  if (kind === 'audio') return 'audio';
+  if (kind === 'utility') return 'upscaling';
+  if (kind === 'control' || kind === 'enhancement') return 'editing-control';
+  if (kind === 'preset') return 'presets';
+  return 'image-gen';
+}
+
+export function primaryCategoryLabel(category: PrimaryCategory): string {
+  const found = PRIMARY_CATEGORIES.find(c => c.id === category);
+  return found ? found.label : 'General';
+}
+
 export function workflowKind(workflow: WorkflowEntry): WorkflowKind {
   const id = workflow.id;
   if (['21', '22'].includes(id)) return 'utility';
@@ -109,7 +141,7 @@ export function compatibilityLabel(workflow: WorkflowEntry) {
 export function workflowType(workflow: WorkflowEntry) {
   return /ace.?step|audio|music/i.test(`${workflow.model} ${workflow.tags.join(' ')}`) ? 'audio' : workflow.category;
 }
-export interface CatalogFilters { q?: string; vram?: string; type?: string; model?: string; difficulty?: string; sort?: string }
+export interface CatalogFilters { q?: string; vram?: string; category?: string; type?: string; model?: string; difficulty?: string; sort?: string }
 export function filterWorkflows(filters: CatalogFilters) {
   const query = filters.q?.trim().toLowerCase() || '';
   const capacity = Number(filters.vram);
@@ -117,6 +149,7 @@ export function filterWorkflows(filters: CatalogFilters) {
     const memory = memoryEstimate(w);
     return (!query || [w.title, w.description, w.model, ...w.tags].join(' ').toLowerCase().includes(query))
       && (!filters.vram || (filters.vram === 'unknown' ? memory === null : capacity > 0 && memory !== null && memory <= capacity))
+      && (!filters.category || primaryCategory(w) === filters.category)
       && (!filters.type || workflowType(w) === filters.type)
       && (!filters.model || w.model === filters.model)
       && (!filters.difficulty || w.difficulty === filters.difficulty);
