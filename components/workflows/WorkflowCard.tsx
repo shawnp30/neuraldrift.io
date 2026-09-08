@@ -40,11 +40,11 @@ export default function WorkflowCard({ workflow, targetHardware }: { workflow: W
       <p>{workflow.description}</p>
       
       {compat ? (
-        <div style={{ marginTop: 'auto', paddingTop: '.8rem', borderTop: '1px solid #2c3a50' }}>
-          <p style={{ margin: 0, fontSize: '.78rem', color: compat.badgeTone === 'emerald' ? '#34d399' : compat.badgeTone === 'amber' ? '#fbbf24' : compat.badgeTone === 'rose' ? '#fb7185' : '#93c5fd' }}>
+        <div style={{ marginTop: 'auto', paddingTop: '.85rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)' }}>
+          <p style={{ margin: 0, fontSize: '.78rem', fontWeight: 600, color: compat.badgeTone === 'emerald' ? '#34d399' : compat.badgeTone === 'amber' ? '#fbbf24' : compat.badgeTone === 'rose' ? '#fb7185' : '#93c5fd' }}>
             {compat.headline}
           </p>
-          <p className="nd-confidence-tag" style={{ margin: '0.2rem 0 0.4rem' }}>
+          <p className="nd-confidence-tag" style={{ margin: '0.25rem 0 0.45rem' }}>
             Confidence: {compat.confidence} · {targetHardware?.gpu ? targetHardware.gpu.shortName : `${targetHardware?.vramGb}GB VRAM`}
           </p>
         </div>

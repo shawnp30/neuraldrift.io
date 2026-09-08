@@ -195,7 +195,7 @@ export default function Navbar() {
       <nav
         className={`fixed left-0 right-0 top-0 z-50 w-full transition-all duration-300 ${
           scrolled
-            ? "border-b border-[#2a2a30] bg-[#0a0a0b]/85 py-3 backdrop-blur-xl"
+            ? "border-b border-white/[0.08] bg-[#070b12]/80 py-3.5 backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
             : "bg-transparent py-5"
         }`}
       >
@@ -208,17 +208,17 @@ export default function Navbar() {
               setMobileOpen(false);
               setSearchOpen(false);
             }}
-            className="group flex flex-shrink-0 items-center gap-2"
+            className="group flex flex-shrink-0 items-center gap-2.5"
           >
-            <div className="relative">
+            <div className="relative flex items-center justify-center">
               <BrainCircuit
-                size={30}
-                className="text-[#7c6af7] transition-transform duration-500 group-hover:rotate-12"
+                size={28}
+                className="text-[#5eead4] transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6"
               />
-              <div className="absolute inset-0 bg-[#7c6af7]/40 opacity-0 blur-md transition-opacity group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-[#5eead4]/30 opacity-0 blur-md transition-opacity group-hover:opacity-100" />
             </div>
-            <span className="hidden font-syne text-xl font-black tracking-tight text-[#e8e8f0] sm:inline">
-              neural<span className="text-[#7c6af7]">drift</span>
+            <span className="hidden font-syne text-xl font-extrabold tracking-tight text-[#f8fafc] sm:inline">
+              neural<span className="text-[#5eead4]">drift</span>
             </span>
           </Link>
 
@@ -228,10 +228,10 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="group relative font-mono text-[13px] font-medium uppercase tracking-wider text-[#cbd5e1] transition-colors hover:text-[#ffffff] focus-visible:outline-none focus-visible:text-[#5eead4]"
+                className="group relative font-mono text-[12.5px] font-semibold uppercase tracking-wider text-[#94a3b8] transition-colors hover:text-[#f8fafc] focus-visible:outline-none focus-visible:text-[#5eead4]"
               >
                 {link.label}
-                <span className="absolute -bottom-1 left-0 h-[2px] w-full origin-right scale-x-0 rounded-full bg-gradient-to-r from-[#7c6af7] to-[#22d3ee] transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100" />
+                <span className="absolute -bottom-1.5 left-0 h-[2px] w-full origin-right scale-x-0 rounded-full bg-gradient-to-r from-[#5eead4] to-[#38bdf8] transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100" />
               </Link>
             ))}
           </div>
@@ -314,7 +314,7 @@ export default function Navbar() {
 
             <Link
               href="/#gpu-finder"
-              className="hidden rounded-full bg-[#7c6af7] px-5 py-2 font-mono text-xs font-bold uppercase tracking-wider text-[#080c14] shadow-[0_2px_12px_rgba(124,106,247,0.3)] transition-all hover:bg-[#9082f9] hover:shadow-[0_4px_16px_rgba(124,106,247,0.5)] sm:flex items-center"
+              className="hidden rounded-full bg-gradient-to-r from-[#5eead4] to-[#2dd4bf] px-5 py-2 font-mono text-xs font-bold uppercase tracking-wider text-[#04121a] shadow-[0_2px_14px_rgba(94,234,212,0.25)] transition-all hover:from-[#7ff0df] hover:to-[#5eead4] hover:shadow-[0_4px_20px_rgba(94,234,212,0.45)] hover:-translate-y-0.5 sm:flex items-center"
             >
               CHECK MY GPU
             </Link>
@@ -415,7 +415,7 @@ export default function Navbar() {
             <Link
               href="/#gpu-finder"
               onClick={() => setMobileOpen(false)}
-              className="block w-full rounded-2xl bg-[#7c6af7] py-4 text-center text-xs font-black uppercase tracking-widest text-[#0a0a0b] shadow-[0_10px_20px_rgba(124,106,247,0.2)]"
+              className="block w-full rounded-xl bg-gradient-to-r from-[#5eead4] to-[#2dd4bf] py-4 text-center text-xs font-bold uppercase tracking-widest text-[#04121a] shadow-[0_8px_24px_rgba(94,234,212,0.3)]"
             >
               CHECK MY GPU →
             </Link>
