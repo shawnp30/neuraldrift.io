@@ -6,7 +6,7 @@
 import { useState, useMemo } from 'react';
 import { EXECUTIONS, HARDWARE_PROFILES, evidenceFreshness } from '@/lib/hardware/executions';
 import Link from 'next/link';
-import { CATALOG, workflowKind, workflowKindLabel, WORKFLOW_TESTS } from '@/lib/catalog';
+import { CATALOG, workflowKind, workflowKindLabel, WORKFLOW_TESTS, PRIMARY_CATEGORIES, primaryCategory, PrimaryCategory } from '@/lib/catalog';
 import { COMMON_GPUS, findGpuBySlug } from '@/lib/hardware/gpuData';
 import { evaluateCompatibility, resolveHardwareTarget, CompatibilityResult } from '@/lib/hardware/compatibility';
 import WorkflowCard from '@/components/workflows/WorkflowCard';
@@ -34,9 +34,36 @@ export function CompatibilityDashboard({ initialGpuSlug = 'rtx-5080', initialVra
     return CATALOG.map(w => ({
       workflow: w,
       result: evaluateCompatibility(w, target),
-      kind: workflowKind(w)
+      kind: workflowKind(w),
+      category: primaryCategory(w)
     }));
   }, [target]);
+
+  // Group workflows by primary category
+  const categorizedWorkflows = useMemo(() => {
+    const map: Record<string, typeof evaluations> = {
+      'image-gen': [],
+      'editing-control': [],
+      'upscaling': [],
+      'video': [],
+      'audio': [],
+      'presets': []
+    };
+    for (const item of evaluations) {
+      if (map[item.category]) {
+        map[item.category].push(item);
+      }
+    }
+    return map;
+  }, [evaluations]);
+
+  // Filtered categories to display
+  const categoriesToDisplay = useMemo(() => {
+    if (activeCategory === 'all') {
+      return PRIMARY_CATEGORIES;
+    }
+    return PRIMARY_CATEGORIES.filter(c => c.id === activeCategory);
+  }, [activeCategory]);
 
   // Aggregated Counts for chosen hardware
   const counts = useMemo(() => {
@@ -68,19 +95,6 @@ export function CompatibilityDashboard({ initialGpuSlug = 'rtx-5080', initialVra
       optimized: current.filter(r => r.outcome === 'SUCCESS' && r.executionProfile === 'OPTIMIZED').length,
       unclassified: current.filter(r => r.outcome === 'SUCCESS' && r.executionProfile === 'UNCLASSIFIED').length };
   }, []);
-
-  // Filtered workflows by active tab
-  const filteredWorkflows = useMemo(() => {
-    if (activeCategory === 'all') return evaluations;
-    if (activeCategory === 'recommended') {
-      return evaluations.filter(e => e.result.state === 'DIRECT_TESTED' || e.result.state === 'CLOSE_TESTED');
-    }
-    if (activeCategory === 'video') return evaluations.filter(e => e.kind === 'video');
-    if (activeCategory === 'audio') return evaluations.filter(e => e.kind === 'audio');
-    if (activeCategory === 'image') return evaluations.filter(e => e.kind === 'pipeline' || e.kind === 'preset' || e.kind === 'control' || e.kind === 'enhancement');
-    if (activeCategory === 'blocked') return evaluations.filter(e => e.result.state === 'TESTED_FAILURE' || e.result.state === 'BLOCKED' || e.result.state === 'UNKNOWN');
-    return evaluations;
-  }, [evaluations, activeCategory]);
 
   return (
     <div>
@@ -241,120 +255,179 @@ export function CompatibilityDashboard({ initialGpuSlug = 'rtx-5080', initialVra
         )}
       </section>
 
-      {/* Category Navigation Tabs */}
-      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-        {[
-          { id: 'all', label: `All Workflows (${evaluations.length})` },
-          { id: 'recommended', label: `Recommended (${counts.directTested + counts.likelyCompatible})` },
-          { id: 'image', label: 'Image & Control' },
-          { id: 'video', label: 'Video' },
-          { id: 'audio', label: 'Audio' },
-          { id: 'blocked', label: `Failures / Blocked (${counts.blocked + counts.unknown})` }
-        ].map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveCategory(tab.id)}
-            style={{
-              background: activeCategory === tab.id ? '#2563eb' : '#0d1522',
-              color: activeCategory === tab.id ? '#ffffff' : '#94a3b8',
-              border: `1px solid ${activeCategory === tab.id ? '#3b82f6' : '#28374d'}`,
-              borderRadius: '20px',
-              padding: '0.4rem 0.9rem',
-              fontSize: '0.8rem',
-              cursor: 'pointer',
-              fontWeight: 500
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Workflows Grid with Target Evaluation */}
-      <section className="nd-section" style={{ marginTop: '1rem' }}>
-        <div className="nd-grid">
-          {filteredWorkflows.map(({ workflow }) => (
-            <WorkflowCard
-              key={workflow.id}
-              workflow={workflow}
-              targetHardware={target || undefined}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Testing Methodology Section (Phase 6Q) */}
-      <section className="nd-section nd-prose" style={{ marginTop: '4rem', borderTop: '1px solid #334155', paddingTop: '2.5rem' }}>
-        <p className="nd-eyebrow">VERIFICATION STANDARDS</p>
-        <h2>NeuralDrift 5-Level Validation Framework</h2>
-        <p>
-          Unlike generic catalog indexes that scrape online workflows without running them, NeuralDrift applies a rigorous 5-level verification hierarchy before declaring any workflow execution-tested.
+      {/* 3. Validation / Trust Methodology (Moved ABOVE Catalog) */}
+      <section className="nd-card nd-card-body" style={{ marginBottom: '2.5rem', border: '1px solid #23344a', background: 'linear-gradient(180deg, rgba(13, 21, 34, 0.7) 0%, rgba(9, 14, 24, 0.9) 100%)' }}>
+        <p className="nd-eyebrow" style={{ color: '#5eead4' }}>VERIFICATION STANDARDS</p>
+        <h2 style={{ fontSize: '1.35rem', marginTop: '0.2rem', marginBottom: '0.5rem', color: '#f8fafc' }}>
+          NeuralDrift 5-Level Validation Framework
+        </h2>
+        <p className="nd-subtle" style={{ margin: '0 0 1.5rem', fontSize: '0.9rem', maxWidth: '820px' }}>
+          Unlike generic indexes that aggregate untested online graphs, NeuralDrift establishes an empirical chain of custody before designating any workflow execution-tested.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.2rem', marginTop: '1.5rem' }}>
-          <div style={{ background: '#0d1522', border: '1px solid #28374d', borderRadius: '6px', padding: '1.2rem' }}>
-            <span style={{ color: '#38bdf8', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700 }}>LEVEL 1 — File parses correctly</span>
-            <h3 style={{ margin: '0.3rem 0', fontSize: '1rem' }}>JSON Schema Valid</h3>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
+          <div style={{ background: '#0d1522', border: '1px solid #28374d', borderRadius: '8px', padding: '1.1rem' }}>
+            <span style={{ color: '#38bdf8', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700, fontSize: '0.75rem' }}>LEVEL 1 — File parses correctly</span>
+            <h3 style={{ margin: '0.35rem 0 0.25rem', fontSize: '0.95rem' }}>JSON Schema Valid</h3>
+            <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
               The downloadable JSON is syntactically valid, has clean node mappings, and contains no malformed syntax errors.
             </p>
           </div>
 
-          <div style={{ background: '#0d1522', border: '1px solid #28374d', borderRadius: '6px', padding: '1.2rem' }}>
-            <span style={{ color: '#38bdf8', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700 }}>LEVEL 2 — Workflow graph is valid</span>
-            <h3 style={{ margin: '0.3rem 0', fontSize: '1rem' }}>Graph Connectivity Valid</h3>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: 0 }}>
+          <div style={{ background: '#0d1522', border: '1px solid #28374d', borderRadius: '8px', padding: '1.1rem' }}>
+            <span style={{ color: '#38bdf8', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700, fontSize: '0.75rem' }}>LEVEL 2 — Workflow graph is valid</span>
+            <h3 style={{ margin: '0.35rem 0 0.25rem', fontSize: '0.95rem' }}>Graph Connectivity Valid</h3>
+            <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
               Internal node links, inputs, and outputs form a valid acyclic execution graph with correct node type bindings.
             </p>
           </div>
 
-          <div style={{ background: '#0d1522', border: '1px solid #28374d', borderRadius: '6px', padding: '1.2rem' }}>
-            <span style={{ color: '#38bdf8', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700 }}>LEVEL 3 — Dependencies identified</span>
-            <h3 style={{ margin: '0.3rem 0', fontSize: '1rem' }}>Dependencies Identified</h3>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: 0 }}>
+          <div style={{ background: '#0d1522', border: '1px solid #28374d', borderRadius: '8px', padding: '1.1rem' }}>
+            <span style={{ color: '#38bdf8', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700, fontSize: '0.75rem' }}>LEVEL 3 — Dependencies identified</span>
+            <h3 style={{ margin: '0.35rem 0 0.25rem', fontSize: '0.95rem' }}>Dependencies Identified</h3>
+            <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
               All checkpoints, diffusion models, VAEs, text encoders, and custom nodes are inventoried with exact filenames and directories.
             </p>
           </div>
 
-          <div style={{ background: '#0d1522', border: '1px solid #28374d', borderRadius: '6px', padding: '1.2rem' }}>
-            <span style={{ color: '#34d399', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700 }}>LEVEL 4 — Loaded successfully in ComfyUI</span>
-            <h3 style={{ margin: '0.3rem 0', fontSize: '1rem' }}>ComfyUI Graph Import</h3>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: 0 }}>
+          <div style={{ background: '#0d1522', border: '1px solid #28374d', borderRadius: '8px', padding: '1.1rem' }}>
+            <span style={{ color: '#34d399', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700, fontSize: '0.75rem' }}>LEVEL 4 — Loaded successfully in ComfyUI</span>
+            <h3 style={{ margin: '0.35rem 0 0.25rem', fontSize: '0.95rem' }}>ComfyUI Graph Import</h3>
+            <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
               The graph loads directly into an active ComfyUI instance without red missing-node boxes or syntax incompatibilities.
             </p>
           </div>
 
-          <div style={{ background: '#0d1522', border: '1px solid #10b981', borderRadius: '6px', padding: '1.2rem' }}>
-            <span style={{ color: '#34d399', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700 }}>LEVEL 5 — Executed successfully with expected output</span>
-            <h3 style={{ margin: '0.3rem 0', fontSize: '1rem' }}>Execution &amp; Semantic Output</h3>
-            <p style={{ fontSize: '0.85rem', color: '#94a3b8', margin: 0 }}>
+          <div style={{ background: '#0d1522', border: '1px solid #10b981', borderRadius: '8px', padding: '1.1rem' }}>
+            <span style={{ color: '#34d399', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontWeight: 700, fontSize: '0.75rem' }}>LEVEL 5 — Executed successfully with expected output</span>
+            <h3 style={{ margin: '0.35rem 0 0.25rem', fontSize: '0.95rem' }}>Execution &amp; Semantic Output</h3>
+            <p style={{ fontSize: '0.82rem', color: '#94a3b8', margin: 0 }}>
               The workflow completes a real run on local hardware, producing an inspectable output artifact (image, video, audio) with verified prompt correspondence.
             </p>
           </div>
         </div>
 
-        <h3 style={{ marginTop: '2.5rem' }}>Hardware Reality & Limitations</h3>
-        <ul>
-          <li>
-            <strong>Hardware Specificity:</strong> Execution records are matched to observed hardware profiles and workflow hashes. Historical RTX 5080 runs retain their original software and settings; they do not establish secondary GPU performance.
-          </li>
-          <li>
-            <strong>No Downward VRAM Inferences:</strong> Success on 16GB does <em>not</em> prove that an 8GB or 12GB GPU can execute the workflow without memory exhaustion.
-          </li>
-          <li>
-            <strong>Non-Linear Runtime:</strong> Measured execution seconds represent the specific test resolution, batch size, and step count documented in each test record. Higher resolutions or different samplers will scale non-linearly.
-          </li>
-          <li>
-            <strong>Architecture Caveats:</strong> AMD (ROCm), Apple Silicon (MPS), and older Pascal/Turing GPUs have distinct kernel compiler and precision constraints not captured by VRAM numbers alone.
-          </li>
-        </ul>
-
-        <div style={{ marginTop: '1.5rem' }}>
-          <Link href="/hardware/rtx-5080" className="nd-button">
-            View Complete RTX 5080 Testbench Records →
-          </Link>
+        <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #1e2c3e' }}>
+          <h3 style={{ margin: '0 0 0.75rem', fontSize: '1.05rem', color: '#f8fafc' }}>Hardware Reality &amp; Limitations</h3>
+          <ul style={{ margin: 0, paddingLeft: '1.25rem', color: '#94a3b8', fontSize: '0.85rem', display: 'grid', gap: '0.5rem' }}>
+            <li>
+              <strong style={{ color: '#cbd5e1' }}>Hardware Specificity:</strong> Execution records are matched to observed physical hardware profiles and workflow hashes. Historical RTX 5080 runs retain their original software and settings; they do not establish secondary GPU performance.
+            </li>
+            <li>
+              <strong style={{ color: '#cbd5e1' }}>No Downward VRAM Inferences:</strong> Success on 16GB does <em>not</em> prove that an 8GB or 12GB GPU can execute the workflow without memory exhaustion.
+            </li>
+            <li>
+              <strong style={{ color: '#cbd5e1' }}>Non-Linear Runtime:</strong> Measured execution seconds represent the specific test resolution, batch size, and step count documented in each test record. Higher resolutions or different samplers will scale non-linearly.
+            </li>
+            <li>
+              <strong style={{ color: '#cbd5e1' }}>Architecture Caveats:</strong> AMD (ROCm), Apple Silicon (MPS), and older Pascal/Turing GPUs have distinct kernel compiler and precision constraints not captured by VRAM numbers alone.
+            </li>
+          </ul>
+          <div style={{ marginTop: '1.25rem' }}>
+            <Link href="/hardware/rtx-5080" className="nd-text-link" style={{ fontSize: '0.85rem' }}>
+              View Complete RTX 5080 Testbench Records →
+            </Link>
+          </div>
         </div>
       </section>
+
+      {/* 4. Category Navigation Chips */}
+      <div id="compatibility-catalog" style={{ marginBottom: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
+          <div>
+            <p className="nd-eyebrow" style={{ margin: '0 0 0.2rem', color: '#5eead4' }}>WORKFLOW COMPATIBILITY CATALOG</p>
+            <h2 style={{ margin: 0, fontSize: '1.35rem' }}>Browse Evaluated Workflows</h2>
+          </div>
+          <span style={{ fontSize: '0.85rem', color: '#94a3b8', fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
+            {activeCategory === 'all' ? `${CATALOG.length} Workflows` : `${categorizedWorkflows[activeCategory]?.length || 0} Workflows`}
+          </span>
+        </div>
+
+        <div style={{ display: 'flex', gap: '0.55rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <button
+            type="button"
+            onClick={() => setActiveCategory('all')}
+            style={{
+              padding: '0.45rem 1rem',
+              borderRadius: '999px',
+              fontSize: '0.8rem',
+              fontFamily: 'var(--font-ibm-plex-mono), monospace',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              background: activeCategory === 'all' ? '#5eead4' : 'rgba(17, 26, 41, 0.8)',
+              color: activeCategory === 'all' ? '#04121a' : '#cbd5e1',
+              fontWeight: activeCategory === 'all' ? 700 : 500,
+              border: '1px solid ' + (activeCategory === 'all' ? '#5eead4' : 'rgba(255, 255, 255, 0.1)'),
+              boxShadow: activeCategory === 'all' ? '0 2px 10px rgba(94, 234, 212, 0.3)' : 'none'
+            }}
+          >
+            All Categories ({CATALOG.length})
+          </button>
+          {PRIMARY_CATEGORIES.map(cat => {
+            const isSelected = activeCategory === cat.id;
+            const count = categorizedWorkflows[cat.id]?.length || 0;
+            return (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => setActiveCategory(cat.id)}
+                style={{
+                  padding: '0.45rem 1rem',
+                  borderRadius: '999px',
+                  fontSize: '0.8rem',
+                  fontFamily: 'var(--font-ibm-plex-mono), monospace',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease',
+                  background: isSelected ? '#5eead4' : 'rgba(17, 26, 41, 0.8)',
+                  color: isSelected ? '#04121a' : '#cbd5e1',
+                  fontWeight: isSelected ? 700 : 500,
+                  border: '1px solid ' + (isSelected ? '#5eead4' : 'rgba(255, 255, 255, 0.1)'),
+                  boxShadow: isSelected ? '0 2px 10px rgba(94, 234, 212, 0.3)' : 'none'
+                }}
+              >
+                {cat.label} ({count})
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* 5. Workflow Compatibility Results - Grouped by Category */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+        {categoriesToDisplay.map(cat => {
+          const items = categorizedWorkflows[cat.id] || [];
+          if (items.length === 0) return null;
+
+          return (
+            <section key={cat.id} className="nd-section" style={{ margin: 0, padding: 0 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '1.25rem', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '0.6rem' }}>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: '1.15rem', color: '#f8fafc', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                    <span style={{ color: '#5eead4', fontFamily: 'var(--font-ibm-plex-mono), monospace', fontSize: '0.85rem' }}>{'//'}</span>
+                    {cat.label.toUpperCase()}
+                  </h3>
+                  <p style={{ margin: '0.2rem 0 0', fontSize: '0.82rem', color: '#94a3b8' }}>
+                    {cat.description}
+                  </p>
+                </div>
+                <span style={{ fontSize: '0.78rem', color: '#64748b', fontFamily: 'var(--font-ibm-plex-mono), monospace', whiteSpace: 'nowrap' }}>
+                  {items.length} {items.length === 1 ? 'workflow' : 'workflows'}
+                </span>
+              </div>
+
+              <div className="nd-grid">
+                {items.map(({ workflow }) => (
+                  <WorkflowCard
+                    key={workflow.id}
+                    workflow={workflow}
+                    targetHardware={target || undefined}
+                  />
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
     </div>
   );
 }
