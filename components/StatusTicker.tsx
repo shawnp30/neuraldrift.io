@@ -9,8 +9,8 @@ const statusItems = [
   "🧠 FLUX Dev/Schnell — Image models",
   "📦 6 LoRA Models — Ready to download",
   "⚙️ 50 ComfyUI Workflows — Plug & play",
-  "📧 15+ Subscribers — Weekly drops",
-  "🎯 0 Ads — Just signal",
+  "📧 NeuralDrift Weekly — Launching soon",
+  "🎯 Evidence-first local AI tools",
 ];
 
 export default function StatusTicker() {

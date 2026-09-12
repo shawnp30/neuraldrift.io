@@ -38,9 +38,11 @@ export default function PrivacyPage() {
             <p>
               We use Vercel Analytics to understand aggregate traffic (page
               views, referrers, rough device/location data). It doesn&apos;t
-              use cookies and doesn&apos;t track you across other sites. We
-              don&apos;t run ad networks or third-party ad trackers on this
-              site.
+              use cookies and doesn&apos;t track you across other sites. If a
+              Google Analytics measurement ID is configured, NeuralDrift also
+              sends the event names and non-identifying context described in
+              this policy to Google Analytics. The measurement ID is disabled
+              by default.
             </p>
           </section>
 

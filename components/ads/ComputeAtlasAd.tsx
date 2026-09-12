@@ -1,11 +1,17 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import { getActiveOffer } from "@/lib/monetization";
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics";
 
 interface Props {
   type?: "horizontal" | "sidebar";
 }
 
 export const ComputeAtlasAd = ({ type = "horizontal" }: Props) => {
+  const offer = getActiveOffer("affiliate");
+  if (!offer) return null;
   if (type === "sidebar") {
     return (
       <div className="rounded-2xl border border-[#7c6af7]/20 bg-gradient-to-br from-[#7c6af7]/10 to-[#22d3ee]/5 p-6">
@@ -20,7 +26,7 @@ export const ComputeAtlasAd = ({ type = "horizontal" }: Props) => {
           hardware recommendations for your target workflows.
         </p>
         <a
-          href="https://computeatlas.ai/ai-hardware-estimator?ref=neuraldrift"
+          href={offer.destinationUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="block w-full rounded-xl bg-[#7c6af7] py-3 text-center text-xs font-bold uppercase tracking-widest text-white transition-opacity hover:opacity-90"
@@ -34,9 +40,10 @@ export const ComputeAtlasAd = ({ type = "horizontal" }: Props) => {
   return (
     <div className="group my-12 overflow-hidden rounded-2xl border border-[#2a2a30] bg-[#111113] p-1">
       <a
-        href="https://computeatlas.ai/recommended-builds?ref=neuraldrift"
+        href={offer.destinationUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackEvent(ANALYTICS_EVENTS.affiliateClick, { offerId: offer.id, merchant: offer.merchant, campaign: offer.campaign })}
         className="flex flex-col items-center gap-6 p-6 md:flex-row"
       >
         <div className="relative aspect-video w-full flex-shrink-0 overflow-hidden rounded-lg md:w-48">

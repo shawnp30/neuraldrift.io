@@ -8,6 +8,7 @@ import CopyButton from "@/components/CopyButton";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
+import { getRelatedTutorials } from "@/lib/relationships";
 
 interface Props {
   params: { slug: string };
@@ -234,6 +235,11 @@ export default async function GuidePage({ params }: Props) {
   ]);
 
   const readingTime = Math.ceil(raw.split(/\s+/).length / 200);
+  const relatedTutorials = getRelatedTutorials({
+    title: frontmatter.title,
+    description: frontmatter.description,
+    tags: frontmatter.tags || [],
+  }, 3);
 
   // Get Next/Previous
   const allFiles = readdirSync(guidesDir).filter(f => f.endsWith(".mdx"));
@@ -297,6 +303,32 @@ export default async function GuidePage({ params }: Props) {
               {/* Bottom Ad */}
               <ComputeAtlasAd variant="bottom" />
             </article>
+
+            {relatedTutorials.length > 0 && (
+              <section className="mt-20 pt-12 border-t border-[#2a2a30]" aria-labelledby="related-video-tutorials">
+                <p className="font-mono text-[10px] text-[#7c6af7] tracking-widest uppercase mb-4">CONTINUE LEARNING</p>
+                <h2 id="related-video-tutorials" className="font-syne text-3xl font-bold text-[#e8e8f0] mb-8">
+                  Related Video Tutorials
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                  {relatedTutorials.map((tutorial) => (
+                    <article key={tutorial.slug} className="p-5 rounded-2xl border border-[#2a2a30] bg-[#111113]">
+                      <p className="font-mono text-[10px] text-[#8888a0] tracking-widest uppercase mb-3">
+                        {tutorial.category} · {tutorial.duration}
+                      </p>
+                      <h3 className="text-lg font-bold text-[#e8e8f0] mb-3">
+                        <Link href={`/tutorials/${tutorial.slug}`} className="hover:text-[#22d3ee] transition-colors">
+                          {tutorial.title}
+                        </Link>
+                      </h3>
+                      <Link href={`/tutorials/${tutorial.slug}`} className="text-sm text-[#22d3ee] hover:text-white transition-colors">
+                        Open tutorial →
+                      </Link>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Pagination */}
             <nav className="mt-24 pt-12 border-t border-[#2a2a30] flex flex-col md:flex-row justify-between gap-6">
@@ -363,4 +395,3 @@ export async function generateStaticParams() {
     .filter(f => f.endsWith(".mdx"))
     .map(f => ({ slug: f.replace(".mdx", "") }));
 }
-

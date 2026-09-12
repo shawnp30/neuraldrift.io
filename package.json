@@ -14,7 +14,8 @@
     "predev": "npm run evidence:hashes",
     "test:compatibility": "node --require ./scripts/register-ts.cjs scripts/test-compatibility.mjs",
     "test:multi-gpu": "node --require ./scripts/register-ts.cjs scripts/test-multi-gpu.mjs",
-    "test": "npm run test:compatibility && npm run test:multi-gpu && npm run test:runner",
+    "test:workflow-download": "node --require ./scripts/register-ts.cjs scripts/test-workflow-download.mjs",
+    "test": "npm run test:compatibility && npm run test:multi-gpu && npm run test:runner && npm run test:workflow-download",
     "evidence:run": "node scripts/run-execution.mjs",
     "evidence:hardware": "node --require ./scripts/register-ts.cjs scripts/register-hardware.mjs",
     "test:runner": "node scripts/test-execution-runner.mjs"

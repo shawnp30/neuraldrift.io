@@ -1,17 +1,32 @@
 "use client";
 import { useState } from "react";
+import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics";
 
 export function NewsletterSignup() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
+  const configured = Boolean(process.env.NEXT_PUBLIC_NEWSLETTER_ENDPOINT);
   const handleSubmit = async () => {
-    if (!email || !email.includes("@")) return;
+    trackEvent(ANALYTICS_EVENTS.newsletterSignupAttempt, { configured });
+    if (!configured || !email || !email.includes("@")) {
+      setStatus("error");
+      return;
+    }
     setStatus("loading");
-    // Simulate submission — wire to Resend/ConvertKit later
-    await new Promise((r) => setTimeout(r, 800));
-    setStatus("success");
-    setEmail("");
+    try {
+      const response = await fetch(process.env.NEXT_PUBLIC_NEWSLETTER_ENDPOINT!, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      if (!response.ok) throw new Error(`Newsletter request failed with ${response.status}`);
+      setStatus("success");
+      trackEvent(ANALYTICS_EVENTS.newsletterSignup, { provider: process.env.NEXT_PUBLIC_NEWSLETTER_PROVIDER || "configured_endpoint" });
+      setEmail("");
+    } catch {
+      setStatus("error");
+    }
   };
 
   return (
@@ -33,19 +48,25 @@ export function NewsletterSignup() {
             New guides, LoRA releases, workflow drops, and hardware benchmarks — every week. No spam, unsubscribe anytime.
           </p>
 
-          {status === "success" ? (
+          {!configured ? (
+            <p className="font-mono text-xs text-muted">Newsletter launching soon. Signup is not active yet.</p>
+          ) : status === "success" ? (
             <div className="inline-flex items-center gap-3 bg-[#10b981]/10 border border-[#10b981]/25 rounded-xl px-8 py-4">
               <span className="text-[#10b981] text-lg">✓</span>
               <div className="text-left">
                 <p className="font-syne font-bold text-white text-sm">You&apos;re in.</p>
-                <p className="font-mono text-xs text-muted mt-0.5">First drop lands next week.</p>
+                <p className="font-mono text-xs text-muted mt-0.5">Thanks for joining NeuralDrift Weekly.</p>
               </div>
             </div>
           ) : (
             <div className="flex items-center gap-3 max-w-md mx-auto">
+              <label htmlFor="newsletter-email" className="sr-only">Email address</label>
               <input
+                id="newsletter-email"
                 type="email"
                 placeholder="your@email.com"
+                required
+                aria-describedby="newsletter-privacy"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
@@ -61,8 +82,9 @@ export function NewsletterSignup() {
             </div>
           )}
 
+          <p id="newsletter-privacy" className="font-mono text-xs text-muted mt-3">Optional signup. Your email is sent only to the configured newsletter provider.</p>
           {status === "error" && (
-            <p className="font-mono text-xs text-[#ef4444] mt-3">Something went wrong. Try again.</p>
+            <p role="alert" className="font-mono text-xs text-[#ef4444] mt-3">Enter a valid email or try again later.</p>
           )}
 
           {/* Social proof hidden as requested */}
