@@ -12,6 +12,7 @@ const PRIMARY_LINKS = [
   { label: "Workflows", href: "/workflows" },
   { label: "Compatibility", href: "/compatibility" },
   { label: "Guides", href: "/guides" },
+  { label: "Lab", href: "/lab" },
 ];
 
 // Searchable pages — includes secondary pages so search still finds them
@@ -425,5 +426,4 @@ export default function Navbar() {
     </>
   );
 }
-
 
