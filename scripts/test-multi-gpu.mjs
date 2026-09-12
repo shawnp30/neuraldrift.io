@@ -6,7 +6,10 @@ import { evaluateCompatibility } from '../lib/hardware/compatibility.ts';
 import { CATALOG } from '../lib/catalog.ts';
 import { findGpuBySlug } from '../lib/hardware/gpuData.ts';
 
-for (const [id, hash] of Object.entries(WORKFLOW_HASHES)) assert.equal(crypto.createHash('sha256').update(fs.readFileSync(`public/workflows/${id}.json`)).digest('hex'), hash);
+for (const [id, hash] of Object.entries(WORKFLOW_HASHES)) {
+  const workflow = fs.readFileSync(`public/workflows/${id}.json`, 'utf8').replace(/\r\n/g, '\n');
+  assert.equal(crypto.createHash('sha256').update(workflow, 'utf8').digest('hex'), hash);
+}
 assert.equal(Object.keys(WORKFLOW_HASHES).length, 50);
 assert.equal(new Set(EXECUTIONS.map(r => r.id)).size, EXECUTIONS.length);
 for (const record of EXECUTIONS) {

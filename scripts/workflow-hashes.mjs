@@ -4,7 +4,8 @@ import crypto from 'node:crypto';
 export function workflowHashes() {
   return Object.fromEntries(Array.from({ length: 50 }, (_, i) => {
     const id = String(i + 1).padStart(2, '0');
-    return [id, crypto.createHash('sha256').update(fs.readFileSync(`public/workflows/${id}.json`)).digest('hex')];
+    const workflow = fs.readFileSync(`public/workflows/${id}.json`, 'utf8').replace(/\r\n/g, '\n');
+    return [id, crypto.createHash('sha256').update(workflow, 'utf8').digest('hex')];
   }));
 }
 const hashes = workflowHashes();

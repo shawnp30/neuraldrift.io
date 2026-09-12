@@ -28,7 +28,8 @@ try {
     assert(detail.text.includes('Execution history'), `Missing history on ${id}`);
     const download = await check(`/workflows/${id}.json`);
     assert(Array.isArray(JSON.parse(download.text).nodes), `Invalid graph ${id}`);
-    assert.equal(crypto.createHash('sha256').update(download.bytes).digest('hex'), hashes[id]);
+    const canonicalDownload = download.text.replace(/\r\n/g, '\n');
+    assert.equal(crypto.createHash('sha256').update(canonicalDownload, 'utf8').digest('hex'), hashes[id]);
   }
   const records = Object.values(JSON.parse(fs.readFileSync('data/workflow-tests.json', 'utf8')));
   for (const record of records) {

@@ -41,7 +41,8 @@ export async function GET(request: NextRequest) {
   // Dynamic API verifies the served workflow bytes, even after a local file edit.
   let currentWorkflowSha256: string | null = null;
   try {
-    currentWorkflowSha256 = createHash('sha256').update(await readFile(join(process.cwd(), 'public', 'workflows', `${workflow.id}.json`))).digest('hex');
+    const workflowBytes = await readFile(join(process.cwd(), 'public', 'workflows', `${workflow.id}.json`), 'utf8');
+    currentWorkflowSha256 = createHash('sha256').update(workflowBytes.replace(/\r\n/g, '\n'), 'utf8').digest('hex');
   } catch { /* Missing workflow bytes make current evidence unknown. */ }
   const currentHashes = currentWorkflowSha256 ? { [workflow.id]: currentWorkflowSha256 } : {};
   const evaluation = evaluateCompatibility(workflow, target, EXECUTIONS, currentHashes);
