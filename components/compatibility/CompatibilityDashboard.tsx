@@ -10,6 +10,7 @@ import { CATALOG, workflowKind, workflowKindLabel, WORKFLOW_TESTS, PRIMARY_CATEG
 import { COMMON_GPUS, findGpuBySlug } from '@/lib/hardware/gpuData';
 import { evaluateCompatibility, resolveHardwareTarget, CompatibilityResult } from '@/lib/hardware/compatibility';
 import WorkflowCard from '@/components/workflows/WorkflowCard';
+import { ANALYTICS_EVENTS, trackEvent } from '@/lib/analytics';
 
 interface Props {
   initialGpuSlug?: string;
@@ -171,6 +172,7 @@ export function CompatibilityDashboard({ initialGpuSlug = 'rtx-5080', initialVra
                 onChange={(e) => {
                   setSelectedGpuSlug(e.target.value);
                   setSelectedVram('');
+                  trackEvent(ANALYTICS_EVENTS.gpuSelectorChange, { gpu: e.target.value });
                 }}
                 style={{
                   background: '#0d1522',
@@ -198,6 +200,7 @@ export function CompatibilityDashboard({ initialGpuSlug = 'rtx-5080', initialVra
                 value={selectedVram}
                 onChange={(e) => {
                   setSelectedVram(e.target.value);
+                  trackEvent(ANALYTICS_EVENTS.compatibilityCheck, { vramGb: Number(e.target.value) });
                 }}
                 style={{
                   background: '#0d1522',
@@ -346,7 +349,7 @@ export function CompatibilityDashboard({ initialGpuSlug = 'rtx-5080', initialVra
         <div style={{ display: 'flex', gap: '0.55rem', flexWrap: 'wrap', alignItems: 'center' }}>
           <button
             type="button"
-            onClick={() => setActiveCategory('all')}
+            onClick={() => { setActiveCategory('all'); trackEvent(ANALYTICS_EVENTS.categoryFilter, { category: 'all' }); }}
             style={{
               padding: '0.45rem 1rem',
               borderRadius: '999px',
@@ -370,7 +373,7 @@ export function CompatibilityDashboard({ initialGpuSlug = 'rtx-5080', initialVra
               <button
                 key={cat.id}
                 type="button"
-                onClick={() => setActiveCategory(cat.id)}
+                onClick={() => { setActiveCategory(cat.id); trackEvent(ANALYTICS_EVENTS.categoryFilter, { category: cat.id }); }}
                 style={{
                   padding: '0.45rem 1rem',
                   borderRadius: '999px',

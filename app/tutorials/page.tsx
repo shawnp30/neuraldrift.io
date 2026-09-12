@@ -2,122 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Navbar from "@/components/layout/Navbar";
 import { PlayCircle, FileText, ArrowRight, DollarSign, Workflow, Clock, Filter, Zap } from "lucide-react";
 
 import { DynamicCTA } from "@/components/DynamicCTA";
+import { TUTORIALS, tutorialDurationIso } from "@/lib/tutorials";
 
 const CATEGORIES = ["All", "Beginner", "Masterclass", "Technical Guide", "Creative", "Advanced"] as const;
-
-const VIDEOS = [
-  {
-    id: "v=Xv3H1zH8D7k",
-    videoId: "AbBcfjIYhTg",
-    title: "ComfyUI Beginner Guide",
-    duration: "25:10",
-    category: "Masterclass",
-    description: "Deep dive into setup and basic node architecture by Olivio Sarikas. Perfect for those looking to understand the core engine before scaling."
-  },
-  {
-    id: "v=Y9n3H2x4C1p",
-    videoId: "2XN2J3T-BFA",
-    title: "ComfyUI Advanced Latent Workflows",
-    duration: "34:20",
-    category: "Technical Guide",
-    description: "Learn how to push the boundaries of Latent noise injection and node manipulation from Latent Vision."
-  },
-  {
-    id: "v=23VkGD4uwk",
-    videoId: "23VkGD-4uwk",
-    title: "ComfyUI for Beginners — Full Guide",
-    duration: "39:00",
-    category: "Beginner",
-    description: "Sebastian Kamph walks through everything from installation to your first image generation. Covers nodes, connections, color-coding, Text2Image, and key sampler parameters."
-  },
-  {
-    id: "v=HkoRkNLWQzY",
-    videoId: "HkoRkNLWQzY",
-    title: "ComfyUI Full Course — From Scratch",
-    duration: "5:00:00",
-    category: "Masterclass",
-    description: "A comprehensive 5-hour course taking you from zero to proficient. Covers every major node type, workflow patterns, model management, and advanced techniques."
-  },
-  {
-    id: "v=Zko_s2LO9Wo",
-    videoId: "Zko_s2LO9Wo",
-    title: "ComfyUI Introduction & Installation",
-    duration: "15:00",
-    category: "Beginner",
-    description: "Quick-start guide covering ComfyUI installation, initial configuration, and your first text-to-image workflow. Ideal if you want to get up and running fast."
-  },
-  {
-    id: "v=aW1U8QEak0",
-    videoId: "-aW1U8QEak0",
-    title: "FLUX LoRA Explained — Best Settings & New UI",
-    duration: "18:00",
-    category: "Technical Guide",
-    description: "Deep dive into FLUX LoRA models — how to load them, optimal settings for quality vs speed, and navigating the updated ComfyUI interface for LoRA workflows."
-  },
-  {
-    id: "v=WHuhxKk40k4",
-    videoId: "WHuhxKk40k4",
-    title: "How to Use FLUX ControlNet Union Pro",
-    duration: "20:00",
-    category: "Technical Guide",
-    description: "Master ControlNet Union Pro for FLUX — learn to combine multiple conditioning types (canny, depth, pose) in a single unified workflow for precise image control."
-  },
-  {
-    id: "v=KinUqRWG8q4",
-    videoId: "KinUqRWG8q4",
-    title: "IPAdapter & LoRA for FLUX — Full Setup",
-    duration: "22:00",
-    category: "Technical Guide",
-    description: "Complete installation and usage tutorial for IPAdapter and LoRA with FLUX models. Covers model downloads, node setup, and combining style transfer with fine-tuned weights."
-  },
-  {
-    id: "v=o7sCHUJNkJI",
-    videoId: "o7sCHUJNkJI",
-    title: "Install & Use FLUX Tools: Fill, Redux, Depth, Canny",
-    duration: "19:00",
-    category: "Technical Guide",
-    description: "Walkthrough of the FLUX Tools suite — Fill for inpainting, Redux for image variations, and Depth/Canny for structural control. Practical workflows included."
-  },
-  {
-    id: "v=9onDeEWWvU",
-    videoId: "9-onDeEWWvU",
-    title: "Master FLUX Kontext — Inpainting & Consistency",
-    duration: "16:00",
-    category: "Advanced",
-    description: "Advanced techniques for FLUX Kontext including precision inpainting, multi-subject editing, and maintaining character consistency across generations."
-  },
-  {
-    id: "v=YOGDSdLW0rg",
-    videoId: "YOGDSdLW0rg",
-    title: "Sketch to Image with SDXL or FLUX",
-    duration: "14:00",
-    category: "Creative",
-    description: "Turn rough sketches into polished AI art using ControlNet sketch conditioning. Works with both SDXL and FLUX pipelines — great for concept artists and designers."
-  },
-  {
-    id: "v=ddYbhv3WgWw",
-    videoId: "ddYbhv3WgWw",
-    title: "Animations with IPAdapter & ComfyUI",
-    duration: "18:00",
-    category: "Creative",
-    description: "Create smooth AI animations using IPAdapter for style-consistent frame generation. Covers AnimateDiff integration, keyframe control, and export workflows."
-  }
-];
 
 export default function TutorialsPage() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
 
   const filteredVideos = activeCategory === "All"
-    ? VIDEOS
-    : VIDEOS.filter((v) => v.category === activeCategory);
+    ? TUTORIALS
+    : TUTORIALS.filter((v) => v.category === activeCategory);
 
   return (
     <div className="min-h-screen bg-transparent text-slate-50 pt-32 pb-24 font-sans selection:bg-transparent/30">
-      <Navbar />
 
       {/* SEO STRUCTURED DATA */}
       <script
@@ -126,14 +26,13 @@ export default function TutorialsPage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "ItemList",
-            "itemListElement": VIDEOS.map((v, i) => ({
+            "itemListElement": TUTORIALS.map((v, i) => ({
               "@type": "VideoObject",
               "position": i + 1,
               "name": v.title,
               "description": v.description,
               "thumbnailUrl": `https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`,
-              "uploadDate": "2024-03-20T08:00:00+08:00",
-              "duration": `PT${v.duration.replace(':', 'M')}S`,
+              ...(tutorialDurationIso(v.duration) ? { "duration": tutorialDurationIso(v.duration) } : {}),
               "embedUrl": `https://www.youtube.com/embed/${v.videoId}`
             }))
           })
@@ -186,8 +85,8 @@ export default function TutorialsPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            {filteredVideos.map((video, idx) => (
-              <div key={video.id} className="group relative bg-[#111113] border border-white/5 rounded-3xl overflow-hidden hover:border-[#7c6af7]/30 transition-all duration-500 shadow-xl flex flex-col">
+            {filteredVideos.map((video) => (
+              <article key={video.slug} className="group relative bg-[#111113] border border-white/5 rounded-3xl overflow-hidden hover:border-[#7c6af7]/30 transition-all duration-500 shadow-xl flex flex-col">
 
                 {/* 16:9 YouTube Embed Wrapper */}
                 <div className="relative w-full pt-[56.25%] bg-black overflow-hidden">
@@ -210,7 +109,7 @@ export default function TutorialsPage() {
                       <Clock className="w-4 h-4" /> {video.duration}
                     </span>
                   </div>
-                  <h3 className="font-syne text-xl md:text-2xl font-[800] text-white mb-3 group-hover:text-[#7c6af7] transition-colors leading-tight">{video.title}</h3>
+                  <h3 className="font-syne text-xl md:text-2xl font-[800] text-white mb-3 group-hover:text-[#7c6af7] transition-colors leading-tight"><Link href={`/tutorials/${video.slug}`}>{video.title}</Link></h3>
                   <p className="text-sm font-[500] text-[#8888a0] leading-relaxed mb-8 flex-1">{video.description}</p>
                   
                   <div className="pt-6 border-t border-white/5 flex items-center justify-between mt-auto">
@@ -220,7 +119,7 @@ export default function TutorialsPage() {
                     <ArrowRight className="w-5 h-5 text-[#7c6af7] group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </section>
