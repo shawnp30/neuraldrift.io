@@ -3,6 +3,7 @@ import { pageMeta } from '@/lib/seo';
 import { CATALOG, MEMORY_OPTIONS, WORKFLOW_TESTS, primaryCategory } from '@/lib/catalog';
 import { getGuides } from '@/lib/guides';
 import WorkflowCard from '@/components/workflows/WorkflowCard';
+import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
 
 export const metadata = pageMeta('/', 'Find ComfyUI workflows for your GPU', 'Explore ComfyUI image, video and audio workflows with hardware estimates, model sources, downloads and setup guides.');
 
@@ -175,7 +176,12 @@ export default function HomePage() {
       <div className="nd-grid">{helpful.map(g => <article key={g.slug} className="nd-card nd-card-body"><h3><Link href={`/guides/${g.slug}`}>{g.title}</Link></h3><p>{g.description}</p><Link href={`/guides/${g.slug}`} className="nd-text-link">Read guide →</Link></article>)}</div>
     </section>
 
-    {/* 6. Final Call to Action */}
+    {/* 6. Newsletter */}
+    <section className="nd-shell nd-section">
+      <NewsletterSignup source="homepage" />
+    </section>
+
+    {/* 7. Final Call to Action */}
     <section className="nd-shell nd-section nd-final">
       <h2>Your next workflow starts with your hardware.</h2>
       <Link href="/workflows#filters" className="nd-button">Find a workflow →</Link>

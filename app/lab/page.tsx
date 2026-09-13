@@ -5,6 +5,7 @@ import { pageMeta } from "@/lib/seo";
 import { getRelatedGuides, getRelatedTutorials } from "@/lib/relationships";
 import { PRODUCTION_PACKS } from "@/lib/monetization";
 import { PremiumPackInterest } from "@/components/monetization/PremiumPackInterest";
+import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 
 export const metadata = pageMeta(
   "/lab",
@@ -27,6 +28,7 @@ export default function LabPage() {
     </section>
     <section className="nd-section"><h2>Latest current tests</h2>{latest.length ? <div className="nd-grid">{latest.map((record) => { const hardware = HARDWARE_PROFILES.find((profile) => profile.id === record.hardwareProfileId); const source = { title: workflowTitle.get(record.workflowId) || record.workflowId, tags: [], description: "" }; const guides = getRelatedGuides(source, 1); const tutorials = getRelatedTutorials(source, 1); return <article className="nd-card nd-card-body" key={record.id}><p className="nd-eyebrow">{record.testDate}</p><h3><Link href={`/workflows/${record.workflowId}`}>{workflowTitle.get(record.workflowId) || record.workflowId}</Link></h3><p>{hardware?.name || "Hardware profile not attributed"}{record.runtimeSeconds == null ? "" : ` · ${record.runtimeSeconds.toFixed(2)}s`}</p><p className="nd-subtle">Evidence status: CURRENT · {record.executionProfile}</p><div className="nd-actions"><Link className="nd-text-link" href="/compatibility">Compatibility →</Link>{guides[0] && <Link className="nd-text-link" href={`/guides/${guides[0].slug}`}>Guide →</Link>}{tutorials[0] && <Link className="nd-text-link" href={`/tutorials/${tutorials[0].slug}`}>Tutorial →</Link>}</div></article>; })}</div> : <p className="nd-subtle">No current successful execution records are available.</p>}</section>
     <section className="nd-section nd-prose"><h2>Evidence methodology</h2><p>Current evidence requires a successful recorded execution and a matching workflow hash. Test dates, environment details, model hashes, artifacts, and failures are shown only when present in the source record.</p></section>
+    <NewsletterSignup source="lab" />
     {PRODUCTION_PACKS.map((pack) => <section className="nd-card nd-card-body" key={pack.id}><p className="nd-eyebrow">FUTURE PRODUCT / INTEREST ONLY</p><h2>{pack.name}</h2><p>Potential production documentation built from existing workflow assets. No checkout, price, or delivery is active.</p><p className="nd-subtle">Current workflow assets: {pack.workflowIds.join(", ")}. Missing: {pack.missingAssets.join(", ")}.</p><PremiumPackInterest packName={pack.name} /></section>)}
   </div></div>;
 }

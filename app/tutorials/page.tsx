@@ -5,6 +5,7 @@ import Link from "next/link";
 import { PlayCircle, FileText, ArrowRight, DollarSign, Workflow, Clock, Filter, Zap } from "lucide-react";
 
 import { DynamicCTA } from "@/components/DynamicCTA";
+import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 import { TUTORIALS, tutorialDurationIso } from "@/lib/tutorials";
 
 const CATEGORIES = ["All", "Beginner", "Masterclass", "Technical Guide", "Creative", "Advanced"] as const;
@@ -134,6 +135,11 @@ export default function TutorialsPage() {
             variant="cyan"
             tag="// Architecture Library"
           />
+        </div>
+
+        {/* ── NEWSLETTER ── */}
+        <div className="mt-12">
+          <NewsletterSignup source="tutorials" variant="panel" />
         </div>
 
       </div>
