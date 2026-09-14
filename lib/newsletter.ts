@@ -23,17 +23,16 @@ export function isValidEmail(value: unknown): value is string {
   return typeof value === "string" && value.length > 0 && value.length <= EMAIL_MAX_LENGTH && EMAIL_REGEX.test(value);
 }
 
-export interface BeehiivConfig {
+export interface KitConfig {
   apiKey: string;
-  publicationId: string;
-  listId?: string;
+  formId: string;
 }
 
-export function getBeehiivConfig(env: Record<string, string | undefined> = process.env): BeehiivConfig | null {
-  const apiKey = env.BEEHIIV_API_KEY;
-  const publicationId = env.BEEHIIV_PUBLICATION_ID;
-  if (!apiKey || !publicationId) return null;
-  return { apiKey, publicationId, listId: env.BEEHIIV_NEWSLETTER_LIST_ID || undefined };
+export function getKitConfig(env: Record<string, string | undefined> = process.env): KitConfig | null {
+  const apiKey = env.KIT_API_KEY;
+  const formId = env.KIT_FORM_ID;
+  if (env.NEXT_PUBLIC_NEWSLETTER_PROVIDER !== "kit" || !apiKey || !formId || !/^\d+$/.test(formId)) return null;
+  return { apiKey, formId };
 }
 
 export type NewsletterSubscribeOutcome = "subscribed" | "invalid" | "rate_limited" | "provider_error";
@@ -44,41 +43,63 @@ export interface SubscribeInput {
   referringSite?: string;
 }
 
-export async function subscribeToBeehiiv(
+interface KitSubscriberResponse {
+  subscriber?: { id?: number | string };
+}
+
+export async function subscribeToKit(
   input: SubscribeInput,
-  config: BeehiivConfig,
+  config: KitConfig,
   fetchImpl: typeof fetch = fetch
 ): Promise<NewsletterSubscribeOutcome> {
-  const body: Record<string, unknown> = {
-    email: input.email,
-    reactivate_existing: false,
-    send_welcome_email: false,
-    utm_source: "neuraldrift",
-    utm_medium: "website",
-    utm_campaign: "neuraldrift_weekly",
-  };
-  if (input.referringSite) body.referring_site = input.referringSite;
-  if (config.listId) body.newsletter_list_ids = [config.listId];
-
-  let response: Response;
+  const headers = { "content-type": "application/json", "X-Kit-Api-Key": config.apiKey };
   try {
-    response = await fetchImpl(`https://api.beehiiv.com/v2/publications/${config.publicationId}/subscriptions`, {
+    // Step 1: Kit V4's subscriber endpoint is an upsert — it creates a new subscriber
+    // or hands back the existing one, so this covers both first-time and returning
+    // emails. A subscriber must exist before they can be attached to a form.
+    const createResponse = await fetchImpl("https://api.kit.com/v4/subscribers", {
       method: "POST",
-      headers: {
-        "content-type": "application/json",
-        authorization: `Bearer ${config.apiKey}`,
-      },
-      body: JSON.stringify(body),
+      headers,
+      body: JSON.stringify({ email_address: input.email }),
       signal: AbortSignal.timeout(10000),
     });
+    if (!createResponse.ok) {
+      console.error(`Kit subscriber request failed: status ${createResponse.status}`);
+      return mapKitFailure(createResponse.status);
+    }
+
+    const created = (await createResponse.json()) as KitSubscriberResponse;
+    const subscriberId = created.subscriber?.id;
+    if (subscriberId === undefined) {
+      console.error("Kit subscriber request failed: response had no subscriber id");
+      return "provider_error";
+    }
+
+    // Step 2: attach the subscriber to the NeuralDrift Weekly form by id. Re-adding an
+    // already-subscribed id is idempotent on Kit's side, so this is safe to repeat.
+    const formBody: Record<string, unknown> = {};
+    if (input.referringSite) formBody.referrer = input.referringSite;
+    const formResponse = await fetchImpl(`https://api.kit.com/v4/forms/${config.formId}/subscribers/${subscriberId}`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(formBody),
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!formResponse.ok) {
+      console.error(`Kit form assignment failed: status ${formResponse.status}`);
+      return mapKitFailure(formResponse.status);
+    }
   } catch {
     return "provider_error";
   }
 
-  if (response.ok) return "subscribed";
-  if (response.status === 400 || response.status === 422) return "invalid";
-  if (response.status === 429) return "rate_limited";
-  return "provider_error"; // 401, 404, 5xx, and anything else unexpected
+  return "subscribed";
+}
+
+function mapKitFailure(status: number): NewsletterSubscribeOutcome {
+  if (status === 400 || status === 422) return "invalid";
+  if (status === 429) return "rate_limited";
+  return "provider_error"; // Auth, missing form, network, and server errors remain private.
 }
 
 interface RateLimitState {
@@ -156,13 +177,13 @@ export async function handleNewsletterSubscribe(raw: string, headers: HeaderRead
     return { status: 429, body: { ok: false, error: "rate_limited" } };
   }
 
-  const config = getBeehiivConfig();
+  const config = getKitConfig();
   if (!config) {
     return { status: 503, body: { ok: false, error: "unavailable" } };
   }
 
   const referringSite = headers.get("origin") || headers.get("referer") || undefined;
-  const outcome = await subscribeToBeehiiv({ email, source: resolvedSource, referringSite }, config);
+  const outcome = await subscribeToKit({ email, source: resolvedSource, referringSite }, config);
 
   if (outcome === "subscribed") return { status: 200, body: { ok: true } };
   if (outcome === "invalid") return { status: 400, body: { ok: false, error: "invalid_request" } };
