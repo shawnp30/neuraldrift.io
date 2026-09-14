@@ -34,6 +34,20 @@ export default function PrivacyPage() {
           </section>
 
           <section>
+            <h2 className="mb-3 text-lg font-bold text-white">
+              Newsletter
+            </h2>
+            <p>
+              If you sign up for NeuralDrift Weekly, your email address is
+              processed by Kit, our newsletter provider, for newsletter delivery
+              and to create and manage your subscription. We don&apos;t send anything else about you
+              to Kit beyond the page you signed up from. Every issue
+              includes an unsubscribe link, and unsubscribing removes you
+              from future sends.
+            </p>
+          </section>
+
+          <section>
             <h2 className="mb-3 text-lg font-bold text-white">Analytics</h2>
             <p>
               We use Vercel Analytics to understand aggregate traffic (page
@@ -42,7 +56,9 @@ export default function PrivacyPage() {
               Google Analytics measurement ID is configured, NeuralDrift also
               sends the event names and non-identifying context described in
               this policy to Google Analytics. The measurement ID is disabled
-              by default.
+              by default. Newsletter signup attempts and completions are
+              tracked as events (which page they happened on), but your email
+              address is never included.
             </p>
           </section>
 

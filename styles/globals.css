@@ -35,6 +35,37 @@ body {
   color: var(--text);
 }
 
+/* ── NeuralDrift global background ────────────────────────────
+   Single global image layer + a dark readability overlay, fixed to the
+   viewport so it reads as a stable cinematic backdrop instead of wallpaper
+   that scrolls or repeats with page content. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-color: #030711;
+  background-image: url("/backgrounds/neuraldrift-global-bg.webp");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(3, 7, 17, 0.28) 0%,
+    rgba(3, 7, 17, 0.46) 45%,
+    rgba(3, 7, 17, 0.68) 100%
+  );
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -403,18 +434,10 @@ pre code {
   --nd-glow-teal: rgba(94, 234, 212, 0.12);
   --nd-glow-violet: rgba(124, 106, 247, 0.12);
   color: #edf3ff;
-  background-color: #05080e;
-  background-image: 
-    /* Layer 1: Ambient focal lights */
-    radial-gradient(ellipse 70% 50% at 15% 0%, rgba(124, 106, 247, 0.08) 0%, transparent 65%),
-    radial-gradient(ellipse 60% 45% at 85% 15%, rgba(34, 211, 238, 0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 80% 60% at 50% 60%, rgba(14, 28, 52, 0.35) 0%, transparent 80%),
-    /* Layer 2: Subtle technical grid & crosshair dots */
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 56px 56px, 56px 56px, 56px 56px;
-  background-attachment: fixed, fixed, fixed, scroll, scroll, scroll;
+  /* Background intentionally removed: the NeuralDrift global background
+     (body::before/::after) now shows through here instead of this div
+     painting its own opaque approximation of the same grid/glow look. */
+  background: transparent;
   font-size: 1rem;
   line-height: 1.65;
   position: relative;

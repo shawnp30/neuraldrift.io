@@ -9,6 +9,7 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import { getRelatedTutorials } from "@/lib/relationships";
+import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 
 interface Props {
   params: { slug: string };
@@ -329,6 +330,10 @@ export default async function GuidePage({ params }: Props) {
                 </div>
               </section>
             )}
+
+            <div className="mt-16">
+              <NewsletterSignup source="guides" variant="panel" />
+            </div>
 
             {/* Pagination */}
             <nav className="mt-24 pt-12 border-t border-[#2a2a30] flex flex-col md:flex-row justify-between gap-6">
