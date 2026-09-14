@@ -39,7 +39,7 @@ export interface BroadcastCreationResult {
   duplicate?: boolean;
 }
 
-export type BroadcastIdempotencyStatus = "reserved" | "completed";
+export type BroadcastIdempotencyStatus = "reserved" | "completed" | "reconciliation_required";
 
 export interface BroadcastIdempotencyRecord {
   issueKey: string;
@@ -59,6 +59,13 @@ export interface BroadcastIdempotencyStore {
   reserve(issueKey: string, contentHash: string): Promise<BroadcastReservation>;
   complete(issueKey: string, contentHash: string, broadcastId: string): Promise<BroadcastIdempotencyRecord>;
   release(issueKey: string, contentHash: string): Promise<void>;
+  /**
+   * Marks a reservation as needing manual/automated reconciliation because the
+   * outcome of the Kit request is unknown or unconfirmed (e.g. the request may
+   * have created a draft but the result could not be durably recorded). This
+   * must NEVER be treated as a safe state to release or retry automatically.
+   */
+  markReconciliationRequired(issueKey: string, contentHash: string, broadcastId?: string): Promise<void>;
 }
 
 export class NewsletterBroadcastValidationError extends Error {
@@ -117,6 +124,27 @@ export class BroadcastPersistenceUnavailableError extends Error {
   }
 }
 
+/**
+ * Thrown whenever the outcome of a Kit broadcast request is ambiguous
+ * (network/timeout error, malformed success response, or the idempotency
+ * store failed to persist a confirmed Kit success) or when a retry hits a
+ * reservation that is still in progress or already flagged ambiguous.
+ *
+ * In every one of these cases Kit must NOT be called again automatically,
+ * and the reservation must NOT be released, because doing so could allow a
+ * duplicate broadcast to be created. Manual/automated reconciliation against
+ * the Kit dashboard is required before the issue/content pair can be retried.
+ */
+export class BroadcastReconciliationRequiredError extends Error {
+  constructor(
+    message = "Broadcast outcome is unconfirmed and requires manual reconciliation before retrying.",
+    public readonly broadcastId?: string
+  ) {
+    super(message);
+    this.name = "BroadcastReconciliationRequiredError";
+  }
+}
+
 class SupabaseBroadcastIdempotencyStore implements BroadcastIdempotencyStore {
   constructor(
     private readonly url: string,
@@ -143,7 +171,10 @@ class SupabaseBroadcastIdempotencyStore implements BroadcastIdempotencyStore {
     const issueKey = typeof row.issue_key === "string" ? row.issue_key : null;
     const contentHash = typeof row.content_hash === "string" ? row.content_hash : null;
     const broadcastId = typeof row.broadcast_id === "string" ? row.broadcast_id : undefined;
-    const status = row.status === "completed" || row.status === "reserved" ? row.status : "reserved";
+    const status: BroadcastIdempotencyStatus =
+      row.status === "completed" || row.status === "reserved" || row.status === "reconciliation_required"
+        ? row.status
+        : "reserved";
     const createdAt = typeof row.created_at === "string" ? row.created_at : new Date().toISOString();
 
     if (!issueKey || !contentHash) return null;
@@ -256,6 +287,20 @@ class SupabaseBroadcastIdempotencyStore implements BroadcastIdempotencyStore {
     await this.request<void>(`${this.getBaseUrl()}${query}`, {
       method: "DELETE",
       headers: this.buildHeaders(),
+    });
+  }
+
+  async markReconciliationRequired(issueKey: string, contentHash: string, broadcastId?: string): Promise<void> {
+    const now = new Date().toISOString();
+    const query = `?issue_key=eq.${encodeURIComponent(issueKey)}&content_hash=eq.${encodeURIComponent(contentHash)}`;
+    await this.request<void>(`${this.getBaseUrl()}${query}`, {
+      method: "PATCH",
+      headers: this.buildHeaders(),
+      body: JSON.stringify({
+        status: "reconciliation_required",
+        ...(broadcastId ? { broadcast_id: broadcastId } : {}),
+        updated_at: now,
+      }),
     });
   }
 }
@@ -377,7 +422,7 @@ export async function createKitBroadcastDraft(
   const contentHash = getBroadcastHash(input.html);
 
   const existing = await store.get(normalizedIssueKey, contentHash);
-  if (existing && existing.broadcastId) {
+  if (existing && existing.status === "completed" && existing.broadcastId) {
     return {
       ok: true,
       broadcastId: existing.broadcastId,
@@ -387,6 +432,14 @@ export async function createKitBroadcastDraft(
       contentHash,
       duplicate: true,
     };
+  }
+  if (existing && existing.status === "reconciliation_required") {
+    // A prior attempt's outcome against Kit was never confirmed. Never call
+    // Kit again automatically and never report a false success.
+    throw new BroadcastReconciliationRequiredError(
+      "This issue/content requires manual reconciliation before retrying.",
+      existing.broadcastId
+    );
   }
 
   const reservation = await store.reserve(normalizedIssueKey, contentHash);
@@ -405,19 +458,21 @@ export async function createKitBroadcastDraft(
   }
 
   if (!reservation.created) {
-    return {
-      ok: true,
-      broadcastId: reservationRecord?.broadcastId ?? existing?.broadcastId ?? "",
-      status: "duplicate",
-      created: false,
-      issueKey: input.issueKey.trim(),
-      contentHash,
-      duplicate: true,
-    };
+    // A reservation already exists but is not in a "completed" state. This
+    // means either another request is currently in-flight for the same
+    // issue/content pair, or a prior attempt left it in
+    // "reconciliation_required" because Kit's outcome was never confirmed.
+    // In BOTH cases Kit must NOT be called again automatically, and we must
+    // never report a false success with an empty broadcastId.
+    throw new BroadcastReconciliationRequiredError(
+      "A broadcast request for this issue/content is already in progress or requires manual reconciliation before retrying.",
+      reservationRecord?.broadcastId ?? existing?.broadcastId
+    );
   }
 
+  let response: Response;
   try {
-    const response = await fetchImpl(`${KIT_BROADCAST_API_BASE}/broadcasts`, {
+    response = await fetchImpl(`${KIT_BROADCAST_API_BASE}/broadcasts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -432,38 +487,71 @@ export async function createKitBroadcastDraft(
       }),
       signal: AbortSignal.timeout(15_000),
     });
+  } catch (error) {
+    // The request never definitively completed (network error, timeout,
+    // abort, etc). Kit MAY have received and processed the request before
+    // the failure occurred, so we cannot safely release the reservation.
+    // Flag it for reconciliation instead of allowing a retry to call Kit
+    // again.
+    await store.markReconciliationRequired(normalizedIssueKey, contentHash).catch(() => undefined);
+    throw new BroadcastReconciliationRequiredError(
+      "Kit broadcast request outcome is unknown due to a network error. Manual reconciliation is required before retrying."
+    );
+  }
 
-    if (!response.ok) {
-      const message = await response.text();
-      await store.release(normalizedIssueKey, contentHash);
-      throw new KitBroadcastRequestError(response.status, `Kit broadcast creation failed (${response.status}): ${message.slice(0, 200)}`);
-    }
+  if (!response.ok) {
+    // A definitive HTTP-level rejection from Kit proves no draft was
+    // created, so it is safe to release the reservation and allow a retry.
+    const message = await response.text();
+    await store.release(normalizedIssueKey, contentHash);
+    throw new KitBroadcastRequestError(response.status, `Kit broadcast creation failed (${response.status}): ${message.slice(0, 200)}`);
+  }
 
+  let broadcastId: string | undefined;
+  try {
     const body = (await response.json()) as Record<string, unknown>;
-    const broadcastId =
+    const rawId =
       body.id ??
       (typeof body.broadcast === "object" && body.broadcast !== null && "id" in (body.broadcast as Record<string, unknown>)
         ? String((body.broadcast as Record<string, unknown>).id)
         : undefined);
-    if (broadcastId === undefined) {
-      await store.release(normalizedIssueKey, contentHash);
-      throw new Error("Kit broadcast response did not include a valid id.");
-    }
-
-    await store.complete(normalizedIssueKey, contentHash, String(broadcastId));
-
-    return {
-      ok: true,
-      broadcastId: String(broadcastId),
-      status: "draft",
-      created: true,
-      issueKey: input.issueKey.trim(),
-      contentHash,
-    };
-  } catch (error) {
-    await store.release(normalizedIssueKey, contentHash).catch(() => undefined);
-    throw error;
+    broadcastId = rawId === undefined ? undefined : String(rawId);
+  } catch {
+    broadcastId = undefined;
   }
+
+  if (!broadcastId) {
+    // Kit returned a success status but the response body did not confirm a
+    // broadcast id. We cannot prove whether a draft was created, so this
+    // must be treated as ambiguous rather than a definitive failure.
+    await store.markReconciliationRequired(normalizedIssueKey, contentHash).catch(() => undefined);
+    throw new BroadcastReconciliationRequiredError(
+      "Kit reported success but did not return a valid broadcast id. Manual reconciliation is required before retrying."
+    );
+  }
+
+  try {
+    await store.complete(normalizedIssueKey, contentHash, broadcastId);
+  } catch {
+    // Kit definitely created the draft (we have a broadcastId) but we
+    // failed to durably record that fact. Releasing here would allow a
+    // retry to create a second, duplicate draft in Kit. Instead, flag the
+    // reservation for reconciliation while preserving the known broadcastId.
+    await store.markReconciliationRequired(normalizedIssueKey, contentHash, broadcastId).catch(() => undefined);
+    throw new BroadcastReconciliationRequiredError(
+      "Kit created the broadcast draft but the result could not be durably recorded. Manual reconciliation is required.",
+      broadcastId
+    );
+  }
+
+  return {
+    ok: true,
+    broadcastId,
+    status: "draft",
+    created: true,
+    issueKey: input.issueKey.trim(),
+    contentHash,
+  };
 }
 
 export async function handleNewsletterBroadcastDryRun(
@@ -500,7 +588,9 @@ export async function handleCreateNewsletterBroadcastDraft(
   store: BroadcastIdempotencyStore | null = createBroadcastIdempotencyStore(process.env)
 ): Promise<{
   status: number;
-  body: BroadcastCreationResult | { ok: false; error: "invalid_request" | "unknown_fields" | "missing_secret" | "unavailable" | "forbidden" };
+  body:
+    | BroadcastCreationResult
+    | { ok: false; error: "invalid_request" | "unknown_fields" | "missing_secret" | "unavailable" | "forbidden" | "reconciliation_required" };
 }> {
   if (!isPublisherAuthorized(headers, env)) {
     return { status: 401, body: { ok: false, error: "forbidden" } };
@@ -518,6 +608,12 @@ export async function handleCreateNewsletterBroadcastDraft(
   } catch (error) {
     if (error instanceof NewsletterBroadcastValidationError) {
       return { status: 400, body: { ok: false, error: error.code } };
+    }
+    if (error instanceof BroadcastReconciliationRequiredError) {
+      // The outcome of a prior (or in-flight) request against Kit is
+      // unconfirmed. Never call Kit again automatically for this issue and
+      // never report a false success.
+      return { status: 409, body: { ok: false, error: "reconciliation_required" } };
     }
     if (error instanceof KitBroadcastRequestError) {
       if (error.status === 400 || error.status === 422) return { status: 400, body: { ok: false, error: "invalid_request" } };
