@@ -1,6 +1,4 @@
 import crypto from "node:crypto";
-import { promises as fs } from "node:fs";
-import path from "node:path";
 
 export const KIT_BROADCAST_API_BASE = "https://api.kit.com/v4";
 export const MAX_BROADCAST_REQUEST_BYTES = 250_000;
@@ -41,15 +39,27 @@ export interface BroadcastCreationResult {
   duplicate?: boolean;
 }
 
-export interface BroadcastLedgerEntry {
-  broadcastId: string;
+export type BroadcastIdempotencyStatus = "reserved" | "completed";
+
+export interface BroadcastIdempotencyRecord {
   issueKey: string;
   contentHash: string;
-  status: "draft";
+  broadcastId?: string;
+  status: BroadcastIdempotencyStatus;
   createdAt: string;
 }
 
-export type BroadcastLedger = Record<string, BroadcastLedgerEntry>;
+export interface BroadcastReservation {
+  record: BroadcastIdempotencyRecord | null;
+  created: boolean;
+}
+
+export interface BroadcastIdempotencyStore {
+  get(issueKey: string, contentHash: string): Promise<BroadcastIdempotencyRecord | null>;
+  reserve(issueKey: string, contentHash: string): Promise<BroadcastReservation>;
+  complete(issueKey: string, contentHash: string, broadcastId: string): Promise<BroadcastIdempotencyRecord>;
+  release(issueKey: string, contentHash: string): Promise<void>;
+}
 
 export class NewsletterBroadcastValidationError extends Error {
   constructor(
@@ -100,27 +110,167 @@ export function buildBroadcastIdempotencyKey(issueKey: string, contentHash: stri
   return `${normalizeIssueKey(issueKey)}:${contentHash}`;
 }
 
-function getBroadcastLedgerPath(): string {
-  return path.join(process.cwd(), ".newsletter-broadcasts.json");
-}
-
-async function readBroadcastLedger(): Promise<BroadcastLedger> {
-  try {
-    const file = await fs.readFile(getBroadcastLedgerPath(), "utf8");
-    const parsed = JSON.parse(file) as unknown;
-    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
-    const ledger = Object.fromEntries(
-      Object.entries(parsed as Record<string, unknown>).filter(([, value]) => !!value && typeof value === "object")
-    ) as BroadcastLedger;
-    return ledger;
-  } catch {
-    return {};
+export class BroadcastPersistenceUnavailableError extends Error {
+  constructor(message = "Broadcast idempotency storage is unavailable.") {
+    super(message);
+    this.name = "BroadcastPersistenceUnavailableError";
   }
 }
 
-async function writeBroadcastLedger(ledger: BroadcastLedger): Promise<void> {
-  await fs.mkdir(path.dirname(getBroadcastLedgerPath()), { recursive: true });
-  await fs.writeFile(getBroadcastLedgerPath(), JSON.stringify(ledger, null, 2));
+class SupabaseBroadcastIdempotencyStore implements BroadcastIdempotencyStore {
+  constructor(
+    private readonly url: string,
+    private readonly serviceRoleKey: string
+  ) {}
+
+  private getBaseUrl(): string {
+    return `${this.url.replace(/\/$/, "")}/rest/v1/newsletter_broadcasts`;
+  }
+
+  private buildHeaders(extra: Record<string, string> = {}): Record<string, string> {
+    return {
+      apikey: this.serviceRoleKey,
+      Authorization: `Bearer ${this.serviceRoleKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+      ...extra,
+    };
+  }
+
+  private mapRow(row: Record<string, unknown> | null): BroadcastIdempotencyRecord | null {
+    if (!row) return null;
+
+    const issueKey = typeof row.issue_key === "string" ? row.issue_key : null;
+    const contentHash = typeof row.content_hash === "string" ? row.content_hash : null;
+    const broadcastId = typeof row.broadcast_id === "string" ? row.broadcast_id : undefined;
+    const status = row.status === "completed" || row.status === "reserved" ? row.status : "reserved";
+    const createdAt = typeof row.created_at === "string" ? row.created_at : new Date().toISOString();
+
+    if (!issueKey || !contentHash) return null;
+
+    return {
+      issueKey,
+      contentHash,
+      broadcastId,
+      status,
+      createdAt,
+    };
+  }
+
+  private async request<T>(url: string, init: RequestInit): Promise<T> {
+    const response = await fetch(url, {
+      ...init,
+      headers: {
+        ...this.buildHeaders(),
+        ...(init.headers ? Object.fromEntries(new Headers(init.headers).entries()) : {}),
+      },
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Broadcast idempotency storage request failed (${response.status}): ${text.slice(0, 200)}`);
+    }
+
+    if (response.status === 204) {
+      return null as T;
+    }
+
+    const payload = await response.text();
+    if (!payload) {
+      return null as T;
+    }
+
+    return JSON.parse(payload) as T;
+  }
+
+  async get(issueKey: string, contentHash: string): Promise<BroadcastIdempotencyRecord | null> {
+    const url = `${this.getBaseUrl()}?issue_key=eq.${encodeURIComponent(issueKey)}&content_hash=eq.${encodeURIComponent(contentHash)}&select=issue_key,content_hash,broadcast_id,status,created_at`;
+    const rows = await this.request<Array<Record<string, unknown>>>(url, {
+      method: "GET",
+      headers: this.buildHeaders(),
+    });
+    return rows && rows[0] ? this.mapRow(rows[0]) : null;
+  }
+
+  async reserve(issueKey: string, contentHash: string): Promise<BroadcastReservation> {
+    const existing = await this.get(issueKey, contentHash);
+    if (existing) {
+      return { created: false, record: existing };
+    }
+
+    const now = new Date().toISOString();
+    const rows = await this.request<Array<Record<string, unknown>>>(this.getBaseUrl(), {
+      method: "POST",
+      headers: this.buildHeaders(),
+      body: JSON.stringify({
+        issue_key: issueKey,
+        content_hash: contentHash,
+        status: "reserved",
+        broadcast_id: null,
+        created_at: now,
+        updated_at: now,
+      }),
+    }).catch((error) => {
+      if (error instanceof Error && /409|duplicate|already exists/i.test(error.message)) {
+        return null;
+      }
+      throw error;
+    });
+
+    if (!rows) {
+      const record = await this.get(issueKey, contentHash);
+      return { created: false, record };
+    }
+
+    const record = Array.isArray(rows) ? rows[0] ?? null : null;
+    return {
+      created: true,
+      record: this.mapRow(record),
+    };
+  }
+
+  async complete(issueKey: string, contentHash: string, broadcastId: string): Promise<BroadcastIdempotencyRecord> {
+    const now = new Date().toISOString();
+    const query = `?issue_key=eq.${encodeURIComponent(issueKey)}&content_hash=eq.${encodeURIComponent(contentHash)}`;
+    const rows = await this.request<Array<Record<string, unknown>>>(`${this.getBaseUrl()}${query}`, {
+      method: "PATCH",
+      headers: this.buildHeaders(),
+      body: JSON.stringify({
+        broadcast_id: broadcastId,
+        status: "completed",
+        updated_at: now,
+      }),
+    });
+
+    const record = Array.isArray(rows) ? rows[0] ?? null : null;
+    const mapped = this.mapRow(record);
+    if (!mapped) {
+      throw new Error("Broadcast completion did not return an idempotency record.");
+    }
+
+    return mapped;
+  }
+
+  async release(issueKey: string, contentHash: string): Promise<void> {
+    const query = `?issue_key=eq.${encodeURIComponent(issueKey)}&content_hash=eq.${encodeURIComponent(contentHash)}`;
+    await this.request<void>(`${this.getBaseUrl()}${query}`, {
+      method: "DELETE",
+      headers: this.buildHeaders(),
+    });
+  }
+}
+
+export function createBroadcastIdempotencyStore(
+  env: Record<string, string | undefined> = process.env
+): BroadcastIdempotencyStore | null {
+  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    return null;
+  }
+
+  return new SupabaseBroadcastIdempotencyStore(supabaseUrl, serviceRoleKey);
 }
 
 export function validateNewsletterBroadcastInput(value: unknown): NewsletterBroadcastInput {
@@ -211,18 +361,23 @@ export function isPublisherAuthorized(
 export async function createKitBroadcastDraft(
   input: NewsletterBroadcastInput,
   fetchImpl: typeof fetch = fetch,
-  env: Record<string, string | undefined> = process.env
+  env: Record<string, string | undefined> = process.env,
+  store: BroadcastIdempotencyStore | null = createBroadcastIdempotencyStore(process.env)
 ): Promise<BroadcastCreationResult> {
   const config = getKitBroadcastConfig(env);
   if (!config) {
     throw new Error("KIT_API_KEY is not configured.");
   }
 
+  if (!store) {
+    throw new BroadcastPersistenceUnavailableError();
+  }
+
+  const normalizedIssueKey = normalizeIssueKey(input.issueKey);
   const contentHash = getBroadcastHash(input.html);
-  const idempotencyKey = buildBroadcastIdempotencyKey(input.issueKey, contentHash);
-  const ledger = await readBroadcastLedger();
-  const existing = ledger[idempotencyKey];
-  if (existing) {
+
+  const existing = await store.get(normalizedIssueKey, contentHash);
+  if (existing && existing.broadcastId) {
     return {
       ok: true,
       broadcastId: existing.broadcastId,
@@ -234,56 +389,81 @@ export async function createKitBroadcastDraft(
     };
   }
 
-  const response = await fetchImpl(`${KIT_BROADCAST_API_BASE}/broadcasts`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "X-Kit-Api-Key": config.apiKey,
-    },
-    body: JSON.stringify({
-      subject: input.subject,
-      content: input.html,
-      preview_text: input.previewText ?? "",
-      public: false,
-      send_at: null,
-    }),
-    signal: AbortSignal.timeout(15_000),
-  });
+  const reservation = await store.reserve(normalizedIssueKey, contentHash);
+  const reservationRecord = reservation.record;
 
-  if (!response.ok) {
-    const message = await response.text();
-    throw new KitBroadcastRequestError(response.status, `Kit broadcast creation failed (${response.status}): ${message.slice(0, 200)}`);
+  if (reservationRecord && reservationRecord.status === "completed" && reservationRecord.broadcastId) {
+    return {
+      ok: true,
+      broadcastId: reservationRecord.broadcastId,
+      status: "duplicate",
+      created: false,
+      issueKey: input.issueKey.trim(),
+      contentHash,
+      duplicate: true,
+    };
   }
 
-  const body = (await response.json()) as Record<string, unknown>;
-  const broadcastId =
-    body.id ??
-    (typeof body.broadcast === "object" && body.broadcast !== null && "id" in (body.broadcast as Record<string, unknown>)
-      ? String((body.broadcast as Record<string, unknown>).id)
-      : undefined);
-  if (broadcastId === undefined) {
-    throw new Error("Kit broadcast response did not include a valid id.");
+  if (!reservation.created) {
+    return {
+      ok: true,
+      broadcastId: reservationRecord?.broadcastId ?? existing?.broadcastId ?? "",
+      status: "duplicate",
+      created: false,
+      issueKey: input.issueKey.trim(),
+      contentHash,
+      duplicate: true,
+    };
   }
 
-  const finalized = {
-    ok: true as const,
-    broadcastId: String(broadcastId),
-    status: "draft" as const,
-    created: true,
-    issueKey: input.issueKey.trim(),
-    contentHash,
-  };
+  try {
+    const response = await fetchImpl(`${KIT_BROADCAST_API_BASE}/broadcasts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Kit-Api-Key": config.apiKey,
+      },
+      body: JSON.stringify({
+        subject: input.subject,
+        content: input.html,
+        preview_text: input.previewText ?? "",
+        public: false,
+        send_at: null,
+      }),
+      signal: AbortSignal.timeout(15_000),
+    });
 
-  ledger[idempotencyKey] = {
-    broadcastId: finalized.broadcastId,
-    issueKey: finalized.issueKey,
-    contentHash,
-    status: "draft",
-    createdAt: new Date().toISOString(),
-  };
-  await writeBroadcastLedger(ledger);
+    if (!response.ok) {
+      const message = await response.text();
+      await store.release(normalizedIssueKey, contentHash);
+      throw new KitBroadcastRequestError(response.status, `Kit broadcast creation failed (${response.status}): ${message.slice(0, 200)}`);
+    }
 
-  return finalized;
+    const body = (await response.json()) as Record<string, unknown>;
+    const broadcastId =
+      body.id ??
+      (typeof body.broadcast === "object" && body.broadcast !== null && "id" in (body.broadcast as Record<string, unknown>)
+        ? String((body.broadcast as Record<string, unknown>).id)
+        : undefined);
+    if (broadcastId === undefined) {
+      await store.release(normalizedIssueKey, contentHash);
+      throw new Error("Kit broadcast response did not include a valid id.");
+    }
+
+    await store.complete(normalizedIssueKey, contentHash, String(broadcastId));
+
+    return {
+      ok: true,
+      broadcastId: String(broadcastId),
+      status: "draft",
+      created: true,
+      issueKey: input.issueKey.trim(),
+      contentHash,
+    };
+  } catch (error) {
+    await store.release(normalizedIssueKey, contentHash).catch(() => undefined);
+    throw error;
+  }
 }
 
 export async function handleNewsletterBroadcastDryRun(
@@ -316,7 +496,8 @@ export async function handleCreateNewsletterBroadcastDraft(
   raw: string,
   headers: { get(name: string): string | null } | Headers,
   fetchImpl: typeof fetch = fetch,
-  env: Record<string, string | undefined> = process.env
+  env: Record<string, string | undefined> = process.env,
+  store: BroadcastIdempotencyStore | null = createBroadcastIdempotencyStore(process.env)
 ): Promise<{
   status: number;
   body: BroadcastCreationResult | { ok: false; error: "invalid_request" | "unknown_fields" | "missing_secret" | "unavailable" | "forbidden" };
@@ -332,7 +513,7 @@ export async function handleCreateNewsletterBroadcastDraft(
   try {
     const parsed = JSON.parse(raw) as unknown;
     const input = validateNewsletterBroadcastInput(parsed);
-    const result = await createKitBroadcastDraft(input, fetchImpl, env);
+    const result = await createKitBroadcastDraft(input, fetchImpl, env, store);
     return { status: result.duplicate ? 200 : 201, body: result };
   } catch (error) {
     if (error instanceof NewsletterBroadcastValidationError) {
@@ -344,7 +525,7 @@ export async function handleCreateNewsletterBroadcastDraft(
       if (error.status === 429) return { status: 429, body: { ok: false, error: "unavailable" } };
       return { status: 502, body: { ok: false, error: "unavailable" } };
     }
-    if (error instanceof Error && /KIT_API_KEY/.test(error.message)) {
+    if (error instanceof BroadcastPersistenceUnavailableError || (error instanceof Error && /KIT_API_KEY/.test(error.message))) {
       return { status: 503, body: { ok: false, error: "unavailable" } };
     }
     return { status: 502, body: { ok: false, error: "unavailable" } };
