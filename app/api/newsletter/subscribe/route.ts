@@ -1,5 +1,5 @@
 // app/api/newsletter/subscribe/route.ts
-// Thin Next.js adapter — all validation, rate limiting, and Beehiiv logic lives in
+// Thin Next.js adapter — all validation, rate limiting, and Kit logic lives in
 // lib/newsletter.ts so it can be unit tested without the Next.js server runtime.
 
 import { NextRequest, NextResponse } from "next/server";

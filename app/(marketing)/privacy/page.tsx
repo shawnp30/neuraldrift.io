@@ -39,9 +39,9 @@ export default function PrivacyPage() {
             </h2>
             <p>
               If you sign up for NeuralDrift Weekly, your email address is
-              sent to Beehiiv, our newsletter provider, to create and manage
-              your subscription. We don&apos;t send anything else about you
-              to Beehiiv beyond the page you signed up from. Every issue
+              processed by Kit, our newsletter provider, for newsletter delivery
+              and to create and manage your subscription. We don&apos;t send anything else about you
+              to Kit beyond the page you signed up from. Every issue
               includes an unsubscribe link, and unsubscribing removes you
               from future sends.
             </p>

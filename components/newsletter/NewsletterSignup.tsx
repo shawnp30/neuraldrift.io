@@ -26,7 +26,7 @@ export function NewsletterSignup({ source, variant = "nd" }: { source: Newslette
   const [company, setCompany] = useState("");
   const [status, setStatus] = useState<Status>("idle");
 
-  const configured = Boolean(process.env.NEXT_PUBLIC_NEWSLETTER_PROVIDER);
+  const configured = process.env.NEXT_PUBLIC_NEWSLETTER_PROVIDER === "kit";
 
   const handleSubmit = async () => {
     if (status === "loading") return;
