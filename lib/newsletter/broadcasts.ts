@@ -145,10 +145,25 @@ export class BroadcastReconciliationRequiredError extends Error {
   }
 }
 
+/**
+ * Modern Supabase API keys ("sb_secret_..." and "sb_publishable_...") are not
+ * JWTs. Supabase's own migration guidance is explicit that sending one of
+ * these as an `Authorization: Bearer` value is rejected wherever the gateway
+ * expects a JWT (e.g. pg_net/webhooks), and that the `apikey` header alone is
+ * sufficient to identify the caller and its privilege level for the REST/
+ * PostgREST API. Legacy `service_role`/`anon` keys are long-lived JWTs, and
+ * PostgREST resolves the elevated Postgres role from the JWT claims in
+ * `Authorization: Bearer`, so that header must still be sent for those.
+ */
+function isModernSupabaseApiKey(key: string): boolean {
+  return key.startsWith("sb_secret_") || key.startsWith("sb_publishable_");
+}
+
 class SupabaseBroadcastIdempotencyStore implements BroadcastIdempotencyStore {
   constructor(
     private readonly url: string,
-    private readonly serviceRoleKey: string
+    private readonly secretKey: string,
+    private readonly fetchImpl: typeof fetch = fetch
   ) {}
 
   private getBaseUrl(): string {
@@ -156,13 +171,15 @@ class SupabaseBroadcastIdempotencyStore implements BroadcastIdempotencyStore {
   }
 
   private buildHeaders(extra: Record<string, string> = {}): Record<string, string> {
-    return {
-      apikey: this.serviceRoleKey,
-      Authorization: `Bearer ${this.serviceRoleKey}`,
+    const headers: Record<string, string> = {
+      apikey: this.secretKey,
       "Content-Type": "application/json",
       Prefer: "return=representation",
-      ...extra,
     };
+    if (!isModernSupabaseApiKey(this.secretKey)) {
+      headers.Authorization = `Bearer ${this.secretKey}`;
+    }
+    return { ...headers, ...extra };
   }
 
   private mapRow(row: Record<string, unknown> | null): BroadcastIdempotencyRecord | null {
@@ -189,13 +206,14 @@ class SupabaseBroadcastIdempotencyStore implements BroadcastIdempotencyStore {
   }
 
   private async request<T>(url: string, init: RequestInit): Promise<T> {
-    const response = await fetch(url, {
-      ...init,
-      headers: {
-        ...this.buildHeaders(),
-        ...(init.headers ? Object.fromEntries(new Headers(init.headers).entries()) : {}),
-      },
-    });
+    // Callers already pass a fully built `headers` object via
+    // `this.buildHeaders()`. Re-deriving and merging a second copy of those
+    // headers here previously produced case-variant duplicate keys (e.g.
+    // both "Authorization" and "authorization") in the same plain object,
+    // which `fetch`/`Headers` then joins into a single comma-separated,
+    // duplicated header value on the wire — silently breaking
+    // authentication. Use the caller-supplied headers as-is instead.
+    const response = await this.fetchImpl(url, init);
 
     if (!response.ok) {
       const text = await response.text();
@@ -306,16 +324,25 @@ class SupabaseBroadcastIdempotencyStore implements BroadcastIdempotencyStore {
 }
 
 export function createBroadcastIdempotencyStore(
-  env: Record<string, string | undefined> = process.env
+  env: Record<string, string | undefined> = process.env,
+  fetchImpl: typeof fetch = fetch
 ): BroadcastIdempotencyStore | null {
-  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL?.trim();
-  const serviceRoleKey = env.SUPABASE_SERVICE_ROLE_KEY?.trim();
+  // NEURALDRIFT_SUPABASE_URL lets the publisher point at a Supabase project
+  // that differs from the public client project, but in the normal case the
+  // existing NEXT_PUBLIC_SUPABASE_URL is reused so no extra configuration is
+  // required.
+  const supabaseUrl = (env.NEURALDRIFT_SUPABASE_URL ?? env.NEXT_PUBLIC_SUPABASE_URL)?.trim();
+  // The broadcast publisher's privileged Supabase credential. This must be a
+  // manually managed, server-only secret (a modern "sb_secret_..." key or a
+  // legacy service_role JWT) — never the orphaned/integration-owned
+  // SUPABASE_SERVICE_ROLE_KEY, which is no longer read here.
+  const secretKey = env.NEURALDRIFT_SUPABASE_SECRET_KEY?.trim();
 
-  if (!supabaseUrl || !serviceRoleKey) {
+  if (!supabaseUrl || !secretKey) {
     return null;
   }
 
-  return new SupabaseBroadcastIdempotencyStore(supabaseUrl, serviceRoleKey);
+  return new SupabaseBroadcastIdempotencyStore(supabaseUrl, secretKey, fetchImpl);
 }
 
 export function validateNewsletterBroadcastInput(value: unknown): NewsletterBroadcastInput {

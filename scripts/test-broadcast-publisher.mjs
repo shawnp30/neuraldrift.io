@@ -4,6 +4,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import {
   buildBroadcastDryRun,
+  createBroadcastIdempotencyStore,
   createKitBroadcastDraft,
   handleCreateNewsletterBroadcastDraft,
   handleNewsletterBroadcastDryRun,
@@ -368,6 +369,141 @@ function makeUniqueIssue(suffix) {
   } catch (error) {
     console.log('20. Skipped robots.txt/origin diff check (git unavailable in this environment): SKIP');
   }
+}
+
+// --- Manually managed Supabase secret key wiring -------------------------
+
+// 21. The orphaned/integration-owned SUPABASE_SERVICE_ROLE_KEY must no longer
+// be sufficient (alone) to create a persistent idempotency store: the
+// publisher must require the new manually managed
+// NEURALDRIFT_SUPABASE_SECRET_KEY instead.
+{
+  const store = createBroadcastIdempotencyStore({
+    NEXT_PUBLIC_SUPABASE_URL: 'https://example.supabase.co',
+    SUPABASE_SERVICE_ROLE_KEY: 'orphaned-legacy-value',
+  });
+  assert.strictEqual(store, null);
+  console.log('21. Orphaned SUPABASE_SERVICE_ROLE_KEY alone does not create a persistent store (fails closed): PASS');
+}
+
+// 22. Missing NEURALDRIFT_SUPABASE_SECRET_KEY (even with a valid URL) fails
+// closed rather than silently falling back to an unusable/legacy variable.
+{
+  const store = createBroadcastIdempotencyStore({
+    NEURALDRIFT_SUPABASE_URL: 'https://example.supabase.co',
+  });
+  assert.strictEqual(store, null);
+  console.log('22. Missing NEURALDRIFT_SUPABASE_SECRET_KEY fails closed without a usable store: PASS');
+}
+
+// 23. URL resolution prefers NEURALDRIFT_SUPABASE_URL when present, and
+// falls back to NEXT_PUBLIC_SUPABASE_URL when it is not required/configured.
+{
+  const preferred = [];
+  const preferredStore = createBroadcastIdempotencyStore(
+    {
+      NEURALDRIFT_SUPABASE_URL: 'https://preferred.supabase.co',
+      NEXT_PUBLIC_SUPABASE_URL: 'https://fallback.supabase.co',
+      NEURALDRIFT_SUPABASE_SECRET_KEY: 'sb_secret_test_key',
+    },
+    async (url) => {
+      preferred.push(String(url));
+      return new Response('[]', { status: 200 });
+    }
+  );
+  assert.ok(preferredStore);
+  await preferredStore.get('issue', 'hash');
+  assert.ok(preferred[0].startsWith('https://preferred.supabase.co/'));
+
+  const fallback = [];
+  const fallbackStore = createBroadcastIdempotencyStore(
+    {
+      NEXT_PUBLIC_SUPABASE_URL: 'https://fallback.supabase.co',
+      NEURALDRIFT_SUPABASE_SECRET_KEY: 'sb_secret_test_key',
+    },
+    async (url) => {
+      fallback.push(String(url));
+      return new Response('[]', { status: 200 });
+    }
+  );
+  assert.ok(fallbackStore);
+  await fallbackStore.get('issue', 'hash');
+  assert.ok(fallback[0].startsWith('https://fallback.supabase.co/'));
+  console.log('23. Supabase URL resolution prefers NEURALDRIFT_SUPABASE_URL and falls back to NEXT_PUBLIC_SUPABASE_URL: PASS');
+}
+
+// 24. No usable Supabase URL at all fails closed.
+{
+  const store = createBroadcastIdempotencyStore({
+    NEURALDRIFT_SUPABASE_SECRET_KEY: 'sb_secret_test_key',
+  });
+  assert.strictEqual(store, null);
+  console.log('24. Missing Supabase URL fails closed without a usable store: PASS');
+}
+
+// 25. Modern Supabase secret keys ("sb_secret_...") authenticate using only
+// the `apikey` header. They are not JWTs, so `Authorization: Bearer` must
+// NOT be sent (Supabase's gateway rejects a non-JWT bearer token).
+{
+  let capturedHeaders = null;
+  const store = createBroadcastIdempotencyStore(
+    {
+      NEURALDRIFT_SUPABASE_URL: 'https://example.supabase.co',
+      NEURALDRIFT_SUPABASE_SECRET_KEY: 'sb_secret_abcdef123456',
+    },
+    async (_url, init) => {
+      capturedHeaders = new Headers(init.headers);
+      return new Response('[]', { status: 200 });
+    }
+  );
+  await store.get('issue', 'hash');
+  assert.strictEqual(capturedHeaders.get('apikey'), 'sb_secret_abcdef123456');
+  assert.strictEqual(capturedHeaders.get('authorization'), null);
+  console.log('25. Modern Supabase secret keys authenticate via apikey only, with no Authorization header: PASS');
+}
+
+// 26. A legacy service_role JWT-style value (not a modern sb_secret_/
+// sb_publishable_ key) still gets an Authorization: Bearer header alongside
+// apikey, preserving backward compatibility for any project still using it.
+{
+  let capturedHeaders = null;
+  const legacyJwtLikeValue = 'legacy-service-role-jwt-value';
+  const store = createBroadcastIdempotencyStore(
+    {
+      NEURALDRIFT_SUPABASE_URL: 'https://example.supabase.co',
+      NEURALDRIFT_SUPABASE_SECRET_KEY: legacyJwtLikeValue,
+    },
+    async (_url, init) => {
+      capturedHeaders = new Headers(init.headers);
+      return new Response('[]', { status: 200 });
+    }
+  );
+  await store.get('issue', 'hash');
+  assert.strictEqual(capturedHeaders.get('apikey'), legacyJwtLikeValue);
+  assert.strictEqual(capturedHeaders.get('authorization'), `Bearer ${legacyJwtLikeValue}`);
+  console.log('26. Legacy non-modern key values still send both apikey and Authorization headers: PASS');
+}
+
+// 28. The Supabase secret key value must never appear in a thrown error
+// message (no secret logging/leakage on failure).
+{
+  const secretValue = 'sb_secret_should_never_leak_9f8e7d6c5b4a';
+  const store = createBroadcastIdempotencyStore(
+    {
+      NEURALDRIFT_SUPABASE_URL: 'https://example.supabase.co',
+      NEURALDRIFT_SUPABASE_SECRET_KEY: secretValue,
+    },
+    async () => new Response('server error text', { status: 500 })
+  );
+  let caught = null;
+  try {
+    await store.get('issue', 'hash');
+  } catch (error) {
+    caught = error;
+  }
+  assert.ok(caught instanceof Error);
+  assert.ok(!caught.message.includes(secretValue));
+  console.log('28. Supabase secret key value never appears in a thrown error message: PASS');
 }
 
 console.log('Broadcast publisher tests: PASS');
