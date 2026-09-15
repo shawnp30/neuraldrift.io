@@ -430,6 +430,55 @@ export function isPublisherAuthorized(
   }
 }
 
+type BroadcastDiagnosticStage =
+  | "supabase_get"
+  | "supabase_reserve"
+  | "kit_request"
+  | "kit_response"
+  | "supabase_complete"
+  | "reconciliation"
+  | "configuration"
+  | "unknown";
+
+interface BroadcastDiagnosticContext {
+  issueKey?: string;
+  contentHash?: string;
+  status?: number;
+}
+
+// Errors that have already been diagnosed at their true origin (e.g. a
+// Supabase fetch failure logged as "supabase_get") are tracked here so that
+// re-throwing/propagating the same error up to an outer catch-all does not
+// produce a second, redundant log entry for the same failure.
+const loggedBroadcastErrors = new WeakSet<object>();
+
+/**
+ * Logs minimal, structured, server-only diagnostic metadata for broadcast
+ * publisher failures so Vercel logs can distinguish which subsystem failed.
+ *
+ * This intentionally never logs: secrets, request/response headers,
+ * newsletter subject/HTML content, or raw Kit/Supabase response bodies
+ * (which could themselves contain sensitive data). Only a coarse stage
+ * classification, the error's name/constructor, an HTTP status when one is
+ * definitively known, and the already-derived issueKey/contentHash are
+ * recorded.
+ */
+function logBroadcastDiagnostic(stage: BroadcastDiagnosticStage, error: unknown, context: BroadcastDiagnosticContext = {}): void {
+  if (error && typeof error === "object") {
+    if (loggedBroadcastErrors.has(error)) return;
+    loggedBroadcastErrors.add(error);
+  }
+
+  const errorName = error instanceof Error ? error.name : typeof error;
+  console.error("newsletter_broadcast_error", {
+    stage,
+    errorName,
+    status: context.status,
+    issueKey: context.issueKey,
+    contentHash: context.contentHash,
+  });
+}
+
 export async function createKitBroadcastDraft(
   input: NewsletterBroadcastInput,
   fetchImpl: typeof fetch = fetch,
@@ -438,17 +487,27 @@ export async function createKitBroadcastDraft(
 ): Promise<BroadcastCreationResult> {
   const config = getKitBroadcastConfig(env);
   if (!config) {
-    throw new Error("KIT_API_KEY is not configured.");
+    const error = new Error("KIT_API_KEY is not configured.");
+    logBroadcastDiagnostic("configuration", error);
+    throw error;
   }
 
   if (!store) {
-    throw new BroadcastPersistenceUnavailableError();
+    const error = new BroadcastPersistenceUnavailableError();
+    logBroadcastDiagnostic("configuration", error);
+    throw error;
   }
 
   const normalizedIssueKey = normalizeIssueKey(input.issueKey);
   const contentHash = getBroadcastHash(input.html);
 
-  const existing = await store.get(normalizedIssueKey, contentHash);
+  let existing: BroadcastIdempotencyRecord | null;
+  try {
+    existing = await store.get(normalizedIssueKey, contentHash);
+  } catch (error) {
+    logBroadcastDiagnostic("supabase_get", error, { issueKey: normalizedIssueKey, contentHash });
+    throw error;
+  }
   if (existing && existing.status === "completed" && existing.broadcastId) {
     return {
       ok: true,
@@ -463,13 +522,21 @@ export async function createKitBroadcastDraft(
   if (existing && existing.status === "reconciliation_required") {
     // A prior attempt's outcome against Kit was never confirmed. Never call
     // Kit again automatically and never report a false success.
-    throw new BroadcastReconciliationRequiredError(
+    const error = new BroadcastReconciliationRequiredError(
       "This issue/content requires manual reconciliation before retrying.",
       existing.broadcastId
     );
+    logBroadcastDiagnostic("reconciliation", error, { issueKey: normalizedIssueKey, contentHash });
+    throw error;
   }
 
-  const reservation = await store.reserve(normalizedIssueKey, contentHash);
+  let reservation: BroadcastReservation;
+  try {
+    reservation = await store.reserve(normalizedIssueKey, contentHash);
+  } catch (error) {
+    logBroadcastDiagnostic("supabase_reserve", error, { issueKey: normalizedIssueKey, contentHash });
+    throw error;
+  }
   const reservationRecord = reservation.record;
 
   if (reservationRecord && reservationRecord.status === "completed" && reservationRecord.broadcastId) {
@@ -491,10 +558,12 @@ export async function createKitBroadcastDraft(
     // "reconciliation_required" because Kit's outcome was never confirmed.
     // In BOTH cases Kit must NOT be called again automatically, and we must
     // never report a false success with an empty broadcastId.
-    throw new BroadcastReconciliationRequiredError(
+    const error = new BroadcastReconciliationRequiredError(
       "A broadcast request for this issue/content is already in progress or requires manual reconciliation before retrying.",
       reservationRecord?.broadcastId ?? existing?.broadcastId
     );
+    logBroadcastDiagnostic("reconciliation", error, { issueKey: normalizedIssueKey, contentHash });
+    throw error;
   }
 
   let response: Response;
@@ -521,6 +590,7 @@ export async function createKitBroadcastDraft(
     // Flag it for reconciliation instead of allowing a retry to call Kit
     // again.
     await store.markReconciliationRequired(normalizedIssueKey, contentHash).catch(() => undefined);
+    logBroadcastDiagnostic("kit_request", error, { issueKey: normalizedIssueKey, contentHash });
     throw new BroadcastReconciliationRequiredError(
       "Kit broadcast request outcome is unknown due to a network error. Manual reconciliation is required before retrying."
     );
@@ -531,7 +601,9 @@ export async function createKitBroadcastDraft(
     // created, so it is safe to release the reservation and allow a retry.
     const message = await response.text();
     await store.release(normalizedIssueKey, contentHash);
-    throw new KitBroadcastRequestError(response.status, `Kit broadcast creation failed (${response.status}): ${message.slice(0, 200)}`);
+    const error = new KitBroadcastRequestError(response.status, `Kit broadcast creation failed (${response.status}): ${message.slice(0, 200)}`);
+    logBroadcastDiagnostic("kit_response", error, { issueKey: normalizedIssueKey, contentHash, status: response.status });
+    throw error;
   }
 
   let broadcastId: string | undefined;
@@ -552,19 +624,22 @@ export async function createKitBroadcastDraft(
     // broadcast id. We cannot prove whether a draft was created, so this
     // must be treated as ambiguous rather than a definitive failure.
     await store.markReconciliationRequired(normalizedIssueKey, contentHash).catch(() => undefined);
-    throw new BroadcastReconciliationRequiredError(
+    const error = new BroadcastReconciliationRequiredError(
       "Kit reported success but did not return a valid broadcast id. Manual reconciliation is required before retrying."
     );
+    logBroadcastDiagnostic("kit_response", error, { issueKey: normalizedIssueKey, contentHash, status: response.status });
+    throw error;
   }
 
   try {
     await store.complete(normalizedIssueKey, contentHash, broadcastId);
-  } catch {
+  } catch (error) {
     // Kit definitely created the draft (we have a broadcastId) but we
     // failed to durably record that fact. Releasing here would allow a
     // retry to create a second, duplicate draft in Kit. Instead, flag the
     // reservation for reconciliation while preserving the known broadcastId.
     await store.markReconciliationRequired(normalizedIssueKey, contentHash, broadcastId).catch(() => undefined);
+    logBroadcastDiagnostic("supabase_complete", error, { issueKey: normalizedIssueKey, contentHash });
     throw new BroadcastReconciliationRequiredError(
       "Kit created the broadcast draft but the result could not be durably recorded. Manual reconciliation is required.",
       broadcastId
@@ -651,6 +726,11 @@ export async function handleCreateNewsletterBroadcastDraft(
     if (error instanceof BroadcastPersistenceUnavailableError || (error instanceof Error && /KIT_API_KEY/.test(error.message))) {
       return { status: 503, body: { ok: false, error: "unavailable" } };
     }
+    // Genuinely unclassified failure (e.g. malformed request JSON, or an
+    // unexpected error type not already stage-tagged above). Log minimal,
+    // safe diagnostics so Vercel logs can distinguish this from the known
+    // failure categories, without altering the sanitized client response.
+    logBroadcastDiagnostic("unknown", error);
     return { status: 502, body: { ok: false, error: "unavailable" } };
   }
 }

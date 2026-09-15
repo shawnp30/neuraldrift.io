@@ -506,4 +506,267 @@ function makeUniqueIssue(suffix) {
   console.log('28. Supabase secret key value never appears in a thrown error message: PASS');
 }
 
+// --- Safe diagnostic logging on the broadcast create path ----------------
+
+function captureConsoleError() {
+  const calls = [];
+  const original = console.error;
+  console.error = (...args) => {
+    calls.push(args);
+  };
+  return {
+    calls,
+    restore() {
+      console.error = original;
+    },
+  };
+}
+
+const SENSITIVE_SUBSTRINGS = [
+  'kit-key',
+  'super-secret',
+  'sb_secret_diagnostic_leak_test',
+  'Bearer ',
+  'Authorization',
+  '<p>',
+  '</p>',
+  validIssue.html,
+  validIssue.subject,
+];
+
+function assertNoSensitiveLogData(calls) {
+  const serialized = JSON.stringify(calls);
+  for (const needle of SENSITIVE_SUBSTRINGS) {
+    assert.ok(!serialized.includes(needle), `diagnostic log leaked sensitive value: ${needle}`);
+  }
+}
+
+// 29. An unexpected Supabase failure during the initial lookup produces a
+// single, safe, stage-tagged diagnostic log entry (supabase_get) and the
+// sanitized API response/idempotency behavior is unchanged.
+{
+  const issue = makeUniqueIssue('diag-supabase-get');
+  const store = makeMemoryStore();
+  store.get = async () => {
+    throw new Error('storage read failed: connection refused to internal host');
+  };
+  const capture = captureConsoleError();
+  let result;
+  try {
+    result = await handleCreateNewsletterBroadcastDraft(
+      JSON.stringify(issue),
+      new Headers({ authorization: 'Bearer secret' }),
+      async () => {
+        throw new Error('should not be called');
+      },
+      { KIT_API_KEY: 'kit-key', NEURALDRIFT_PUBLISHER_SECRET: 'secret' },
+      store
+    );
+  } finally {
+    capture.restore();
+  }
+  assert.strictEqual(result.status, 502);
+  assert.deepStrictEqual(result.body, { ok: false, error: 'unavailable' });
+
+  const diagnosticCalls = capture.calls.filter((call) => call[0] === 'newsletter_broadcast_error');
+  assert.strictEqual(diagnosticCalls.length, 1, 'expected exactly one diagnostic log entry, not a duplicate');
+  const [, payload] = diagnosticCalls[0];
+  assert.strictEqual(payload.stage, 'supabase_get');
+  assert.strictEqual(payload.errorName, 'Error');
+  assert.strictEqual(payload.issueKey, issue.issueKey.trim().toLowerCase());
+  assertNoSensitiveLogData(capture.calls);
+  console.log('29. Unexpected Supabase lookup failures log a single safe supabase_get diagnostic entry and keep the response sanitized: PASS');
+}
+
+// 30. A Kit HTTP-level rejection logs a safe kit_response diagnostic entry
+// including the numeric status, but never the raw response body text.
+{
+  const issue = makeUniqueIssue('diag-kit-response');
+  const store = makeMemoryStore();
+  const capture = captureConsoleError();
+  try {
+    await assert.rejects(
+      () => createKitBroadcastDraft(
+        issue,
+        async () => new Response('internal server error details you must not log', { status: 500 }),
+        { KIT_API_KEY: 'kit-key', NEURALDRIFT_PUBLISHER_SECRET: 'secret' },
+        store
+      ),
+      /Kit broadcast creation failed/
+    );
+  } finally {
+    capture.restore();
+  }
+  const diagnosticCalls = capture.calls.filter((call) => call[0] === 'newsletter_broadcast_error');
+  assert.strictEqual(diagnosticCalls.length, 1);
+  const [, payload] = diagnosticCalls[0];
+  assert.strictEqual(payload.stage, 'kit_response');
+  assert.strictEqual(payload.status, 500);
+  assert.strictEqual(payload.errorName, 'KitBroadcastRequestError');
+  const serialized = JSON.stringify(capture.calls);
+  assert.ok(!serialized.includes('internal server error details you must not log'));
+  console.log('30. Definitive Kit rejections log a safe kit_response diagnostic entry with a status code but never the raw response body: PASS');
+}
+
+// 31. A network/timeout failure calling Kit logs a safe kit_request
+// diagnostic entry, and the reservation is still marked reconciliation_
+// required (idempotency behavior unchanged by the added logging).
+{
+  const issue = makeUniqueIssue('diag-kit-request');
+  const store = makeMemoryStore();
+  const capture = captureConsoleError();
+  try {
+    await assert.rejects(
+      () => createKitBroadcastDraft(
+        issue,
+        async () => {
+          throw new Error('fetch failed: timeout');
+        },
+        { KIT_API_KEY: 'kit-key', NEURALDRIFT_PUBLISHER_SECRET: 'secret' },
+        store
+      ),
+      BroadcastReconciliationRequiredError
+    );
+  } finally {
+    capture.restore();
+  }
+  const diagnosticCalls = capture.calls.filter((call) => call[0] === 'newsletter_broadcast_error');
+  assert.strictEqual(diagnosticCalls.length, 1);
+  assert.strictEqual(diagnosticCalls[0][1].stage, 'kit_request');
+  const key = `${issue.issueKey.trim().toLowerCase()}:${crypto.createHash('sha256').update(issue.html, 'utf8').digest('hex')}`;
+  assert.strictEqual(store._entries.get(key).status, 'reconciliation_required');
+  console.log('31. Kit network/timeout failures log a safe kit_request diagnostic entry without changing reconciliation behavior: PASS');
+}
+
+// 32. Kit success followed by a persistence failure logs a safe
+// supabase_complete diagnostic entry and still preserves the known
+// broadcastId under reconciliation_required (unchanged from before logging
+// was added).
+{
+  const issue = makeUniqueIssue('diag-supabase-complete');
+  const store = makeMemoryStore();
+  store.complete = async () => {
+    throw new Error('storage write failed');
+  };
+  const capture = captureConsoleError();
+  try {
+    await assert.rejects(
+      () => createKitBroadcastDraft(
+        issue,
+        async () => new Response(JSON.stringify({ id: 9001, status: 'draft' }), { status: 201 }),
+        { KIT_API_KEY: 'kit-key', NEURALDRIFT_PUBLISHER_SECRET: 'secret' },
+        store
+      ),
+      BroadcastReconciliationRequiredError
+    );
+  } finally {
+    capture.restore();
+  }
+  const diagnosticCalls = capture.calls.filter((call) => call[0] === 'newsletter_broadcast_error');
+  assert.strictEqual(diagnosticCalls.length, 1);
+  assert.strictEqual(diagnosticCalls[0][1].stage, 'supabase_complete');
+  const key = `${issue.issueKey.trim().toLowerCase()}:${crypto.createHash('sha256').update(issue.html, 'utf8').digest('hex')}`;
+  const stored = store._entries.get(key);
+  assert.strictEqual(stored.status, 'reconciliation_required');
+  assert.strictEqual(stored.broadcastId, '9001');
+  console.log('32. Kit success followed by a persistence failure logs a safe supabase_complete diagnostic entry and preserves the broadcastId: PASS');
+}
+
+// 33. Existing reconciliation_required / reserved / completed short-circuit
+// paths still never call Kit again, and (when they do log) never leak the
+// stored broadcastId's surrounding request content.
+{
+  const issue = makeUniqueIssue('diag-reconciliation');
+  const store = makeMemoryStore();
+  const now = new Date().toISOString();
+  const key = `${issue.issueKey.trim().toLowerCase()}:${crypto.createHash('sha256').update(issue.html, 'utf8').digest('hex')}`;
+  store._entries.set(key, {
+    issueKey: issue.issueKey.trim().toLowerCase(),
+    contentHash: crypto.createHash('sha256').update(issue.html, 'utf8').digest('hex'),
+    status: 'reconciliation_required',
+    broadcastId: undefined,
+    createdAt: now,
+  });
+  const capture = captureConsoleError();
+  let fetchCalls = 0;
+  try {
+    await assert.rejects(
+      () => createKitBroadcastDraft(
+        issue,
+        async () => {
+          fetchCalls += 1;
+          throw new Error('Kit should not be called');
+        },
+        { KIT_API_KEY: 'kit-key', NEURALDRIFT_PUBLISHER_SECRET: 'secret' },
+        store
+      ),
+      BroadcastReconciliationRequiredError
+    );
+  } finally {
+    capture.restore();
+  }
+  assert.strictEqual(fetchCalls, 0);
+  const diagnosticCalls = capture.calls.filter((call) => call[0] === 'newsletter_broadcast_error');
+  assert.strictEqual(diagnosticCalls.length, 1);
+  assert.strictEqual(diagnosticCalls[0][1].stage, 'reconciliation');
+  assertNoSensitiveLogData(capture.calls);
+  console.log('33. A pre-existing reconciliation_required record still blocks Kit calls and logs a safe reconciliation diagnostic entry: PASS');
+}
+
+// 34. Successful draft creation and duplicate-completed short-circuits never
+// emit any diagnostic error log entries (logging is additive to failure
+// paths only, never the happy path).
+{
+  const issue = makeUniqueIssue('diag-happy-path');
+  const store = makeMemoryStore();
+  const capture = captureConsoleError();
+  let result;
+  try {
+    result = await createKitBroadcastDraft(
+      issue,
+      async () => new Response(JSON.stringify({ id: 555, status: 'draft' }), { status: 201 }),
+      { KIT_API_KEY: 'kit-key', NEURALDRIFT_PUBLISHER_SECRET: 'secret' },
+      store
+    );
+    const duplicateResult = await createKitBroadcastDraft(
+      issue,
+      async () => {
+        throw new Error('Kit should not be called for a completed duplicate');
+      },
+      { KIT_API_KEY: 'kit-key', NEURALDRIFT_PUBLISHER_SECRET: 'secret' },
+      store
+    );
+    assert.strictEqual(duplicateResult.duplicate, true);
+  } finally {
+    capture.restore();
+  }
+  assert.strictEqual(result.created, true);
+  assert.strictEqual(result.status, 'draft');
+  const diagnosticCalls = capture.calls.filter((call) => call[0] === 'newsletter_broadcast_error');
+  assert.strictEqual(diagnosticCalls.length, 0, 'the happy path (including completed duplicates) must never log a diagnostic error entry');
+  console.log('34. Successful draft creation and completed-duplicate short-circuits never emit diagnostic error logs: PASS');
+}
+
+// 35. Draft creation continues to request a private, unscheduled draft only
+// (no send/schedule field is ever set), independent of the added logging.
+{
+  const issue = makeUniqueIssue('diag-no-send-schedule');
+  const store = makeMemoryStore();
+  let capturedBody = null;
+  await createKitBroadcastDraft(
+    issue,
+    async (_url, init) => {
+      capturedBody = JSON.parse(init.body);
+      return new Response(JSON.stringify({ id: 4242, status: 'draft' }), { status: 201 });
+    },
+    { KIT_API_KEY: 'kit-key', NEURALDRIFT_PUBLISHER_SECRET: 'secret' },
+    store
+  );
+  assert.strictEqual(capturedBody.public, false);
+  assert.strictEqual(capturedBody.send_at, null);
+  assert.ok(!('scheduled' in capturedBody));
+  assert.ok(!('send' in capturedBody));
+  console.log('35. The Kit request body continues to request a private, unscheduled draft only (no send/schedule field): PASS');
+}
+
 console.log('Broadcast publisher tests: PASS');
