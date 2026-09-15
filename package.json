@@ -16,7 +16,9 @@
     "test:multi-gpu": "node --require ./scripts/register-ts.cjs scripts/test-multi-gpu.mjs",
     "test:workflow-download": "node --require ./scripts/register-ts.cjs scripts/test-workflow-download.mjs",
     "test:newsletter": "node --require ./scripts/register-ts.cjs scripts/test-newsletter.mjs",
-    "test": "npm run test:compatibility && npm run test:multi-gpu && npm run test:runner && npm run test:workflow-download && npm run test:newsletter",
+    "test:broadcast": "node --require ./scripts/register-ts.cjs scripts/test-broadcast-publisher.mjs",
+    "newsletter:broadcast": "node --require ./scripts/register-ts.cjs scripts/publish-neuraldrift-weekly.mjs",
+    "test": "npm run test:compatibility && npm run test:multi-gpu && npm run test:runner && npm run test:workflow-download && npm run test:newsletter && npm run test:broadcast",
     "evidence:run": "node scripts/run-execution.mjs",
     "evidence:hardware": "node --require ./scripts/register-ts.cjs scripts/register-hardware.mjs",
     "test:runner": "node scripts/test-execution-runner.mjs"
