@@ -31,6 +31,7 @@ const SEARCHABLE_PAGES = [
   { name: "Hardware Hub", href: "/hardware", desc: "GPU capability overview" },
   { name: "Model Library", href: "/models", desc: "Browse available models" },
   { name: "Datasets", href: "/datasets", desc: "Community training data" },
+  { name: "NeuralDrift Weekly", href: "/newsletter", desc: "The weekly execution-tested newsletter" },
 ];
 
 // ─────────────────────────────────────────────────────────────────

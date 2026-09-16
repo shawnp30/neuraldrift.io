@@ -186,4 +186,16 @@ assert(privacySource.includes('email\r\n              address is never included'
 assert(!privacySource.includes('Beehiiv'));
 console.log('17. Analytics, client secrecy, config, privacy disclosure, and disabled UI: PASS');
 
+// newsletter_cta_view: fired from an IntersectionObserver, once per mount, with no email.
+const ctaViewEvent = [...componentSource.matchAll(/trackEvent\(ANALYTICS_EVENTS\.newsletterCtaView,\s*\{[^}]*\}/g)];
+assert.strictEqual(ctaViewEvent.length, 1, 'newsletter_cta_view must be tracked from exactly one call site');
+assert(!ctaViewEvent[0][0].includes('email'));
+assert(ctaViewEvent[0][0].includes('source_page') && ctaViewEvent[0][0].includes('source_component'));
+assert(componentSource.includes('new IntersectionObserver'), 'CTA view must use IntersectionObserver, not scroll/timer heuristics');
+assert(componentSource.includes('typeof IntersectionObserver === "undefined"'), 'must guard against SSR/unsupported environments');
+assert(componentSource.indexOf('ctaViewTracked.current = true') < componentSource.indexOf(ctaViewEvent[0][0]), 'the once-per-mount guard must be set before tracking fires');
+assert(componentSource.includes('observer.disconnect()'), 'observer must be torn down once the view is tracked (and on unmount)');
+assert(/}, \[\]\);/.test(componentSource), 'the IntersectionObserver effect must run once per mount, not on every rerender');
+console.log('18. newsletter_cta_view fires once via IntersectionObserver, SSR-safe, no PII: PASS');
+
 console.log('\n--- ALL NEWSLETTER TESTS PASSED ---');

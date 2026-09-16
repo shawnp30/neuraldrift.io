@@ -52,6 +52,9 @@ export default function TutorialsPage() {
         <p className="text-lg md:text-xl font-[500] text-[#8888a0] max-w-2xl mx-auto leading-relaxed">
           Premium video-led education for mastering generative AI, workflow architecture, and monetization strategies.
         </p>
+        <Link href="/newsletter" className="inline-block mt-6 text-sm text-[#7c6af7] hover:text-[#22d3ee] transition-colors font-mono">
+          Get NeuralDrift Weekly →
+        </Link>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 md:px-12 space-y-24">

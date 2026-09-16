@@ -65,6 +65,7 @@ export function Footer() {
             <h4 className="font-[family-name:var(--font-syne)] font-[600] text-[0.75rem] tracking-[0.06em] uppercase text-[#c8ccd8] mb-4">
               Project
             </h4>
+            <Link href="/newsletter" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">NeuralDrift Weekly</Link>
             <Link href="https://github.com/shawnp30/neuraldrift.io" target="_blank" rel="noopener noreferrer" className="block text-[0.8rem] text-[#a8b0c4] py-1.5 hover:text-[#22d3ee] transition-colors duration-200">GitHub</Link>
             <span className="block text-[0.8rem] text-[#7a8498] py-1.5 cursor-default" title="Coming soon">Discord</span>
           </div>

@@ -11,7 +11,14 @@ async function check(route, status = 200) {
   return { text: bytes.toString('utf8'), bytes, headers: response.headers };
 }
 try {
-  for (const route of ['/', '/workflows', '/compatibility', '/hardware/rtx-5080', '/robots.txt', '/sitemap.xml']) await check(route);
+  for (const route of ['/', '/workflows', '/compatibility', '/hardware/rtx-5080', '/robots.txt', '/newsletter', '/newsletter/comfyui-035-local-video-audio-tools']) await check(route);
+  const sitemapXml = (await check('/sitemap.xml')).text;
+  assert(sitemapXml.includes('<loc>https://neuraldrift.io/newsletter</loc>'), 'sitemap must list the newsletter hub');
+  assert(sitemapXml.includes('<loc>https://neuraldrift.io/newsletter/comfyui-035-local-video-audio-tools</loc>'), 'sitemap must list newsletter issue 1');
+  assert(!/preview\.vercel\.app|localhost|127\.0\.0\.1/.test(sitemapXml), 'sitemap must not contain preview/localhost URLs');
+  assert(!/<loc>https:\/\/neuraldrift\.io\/(api|admin|dashboard|auth)\//.test(sitemapXml), 'sitemap must not contain private/API routes');
+  const sitemapUrls = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);
+  assert.equal(sitemapUrls.length, new Set(sitemapUrls).size, 'sitemap must not contain duplicate URLs');
   await check('/workflows/999', 404);
   await check('/api/compatibility', 400);
   await check('/api/compatibility?workflow=999&gpu=rtx-5080', 404);

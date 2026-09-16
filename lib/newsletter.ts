@@ -7,6 +7,7 @@ export const NEWSLETTER_SOURCES = [
   "tutorials",
   "workflow_detail",
   "lab",
+  "newsletter",
   "unknown",
 ] as const;
 

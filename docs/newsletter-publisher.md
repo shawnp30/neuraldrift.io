@@ -88,6 +88,28 @@ The broadcast publisher requires the following server-side environment variables
 
 If any required variable is missing or the Supabase idempotency backend is unreachable, the publisher fails closed (returns a sanitized `503`/`unavailable` response) and never calls Kit.
 
+## Linking back to the site from an issue
+
+This publisher stores no issue content — the actual Kit broadcast HTML is
+composed outside this repo. When that HTML is written, any link that should
+be attributed back to this issue in GA4 (a "read online" link, a link to a
+workflow or guide mentioned in the issue, etc.) should be built with
+`buildNewsletterUrl()` from `lib/newsletter/utm.ts` rather than a hand-written
+query string, so every issue tags consistently:
+
+```ts
+import { buildNewsletterUrl } from "@/lib/newsletter/utm";
+
+buildNewsletterUrl(`/newsletter/${issue.slug}`, { issueNumber: issue.issueNumber, content: "read_online" });
+// https://neuraldrift.io/newsletter/<slug>?utm_source=neuraldrift_weekly&utm_medium=email&utm_campaign=issue_001&utm_content=read_online
+```
+
+`lib/newsletterIssues.ts` exports `newsletterIssueReadOnlineUrl(issue)` as a
+ready-made helper for the most common case — the "read this on the web" link
+pointing back to the issue's own page. Do not apply these UTM parameters to
+any on-site navigation link; they're only for links embedded in an actual sent
+issue.
+
 ## Security notes
 
 - `KIT_API_KEY` remains server-only.

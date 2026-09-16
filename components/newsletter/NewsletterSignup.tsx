@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import { ANALYTICS_EVENTS, trackEvent } from "@/lib/analytics";
 import type { NewsletterSource } from "@/lib/newsletter";
@@ -25,8 +25,31 @@ export function NewsletterSignup({ source, variant = "nd" }: { source: Newslette
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+  const containerRef = useRef<HTMLElement | null>(null);
+  const ctaViewTracked = useRef(false);
 
   const configured = process.env.NEXT_PUBLIC_NEWSLETTER_PROVIDER === "kit";
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (ctaViewTracked.current) return;
+        if (entries.some((entry) => entry.isIntersecting)) {
+          ctaViewTracked.current = true;
+          trackEvent(ANALYTICS_EVENTS.newsletterCtaView, { source_page: source, source_component: "NewsletterSignup" });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSubmit = async () => {
     if (status === "loading") return;
@@ -75,7 +98,7 @@ export function NewsletterSignup({ source, variant = "nd" }: { source: Newslette
 
   if (variant === "panel") {
     return (
-      <section className="rounded-3xl border border-[#2a2a30] bg-[#111113] p-8 md:p-12 text-center">
+      <section ref={containerRef} className="rounded-3xl border border-[#2a2a30] bg-[#111113] p-8 md:p-12 text-center">
         <p className="font-mono text-[10px] text-[#7c6af7] tracking-widest uppercase mb-4 font-[800]">{"// NeuralDrift Weekly"}</p>
         <h2 className="font-syne text-3xl md:text-4xl font-[900] text-white mb-4 tracking-tight">Get NeuralDrift Weekly</h2>
         <p className="text-[#8888a0] max-w-lg mx-auto leading-relaxed mb-8">{COPY}</p>
@@ -120,7 +143,7 @@ export function NewsletterSignup({ source, variant = "nd" }: { source: Newslette
   }
 
   return (
-    <aside className="nd-card nd-card-body" aria-labelledby={`newsletter-heading-${id}`}>
+    <aside ref={containerRef} className="nd-card nd-card-body" aria-labelledby={`newsletter-heading-${id}`}>
       <p className="nd-eyebrow">NEURALDRIFT WEEKLY</p>
       <h2 id={`newsletter-heading-${id}`}>Get NeuralDrift Weekly</h2>
       <p>{COPY}</p>

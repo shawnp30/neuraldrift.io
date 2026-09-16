@@ -179,6 +179,9 @@ export default function HomePage() {
     {/* 6. Newsletter */}
     <section className="nd-shell nd-section">
       <NewsletterSignup source="homepage" />
+      <p className="nd-subtle" style={{ textAlign: 'center', marginTop: '1rem' }}>
+        <Link className="nd-text-link" href="/newsletter">Read past issues of NeuralDrift Weekly →</Link>
+      </p>
     </section>
 
     {/* 7. Final Call to Action */}

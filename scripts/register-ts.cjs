@@ -8,7 +8,10 @@ registerHooks({
   resolve(specifier, context, next) {
     let url;
     if (specifier.startsWith('@/')) url = pathToFileURL(resolve(specifier.slice(2))).href;
-    else if (specifier.startsWith('.') && context.parentURL) url = new URL(specifier, context.parentURL).href;
+    // Skip node_modules: rewriting an extensionless relative require (e.g. gray-matter's
+    // internal `require('./lib/defaults')`) to an explicit file: URL bypasses Node's normal
+    // .js/.json extension resolution for that require, breaking otherwise-untouched packages.
+    else if (specifier.startsWith('.') && context.parentURL && !context.parentURL.includes('/node_modules/')) url = new URL(specifier, context.parentURL).href;
     if (url?.startsWith('file:') && !extname(fileURLToPath(url))) {
       for (const suffix of ['.ts', '.tsx', '/index.ts']) if (existsSync(fileURLToPath(url + suffix))) return next(url + suffix, context);
     }

@@ -34,6 +34,9 @@ export default function GuidesPage() {
             <Link className="nd-text-link" href="/workflows">
               Find a workflow →
             </Link>
+            <Link className="nd-text-link" href="/newsletter">
+              Get NeuralDrift Weekly →
+            </Link>
           </div>
         </header>
 
