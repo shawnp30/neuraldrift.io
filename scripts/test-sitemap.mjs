@@ -6,6 +6,7 @@ import { CATALOG, WORKFLOW_TESTS } from '../lib/catalog.ts';
 import { getGuides } from '../lib/guides.ts';
 import { TUTORIALS } from '../lib/tutorials.ts';
 import { NEWSLETTER_ISSUES } from '../lib/newsletterIssues.ts';
+import { TRACKED_MODELS } from '../lib/emergingModels.ts';
 import { SITE_URL } from '../lib/seo.ts';
 
 console.log('--- Running NeuralDrift Sitemap Coverage Tests ---');
@@ -46,7 +47,8 @@ for (const workflow of CATALOG) assert(urls.includes(`${SITE_URL}/workflows/${wo
 for (const guide of getGuides()) assert(urls.includes(`${SITE_URL}/guides/${guide.slug}`), `missing dynamic guide entry ${guide.slug}`);
 for (const tutorial of TUTORIALS) assert(urls.includes(`${SITE_URL}/tutorials/${tutorial.slug}`), `missing dynamic tutorial entry ${tutorial.slug}`);
 for (const issue of NEWSLETTER_ISSUES) assert(urls.includes(`${SITE_URL}/newsletter/${issue.slug}`), `missing newsletter issue entry ${issue.slug}`);
-console.log('5. All dynamic workflow, guide, tutorial, and newsletter issue entries present: PASS');
+for (const model of TRACKED_MODELS) assert(urls.includes(`${SITE_URL}/lab/${model.slug}`), `missing tracked-model Lab entry ${model.slug}`);
+console.log('5. All dynamic workflow, guide, tutorial, newsletter issue, and tracked-model entries present: PASS');
 
 const byUrl = new Map(entries.map(e => [e.url, e]));
 for (const workflow of CATALOG) {

@@ -79,7 +79,42 @@ const ISSUE_001: NewsletterIssue = {
   ],
 };
 
-export const NEWSLETTER_ISSUES: NewsletterIssue[] = [ISSUE_001];
+const ISSUE_002: NewsletterIssue = {
+  slug: "fasth3-8-step-v2-doesnt-fit-16gb-yet",
+  issueNumber: 2,
+  title: "FastH3 8-Step V2 Is Real — It Just Doesn't Fit a 16GB Card Yet",
+  subject: "FastH3 8-Step V2 Is Real - It Just Doesn't Fit a 16GB Card Yet",
+  description:
+    "We looked into FastVideo's new 8-step MiniMax H3 distillation for the RTX 5080 Lab. Here's what it actually requires, why it's not tested yet, and what to run instead today.",
+  publishedAt: "2026-09-16",
+  sections: [
+    {
+      heading: "FastH3 8-Step V2: documented, not tested",
+      status: "upstream",
+      statusLabel: "Upstream release — requirements documented, not execution-tested",
+      body: [
+        "FastVideo (Hao AI Lab @ UCSD) released FastH3 8-Step V2, an 8-transformer-pass distillation of MiniMax-H3 using data-free DMD2 distillation and VSA-H3 sparse attention. It's real, and we went through the official model card and sources in detail.",
+        "It's also a 35B-parameter BF16 model — roughly 70GB for the transformer weights alone — and it requires FastVideo's own VSA-H3 attention backend rather than a drop-in ComfyUI checkpoint. No consumer-VRAM quantization of this specific release exists yet. On the RTX 5080 Lab machine (16GB), that doesn't fit, so we haven't attempted a run. Full sourcing and the GPU compatibility matrix are on the Lab writeup below.",
+      ],
+    },
+    {
+      heading: "What it doesn't do, that base H3 does",
+      status: "upstream",
+      statusLabel: "Upstream claim — verified against the official model card",
+      body: [
+        "This release is text-to-video plus synchronized audio only. No image-to-video, no first/last-frame, no reference-to-video — base MiniMax-H3 supports all three and already has native ComfyUI support and official Comfy-Org templates. If you want synchronized video+audio generation working locally today, base H3 is the more complete starting point.",
+      ],
+    },
+  ],
+  relatedLinks: [
+    { label: "FastH3 8-Step V2 — full Lab writeup", href: "/lab/fasth3-8-step-v2" },
+    { label: "Setup guide: running FastH3 today", href: "/guides/fasth3-8-step-v2-comfyui" },
+    { label: "GPU compatibility methodology", href: "/compatibility" },
+    { label: "Cloud GPU options", href: "/gpu-guide" },
+  ],
+};
+
+export const NEWSLETTER_ISSUES: NewsletterIssue[] = [ISSUE_001, ISSUE_002];
 
 export function getNewsletterIssues(): NewsletterIssue[] {
   return [...NEWSLETTER_ISSUES].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
