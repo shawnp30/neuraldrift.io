@@ -32,8 +32,8 @@ const ISSUE_001: NewsletterIssue = {
   title: "ComfyUI 0.35 Lands — Plus New Local Video & Audio Tools",
   subject: "ComfyUI 0.35 Lands - Plus New Local Video & Audio Tools",
   description:
-    "ComfyUI 0.35 shipped upstream, our AnimateDiff and ACE-Step audio workflows stay current on RTX 5080, and three local video/audio projects worth watching.",
-  publishedAt: "2026-09-08",
+    "ComfyUI 0.35 shipped upstream, NeuralDrift has current RTX 5080 execution records for AnimateDiff and ACE-Step audio workflows, and three local video/audio projects are worth watching.",
+  publishedAt: "2026-09-15",
   sections: [
     {
       heading: "ComfyUI 0.35 landed upstream",
@@ -50,7 +50,7 @@ const ISSUE_001: NewsletterIssue = {
       statusLabel: "NeuralDrift-tested — RTX 5080, current evidence",
       body: [
         "Five AnimateDiff graphs in the catalog — ambient motion, loop-oriented, landscape drift, product rotation, and slow zoom — have current, successful execution records on an RTX 5080. These are the workflows behind this issue's \"local video tools\" claim; nothing here is a catalog estimate.",
-        "If you're VRAM-constrained, start with the ambient-motion or slow-zoom variants — they're the least demanding of the five to iterate on locally.",
+        "Each record lists the settings and environment used for its own run. Use those records to assess fit for your hardware rather than treating the five graphs as a VRAM ranking.",
       ],
     },
     {

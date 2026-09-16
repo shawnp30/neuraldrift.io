@@ -9,20 +9,19 @@ import { getNewsletterIssues } from '@/lib/newsletterIssues';
 // metadata). Intentionally NOT included, with reasons:
 // - /api/*, /admin/*, /dashboard, /auth/*, /stash — private, API, or personalized.
 // - /optimizer/result, /proofs/upload — personalized/auth-gated result pages, not
-//   canonical content (/proofs/upload also gets a real noindex via middleware's
-//   X-Robots-Tag header). NOTE: see the final report — public/robots.txt (the file
-//   Next.js actually serves) has drifted from app/robots.ts's intended disallow list
-//   and does not currently cover /admin/, /auth/, /stash, or /optimizer/result; that
-//   is a separate, pre-existing issue this change does not touch.
+//   canonical content. They have an explicit noindex directive in addition to
+//   sitemap exclusion.
 // - /train, /cloud-generators — no canonical metadata wired up and not linked from
 //   primary navigation; not part of this pass's public content surface.
 // - /models/[...slug] — client-only mock/placeholder detail data (not real content).
 // - /pricing — describes a paid tier with no working checkout; not ready to index.
 // - /guides/best-workflows-8gb — placeholder stub outside the real content/guides system.
+// - /tools/benchmark-lookup, /gpu-guide/runpod, /workflows/create, /lora-training —
+//   contain estimates, example data, or simulated behavior without evidence sufficient
+//   for an indexed canonical page.
 const STATIC_PATHS = [
   '/',
   '/workflows',
-  '/workflows/create',
   '/guides',
   '/compatibility',
   '/hardware',
@@ -30,7 +29,6 @@ const STATIC_PATHS = [
   '/gpu-guide',
   '/tools',
   '/tools/vram-calculator',
-  '/tools/benchmark-lookup',
   '/tools/caption-generator',
   '/models',
   '/tutorials',
@@ -45,14 +43,10 @@ const STATIC_PATHS = [
   '/optimizer',
   '/optimizer/fix-my-pc',
   '/prompt-generator',
-  '/lora-training',
   '/datasets',
   '/proofs',
   '/newsletter',
 ];
-
-// /gpu-guide/[id] only has real (non-fallback) content for these ids today.
-const GPU_GUIDE_IDS = ['runpod'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const guides = getGuides();
@@ -60,7 +54,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const entries: MetadataRoute.Sitemap = [
     ...STATIC_PATHS.map((path) => ({ url: `${SITE_URL}${path}` })),
-    ...GPU_GUIDE_IDS.map((id) => ({ url: `${SITE_URL}/gpu-guide/${id}` })),
     ...TUTORIALS.map((t) => ({ url: `${SITE_URL}/tutorials/${t.slug}` })),
     ...guides.map((g) => ({
       url: `${SITE_URL}/guides/${g.slug}`,

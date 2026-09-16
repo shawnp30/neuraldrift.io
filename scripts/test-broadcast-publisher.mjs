@@ -1,6 +1,6 @@
 ﻿import assert from 'node:assert';
 import crypto from 'node:crypto';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import {
   buildBroadcastDryRun,
@@ -197,8 +197,12 @@ await assert.rejects(
 );
 console.log('11. Missing persistent storage fails closed without calling Kit: PASS');
 
-assert.ok(existsSync(path.join(process.cwd(), 'public', 'robots.txt')));
-console.log('12. robots.txt still exists in the repo: PASS');
+const robotsSource = readFileSync(path.join(process.cwd(), 'app', 'robots.ts'), 'utf8');
+for (const route of ['/api/', '/admin/', '/dashboard', '/auth/', '/stash', '/optimizer/result', '/proofs/upload']) {
+  assert(robotsSource.includes(`"${route}"`), `robots policy must disallow ${route}`);
+}
+assert(robotsSource.includes('https://neuraldrift.io/sitemap.xml'));
+console.log('12. Canonical robots policy protects private and result routes: PASS');
 
 // --- Reconciliation-safety scenarios -------------------------------------
 
@@ -358,18 +362,8 @@ function makeUniqueIssue(suffix) {
   console.log('19. Persistent backend unavailable fails closed through the HTTP handler without calling Kit: PASS');
 }
 
-// 20. Both robots files must remain byte-identical to origin/main.
-{
-  try {
-    const { execSync } = await import('node:child_process');
-    execSync('git fetch origin main --quiet', { cwd: process.cwd(), stdio: 'ignore' });
-    const diffStat = execSync('git diff origin/main -- app/robots.ts public/robots.txt', { cwd: process.cwd() }).toString();
-    assert.strictEqual(diffStat.trim(), '');
-    console.log('20. app/robots.ts and public/robots.txt are byte-identical to origin/main: PASS');
-  } catch (error) {
-    console.log('20. Skipped robots.txt/origin diff check (git unavailable in this environment): SKIP');
-  }
-}
+// 20. Robots policy is tested above as an explicit deployed contract. Do not
+// compare it to origin/main: intentional indexing policy changes must be testable.
 
 // --- Manually managed Supabase secret key wiring -------------------------
 

@@ -21,18 +21,18 @@ assert.equal(urls.length, new Set(urls).size, 'sitemap must not contain duplicat
 console.log('2. No duplicate URLs: PASS');
 
 const REQUIRED_PATHS = [
-  '/', '/workflows', '/workflows/create', '/guides', '/compatibility', '/hardware',
-  '/hardware/rtx-5080', '/gpu-guide', '/gpu-guide/runpod', '/tools', '/tools/vram-calculator',
-  '/tools/benchmark-lookup', '/tools/caption-generator', '/models', '/tutorials', '/lab',
+  '/', '/workflows', '/guides', '/compatibility', '/hardware', '/hardware/rtx-5080',
+  '/gpu-guide', '/tools', '/tools/vram-calculator', '/tools/caption-generator', '/models',
+  '/tutorials', '/lab',
   '/about', '/glossary', '/privacy', '/terms', '/optimizer', '/optimizer/fix-my-pc',
-  '/prompt-generator', '/lora-training', '/datasets', '/proofs', '/newsletter',
+  '/prompt-generator', '/datasets', '/proofs', '/newsletter',
 ];
 for (const path of REQUIRED_PATHS) {
   assert(urls.includes(`${SITE_URL}${path}`), `sitemap is missing required public page: ${path}`);
 }
 console.log(`3. All ${REQUIRED_PATHS.length} required canonical pages present: PASS`);
 
-const FORBIDDEN_PREFIXES = ['/api/', '/admin/', '/dashboard', '/auth/', '/stash', '/optimizer/result', '/proofs/upload', '/train'];
+const FORBIDDEN_PREFIXES = ['/api/', '/admin/', '/dashboard', '/auth/', '/stash', '/optimizer/result', '/proofs/upload', '/train', '/workflows/create', '/tools/benchmark-lookup', '/gpu-guide/runpod', '/lora-training'];
 for (const prefix of FORBIDDEN_PREFIXES) {
   assert(!urls.some(url => url.startsWith(`${SITE_URL}${prefix}`)), `sitemap must not include private/API/result route: ${prefix}`);
 }

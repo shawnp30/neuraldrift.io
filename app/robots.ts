@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/admin/", "/dashboard", "/auth/", "/stash", "/optimizer/result"],
+        disallow: ["/api/", "/admin/", "/dashboard", "/auth/", "/stash", "/optimizer/result", "/proofs/upload"],
       },
     ],
     sitemap: "https://neuraldrift.io/sitemap.xml",
