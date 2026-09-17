@@ -4,6 +4,7 @@ import { getGuides } from '@/lib/guides';
 import { SITE_URL } from '@/lib/seo';
 import { TUTORIALS } from '@/lib/tutorials';
 import { getNewsletterIssues } from '@/lib/newsletterIssues';
+import { TRACKED_MODELS } from '@/lib/emergingModels';
 
 // Static, canonical public pages (each carries its own pageMeta()-based canonical/OG
 // metadata). Intentionally NOT included, with reasons:
@@ -67,6 +68,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE_URL}/newsletter/${issue.slug}`,
       lastModified: issue.publishedAt,
     })),
+    ...TRACKED_MODELS.map((model) => ({ url: `${SITE_URL}/lab/${model.slug}` })),
   ];
 
   const seen = new Set<string>();

@@ -32,6 +32,7 @@ const SEARCHABLE_PAGES = [
   { name: "Model Library", href: "/models", desc: "Browse available models" },
   { name: "Datasets", href: "/datasets", desc: "Community training data" },
   { name: "NeuralDrift Weekly", href: "/newsletter", desc: "The weekly execution-tested newsletter" },
+  { name: "FastH3 8-Step V2", href: "/lab/fasth3-8-step-v2", desc: "MiniMax H3 distilled video+audio model — tracked, not yet tested" },
 ];
 
 // ─────────────────────────────────────────────────────────────────

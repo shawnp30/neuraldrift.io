@@ -11,10 +11,12 @@ async function check(route, status = 200) {
   return { text: bytes.toString('utf8'), bytes, headers: response.headers };
 }
 try {
-  for (const route of ['/', '/workflows', '/compatibility', '/hardware/rtx-5080', '/robots.txt', '/newsletter', '/newsletter/comfyui-035-local-video-audio-tools']) await check(route);
+  for (const route of ['/', '/workflows', '/compatibility', '/hardware/rtx-5080', '/robots.txt', '/newsletter', '/newsletter/comfyui-035-local-video-audio-tools', '/newsletter/fasth3-8-step-v2-rtx-5080-status-unverified', '/lab', '/lab/fasth3-8-step-v2', '/guides/fasth3-8-step-v2-comfyui']) await check(route);
   const sitemapXml = (await check('/sitemap.xml')).text;
   assert(sitemapXml.includes('<loc>https://neuraldrift.io/newsletter</loc>'), 'sitemap must list the newsletter hub');
   assert(sitemapXml.includes('<loc>https://neuraldrift.io/newsletter/comfyui-035-local-video-audio-tools</loc>'), 'sitemap must list newsletter issue 1');
+  assert(sitemapXml.includes('<loc>https://neuraldrift.io/lab/fasth3-8-step-v2</loc>'), 'sitemap must list the FastH3 Lab writeup');
+  assert(sitemapXml.includes('<loc>https://neuraldrift.io/guides/fasth3-8-step-v2-comfyui</loc>'), 'sitemap must list the FastH3 guide');
   assert(!/preview\.vercel\.app|localhost|127\.0\.0\.1/.test(sitemapXml), 'sitemap must not contain preview/localhost URLs');
   assert(!/<loc>https:\/\/neuraldrift\.io\/(api|admin|dashboard|auth)\//.test(sitemapXml), 'sitemap must not contain private/API routes');
   const sitemapUrls = [...sitemapXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => m[1]);

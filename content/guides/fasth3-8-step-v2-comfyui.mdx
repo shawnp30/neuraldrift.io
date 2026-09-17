@@ -1,0 +1,124 @@
+---
+title: 'Running FastH3 8-Step V2 (MiniMax H3 Distilled) — Current Status'
+description: 'What current official FastVideo and ComfyUI sources document for FastH3 8-Step V2, and what NeuralDrift has not verified locally.'
+category: 'Setup'
+readTime: '9 min'
+difficulty: 'Advanced'
+featured: false
+tags: ['FastH3', 'MiniMax H3', 'FastVideo', 'video generation', 'ComfyUI']
+publishedAt: '2026-09-16'
+author: 'NeuralDrift'
+---
+
+# Running FastH3 8-Step V2 (MiniMax H3 Distilled) — Current Status
+
+This guide covers **FastVideo's FastH3 8-Step V2**, a distilled MiniMax-H3 model trained with
+data-free DMD2 distillation and VSA-H3 sparse attention. Its official FastVideo model card
+documents a VSA-H3 reference stack, while current official ComfyUI documentation also provides
+native text-to-video and image-to-video templates for a Comfy-Org-repacked version.
+
+NeuralDrift has reviewed those sources but has not installed or run either path on its RTX 5080
+Lab machine. There is no NeuralDrift measurement for FastH3 VRAM, generation time, A/V sync, or
+RTX 5080 compatibility. The approximately 70GB BF16 figure discussed below is an arithmetic
+weight-size estimate, **not** an official minimum-VRAM requirement.
+
+Full sourcing, the GPU compatibility matrix, and the base-H3 comparison table live on the
+[NeuralDrift Lab writeup](/lab/fasth3-8-step-v2) — this guide is the practical companion to
+that page.
+
+## Before you start: is this the model you actually want?
+
+There is more than one "fast MiniMax H3" project, and they are easy to confuse:
+
+- **FastH3 8-Step V2** (this guide) — built by FastVideo / Hao AI Lab @ UCSD. The original
+  FastVideo card documents text-to-audio-video with its VSA-H3 reference backend. Current
+  official ComfyUI documentation separately provides native text-to-video and image-to-video
+  templates with optional first/last-frame conditioning. Neither path has been run by
+  NeuralDrift.
+- **MiniMax H3 Turbo** — a separate project by the Lightx2v and ModelTC teams, distributed as
+  a LoRA on top of the existing base H3 checkpoint. Community reporting describes it running
+  with native ComfyUI support and no custom node required, including an 8-step
+  reference-to-video variant. NeuralDrift has not tested this either, but it is architecturally
+  a much smaller lift than FastH3 8-Step V2 — see [Related projects](#related-projects) below.
+
+If your goal is "the fastest thing I can actually get running in ComfyUI today," the Turbo LoRA
+is the more realistic starting point. If your goal is specifically FastVideo's FastH3 release,
+keep reading.
+
+## Current official integration paths
+
+There are two current upstream-documented paths:
+
+- **FastVideo reference stack:** The official model card requires FastVideo's VSA-H3 attention
+  backend and documents installation through `uv` using its CUDA 13 / Blackwell path. Its tested
+  defaults use four B200 datacenter GPUs. That is reference-environment documentation, not a
+  consumer-RTX compatibility result.
+- **Native ComfyUI templates:** Current [official ComfyUI FastH3 documentation](https://docs.comfy.org/tutorials/video/minimax/minimax-h3-fastvideo)
+  lists ComfyUI 0.36.0+, a Comfy-Org-repacked `FastVideo-FastH3-Comfy` diffusion model, shared
+  MiniMax H3 components, and text-to-video/image-to-video workflow templates. It does not state
+  a minimum GPU VRAM figure or make an RTX 5080 compatibility claim.
+
+Hugging Face metadata for the original FastVideo repository reports roughly 35B BF16 parameters.
+At two bytes per BF16 parameter, that is about **70GB of weight tensors**. This is a computed
+size estimate across the original repository's parameter metadata, **not** an official
+minimum-VRAM specification, a ComfyUI package-size statement, or a measured NeuralDrift result.
+The ComfyUI integration distributes a separately named pruned INT8 diffusion model, so its
+runtime memory requirement cannot be inferred from the BF16 arithmetic alone.
+
+## Current capability documentation
+
+The original FastVideo card describes text-to-audio-video and says FL2VA and Ref2VA were not
+distilled. The current official ComfyUI guide for its FastH3 integration describes text-to-video
+and image-to-video templates, including optional first/last-frame conditioning; it continues to
+exclude Ref2VA. NeuralDrift has not run either integration, so this is source documentation, not
+an independently verified capability or A/V-sync result.
+
+## What doesn't exist yet
+
+The earlier, separate **FastH3 4-Step Preview v1** has a community GGUF quantization
+([realrebelai/FastH3_GGUFs](https://huggingface.co/realrebelai/FastH3_GGUFs)). That community
+project is for the 4-step model, **not** this 8-Step V2 release. For the current 8-Step V2
+release, use the official ComfyUI templates or FastVideo reference instructions above. NeuralDrift
+has not independently verified their consumer-GPU memory behavior.
+
+## If you have the hardware to actually try it
+
+For the official ComfyUI route, begin with the
+[FastVideo FastH3 workflow examples](https://docs.comfy.org/tutorials/video/minimax/minimax-h3-fastvideo).
+For the FastVideo reference route, begin with its own repository and model card:
+
+- [FastVideo/FastVideo-FastH3-8-Step-V2 on Hugging Face](https://huggingface.co/FastVideo/FastVideo-FastH3-8-Step-V2)
+- [Hao AI Lab's FastH3 technical writeup](https://haoailab.com/blogs/fasth3-preview/)
+
+Follow the documented path that matches your route. NeuralDrift cannot yet recommend either
+path for a specific consumer GPU, because it has not installed or executed FastH3 locally.
+
+## What to run today instead
+
+**Base MiniMax-H3** already has native ComfyUI support and official Comfy-Org templates, and
+NeuralDrift's Lab machine already has the Ref2VA checkpoint installed locally. It supports
+reference-to-video, which current FastH3 documentation excludes. Start with the
+[official ComfyUI MiniMax H3 guide](https://docs.comfy.org/tutorials/video/minimax/minimax-h3)
+if you want synchronized video+audio generation working locally today.
+
+If you specifically want a local NVIDIA video+audio workflow that NeuralDrift has actually
+execution-tested end to end, the catalog's AnimateDiff and ACE-Step 1.5 audio workflows have
+current, successful RTX 5080 records — see [NeuralDrift Lab](/lab) for the full evidence index.
+
+## No local GPU with enough headroom?
+
+NeuralDrift's [cloud GPU hub](/gpu-guide) lists provider options if you want to evaluate
+larger-VRAM instances yourself. Treat any pricing shown there as the provider's own listed
+rate, not a NeuralDrift benchmark.
+
+## Related projects
+
+See the full writeup on the [NeuralDrift Lab page for FastH3 8-Step V2](/lab/fasth3-8-step-v2)
+for the complete source list, the GPU compatibility matrix (tested vs. upstream claim vs.
+community reported vs. unknown), and the field-by-field comparison against base MiniMax-H3.
+
+## NeuralDrift Lab status
+
+**Not tested.** NeuralDrift has reviewed FastH3 8-Step V2's official sources but has not
+downloaded its weights, installed either documented integration, or attempted a generation.
+This guide will be updated with real execution results only if that changes.

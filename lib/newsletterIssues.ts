@@ -79,7 +79,42 @@ const ISSUE_001: NewsletterIssue = {
   ],
 };
 
-export const NEWSLETTER_ISSUES: NewsletterIssue[] = [ISSUE_001];
+const ISSUE_002: NewsletterIssue = {
+  slug: "fasth3-8-step-v2-rtx-5080-status-unverified",
+  issueNumber: 2,
+  title: "FastH3 8-Step V2 Is Real — Its RTX 5080 Status Is Unverified",
+  subject: "FastH3 8-Step V2 Is Real - Its RTX 5080 Status Is Unverified",
+  description:
+    "We reviewed current official FastVideo and ComfyUI documentation for FastH3 8-Step V2. NeuralDrift has not tested it on the RTX 5080 Lab machine.",
+  publishedAt: "2026-09-16",
+  sections: [
+    {
+      heading: "FastH3 8-Step V2: documented, not tested",
+      status: "upstream",
+      statusLabel: "Upstream release — requirements documented, not execution-tested",
+      body: [
+          "FastVideo (Hao AI Lab @ UCSD) released FastH3 8-Step V2, an 8-transformer-forward MiniMax-H3 distillation using data-free DMD2 and VSA-H3 sparse attention. We reviewed the official FastVideo model card and the current official ComfyUI documentation in detail.",
+          "The original FastVideo repository reports roughly 35B BF16 parameters, which gives a roughly 70GB weight-size calculation. That calculation is not an official minimum-VRAM requirement or a NeuralDrift measurement. Current official ComfyUI documentation provides native FastH3 templates and a separately named pruned INT8 diffusion model, but does not state RTX 5080 compatibility or required VRAM. NeuralDrift has not attempted a run, so its local fit, generation time, and A/V sync remain unverified. Full sourcing and the GPU compatibility matrix are on the Lab writeup below.",
+      ],
+    },
+    {
+        heading: "What the current docs say compared with base H3",
+      status: "upstream",
+      statusLabel: "Upstream claim — verified against the official model card",
+      body: [
+          "Current official ComfyUI documentation lists FastH3 text-to-video and image-to-video templates with optional first/last-frame conditioning; it says Ref2VA was not distilled. Base MiniMax-H3 also supports reference-to-video and has its own native ComfyUI templates. These are upstream capability statements, not NeuralDrift execution results.",
+      ],
+    },
+  ],
+  relatedLinks: [
+    { label: "FastH3 8-Step V2 — full Lab writeup", href: "/lab/fasth3-8-step-v2" },
+    { label: "Setup guide: running FastH3 today", href: "/guides/fasth3-8-step-v2-comfyui" },
+    { label: "GPU compatibility methodology", href: "/compatibility" },
+    { label: "Cloud GPU options", href: "/gpu-guide" },
+  ],
+};
+
+export const NEWSLETTER_ISSUES: NewsletterIssue[] = [ISSUE_001, ISSUE_002];
 
 export function getNewsletterIssues(): NewsletterIssue[] {
   return [...NEWSLETTER_ISSUES].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
