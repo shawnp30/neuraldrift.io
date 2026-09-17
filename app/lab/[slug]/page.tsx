@@ -213,7 +213,7 @@ export default function TrackedModelPage({ params }: Props) {
 
         <section className="nd-card nd-card-body" aria-labelledby="cloud-option">
           <p className="nd-eyebrow">WANT TO RUN SOMETHING TODAY?</p>
-          <h2 id="cloud-option">This doesn&apos;t fit a 16GB card locally right now</h2>
+          <h2 id="cloud-option">Local consumer-GPU fit is not yet verified</h2>
           <p>
             If you have access to larger VRAM through a cloud GPU provider, that&apos;s currently the more
             realistic path to trying FastVideo&apos;s own reference stack. NeuralDrift&apos;s cloud GPU hub
