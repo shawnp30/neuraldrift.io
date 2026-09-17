@@ -87,11 +87,12 @@ export const FASTH3_8_STEP_V2: TrackedModel = {
       "MiniMax-H3 (MiniMaxAI) is NeuralDrift's existing base model coverage — a text/reference-to-video-with-audio model with native ComfyUI support (Comfy-Org/ComfyUI PR #15224) and official Comfy-Org workflow templates. FastH3 does not replace this coverage; it is tracked separately.",
   },
   capabilities: {
-    supported: ["Text-to-video", "Synchronized text-to-audio (native stereo audio in the same pass)"],
+    supported: [
+      "Text-to-video with synchronized audio (documented by FastVideo and ComfyUI)",
+      "Image-to-video with optional first/last-frame conditioning (documented by current official ComfyUI templates)",
+    ],
     notSupported: [
-      "Image-to-video — not trained for this release",
-      "First/last-frame conditioning — not trained for this release",
-      "Reference-to-video (identity/style/voice lock) — not trained for this release",
+      "Reference-to-video (identity/style/voice lock) — not distilled, per current official ComfyUI documentation",
     ],
   },
   distillation: {
@@ -101,18 +102,19 @@ export const FASTH3_8_STEP_V2: TrackedModel = {
     schedulerNote: "Video scheduler shift is 10 (base MiniMax-H3 uses 12) — the trained schedule loads from the checkpoint itself, it is not a manual setting to copy from base H3 workflows.",
   },
   requirements: {
-    attentionBackend: "FastVideo's own VSA-H3 attention backend",
+    attentionBackend:
+      "FastVideo's VSA-H3 backend for the upstream reference stack; ComfyUI's BlockSparseAttention node in the official FastH3 templates",
     approxWeightSize: "~70GB (computed, not an official figure)",
     approxWeightSizeBasis:
-      "The model card lists 35B parameters in BF16 (2 bytes/parameter) for the transformer alone — 35B × 2 bytes ≈ 70GB. FastVideo has not published an official minimum-VRAM figure, and this excludes the VAE, text encoder and audio components.",
-    comfyUiNative: false,
+      "Hugging Face metadata reports about 35B BF16 parameters across the original repository. Multiplying that count by 2 bytes estimates roughly 70GB of BF16 weight tensors; this is arithmetic, not an official minimum-VRAM figure or a NeuralDrift measurement. The official ComfyUI package uses a separately named pruned INT8 diffusion model plus shared components, and its documentation does not state a minimum GPU VRAM requirement.",
+    comfyUiNative: true,
     comfyUiNote:
-      "This is explicitly not a drop-in ComfyUI checkpoint. It requires FastVideo's VSA-H3 backend, which is separate from both stock ComfyUI attention implementations and from the unrelated community \"Patch Sage Attention\" / \"sol_attn\" nodes used for other MiniMax H3 speedups. No official Comfy-Org workflow template exists for it (confirmed against docs.comfy.org's MiniMax H3 guide, which does not mention FastH3).",
+      "Current official ComfyUI documentation provides FastVideo FastH3 8-Step V2 text-to-video and image-to-video templates, using the Comfy-Org-repacked FastVideo-FastH3-Comfy diffusion model and shared H3 components. This official integration has not been installed or run by NeuralDrift, so no local compatibility, VRAM, generation-time, or A/V-sync conclusion is implied.",
     dependencies: [
-      "FastVideo Python package + VSA-H3 CUDA kernels (uv package manager, per FastVideo's documented install path)",
-      "CUDA 13 toolchain (reference install path; this Lab's ComfyUI already runs PyTorch 2.13.0+cu130, so the CUDA runtime version is compatible)",
-      "NVIDIA Blackwell-class GPU (RTX 5080 is Blackwell) — reference deployment and speedup claims target NVIDIA B200 datacenter GPUs specifically",
-      "Reference multi-GPU sharding notes GPU count divisible by 53 attention heads; irrelevant for a single-GPU setup but signals the reference deployment is multi-GPU-first",
+      "ComfyUI 0.36.0 or later, the official FastH3 templates, the Comfy-Org-repacked FastH3 diffusion model, and shared MiniMax H3 text encoder and VAEs",
+      "Alternatively, FastVideo's own reference stack: FastVideo + VSA-H3 via uv using the documented CUDA 13 / Blackwell path",
+      "FastVideo's tested reference defaults use four NVIDIA B200 GPUs; this is not an RTX 5080 compatibility claim",
+      "The upstream multi-GPU guidance says the GPU count must divide H3's 56 attention heads; this is irrelevant to a single-GPU setup",
     ],
   },
   sources: [
@@ -120,32 +122,34 @@ export const FASTH3_8_STEP_V2: TrackedModel = {
     { label: "Hao AI Lab @ UCSD — FastH3 technical writeup", url: "https://haoailab.com/blogs/fasth3-preview/", kind: "official_blog" },
     { label: "MiniMaxAI/MiniMax-H3 (official base model)", url: "https://huggingface.co/MiniMaxAI/MiniMax-H3", kind: "official_model_card" },
     { label: "ComfyUI docs — MiniMax H3 video generation guide (base model; does not mention FastH3)", url: "https://docs.comfy.org/tutorials/video/minimax/minimax-h3", kind: "official_docs" },
+    { label: "ComfyUI docs — FastVideo FastH3 workflow examples", url: "https://docs.comfy.org/tutorials/video/minimax/minimax-h3-fastvideo", kind: "official_docs" },
+    { label: "Comfy-Org/FastVideo-FastH3-Comfy (official ComfyUI repack)", url: "https://huggingface.co/FastVideo/FastVideo-FastH3-Comfy", kind: "official_repo" },
     { label: "Comfy-Org/MiniMax-H3 (official base model files hosted for ComfyUI)", url: "https://huggingface.co/Comfy-Org/MiniMax-H3", kind: "official_repo" },
   ],
   gpuCompatibility: [
-    { label: "RTX 50-series (Blackwell) — incl. RTX 5080", basis: "upstream_claim", note: "FastVideo's speedup benchmarks target NVIDIA B200 (Blackwell datacenter). RTX 5080 shares the Blackwell architecture, but NeuralDrift has not installed the VSA-H3 backend or attempted a load on the RTX 5080 Lab machine." },
+    { label: "RTX 50-series (Blackwell) — incl. RTX 5080", basis: "unknown", note: "FastVideo's tested reference defaults use four B200 GPUs. The current official ComfyUI FastH3 guide does not make a per-GPU compatibility statement, and NeuralDrift has not installed or run FastH3 on the RTX 5080 Lab machine." },
     { label: "RTX 40-series (Ada Lovelace) / RTX 30-series (Ampere)", basis: "unknown", note: "No official or community report found confirming or ruling out VSA-H3 backend compatibility on non-Blackwell architectures." },
     { label: "AMD / Apple Silicon", basis: "unknown", note: "VSA-H3 is described as a CUDA-compiled backend; no ROCm or Metal/MPS port was found during source review." },
   ],
   comparisonToBase: [
-    { metric: "Transformer forward passes", baseValue: "20–50 (standard H3 sampling range)", trackedValue: "8", basis: "upstream_claim" },
+    { metric: "Transformer forward passes", baseValue: "Base H3 schedule", trackedValue: "8", basis: "upstream_claim" },
     { metric: "Attention sparsity", baseValue: "Dense", trackedValue: "80% sparse (VSA-H3, video-to-video only)", basis: "upstream_claim" },
-    { metric: "Capabilities", baseValue: "Text-to-video, image-to-video, first/last-frame, reference-to-video, audio sync", trackedValue: "Text-to-video + audio sync only", basis: "upstream_claim" },
+    { metric: "Capabilities", baseValue: "Text-to-video, image-to-video, first/last-frame, reference-to-video, audio sync", trackedValue: "Text-to-video and image-to-video with optional first/last-frame; no reference-to-video", basis: "upstream_claim" },
     { metric: "Generation time (RTX 5080)", baseValue: "No Evidence Yet", trackedValue: "No Evidence Yet", basis: "unknown" },
-    { metric: "Peak VRAM (RTX 5080)", baseValue: "No Evidence Yet", trackedValue: "Not Tested — documented weight size alone exceeds 16GB", basis: "unknown" },
+    { metric: "Peak VRAM (RTX 5080)", baseValue: "No Evidence Yet", trackedValue: "No Evidence Yet", basis: "unknown" },
     { metric: "Motion quality / fine detail", baseValue: "No Evidence Yet", trackedValue: "Below base H3 per the developers' own ablations (see Known limitations)", basis: "upstream_claim" },
     { metric: "Audio quality", baseValue: "No Evidence Yet", trackedValue: "May be below base H3 per the developers' own disclosure", basis: "upstream_claim" },
-    { metric: "Setup complexity", baseValue: "Native ComfyUI support, official Comfy-Org templates", trackedValue: "Requires a separate FastVideo/VSA-H3 backend install; no official ComfyUI template", basis: "upstream_claim" },
-    { metric: "RTX 5080 status", baseValue: "Base checkpoint (Ref2VA, quantized) already installed locally; not yet execution-tested by NeuralDrift", trackedValue: "Not installed; not tested", basis: "neuraldrift_tested" },
+    { metric: "Setup complexity", baseValue: "Native ComfyUI support, official Comfy-Org templates", trackedValue: "Official ComfyUI 0.36+ templates; FastVideo's alternate reference stack uses VSA-H3", basis: "upstream_claim" },
+    { metric: "RTX 5080 status", baseValue: "No FastH3 comparison run recorded", trackedValue: "Not tested", basis: "unknown" },
   ],
   limitations: [
     { text: "The developers explicitly disclose: \"Difficult motion, fine detail, and some audio may remain below the base MiniMax H3 model.\"", basis: "upstream_claim" },
-    { text: "No image-to-video, first/last-frame, or reference-to-video support in this release — base MiniMax-H3 supports all three.", basis: "upstream_claim" },
-    { text: "No official or community ComfyUI workflow template was found for this specific 8-Step V2 release at the time of writing — only the earlier, separate 4-Step Preview has a community (GGUF) ComfyUI path.", basis: "community_reported" },
-    { text: "No official minimum-VRAM figure has been published; NeuralDrift's own parameter-count math (see requirements) puts the transformer weights alone at roughly 4x the RTX 5080's 16GB VRAM.", basis: "neuraldrift_tested" },
+    { text: "Reference-to-video is not distilled for the official FastH3 ComfyUI integration; use base MiniMax-H3 workflows for reference-based generation.", basis: "upstream_claim" },
+    { text: "The current official ComfyUI templates have not been installed or executed by NeuralDrift. Their RTX 5080 compatibility, VRAM use, generation time, and A/V sync are unverified.", basis: "unknown" },
+    { text: "The approximately 70GB BF16 figure is a calculation from upstream parameter metadata, not an official minimum-VRAM requirement or a NeuralDrift measurement.", basis: "unknown" },
   ],
   neuralDriftLabStatus:
-    "NOT TESTED. NeuralDrift reviewed FastH3 8-Step V2's official sources and documented its requirements, but has not downloaded its weights, installed FastVideo's VSA-H3 backend, or attempted a generation on the RTX 5080 Lab machine (16GB VRAM). Based on the model's disclosed 35B-parameter BF16 size (~70GB), it does not currently fit that hardware by any documented method, and no consumer-VRAM-scale quantization of this specific release exists yet. This status will be updated only if NeuralDrift actually runs it.",
+    "NOT TESTED. NeuralDrift reviewed FastH3 8-Step V2's official FastVideo and ComfyUI sources, but has not downloaded its weights, installed either documented path, or attempted a generation on the RTX 5080 Lab machine. The roughly 70GB BF16 number is an arithmetic estimate for the original repository's reported parameter count, not a minimum-VRAM requirement. The official ComfyUI package uses a separately named pruned INT8 diffusion model, but NeuralDrift has not measured its total memory use or verified RTX 5080 compatibility. This status will be updated only after a real NeuralDrift execution.",
   relatedProjects: [
     {
       name: "MiniMax H3 Turbo (Lightx2v + ModelTC)",

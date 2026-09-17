@@ -80,12 +80,12 @@ const ISSUE_001: NewsletterIssue = {
 };
 
 const ISSUE_002: NewsletterIssue = {
-  slug: "fasth3-8-step-v2-doesnt-fit-16gb-yet",
+  slug: "fasth3-8-step-v2-rtx-5080-status-unverified",
   issueNumber: 2,
-  title: "FastH3 8-Step V2 Is Real — It Just Doesn't Fit a 16GB Card Yet",
-  subject: "FastH3 8-Step V2 Is Real - It Just Doesn't Fit a 16GB Card Yet",
+  title: "FastH3 8-Step V2 Is Real — Its RTX 5080 Status Is Unverified",
+  subject: "FastH3 8-Step V2 Is Real - Its RTX 5080 Status Is Unverified",
   description:
-    "We looked into FastVideo's new 8-step MiniMax H3 distillation for the RTX 5080 Lab. Here's what it actually requires, why it's not tested yet, and what to run instead today.",
+    "We reviewed current official FastVideo and ComfyUI documentation for FastH3 8-Step V2. NeuralDrift has not tested it on the RTX 5080 Lab machine.",
   publishedAt: "2026-09-16",
   sections: [
     {
@@ -93,16 +93,16 @@ const ISSUE_002: NewsletterIssue = {
       status: "upstream",
       statusLabel: "Upstream release — requirements documented, not execution-tested",
       body: [
-        "FastVideo (Hao AI Lab @ UCSD) released FastH3 8-Step V2, an 8-transformer-pass distillation of MiniMax-H3 using data-free DMD2 distillation and VSA-H3 sparse attention. It's real, and we went through the official model card and sources in detail.",
-        "It's also a 35B-parameter BF16 model — roughly 70GB for the transformer weights alone — and it requires FastVideo's own VSA-H3 attention backend rather than a drop-in ComfyUI checkpoint. No consumer-VRAM quantization of this specific release exists yet. On the RTX 5080 Lab machine (16GB), that doesn't fit, so we haven't attempted a run. Full sourcing and the GPU compatibility matrix are on the Lab writeup below.",
+          "FastVideo (Hao AI Lab @ UCSD) released FastH3 8-Step V2, an 8-transformer-forward MiniMax-H3 distillation using data-free DMD2 and VSA-H3 sparse attention. We reviewed the official FastVideo model card and the current official ComfyUI documentation in detail.",
+          "The original FastVideo repository reports roughly 35B BF16 parameters, which gives a roughly 70GB weight-size calculation. That calculation is not an official minimum-VRAM requirement or a NeuralDrift measurement. Current official ComfyUI documentation provides native FastH3 templates and a separately named pruned INT8 diffusion model, but does not state RTX 5080 compatibility or required VRAM. NeuralDrift has not attempted a run, so its local fit, generation time, and A/V sync remain unverified. Full sourcing and the GPU compatibility matrix are on the Lab writeup below.",
       ],
     },
     {
-      heading: "What it doesn't do, that base H3 does",
+        heading: "What the current docs say compared with base H3",
       status: "upstream",
       statusLabel: "Upstream claim — verified against the official model card",
       body: [
-        "This release is text-to-video plus synchronized audio only. No image-to-video, no first/last-frame, no reference-to-video — base MiniMax-H3 supports all three and already has native ComfyUI support and official Comfy-Org templates. If you want synchronized video+audio generation working locally today, base H3 is the more complete starting point.",
+          "Current official ComfyUI documentation lists FastH3 text-to-video and image-to-video templates with optional first/last-frame conditioning; it says Ref2VA was not distilled. Base MiniMax-H3 also supports reference-to-video and has its own native ComfyUI templates. These are upstream capability statements, not NeuralDrift execution results.",
       ],
     },
   ],
