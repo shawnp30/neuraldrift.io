@@ -1,0 +1,17 @@
+{
+  "fullOutput": "```json\n{\n  \"parameters_b\": 14800000000,\n  \"bytes_per_param\": 2,\n  \"weights_gb\": 29600.0,\n  \"kv_overhead_gb\": 1.25,\n  \"total_vram_gb\": 29711.25,\n  \"fits_16gb_gpu\": false\n}\n```",
+  "metrics": {
+    "ttftMs": 66.82,
+    "promptTokens": 143,
+    "promptProcessingMs": 66.82,
+    "promptTokensPerSec": 2140.19,
+    "generationTokens": 89,
+    "generationMs": 955.73,
+    "generationTokensPerSec": 93.12,
+    "totalTokens": 232,
+    "totalExecutionTimeMs": 1022.54,
+    "peakVramBytes": 11347689472,
+    "peakRamBytes": null,
+    "gpuUtilizationPct": 2
+  }
+}

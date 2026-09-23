@@ -1,0 +1,102 @@
+---
+title: 'NeuralDrift Local AI Benchmark Methodology'
+description: 'How NeuralDrift measures real local AI workloads, distinguishes raw inference from agent execution, captures hardware telemetry, and enforces reproducible fingerprints.'
+category: 'Performance'
+readTime: '11 min'
+difficulty: 'Intermediate'
+featured: true
+tags: ['benchmarks', 'local AI', 'methodology', 'RTX 5080', 'LM Studio', 'Ollama', 'tool calling']
+publishedAt: '2026-09-17'
+author: 'NeuralDrift'
+---
+
+# NeuralDrift Local AI Benchmark Methodology
+
+Most local AI benchmarks report a single number: **tokens per second (tok/s)**. In real-world local AI deployments—whether running an autonomous coding agent, an on-device function-calling workflow, or a local Retrieval-Augmented Generation (RAG) assistant—tokens per second alone frequently fails to predict which system actually finishes work faster.
+
+Inspired by modern workload-centric benchmarking standards (such as the edge-agent and RAG directions introduced in MLPerf Inference v6.1), the **NeuralDrift Local AI Benchmark Framework** evaluates real, multi-stage local workloads while strictly separating raw inference throughput from end-to-end task execution.
+
+> **Methodological Boundary & Disclosure**: NeuralDrift benchmarks are independent **NeuralDrift Lab workload benchmarks**. While we adopt rigorous edge-agent and RAG testing concepts from industry standards, NeuralDrift benchmarks are not official MLCommons MLPerf benchmarks, nor does NeuralDrift claim MLPerf compliance or certification.
+
+---
+
+## 1. The Two Benchmark Paradigms
+
+NeuralDrift never collapses multi-dimensional performance into a single misleading composite score. We measure two separate paradigms:
+
+### Paradigm A: Raw Inference Benchmarks
+Measures the underlying model and runtime execution speed in isolation:
+- **Time to First Token (TTFT)**: The latency from prompt transmission until the first generation token is emitted. Captures prompt prefill efficiency and context processing.
+- **Prompt Processing Throughput (prompt tok/s)**: The rate at which prompt tokens are ingested into the key-value (KV) cache.
+- **Generation Throughput (gen tok/s)**: The sustained token generation speed during auto-regressive decoding.
+- **Model Load Latency**: Wall-clock time required to load weights from disk into active VRAM.
+- **Peak Hardware Telemetry**: Maximum dedicated VRAM allocation, system RAM, and GPU compute utilization during the run.
+
+### Paradigm B: End-to-End Workload Benchmarks
+Measures whether the local AI system completes useful work under real-world task constraints:
+- **Task Completion Time**: Total elapsed duration from user prompt until verified task delivery.
+- **Tool Selection & Invocations**: Total tool calls attempted, valid tool calls, and syntax errors.
+- **Tool Call Latency**: Elapsed time between the model emitting a tool invocation, local execution resolving, and the result returning to context.
+- **Retries & Recovery**: Number of correction turns required when an argument schema fails.
+- **Final Task Success**: Objective validator confirming whether the output achieved the stated goal.
+
+---
+
+## 2. Standardized Workload Suite
+
+NeuralDrift version-controls all workloads to guarantee historical reproducibility:
+
+| Workload ID | Version | Paradigm | Target Evaluation | Primary Validator |
+| :--- | :--- | :--- | :--- | :--- |
+| **ND-LLM-001** | v1.0 | Raw Inference | Deterministic generation, TTFT, prompt & decoding throughput | `json_schema` |
+| **ND-AGENT-001** | v1.0 | Workload | Single-turn agent tool selection, argument accuracy, tool latency | `tool_call` |
+| **ND-RAG-001** | v1.0 | Workload | Targeted local corpus retrieval, factual accuracy, anti-hallucination | `contains_all` |
+| **ND-AGENT-002** | v1.0 | Workload | Multi-step reasoning, sequential tool chaining, self-verification | `tool_call` |
+
+Future extensions expand this suite into **Creator Workloads** (image synthesis steps, video generation via MiniMax H3 / FastH3, ComfyUI graph execution) and **Multi-Machine / Hybrid** inference.
+
+---
+
+## 3. Hardware Profiles & Environmental Capture
+
+A benchmark is only as trustworthy as the exact environment that generated it. NeuralDrift captures hardware telemetry programmatically at execution time:
+- **GPU Architecture**: Name, microarchitecture (e.g. Blackwell, Ada Lovelace, RDNA3), core count, and form factor.
+- **Memory Subsystem**: Dedicated physical VRAM (bytes) and total installed system RAM.
+- **Driver & Compute Stack**: NVIDIA display driver, CUDA user-mode driver (UMD), ROCm version, and operating system build.
+- **Runtime Stack**: Execution engine (LM Studio, Ollama, llama.cpp, vLLM, OpenVINO) and runtime version.
+
+Our primary local testbench operates an **NVIDIA GeForce RTX 5080 (16GB GDDR7 VRAM on a 256-bit bus)** paired with an **AMD Ryzen 9 9950X3D CPU** and **64 GB DDR5 memory**.
+
+---
+
+## 4. Deterministic Configuration Fingerprinting
+
+To prevent unscientific comparisons between runs with differing variables, every execution generates a deterministic SHA-256 **Configuration Fingerprint**:
+
+$$\text{Fingerprint} = \text{SHA256}(\text{canonical}(\text{model} + \text{quantization} + \text{runtime} + \text{runtimeVersion} + \text{gpu} + \text{driver} + \text{workloadVersion}))$$
+
+NeuralDrift's comparison engine validates this fingerprint. Two runs that differ in workload version or sampling parameters are marked **Incomparable** or flagged with **Material Configuration Warnings**.
+
+---
+
+## 5. Objective Validation Over Subjective Review
+
+Human "looks good to me" scoring introduces variance and bias. NeuralDrift workloads enforce automated, objective validation methods:
+1. **JSON Schema Enforcement**: Strict validation of required keys, types, and values.
+2. **Tool Call Assertions**: Verification that the model selected the exact required tool name and passed valid strongly typed parameters.
+3. **Factual String Assertions**: Exact or token-containment verification on known reference solutions.
+4. **Failure Transparency**: When a model hallucinates, fails tool schema parsing, or exceeds memory limits, the run is immutably logged as **FAIL** or **ERROR**. Failures are never hidden or substituted with synthetic passes.
+
+---
+
+## 6. The Evidence Hierarchy
+
+Every claim in the NeuralDrift catalog and Lab sits on an explicit evidence tier:
+1. **Upstream Claim**: Published specification or model card claim.
+2. **Community Result**: External report from a credible source without local reproduction.
+3. **NeuralDrift Documented**: Architectural requirements and dependencies reviewed by NeuralDrift.
+4. **NeuralDrift Execution Tested**: Installed and executed successfully on Lab hardware.
+5. **NeuralDrift Benchmarked**: Executed under versioned workload protocols with recorded telemetry and raw trace evidence.
+6. **NeuralDrift Verified**: Current, hash-matched, reproducible execution meeting top-tier standards.
+
+Review live benchmark records and compare runs directly in the [NeuralDrift Lab](/lab).

@@ -1,0 +1,76 @@
+{
+  "id": "run-2026-09-17T13-28-06-342Z-nd-agent-001-qwen2_5_1-coder-7b-instruct-rtx-5080-61910625",
+  "workloadId": "ND-AGENT-001",
+  "workloadVersion": "1.0.0",
+  "paradigm": "workload",
+  "category": "tool_use",
+  "timestamp": "2026-09-17T13:28:07.003Z",
+  "benchmarkVersion": "1.0.0",
+  "evidenceLevel": "neuraldrift_benchmarked",
+  "outcome": "PASS",
+  "model": {
+    "provider": "Qwen",
+    "modelId": "qwen2.5.1-coder-7b-instruct",
+    "displayName": "qwen2.5.1-coder-7b-instruct",
+    "parameterSize": "7B",
+    "architecture": "Qwen2",
+    "quantization": "GGUF / Q4_K_M",
+    "contextLength": 32768
+  },
+  "runtime": {
+    "runtime": "lm_studio",
+    "runtimeVersion": "0.3.9",
+    "backend": "cuda",
+    "backendVersion": "CUDA 13.4",
+    "endpoint": "http://127.0.0.1:1234"
+  },
+  "hardware": {
+    "id": "local-rtx-5080",
+    "gpuName": "NVIDIA GeForce RTX 5080",
+    "gpuArch": "Blackwell",
+    "gpuCount": 1,
+    "vramBytes": 17094934528,
+    "systemRamBytes": 66185273344,
+    "cpuModel": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+    "formFactor": "desktop",
+    "isCloud": false
+  },
+  "software": {
+    "os": "win32 10.0.26200",
+    "driverVersion": "616.92",
+    "cudaVersion": "13.4",
+    "pythonVersion": "3.11"
+  },
+  "configFingerprint": "6b3f1ce29db8cc1abf3b4a381de01901eea5b6024f5e1e430dc89f24205a5629",
+  "rawInferenceMetrics": null,
+  "workloadMetrics": {
+    "taskCompletionTimeMs": 660.15,
+    "totalExecutionTimeMs": 660.15,
+    "totalTokens": 393,
+    "toolCallsCount": 1,
+    "successfulToolCalls": 1,
+    "failedToolCalls": 0,
+    "retriesCount": 0,
+    "toolCallLatencyMs": 0.01,
+    "finalTaskSuccess": true,
+    "peakVramBytes": 11346640896,
+    "peakRamBytes": null,
+    "gpuUtilizationPct": 1
+  },
+  "validation": {
+    "passed": true,
+    "validator": "tool_call",
+    "actualOutput": "{\"name\":\"compute_memory_bandwidth\",\"arguments\":{\"busWidthBits\":256,\"memorySpeedGbps\":28},\"result\":{\"bandwidthGbps\":896,\"busWidthBits\":256,\"memorySpeedGbps\":28},\"latencyMs\":0.01,\"success\":true}",
+    "expectedOutput": {
+      "toolName": "compute_memory_bandwidth",
+      "arguments": {
+        "busWidthBits": 256,
+        "memorySpeedGbps": 28
+      },
+      "expectedComputedResult": 896
+    },
+    "details": "Successfully verified tool call \"compute_memory_bandwidth\"."
+  },
+  "rawEvidenceUrl": "/benchmark-evidence/run-2026-09-17T13-28-06-342Z-nd-agent-001-qwen2_5_1-coder-7b-instruct-rtx-5080-61910625/record.json",
+  "logsSummary": "Executed ND-AGENT-001 on NVIDIA GeForce RTX 5080 via lm_studio."
+}

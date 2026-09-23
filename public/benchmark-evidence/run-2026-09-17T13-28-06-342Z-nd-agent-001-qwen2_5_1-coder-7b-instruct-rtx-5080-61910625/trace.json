@@ -1,0 +1,57 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful local assistant with access to local system diagnostic tools. When asked to perform calculations or hardware checks, you must use the provided tools."
+    },
+    {
+      "role": "user",
+      "content": "What is the effective memory bandwidth in GB/s for a GPU featuring a 256-bit memory bus width running GDDR7 memory at 28 Gbps? Use the compute_memory_bandwidth tool to compute this."
+    }
+  ],
+  "initialResponse": {
+    "id": "chatcmpl-bjjv31a8vgujz80e98igs",
+    "object": "chat.completion",
+    "created": 1789651686,
+    "model": "qwen2.5.1-coder-7b-instruct",
+    "choices": [
+      {
+        "index": 0,
+        "message": {
+          "role": "assistant",
+          "content": "<tools>\n{\"name\": \"compute_memory_bandwidth\", \"arguments\": {\"busWidthBits\": 256, \"memorySpeedGbps\": 28}}\n</tools>",
+          "reasoning_content": "",
+          "tool_calls": []
+        },
+        "logprobs": null,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 354,
+      "completion_tokens": 39,
+      "total_tokens": 393,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "stats": {},
+    "system_fingerprint": "qwen2.5.1-coder-7b-instruct"
+  },
+  "toolExecutions": [
+    {
+      "name": "compute_memory_bandwidth",
+      "arguments": {
+        "busWidthBits": 256,
+        "memorySpeedGbps": 28
+      },
+      "result": {
+        "bandwidthGbps": 896,
+        "busWidthBits": 256,
+        "memorySpeedGbps": 28
+      },
+      "latencyMs": 0.01,
+      "success": true
+    }
+  ]
+}
