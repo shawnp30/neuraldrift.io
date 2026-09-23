@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { CATALOG, WORKFLOW_TESTS } from '@/lib/catalog';
-import { getGuides } from '@/lib/guides';
+import { getIndexableGuides } from '@/lib/guides';
 import { SITE_URL } from '@/lib/seo';
 import { TUTORIALS } from '@/lib/tutorials';
 import { getNewsletterIssues } from '@/lib/newsletterIssues';
 import { TRACKED_MODELS } from '@/lib/emergingModels';
+import { getAllBenchmarks } from '@/lib/benchmarks/registry';
 
 // Static, canonical public pages (each carries its own pageMeta()-based canonical/OG
 // metadata). Intentionally NOT included, with reasons:
@@ -31,11 +32,11 @@ const STATIC_PATHS = [
   '/tools',
   '/tools/vram-calculator',
   '/tools/caption-generator',
-  '/models',
   '/tutorials',
   '/tutorials/stable-diffusion-basics',
   '/tutorials/monetizing-comfyui',
   '/lab',
+  '/lab/compare',
   '/about',
   '/glossary',
   '/privacy',
@@ -44,13 +45,12 @@ const STATIC_PATHS = [
   '/optimizer',
   '/optimizer/fix-my-pc',
   '/prompt-generator',
-  '/datasets',
   '/proofs',
   '/newsletter',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const guides = getGuides();
+  const guides = getIndexableGuides();
   const newsletterIssues = getNewsletterIssues();
 
   const entries: MetadataRoute.Sitemap = [
@@ -69,6 +69,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: issue.publishedAt,
     })),
     ...TRACKED_MODELS.map((model) => ({ url: `${SITE_URL}/lab/${model.slug}` })),
+    ...getAllBenchmarks().map((benchmark) => ({
+      url: `${SITE_URL}/lab/benchmarks/${benchmark.id}`,
+      lastModified: benchmark.timestamp.slice(0, 10),
+    })),
   ];
 
   const seen = new Set<string>();

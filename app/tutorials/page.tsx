@@ -6,7 +6,7 @@ import { PlayCircle, FileText, ArrowRight, DollarSign, Workflow, Clock, Filter, 
 
 import { DynamicCTA } from "@/components/DynamicCTA";
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
-import { TUTORIALS, tutorialDurationIso } from "@/lib/tutorials";
+import { TUTORIALS } from "@/lib/tutorials";
 
 const CATEGORIES = ["All", "Beginner", "Masterclass", "Technical Guide", "Creative", "Advanced"] as const;
 
@@ -20,26 +20,6 @@ export default function TutorialsPage() {
   return (
     <div className="min-h-screen bg-transparent text-slate-50 pt-32 pb-24 font-sans selection:bg-transparent/30">
 
-      {/* SEO STRUCTURED DATA */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ItemList",
-            "itemListElement": TUTORIALS.map((v, i) => ({
-              "@type": "VideoObject",
-              "position": i + 1,
-              "name": v.title,
-              "description": v.description,
-              "thumbnailUrl": `https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`,
-              ...(tutorialDurationIso(v.duration) ? { "duration": tutorialDurationIso(v.duration) } : {}),
-              "embedUrl": `https://www.youtube.com/embed/${v.videoId}`
-            }))
-          })
-        }}
-      />
-
       {/* ── HEADER ── */}
       <div className="max-w-4xl mx-auto px-6 md:px-12 mb-20 text-center relative z-10">
         <div className="inline-flex items-center justify-center p-4 bg-[#7c6af7]/10 border border-[#7c6af7]/20 rounded-2xl mb-6 shadow-[0_0_30px_rgba(124,106,247,0.15)] text-[#7c6af7]">
@@ -50,7 +30,7 @@ export default function TutorialsPage() {
           ACADEMY <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7c6af7] to-[#22d3ee]">MASTERCLASS.</span>
         </h1>
         <p className="text-lg md:text-xl font-[500] text-[#8888a0] max-w-2xl mx-auto leading-relaxed">
-          Premium video-led education for mastering generative AI, workflow architecture, and monetization strategies.
+          Curated video-led learning resources for generative AI, workflow architecture, and practical ComfyUI use.
         </p>
         <Link href="/newsletter" className="inline-block mt-6 text-sm text-[#7c6af7] hover:text-[#22d3ee] transition-colors font-mono">
           Get NeuralDrift Weekly →
@@ -63,7 +43,7 @@ export default function TutorialsPage() {
         <section>
           <div className="flex items-center gap-4 mb-10 pb-4 border-b border-white/5">
             <h2 className="text-2xl md:text-3xl font-[800] text-white flex items-center gap-3">
-              <PlayCircle className="w-7 h-7 text-indigo-400" /> Premium Video Suite
+              <PlayCircle className="w-7 h-7 text-indigo-400" /> Curated Video Resources
             </h2>
             <span className="px-3 py-1 bg-indigo-500/10 text-indigo-400 text-xs font-[800] tracking-widest uppercase rounded-full border border-indigo-500/20">
               {filteredVideos.length} Videos

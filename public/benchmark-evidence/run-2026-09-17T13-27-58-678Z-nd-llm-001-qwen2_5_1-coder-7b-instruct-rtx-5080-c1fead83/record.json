@@ -1,0 +1,81 @@
+{
+  "id": "run-2026-09-17T13-27-58-678Z-nd-llm-001-qwen2_5_1-coder-7b-instruct-rtx-5080-c1fead83",
+  "workloadId": "ND-LLM-001",
+  "workloadVersion": "1.0.0",
+  "paradigm": "raw_inference",
+  "category": "generation",
+  "timestamp": "2026-09-17T13:27:59.702Z",
+  "benchmarkVersion": "1.0.0",
+  "evidenceLevel": "neuraldrift_benchmarked",
+  "outcome": "PASS",
+  "model": {
+    "provider": "Qwen",
+    "modelId": "qwen2.5.1-coder-7b-instruct",
+    "displayName": "qwen2.5.1-coder-7b-instruct",
+    "parameterSize": "7B",
+    "architecture": "Qwen2",
+    "quantization": "GGUF / Q4_K_M",
+    "contextLength": 32768
+  },
+  "runtime": {
+    "runtime": "lm_studio",
+    "runtimeVersion": "0.3.9",
+    "backend": "cuda",
+    "backendVersion": "CUDA 13.4",
+    "endpoint": "http://127.0.0.1:1234"
+  },
+  "hardware": {
+    "id": "local-rtx-5080",
+    "gpuName": "NVIDIA GeForce RTX 5080",
+    "gpuArch": "Blackwell",
+    "gpuCount": 1,
+    "vramBytes": 17094934528,
+    "systemRamBytes": 66185273344,
+    "cpuModel": "AMD Ryzen 9 9950X3D 16-Core Processor          ",
+    "formFactor": "desktop",
+    "isCloud": false
+  },
+  "software": {
+    "os": "win32 10.0.26200",
+    "driverVersion": "616.92",
+    "cudaVersion": "13.4",
+    "pythonVersion": "3.11"
+  },
+  "configFingerprint": "108fb295b3130c072e3126b845837ae53cd1638d7960a88a7299c96232d1f552",
+  "rawInferenceMetrics": {
+    "ttftMs": 66.82,
+    "promptTokens": 143,
+    "promptProcessingMs": 66.82,
+    "promptTokensPerSec": 2140.19,
+    "generationTokens": 89,
+    "generationMs": 955.73,
+    "generationTokensPerSec": 93.12,
+    "totalTokens": 232,
+    "totalExecutionTimeMs": 1022.54,
+    "peakVramBytes": 11347689472,
+    "peakRamBytes": null,
+    "gpuUtilizationPct": 2
+  },
+  "workloadMetrics": null,
+  "validation": {
+    "passed": true,
+    "validator": "json_schema",
+    "actualOutput": "{\n  \"parameters_b\": 14800000000,\n  \"bytes_per_param\": 2,\n  \"weights_gb\": 29600.0,\n  \"kv_overhead_gb\": 1.25,\n  \"total_vram_gb\": 29711.25,\n  \"fits_16gb_gpu\": false\n}",
+    "expectedOutput": {
+      "required": [
+        "parameters_b",
+        "bytes_per_param",
+        "weights_gb",
+        "kv_overhead_gb",
+        "total_vram_gb",
+        "fits_16gb_gpu"
+      ],
+      "expectedValues": {
+        "fits_16gb_gpu": false
+      }
+    },
+    "details": "All required JSON keys and values matched."
+  },
+  "rawEvidenceUrl": "/benchmark-evidence/run-2026-09-17T13-27-58-678Z-nd-llm-001-qwen2_5_1-coder-7b-instruct-rtx-5080-c1fead83/record.json",
+  "logsSummary": "Executed ND-LLM-001 on NVIDIA GeForce RTX 5080 via lm_studio."
+}

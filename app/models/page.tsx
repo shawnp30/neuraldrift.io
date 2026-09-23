@@ -208,10 +208,10 @@ export default function ModelsHubPage() {
                 </div>
 
                 <Link
-                  href="/community/requests"
+                  href="/models"
                   className="inline-flex items-center gap-2 rounded-xl bg-accent px-8 py-4 text-xs font-bold uppercase tracking-widest text-black shadow-[0_0_20px_rgba(0,229,255,0.3)] transition-all hover:scale-105 active:scale-95"
                 >
-                  Request a Model
+                  Browse Models
                   <Zap className="h-4 w-4" />
                 </Link>
               </div>

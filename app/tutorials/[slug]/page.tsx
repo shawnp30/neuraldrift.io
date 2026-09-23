@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CATALOG } from "@/lib/catalog";
 import { pageMeta } from "@/lib/seo";
-import { TUTORIALS, tutorialDurationIso } from "@/lib/tutorials";
+import { TUTORIALS } from "@/lib/tutorials";
 import { RelatedContent } from "@/components/RelatedContent";
 import { getRelatedGuides, getRelatedWorkflows } from "@/lib/relationships";
 
@@ -27,20 +27,8 @@ export default function TutorialPage({ params }: { params: { slug: string } }) {
   }).slice(0, 3);
   const relatedGuides = getRelatedGuides(tutorial);
   const relatedWorkflows = getRelatedWorkflows(tutorial);
-  const videoObject = {
-    "@context": "https://schema.org",
-    "@type": "VideoObject",
-    name: tutorial.title,
-    description: tutorial.description,
-    thumbnailUrl: `https://img.youtube.com/vi/${tutorial.videoId}/maxresdefault.jpg`,
-    ...(tutorialDurationIso(tutorial.duration) ? { duration: tutorialDurationIso(tutorial.duration) } : {}),
-    embedUrl: `https://www.youtube.com/embed/${tutorial.videoId}`,
-    isPartOf: { "@type": "WebSite", name: "NeuralDrift", url: "https://neuraldrift.io" },
-  };
-
   return (
     <article className="nd-site">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoObject) }} />
       <div className="nd-shell nd-page">
         <Link className="nd-text-link" href="/tutorials">← All tutorials</Link>
         <header className="nd-section">

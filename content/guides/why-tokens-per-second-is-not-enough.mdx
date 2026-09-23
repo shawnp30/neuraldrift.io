@@ -1,0 +1,73 @@
+---
+title: 'Why Tokens Per Second Doesn’t Tell You Which Local AI Setup Is Faster'
+description: 'Why raw generation throughput masks prompt ingestion latency, tool-calling overhead, and agentic failure modes on local GPU setups.'
+category: 'Performance'
+readTime: '8 min'
+difficulty: 'Beginner'
+featured: false
+tags: ['benchmarks', 'tokens per second', 'TTFT', 'agents', 'hardware', 'RTX 5080', 'local AI']
+publishedAt: '2026-09-17'
+author: 'NeuralDrift'
+---
+
+# Why Tokens Per Second Doesn’t Tell You Which Local AI Setup Is Faster
+
+When shopping for GPU hardware or choosing between local inference runtimes like LM Studio, Ollama, and llama.cpp, token generation speed—measured in tokens per second (tok/s)—is almost universally cited as the gold standard of performance.
+
+A review might claim: *"Runtime A hits 110 tok/s, while Runtime B only hits 85 tok/s; therefore Runtime A is 30% faster."*
+
+In actual real-world agentic workflows, that conclusion is frequently wrong. Here is why raw tokens per second is an incomplete metric, and what you should measure instead.
+
+---
+
+## 1. The Asymmetry: Prompt Processing vs Auto-Regressive Generation
+
+An LLM handles tokens in two completely distinct phases:
+
+1. **Prompt Processing (Prefill)**: The model processes all input tokens simultaneously. This phase is heavily compute-bound (matrix multiplication) and benefits massively from modern tensor cores.
+2. **Token Generation (Decoding)**: The model emits tokens one by one auto-regressively. Each token requires reading the entire model weight matrix from VRAM into compute units, making generation strictly memory-bandwidth bound.
+
+If an agentic coding task sends a 4,000-token prompt with project files and tool schemas, a setup with sluggish prompt processing might take **3.5 seconds** just to output its first token (Time to First Token, or TTFT).
+
+Even if that card generates at 100 tok/s for the 50-token answer (taking 0.5s), the total task time is **4.0 seconds**.
+
+Contrast that with a system that ingests prompts at 2,500 tok/s (1.6s TTFT) but generates at a modest 75 tok/s (0.66s): its total task time is **2.26 seconds**—nearly **twice as fast in wall-clock time**, despite having a lower tokens-per-second rating.
+
+---
+
+## 2. Agentic Tool Calling Overhead
+
+Local agents do not just chat; they invoke tools, parse JSON, query databases, and read local files. In an agentic loop:
+
+1. The model formulates a tool call.
+2. The runtime extracts the structured function and arguments.
+3. The local system executes the action.
+4. The tool output is appended to the conversation context.
+5. The model ingests the updated history and formulates the next turn.
+
+A runtime with high generation speed but poor structured output formatting will frequently emit slightly malformed JSON, triggering error recovery turns. Three turns at 120 tok/s takes far longer than one clean turn at 80 tok/s that gets the argument schema right on the first attempt.
+
+This is why NeuralDrift’s **ND-AGENT-001** workload measures:
+- Tool call selection accuracy
+- Parameter schema validation
+- Tool resolution latency
+- Required retries
+
+---
+
+## 3. VRAM Footprint & Context Bloat
+
+Generation speed is typically measured with short context windows (512 or 1,024 tokens). However, as an agent converses and retrieves documents via RAG, the KV-cache expands.
+
+On a 16GB GPU (like the GeForce RTX 5080), loading a 14B parameter model in FP16 or a large quantized model leaves limited headroom. As the context length stretches toward 16k or 32k tokens, memory bandwidth saturation changes and can cause runtimes to offload layers or reduce batch parallelism, degrading throughput.
+
+---
+
+## 4. What NeuralDrift Measures Instead
+
+To provide reproducible evidence that reflects real desktop performance, the [NeuralDrift Lab](/lab) separates:
+
+- **Raw Telemetry**: Time to First Token (TTFT), Prompt Processing Rate (tok/s), Generation Rate (tok/s), Peak VRAM allocation.
+- **Workload Telemetry**: End-to-end task completion time, tool call success rate, retries count, and objective output verification.
+
+Check the live benchmark records in the [NeuralDrift Lab](/lab) to see real numbers recorded directly on physical hardware.

@@ -1,6 +1,6 @@
 ---
 title: 'Stable Diffusion Model Types Explained'
-description: 'SD1.5 vs SDXL vs LCM vs Turbo vs Flux - which should you use?'
+description: 'A practical, evidence-aware comparison of common image-model families and the setup questions to verify before running one.'
 category: 'Advanced'
 readTime: '6 min'
 difficulty: 'Intermediate'
@@ -20,6 +20,8 @@ author: 'NeuralDrift'
 
 Different Stable Diffusion architectures exist for different purposes. Using the wrong type causes errors, poor quality, or incompatibility.
 
+> **Evidence note:** Model size, precision, resolution, custom nodes, offloading, and the workflow graph determine whether a run fits or how long it takes. NeuralDrift does not treat the examples below as measured hardware requirements or performance promises. Check the model card and workflow dependencies, then use the [compatibility policy](/compatibility) and a small local test for your exact setup.
+
 ---
 
 ## 🎨 SD 1.5 (Stable Diffusion 1.5)
@@ -33,9 +35,8 @@ Different Stable Diffusion architectures exist for different purposes. Using the
 
 ### Specifications
 - **Resolution:** 512×512 native (can upscale)
-- **VRAM:** 4GB minimum
-- **Speed:** Fast (10-20 sec per image on RTX 3060)
-- **File size:** 2-4 GB
+- **Memory and speed:** Often lighter than newer families, but actual requirements depend on the checkpoint and graph.
+- **File size:** Varies by checkpoint format and precision.
 
 ### When to Use
 - ✅ Learning ComfyUI
@@ -61,9 +62,8 @@ Different Stable Diffusion architectures exist for different purposes. Using the
 
 ### Specifications
 - **Resolution:** 1024×1024 native
-- **VRAM:** 8GB minimum, 12GB+ recommended
-- **Speed:** Slower (30-60 sec per image on RTX 3060)
-- **File size:** 6-7 GB
+- **Memory and speed:** Usually more demanding than older base models; verify the selected checkpoint and workflow rather than relying on a GPU-tier rule.
+- **File size:** Varies by checkpoint format and precision.
 
 ### When to Use
 - ✅ Photorealistic images
@@ -89,8 +89,7 @@ Different Stable Diffusion architectures exist for different purposes. Using the
 
 ### Specifications
 - **Steps:** 2-8 (vs 20-50 normal)
-- **Speed:** 2-5 seconds per image
-- **Quality:** Lower than SD 1.5/SDXL
+- **Trade-off:** These approaches commonly target fewer-step generation, but output quality and runtime are configuration-specific.
 
 ### When to Use
 - ✅ Concept exploration
@@ -114,8 +113,7 @@ Different Stable Diffusion architectures exist for different purposes. Using the
 
 ### Specifications
 - **Steps:** 1-4
-- **Speed:** 1-3 seconds per image
-- **Quality:** Lowest, but usable
+- **Trade-off:** These approaches target very short sampling schedules; suitability depends on the model, prompt, and output requirements.
 
 ### When to Use
 - ✅ Instant feedback
@@ -138,9 +136,8 @@ Different Stable Diffusion architectures exist for different purposes. Using the
 
 ### Specifications
 - **Resolution:** 1024×1024+
-- **VRAM:** 16GB minimum, 24GB+ recommended
-- **Speed:** Very slow (60-120 sec)
-- **File size:** 12-24 GB
+- **Memory and speed:** Requirements vary substantially by model variant, quantization, resolution, and workflow. Treat any compatibility label as unverified until an execution record exists.
+- **File size:** Varies by published variant and precision.
 
 ### When to Use
 - ✅ Maximum quality needed

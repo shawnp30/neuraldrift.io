@@ -75,7 +75,7 @@ python main.py --highvram
    ```bash
    pip install xformers
    ```
-   +20-30% speed boost
+   This can change memory use or speed for some installations; test one workflow before relying on it in production.
 
 2. **Use NVIDIA GPU scheduling** (Windows)
    - NVIDIA Control Panel → Manage 3D Settings
@@ -95,3 +95,13 @@ python main.py --highvram
 - [GPU and CUDA Errors](/guides/gpu-errors)
 - [Model Types Explained](/guides/model-types)
 - [Custom Nodes Management](/guides/custom-nodes)
+
+## A repeatable optimization loop
+
+Avoid changing several variables at once. Start with a workflow that already completes, record its model version, resolution, batch size, sampler, precision, and any launch flags. Change one setting, run the same input again, and keep the output only if it improves the result you care about without introducing an error.
+
+For memory failures, lower batch size first, then reduce resolution or disable optional nodes. For slow first runs, distinguish model-loading time from generation time. For a workflow that will be reused, keep a short execution note with the exact graph and software versions. NeuralDrift labels compatibility and timing as unknown unless such a record exists.
+
+## When to stop tuning
+
+Do not keep increasing resolution, steps, or concurrent jobs just because a previous run worked. Stop when the output meets the task requirement, memory headroom is stable, and the run can be reproduced. If a change produces a new error, revert that one setting and capture the full error text before changing dependencies.

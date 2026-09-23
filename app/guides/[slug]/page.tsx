@@ -8,8 +8,9 @@ import CopyButton from "@/components/CopyButton";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import { getRelatedTutorials } from "@/lib/relationships";
+import { getRelatedGuides, getRelatedTutorials, getRelatedWorkflows } from "@/lib/relationships";
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
+import { isIndexableGuide } from "@/lib/guides";
 
 interface Props {
   params: { slug: string };
@@ -19,40 +20,8 @@ interface Frontmatter {
   title: string;
   description: string;
   date: string;
+  publishedAt?: string;
   tags: string[];
-}
-
-// ComputeAtlas Ad Component
-function ComputeAtlasAd({ variant = "inline" }: { variant?: "inline" | "bottom" }) {
-  return (
-    <div className={`my-12 p-8 rounded-2xl border border-[#2a2a30] bg-[#111113] relative overflow-hidden group hover:border-[#7c6af7]/30 transition-all duration-300 ${variant === "bottom" ? "mt-20" : ""}`}>
-      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#7c6af7]/10 to-transparent blur-3xl pointer-events-none" />
-      <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-        <div className="flex-1">
-          <p className="font-mono text-xs text-[#7c6af7] tracking-widest uppercase mb-3">Hardware Partner</p>
-          <h3 className="font-syne text-2xl font-bold text-[#e8e8f0] mb-3 leading-tight">
-            Running these workflows? ComputeAtlas.ai helps you find the right GPU
-          </h3>
-          <p className="text-[#8888a0] text-sm leading-relaxed mb-6">
-            Optimization is only half the battle. Get precise VRAM benchmarks and hardware recommendations tailored for ComfyUI.
-          </p>
-          <a
-            href="https://computeatlas.ai"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#7c6af7] text-white font-bold hover:bg-[#7c6af7]/80 transition-all hover:scale-105 active:scale-95"
-          >
-            Check GPU Prices →
-          </a>
-        </div>
-        <div className="hidden md:block w-48 h-48 bg-[#0a0a0b] rounded-2xl border border-[#2a2a30] p-4 flex-shrink-0">
-          <div className="w-full h-full border border-dashed border-[#2a2a30] rounded-lg flex items-center justify-center text-[#2a2a30] font-mono text-[10px] text-center">
-            [AD VISUAL: GPU BENCHMARKS]
-          </div>
-        </div>
-      </div>
-    </div>
-  );
 }
 
 // Custom MDX Components
@@ -176,6 +145,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: frontmatter.description,
       images: ["/og-image.png"],
     },
+    ...(!isIndexableGuide(slug) ? { robots: { index: false, follow: true } } : {}),
   };
 }
 
@@ -241,6 +211,9 @@ export default async function GuidePage({ params }: Props) {
     description: frontmatter.description,
     tags: frontmatter.tags || [],
   }, 3);
+  const relatedGuides = getRelatedGuides({ title: frontmatter.title, description: frontmatter.description, tags: frontmatter.tags || [] }, 4).filter((guide) => guide.slug !== slug);
+  const relatedWorkflows = getRelatedWorkflows({ title: frontmatter.title, description: frontmatter.description, tags: frontmatter.tags || [] }, 3);
+  const indexabilityHold = !isIndexableGuide(slug);
 
   // Get Next/Previous
   const allFiles = readdirSync(guidesDir).filter(f => f.endsWith(".mdx"));
@@ -287,22 +260,16 @@ export default async function GuidePage({ params }: Props) {
                 </span>
                 <span className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#7c6af7]" />
-                  {frontmatter.date}
+                  {frontmatter.publishedAt || frontmatter.date || "Date not recorded"}
                 </span>
               </div>
             </header>
 
             {/* Article Body */}
             <article className="guide-body">
+              {indexabilityHold && <aside className="mb-8 rounded-xl border border-amber-400/30 bg-amber-400/5 p-5 text-sm leading-relaxed text-[#e8e8f0]">This legacy reference is being revised. It is not a NeuralDrift execution record or a compatibility promise; verify current requirements with the upstream project and test your exact configuration.</aside>}
               {content1}
-              
-              {/* Insert Ad after first section */}
-              {part2 && <ComputeAtlasAd variant="inline" />}
-              
               {content2}
-
-              {/* Bottom Ad */}
-              <ComputeAtlasAd variant="bottom" />
             </article>
 
             {relatedTutorials.length > 0 && (
@@ -327,6 +294,17 @@ export default async function GuidePage({ params }: Props) {
                       </Link>
                     </article>
                   ))}
+                </div>
+              </section>
+            )}
+
+            {(relatedGuides.length > 0 || relatedWorkflows.length > 0) && (
+              <section className="mt-20 pt-12 border-t border-[#2a2a30]" aria-labelledby="related-resources">
+                <p className="font-mono text-[10px] text-[#7c6af7] tracking-widest uppercase mb-4">NEXT REFERENCE</p>
+                <h2 id="related-resources" className="font-syne text-3xl font-bold text-[#e8e8f0] mb-8">Related guides and workflows</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {relatedGuides.map((guide) => <Link key={guide.slug} href={`/guides/${guide.slug}`} className="p-5 rounded-2xl border border-[#2a2a30] bg-[#111113] hover:border-[#7c6af7]/40 transition-all"><p className="font-mono text-[10px] text-[#8888a0] uppercase tracking-widest mb-3">Guide</p><h3 className="text-lg font-bold text-[#e8e8f0] mb-2">{guide.title}</h3><p className="text-sm text-[#8888a0]">{guide.description}</p></Link>)}
+                  {relatedWorkflows.map((workflow) => <Link key={workflow.id} href={`/workflows/${workflow.id}`} className="p-5 rounded-2xl border border-[#2a2a30] bg-[#111113] hover:border-[#4ade80]/40 transition-all"><p className="font-mono text-[10px] text-[#8888a0] uppercase tracking-widest mb-3">Workflow</p><h3 className="text-lg font-bold text-[#e8e8f0] mb-2">{workflow.title}</h3><p className="text-sm text-[#8888a0]">{workflow.description}</p></Link>)}
                 </div>
               </section>
             )}

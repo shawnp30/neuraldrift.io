@@ -25,7 +25,7 @@ const PATHS = [
     icon: '🧠',
     title: 'Build Custom Workflow',
     desc: 'Design multi-model pipelines, train LoRAs, automate batch outputs.',
-    href: '/workflows/generate',
+    href: '/workflows/create',
     color: 'from-violet-500/20 to-violet-500/5 border-violet-500/30',
     badge: 'violet',
   },

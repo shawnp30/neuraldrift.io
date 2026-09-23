@@ -138,7 +138,7 @@ System-level installs let you choose:
 - Multi-GPU support
 
 This can lead to:
-- Faster generation (10-30% in some cases)
+- May allow a different local environment or runtime configuration; measure the same workflow before attributing a speed difference.
 - Lower VRAM usage
 - Higher batch capabilities
 - Smoother high-resolution pipelines
@@ -391,9 +391,9 @@ If you choose Desktop:
 
 Users report Desktop performance improvements when using optimized builds:
 
-- **Generation speed:** 10-30% faster with optimized PyTorch
-- **VRAM usage:** 5-15% lower with custom builds
-- **Batch processing:** 20-40% faster with multi-GPU
+- **Generation speed:** depends on the runtime, drivers, workflow, and measurement method.
+- **VRAM usage:** depends on precision, offloading, graph structure, and loaded models.
+- **Batch processing:** requires a controlled comparison; multiple GPUs do not automatically improve every workload.
 - **Startup time:** Faster with system-wide caching
 
 These gains matter for high-volume production use.

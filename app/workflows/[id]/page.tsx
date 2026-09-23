@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { CATALOG, compatibilityLabel, workflowKind, workflowKindLabel, WORKFLOW_ASSETS, WORKFLOW_TESTS } from '@/lib/catalog';
 import WorkflowCard from '@/components/workflows/WorkflowCard';
 import { WorkflowTools } from '@/components/workflows/WorkflowTools';
@@ -11,6 +11,10 @@ import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
 
 export function generateStaticParams() { return CATALOG.map(w => ({ id: w.id })); }
 export default function WorkflowDetailPage({ params }: { params: { id: string } }) {
+  // Workflow IDs are published as two digits (for example, /workflows/07).
+  // Redirect a legacy one-digit variant in one hop so it cannot become a
+  // duplicate crawl target with a competing canonical.
+  if (/^\d$/.test(params.id)) permanentRedirect(`/workflows/0${params.id}`);
   const workflow = CATALOG.find(w => w.id === params.id);
   if (!workflow) notFound();
   const asset = WORKFLOW_ASSETS[workflow.id];

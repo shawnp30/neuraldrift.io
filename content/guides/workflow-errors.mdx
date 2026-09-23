@@ -63,7 +63,7 @@ Check workflow description for required model type
 ### Error: "VRAM out of memory" mid-generation
 
 **Fix:**
-See [Guide 2: GPU Errors](./02-gpu-errors.md)
+See the [GPU errors guide](/guides/gpu-errors).
 
 Quick solution:
 - Reduce resolution
@@ -83,6 +83,20 @@ Quick solution:
 ---
 
 ## Related Guides
-- [Guide 3: Model Folders](./03-model-folders.md)
-- [Guide 4: Custom Nodes](./04-custom-nodes.md)
-- [Guide 6: Model Types](./06-model-types.md)
+- [Model folders](/guides/model-folders)
+- [Custom nodes](/guides/custom-nodes)
+- [Model types](/guides/model-types)
+
+## Capture a useful failure record
+
+Before reinstalling or changing several packages, save the full error text and the workflow JSON. Record the ComfyUI revision, Python and PyTorch versions, GPU/driver, model filename, custom-node revision, input dimensions, batch size, and the last node that completed. This separates a missing dependency from a model-path mismatch or a memory failure.
+
+## Safe recovery order
+
+1. Reopen the original graph and identify the first missing or failed node.
+2. Verify the exact model filename and folder expected by that node.
+3. Confirm the custom-node repository and version from its upstream instructions.
+4. Retry with a small input and batch size of one.
+5. Change only one dependency or setting per retry, retaining the error output if it fails.
+
+These steps do not prove that a workflow is compatible with your hardware. They make the next troubleshooting decision observable and reproducible.
