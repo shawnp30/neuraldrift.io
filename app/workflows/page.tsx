@@ -13,7 +13,11 @@ export default function WorkflowsPage({ searchParams }: Props) {
   const gpuParam = typeof searchParams.gpu === 'string' ? searchParams.gpu : '';
   const evidenceParam = typeof searchParams.evidence === 'string' ? searchParams.evidence : '';
   
-  const filters: CatalogFilters = Object.fromEntries(['q', 'vram', 'category', 'type', 'model', 'difficulty', 'sort'].map(key => [key, typeof searchParams[key] === 'string' ? searchParams[key] : '']));
+  // `search` was used in previously shared/filter URLs. Treat it as the
+  // human-facing equivalent of `q`, while keeping every parameterized state
+  // noindex and canonicalized to the unfiltered catalog.
+  const legacySearch = typeof searchParams.search === 'string' ? searchParams.search : '';
+  const filters: CatalogFilters = Object.fromEntries(['q', 'vram', 'category', 'type', 'model', 'difficulty', 'sort'].map(key => [key, key === 'q' ? (typeof searchParams.q === 'string' ? searchParams.q : legacySearch) : (typeof searchParams[key] === 'string' ? searchParams[key] : '')]));
   
   const targetHardware = resolveHardwareTarget(gpuParam, filters.vram);
   

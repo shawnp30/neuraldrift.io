@@ -34,9 +34,6 @@ export const metadata: Metadata = {
   },
   description:
     "High-performance ComfyUI workflows, technical AI guides, and hardware optimization tools for local image and video generation. Built for builders.",
-  alternates: {
-    canonical: "https://neuraldrift.io/",
-  },
   openGraph: {
     title: "NeuralDrift — Master Local AI Creation",
     description:

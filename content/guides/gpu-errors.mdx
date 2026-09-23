@@ -85,12 +85,14 @@ Device: cuda
 
 ### Understanding VRAM
 
+The table below is a troubleshooting starting point, not a compatibility matrix or a promise that a particular model will run. Resolution, precision, batch size, offloading, custom nodes, and the graph can change memory use materially.
+
 | GPU | VRAM | What You Can Run |
 |-----|------|------------------|
-| GTX 1660 Ti | 6GB | SD 1.5 only, 512×512 max |
-| RTX 3060 | 12GB | SD 1.5 + SDXL, 768×768 |
-| RTX 3080 | 10GB | SDXL, 1024×1024 |
-| RTX 4090 | 24GB | Everything, high-res, video |
+| GTX 1660 Ti | 6GB | Start with a small workflow and observe actual memory use |
+| RTX 3060 | 12GB | Test the exact checkpoint and resolution before scaling up |
+| RTX 3080 | 10GB | Reduce batch size or resolution if the graph exhausts memory |
+| RTX 4090 | 24GB | More headroom, but not a guarantee for every video or large-model workflow |
 
 ### Solution 1: Reduce Image Resolution
 
@@ -139,7 +141,7 @@ Install **ComfyUI-TiledKSampler** custom node:
 3. Restart ComfyUI
 4. Replace VAE Decode node with **Tiled VAE Decode**
 
-**Result:** Reduces VRAM usage by ~40-60%
+**Result:** Can reduce memory pressure for some graphs; measure the result on the exact workflow instead of assuming a percentage.
 
 ---
 

@@ -3,10 +3,11 @@
 import assert from 'node:assert';
 import sitemap from '../app/sitemap.ts';
 import { CATALOG, WORKFLOW_TESTS } from '../lib/catalog.ts';
-import { getGuides } from '../lib/guides.ts';
+import { getIndexableGuides, INDEXABILITY_HOLD_GUIDES } from '../lib/guides.ts';
 import { TUTORIALS } from '../lib/tutorials.ts';
 import { NEWSLETTER_ISSUES } from '../lib/newsletterIssues.ts';
 import { TRACKED_MODELS } from '../lib/emergingModels.ts';
+import { getAllBenchmarks } from '../lib/benchmarks/registry.ts';
 import { SITE_URL } from '../lib/seo.ts';
 
 console.log('--- Running NeuralDrift Sitemap Coverage Tests ---');
@@ -23,10 +24,10 @@ console.log('2. No duplicate URLs: PASS');
 
 const REQUIRED_PATHS = [
   '/', '/workflows', '/guides', '/compatibility', '/hardware', '/hardware/rtx-5080',
-  '/gpu-guide', '/tools', '/tools/vram-calculator', '/tools/caption-generator', '/models',
+  '/gpu-guide', '/tools', '/tools/vram-calculator', '/tools/caption-generator',
   '/tutorials', '/lab',
   '/about', '/glossary', '/privacy', '/terms', '/optimizer', '/optimizer/fix-my-pc',
-  '/prompt-generator', '/datasets', '/proofs', '/newsletter',
+  '/prompt-generator', '/proofs', '/newsletter',
 ];
 for (const path of REQUIRED_PATHS) {
   assert(urls.includes(`${SITE_URL}${path}`), `sitemap is missing required public page: ${path}`);
@@ -40,15 +41,19 @@ for (const prefix of FORBIDDEN_PREFIXES) {
 assert(!urls.includes(`${SITE_URL}/pricing`), 'sitemap must not include the non-functional pricing page');
 assert(!urls.includes(`${SITE_URL}/guides/best-workflows-8gb`), 'sitemap must not include the placeholder guide stub');
 assert(!urls.some(url => url.startsWith(`${SITE_URL}/models/`)), 'sitemap must not include mock-data model detail pages');
+assert(!urls.includes(`${SITE_URL}/models`), 'sitemap must not include the live, client-fed model discovery hub');
+assert(!urls.includes(`${SITE_URL}/datasets`), 'sitemap must not include the live, client-fed dataset discovery hub');
 assert(!urls.includes(`${SITE_URL}/cloud-generators`), 'sitemap must not include pages without canonical metadata');
 console.log('4. Private/API/result/placeholder routes excluded: PASS');
 
 for (const workflow of CATALOG) assert(urls.includes(`${SITE_URL}/workflows/${workflow.id}`), `missing dynamic workflow entry ${workflow.id}`);
-for (const guide of getGuides()) assert(urls.includes(`${SITE_URL}/guides/${guide.slug}`), `missing dynamic guide entry ${guide.slug}`);
+for (const guide of getIndexableGuides()) assert(urls.includes(`${SITE_URL}/guides/${guide.slug}`), `missing dynamic guide entry ${guide.slug}`);
+for (const slug of INDEXABILITY_HOLD_GUIDES) assert(!urls.includes(`${SITE_URL}/guides/${slug}`), `evidence-hold guide must not be in sitemap: ${slug}`);
 for (const tutorial of TUTORIALS) assert(urls.includes(`${SITE_URL}/tutorials/${tutorial.slug}`), `missing dynamic tutorial entry ${tutorial.slug}`);
 for (const issue of NEWSLETTER_ISSUES) assert(urls.includes(`${SITE_URL}/newsletter/${issue.slug}`), `missing newsletter issue entry ${issue.slug}`);
 for (const model of TRACKED_MODELS) assert(urls.includes(`${SITE_URL}/lab/${model.slug}`), `missing tracked-model Lab entry ${model.slug}`);
-console.log('5. All dynamic workflow, guide, tutorial, newsletter issue, and tracked-model entries present: PASS');
+for (const benchmark of getAllBenchmarks()) assert(urls.includes(`${SITE_URL}/lab/benchmarks/${benchmark.id}`), `missing dynamic benchmark entry ${benchmark.id}`);
+console.log('5. All dynamic workflow, guide, tutorial, newsletter issue, and benchmark entries present: PASS');
 
 const byUrl = new Map(entries.map(e => [e.url, e]));
 for (const workflow of CATALOG) {
@@ -57,7 +62,7 @@ for (const workflow of CATALOG) {
   if (testDate) assert.equal(entry.lastModified, testDate, `workflow ${workflow.id} lastModified must be the real recorded testDate, not invented`);
   else assert.equal(entry.lastModified, undefined, `workflow ${workflow.id} has no real date evidence; lastModified must be omitted, not fabricated`);
 }
-for (const guide of getGuides()) {
+for (const guide of getIndexableGuides()) {
   const entry = byUrl.get(`${SITE_URL}/guides/${guide.slug}`);
   if (guide.publishedAt) assert.equal(entry.lastModified, guide.publishedAt);
   else assert.equal(entry.lastModified, undefined, `guide ${guide.slug} has no publishedAt frontmatter; lastModified must be omitted`);
