@@ -45,6 +45,12 @@ export default function LabPage() {
             <Link className="nd-text-link" href="/lab/audio">
               Local Audio AI →
             </Link>
+            <Link className="nd-text-link" href="/lab/runtimes">
+              Runtimes →
+            </Link>
+            <Link className="nd-text-link" href="/lab/research">
+              Research &amp; decisions →
+            </Link>
             <Link className="nd-text-link" href="/guides/local-ai-benchmark-methodology">
               Read benchmark methodology →
             </Link>

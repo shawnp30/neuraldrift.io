@@ -8,6 +8,7 @@ import type {
   FailureEvidence,
   OutputMetrics,
   RawInferenceMetrics,
+  TelemetrySummary,
   TextWorkloadDefinition,
   WorkloadMetrics,
 } from '../types';
@@ -71,11 +72,29 @@ export interface GenerationExecutionResult {
   outputMetrics: OutputMetrics;
   runtime: BenchmarkRuntimeConfig; // Runtime configuration as actually executed
   failure: FailureEvidence | null;
+  telemetry: TelemetrySummary | null;
   rawTrace: unknown;               // Command line, exit status, runtime-reported metrics, log tail
+}
+
+export interface GenerationContext {
+  inputOptions?: Record<string, string>; // Request options whose values come from verified, hashed input files
+}
+
+export interface GenerationSessionResult {
+  runtime: BenchmarkRuntimeConfig;
+  failure: FailureEvidence | null;
+  telemetry: TelemetrySummary | null;
+  processWallMs: number | null;
+  startupAndLoadMs: number | null;
+  startupAndLoadBasis: 'measured' | 'derived';
+  generationSource: string;
+  iterations: { id: string; index: number; warmup: boolean; generationMs: number | null; outputPath: string | null }[];
+  rawTrace: unknown;
 }
 
 export interface GenerativeRuntimeAdapter<W = AudioWorkloadDefinition> {
   name: string;
   probe(): Promise<RuntimeProbeResult>;
-  executeGeneration(model: BenchmarkModelConfig, workload: W, outputDir: string): Promise<GenerationExecutionResult>;
+  executeGeneration(model: BenchmarkModelConfig, workload: W, outputDir: string, context?: GenerationContext): Promise<GenerationExecutionResult>;
+  executeSession?(model: BenchmarkModelConfig, workload: W, outputDir: string, context?: GenerationContext): Promise<GenerationSessionResult>;
 }

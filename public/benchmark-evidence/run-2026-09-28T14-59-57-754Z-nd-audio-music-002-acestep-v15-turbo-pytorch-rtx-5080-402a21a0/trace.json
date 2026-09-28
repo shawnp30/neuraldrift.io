@@ -1,0 +1,442 @@
+{
+  "command": [
+    "C:/Users/shawn/ACE-Step-1.5/.venv/Scripts/python.exe",
+    "D:\\neuraldrift.io-main\\neuraldrift.io-main\\scripts\\acestep_reference_runner.py",
+    "--ace-root",
+    "C:/Users/shawn/ACE-Step-1.5",
+    "--request",
+    "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\request.json"
+  ],
+  "request": {
+    "prompt": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+    "ditModel": "acestep-v15-turbo",
+    "lmModel": "acestep-5Hz-lm-1.7B",
+    "lmBackend": "vllm",
+    "useFlashAttention": false,
+    "outputDir": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0",
+    "iterations": [
+      {
+        "id": "warmup-01",
+        "warmup": true
+      },
+      {
+        "id": "iter-01",
+        "warmup": false
+      },
+      {
+        "id": "iter-02",
+        "warmup": false
+      },
+      {
+        "id": "iter-03",
+        "warmup": false
+      },
+      {
+        "id": "iter-04",
+        "warmup": false
+      },
+      {
+        "id": "iter-05",
+        "warmup": false
+      },
+      {
+        "id": "iter-06",
+        "warmup": false
+      },
+      {
+        "id": "iter-07",
+        "warmup": false
+      },
+      {
+        "id": "iter-08",
+        "warmup": false
+      },
+      {
+        "id": "iter-09",
+        "warmup": false
+      },
+      {
+        "id": "iter-10",
+        "warmup": false
+      }
+    ],
+    "settings": {
+      "route": "text2music",
+      "lyrics": "[Instrumental]",
+      "language": "en",
+      "durationSec": 30,
+      "seed": 42,
+      "inferenceSteps": 8,
+      "guidanceScale": 1,
+      "bpm": 85,
+      "keyscale": "C minor",
+      "timesignature": "4",
+      "shift": 3,
+      "infer_method": "ode",
+      "thinking": true,
+      "lm_temperature": 0.85,
+      "lm_cfg_scale": 2,
+      "lm_top_k": 0,
+      "lm_top_p": 0.9
+    },
+    "inputOptions": {}
+  },
+  "exitCode": 0,
+  "runnerResult": {
+    "stage": "execution",
+    "success": true,
+    "python": "3.12.11",
+    "torch": "2.7.1+cu128",
+    "torchCuda": "12.8",
+    "cudaAvailable": true,
+    "device": "NVIDIA GeForce RTX 5080",
+    "aceStepVersion": "1.5.0",
+    "transformers": "4.57.6",
+    "ditStatus": "[OK] Model initialized successfully on cuda\nMain model: C:/Users/shawn/ACE-Step-1.5\\checkpoints\\acestep-v15-turbo\nVAE: C:\\Users\\shawn\\ACE-Step-1.5\\checkpoints\\vae\nText encoder: C:/Users/shawn/ACE-Step-1.5\\checkpoints\\Qwen3-Embedding-0.6B\nDtype: torch.bfloat16\nAttention: sdpa\nCompiled: False\nQuantization: Disabled\nOffload to CPU: False\nOffload DiT to CPU: False\nMLX DiT: Disabled\nMLX VAE: Disabled",
+    "lmStatus": "✅ 5Hz LM initialized successfully\nModel: C:/Users/shawn/ACE-Step-1.5\\checkpoints\\acestep-5Hz-lm-1.7B\nBackend: PyTorch\nDevice: cuda\nNote: vLLM backend is unavailable on Windows because Triton is not installed or is incompatible. Falling back to the PyTorch backend. Use --backend pt to suppress this warning.",
+    "loadMs": 25796.269199985545,
+    "attention": "sdpa",
+    "ditDtype": "torch.bfloat16",
+    "lmBackend": "pt",
+    "iterations": [
+      {
+        "id": "warmup-01",
+        "warmup": true,
+        "generateMs": 19920.564899977762,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\warmup-01\\7319094e-14a8-6119-dc03-5114f9f98da8.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\warmup-01\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 17.978230476379395,
+          "lm_total_time": 17.978230476379395,
+          "dit_encoder_time_cost": 0.014821290969848633,
+          "dit_diffusion_time_cost": 0.5758688449859619,
+          "dit_diffusion_per_step_time_cost": 0.07198360562324524,
+          "dit_total_time_cost": 1.3358697891235352,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.7451796531677246,
+          "pipeline_total_time": 19.31410026550293
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-01",
+        "warmup": false,
+        "generateMs": 5514.339599991217,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-01\\6175d82e-ec1b-6c20-b929-f17e18bf8b92.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-01\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 4.268928050994873,
+          "lm_total_time": 4.268928050994873,
+          "dit_encoder_time_cost": 0.013872861862182617,
+          "dit_diffusion_time_cost": 0.29816150665283203,
+          "dit_diffusion_per_step_time_cost": 0.037270188331604004,
+          "dit_total_time_cost": 0.9083189964294434,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.5962846279144287,
+          "pipeline_total_time": 5.177247047424316
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-02",
+        "warmup": false,
+        "generateMs": 4852.492799982429,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-02\\ceda1921-dd35-c16c-c69d-ef6439691c01.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-02\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 3.7138564586639404,
+          "lm_total_time": 3.7138564586639404,
+          "dit_encoder_time_cost": 0.015973806381225586,
+          "dit_diffusion_time_cost": 0.2822866439819336,
+          "dit_diffusion_per_step_time_cost": 0.0352858304977417,
+          "dit_total_time_cost": 0.8132176399230957,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.5149571895599365,
+          "pipeline_total_time": 4.527074098587036
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-03",
+        "warmup": false,
+        "generateMs": 4717.376200016588,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-03\\eb1d2325-085a-c97d-5ade-8a2d279081ed.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-03\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 3.56854248046875,
+          "lm_total_time": 3.56854248046875,
+          "dit_encoder_time_cost": 0.014745712280273438,
+          "dit_diffusion_time_cost": 0.2829582691192627,
+          "dit_diffusion_per_step_time_cost": 0.03536978363990784,
+          "dit_total_time_cost": 0.8269057273864746,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.5292017459869385,
+          "pipeline_total_time": 4.395448207855225
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-04",
+        "warmup": false,
+        "generateMs": 4713.723499997286,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-04\\96ee181e-63ca-6074-c753-68636a9b3db6.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-04\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 3.561884641647339,
+          "lm_total_time": 3.561884641647339,
+          "dit_encoder_time_cost": 0.013998985290527344,
+          "dit_diffusion_time_cost": 0.2789771556854248,
+          "dit_diffusion_per_step_time_cost": 0.0348721444606781,
+          "dit_total_time_cost": 0.8268094062805176,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.5338332653045654,
+          "pipeline_total_time": 4.3886940479278564
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-05",
+        "warmup": false,
+        "generateMs": 4678.556900005788,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-05\\65bb6ea3-5022-2c1f-12ea-aaa325a3bbed.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-05\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 3.5448851585388184,
+          "lm_total_time": 3.5448851585388184,
+          "dit_encoder_time_cost": 0.013508081436157227,
+          "dit_diffusion_time_cost": 0.2764449119567871,
+          "dit_diffusion_per_step_time_cost": 0.03455561399459839,
+          "dit_total_time_cost": 0.8158092498779297,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.5258562564849854,
+          "pipeline_total_time": 4.360694408416748
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-06",
+        "warmup": false,
+        "generateMs": 4725.528800016036,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-06\\3f94078a-85e2-9b12-4e74-dffc0f080893.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-06\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 3.593099594116211,
+          "lm_total_time": 3.593099594116211,
+          "dit_encoder_time_cost": 0.0145111083984375,
+          "dit_diffusion_time_cost": 0.28178906440734863,
+          "dit_diffusion_per_step_time_cost": 0.03522363305091858,
+          "dit_total_time_cost": 0.8209764957427979,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.5246763229370117,
+          "pipeline_total_time": 4.414076089859009
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-07",
+        "warmup": false,
+        "generateMs": 4751.01929999073,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-07\\68518f65-a673-48b1-7271-c9e4ed712384.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-07\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 3.6096718311309814,
+          "lm_total_time": 3.6096718311309814,
+          "dit_encoder_time_cost": 0.015269279479980469,
+          "dit_diffusion_time_cost": 0.28452086448669434,
+          "dit_diffusion_per_step_time_cost": 0.03556510806083679,
+          "dit_total_time_cost": 0.8233942985534668,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.523604154586792,
+          "pipeline_total_time": 4.433066129684448
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-08",
+        "warmup": false,
+        "generateMs": 4682.155599992257,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-08\\4090b4f9-ceb3-73b7-f8a9-79ad0f01d61a.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-08\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 3.5476295948028564,
+          "lm_total_time": 3.5476295948028564,
+          "dit_encoder_time_cost": 0.014505863189697266,
+          "dit_diffusion_time_cost": 0.27183008193969727,
+          "dit_diffusion_per_step_time_cost": 0.03397876024246216,
+          "dit_total_time_cost": 0.803640604019165,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.5173046588897705,
+          "pipeline_total_time": 4.3512701988220215
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-09",
+        "warmup": false,
+        "generateMs": 4784.681399993133,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-09\\7ee3d732-150f-ca5d-f220-10fa0ec186e3.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-09\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 3.645110845565796,
+          "lm_total_time": 3.645110845565796,
+          "dit_encoder_time_cost": 0.014510154724121094,
+          "dit_diffusion_time_cost": 0.28099656105041504,
+          "dit_diffusion_per_step_time_cost": 0.03512457013130188,
+          "dit_total_time_cost": 0.8205978870391846,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.5250911712646484,
+          "pipeline_total_time": 4.4657087326049805
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      },
+      {
+        "id": "iter-10",
+        "warmup": false,
+        "generateMs": 4738.723200018285,
+        "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-10\\83b3c61a-84de-a4f0-520c-87dc656243a0.wav",
+        "usedSeed": 42,
+        "audioCodesPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-10\\audio_codes.txt",
+        "timeCosts": {
+          "lm_phase1_time": 0,
+          "lm_phase2_time": 3.573143482208252,
+          "lm_total_time": 3.573143482208252,
+          "dit_encoder_time_cost": 0.012896299362182617,
+          "dit_diffusion_time_cost": 0.29402947425842285,
+          "dit_diffusion_per_step_time_cost": 0.036753684282302856,
+          "dit_total_time_cost": 0.8400928974151611,
+          "dit_offload_time_cost": 0,
+          "dit_vae_decode_time_cost": 0.5331671237945557,
+          "pipeline_total_time": 4.413236379623413
+        },
+        "lmMetadata": {
+          "bpm": 85,
+          "keyscale": "C minor",
+          "timesignature": "4",
+          "duration": 30
+        }
+      }
+    ],
+    "torchPeakAllocatedBytes": 10640317440,
+    "torchPeakReservedBytes": 14831058944,
+    "generateMs": 19920.564899977762,
+    "outputPath": "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\warmup-01\\7319094e-14a8-6119-dc03-5114f9f98da8.wav",
+    "usedSeed": 42
+  },
+  "iterationAnnouncements": [
+    {
+      "atMs": 41818.7,
+      "line": "ND_ITERATION_START warmup-01"
+    },
+    {
+      "atMs": 61739.4,
+      "line": "ND_ITERATION_START iter-01"
+    },
+    {
+      "atMs": 67254.3,
+      "line": "ND_ITERATION_START iter-02"
+    },
+    {
+      "atMs": 72107.4,
+      "line": "ND_ITERATION_START iter-03"
+    },
+    {
+      "atMs": 76825.3,
+      "line": "ND_ITERATION_START iter-04"
+    },
+    {
+      "atMs": 81539.4,
+      "line": "ND_ITERATION_START iter-05"
+    },
+    {
+      "atMs": 86218.4,
+      "line": "ND_ITERATION_START iter-06"
+    },
+    {
+      "atMs": 90944.3,
+      "line": "ND_ITERATION_START iter-07"
+    },
+    {
+      "atMs": 95695.9,
+      "line": "ND_ITERATION_START iter-08"
+    },
+    {
+      "atMs": 100378.5,
+      "line": "ND_ITERATION_START iter-09"
+    },
+    {
+      "atMs": 105163.6,
+      "line": "ND_ITERATION_START iter-10"
+    }
+  ],
+  "stderrTail": "\u001b[32m2026-09-28 11:01:37.429\u001b[0m | \u001b[33m\u001b[1mWARNING \u001b[0m | \u001b[36macestep.core.generation.handler.vae_decode_chunks\u001b[0m:\u001b[36m_tiled_decode_inner\u001b[0m:\u001b[36m39\u001b[0m - \u001b[33m\u001b[1m[tiled_decode] Reduced overlap from 64 to 32 for chunk_size=128\u001b[0m\n\u001b[32m2026-09-28 11:01:37.714\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m193\u001b[0m - \u001b[34m\u001b[1m[generate_music] After VAE decode: allocated=9.53GB, max=9.91GB\u001b[0m\n\u001b[32m2026-09-28 11:01:37.943\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_payload\u001b[0m:\u001b[36m_build_generate_music_success_payload\u001b[0m:\u001b[36m38\u001b[0m - \u001b[1m[generate_music] VAE decode completed. Preparing audio tensors...\u001b[0m\n\u001b[32m2026-09-28 11:01:37.943\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_payload\u001b[0m:\u001b[36m_build_generate_music_success_payload\u001b[0m:\u001b[36m50\u001b[0m - \u001b[1m[generate_music] Done! Generated 1 audio tensors.\u001b[0m\n\u001b[32m2026-09-28 11:01:38.174\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m981\u001b[0m - \u001b[1m[Normalization] Audio 0 BEFORE: Peak=0.8828, Target=-1.0dB\u001b[0m\n\u001b[32m2026-09-28 11:01:38.175\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m986\u001b[0m - \u001b[1m[Normalization] Audio 0 AFTER: Peak=0.8913\u001b[0m\n\u001b[32m2026-09-28 11:01:38.190\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.audio_utils\u001b[0m:\u001b[36msave_audio\u001b[0m:\u001b[36m319\u001b[0m - \u001b[34m\u001b[1m[AudioSaver] Saved audio to D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-08\\4090b4f9-ceb3-73b7-f8a9-79ad0f01d61a.wav (wav, 48000Hz)\u001b[0m\n\u001b[32m2026-09-28 11:01:38.190\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m641\u001b[0m - \u001b[1m[generate_music] LLM usage decision: thinking=True, use_cot_caption=True, use_cot_language=True, use_cot_metas=True, need_lm_for_cot=True, llm_initialized=True, use_lm=True\u001b[0m\n\u001b[32m2026-09-28 11:01:38.190\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m699\u001b[0m - \u001b[1mLM chunk 1/1 (infer_type=llm_dit) (size: 1, seeds: [42])\u001b[0m\n\u001b[32m2026-09-28 11:01:38.190\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mgenerate_with_stop_condition\u001b[0m:\u001b[36m1428\u001b[0m - \u001b[1mPhase 1: Using user-provided metadata (skipping generation)\u001b[0m\n\u001b[32m2026-09-28 11:01:38.190\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mgenerate_with_stop_condition\u001b[0m:\u001b[36m1482\u001b[0m - \u001b[1mPhase 2: Generating audio codes...\u001b[0m\n\u001b[32m2026-09-28 11:01:38.192\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mgenerate_with_stop_condition\u001b[0m:\u001b[36m1490\u001b[0m - \u001b[1mgenerate_with_stop_condition: formatted_prompt_with_cot=<|im_start|>system\n# Instruction\nGenerate audio semantic tokens based on the given conditions:\n\n<|im_end|>\n<|im_start|>user\n# Caption\nInstrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums\n\n# Lyric\n[Instrumental]\n<|im_end|>\n<|im_start|>assistant\n<think>\nbpm: 85\nduration: 30\nkeyscale: C minor\ntimesignature: 4\n</think>\n\n\u001b[0m\n\u001b[32m2026-09-28 11:01:38.193\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36m_build_unconditional_prompt\u001b[0m:\u001b[36m395\u001b[0m - \u001b[1mCFG unconditional prompt (phase=codes, is_batch=False, negative_prompt='NO USER INPUT'):\n<|im_start|>system\n# Instruction\nGenerate audio semantic tokens based on the given conditions:\n\n<|im_end|>\n<|im_start|>user\nNO USER INPUT<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n\u001b[0m\n\u001b[32m2026-09-28 11:01:41.835\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mparse_lm_output\u001b[0m:\u001b[36m2813\u001b[0m - \u001b[34m\u001b[1mDebug output text: <|audio_code_38185|><|audio_code_25294|><|audio_code_54459|><|audio_code_15213|><|audio_code_37604|><|audio_code_6069|><|audio_code_2892|><|audio_code_51084|><|audio_code_61428|><|audio_code_16952|><|audio_code_35505|><|audio_code_58960|><|audio_code_51509|><|audio_code_16429|><|audio_code_45702|><|audio_code_10781|><|audio_code_14062|><|audio_code_5381|><|audio_code_23789|><|audio_code_30591|><|audio_code_48453|><|audio_code_24550|><|audio_code_7557|><|audio_code_28304|><|audio_code_37672|><|audio_code_313|><|audio_code_13271|><|audio_code_63246|><|audio_code_9075|><|audio_code_6833|><|audio_code_55146|><|audio_code_13626|><|audio_code_48961|><|audio_code_23362|><|audio_code_21315|><|audio_code_25084|><|audio_code_12219|><|audio_code_62948|><|audio_code_26547|><|audio_code_54523|><|audio_code_8114|><|audio_code_10024|><|audio_code_12795|><|audio_code_24570|><|audio_code_62948|><|audio_code_52720|><|audio_code_52417|><|audio_code_34296|><|audio_code_4991|><|audio_code_29071|><|audio_code_12727|><|audio_code_3015|><|audio_code_50151|><|audio_code_27273|><|audio_code_3256|><|audio_code_16144|><|audio_code_37680|><|audio_code_691|><|audio_code_15141|><|audio_code_33084|><|audio_code_55156|><|audio_code_5434|><|audio_code_779|><|audio_code_28010|><|audio_code_811|><|audio_code_10642|><|audio_code_24|><|audio_code_26925|><|audio_code_34408|><|audio_code_48334|><|audio_code_63108|><|audio_code_24812|><|audio_code_30468|><|audio_code_51499|><|audio_code_2372|><|audio_code_58747|><|audio_code_9116|><|audio_code_13794|><|audio_code_30658|><|audio_code_11235|><|audio_code_28880|><|audio_code_48522|><|audio_code_12088|><|audio_code_49648|><|audio_code_33241|><|audio_code_1865|><|audio_code_63216|><|audio_code_1851|><|audio_code_2372|><|audio_code_52153|><|audio_code_51691|><|audio_code_34248|><|audio_code_36810|><|audio_code_49985|><|audio_code_32194|><|audio_code_4555|><|audio_code_49592|><|audio_code_490|><|audio_code_23489|><|audio_code_23500|><|audio_code_26562|><|audio_code_39888|><|audio_code_3049|><|audio_code_11706|><|audio_code_20987|><|audio_code_28807|><|audio_code_63919|><|audio_code_783|><|audio_code_60711|><|audio_code_25990|><|audio_code_4728|><|audio_code_18576|><|audio_code_50408|><|audio_code_43256|><|audio_code_61181|><|audio_code_14398|><|audio_code_58437|><|audio_code_23709|><|audio_code_27317|><|audio_code_56516|><|audio_code_1213|><|audio_code_6852|><|audio_code_24721|><|audio_code_32304|><|audio_code_35856|><|audio_code_61544|><|audio_code_549|><|audio_code_4157|><|audio_code_60997|><|audio_code_13869|><|audio_code_30341|><|audio_code_51365|><|audio_code_16565|><|audio_code_58629|><|audio_code_11524|><|audio_code_14667|><|audio_code_40915|><|audio_code_2808|><|audio_code_31440|><|audio_code_10228|><|audio_code_12103|><|audio_code_63234|><|audio_code_32855|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35855|><|audio_code_37127|><|audio_code_35855|><|audio_code_35847|><|im_end|>\u001b[0m\n\u001b[32m2026-09-28 11:01:41.835\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mgenerate_with_stop_condition\u001b[0m:\u001b[36m1650\u001b[0m - \u001b[1mPhase 2 completed in 3.65s. Generated 150 audio codes\u001b[0m\n\u001b[32m2026-09-28 11:01:41.836\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m304\u001b[0m - \u001b[1m[generate_music] Starting generation...\u001b[0m\n\u001b[32m2026-09-28 11:01:41.836\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m307\u001b[0m - \u001b[1m[generate_music] Preparing inputs...\u001b[0m\n\u001b[32m2026-09-28 11:01:41.836\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_request\u001b[0m:\u001b[36m_prepare_reference_and_source_audio\u001b[0m:\u001b[36m179\u001b[0m - \u001b[1m[generate_music] cover task: no src_audio but audio codes provided, proceeding with codes\u001b[0m\n\u001b[32m2026-09-28 11:01:41.838\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music\u001b[0m:\u001b[36m_vram_preflight_check\u001b[0m:\u001b[36m156\u001b[0m - \u001b[1m[generate_music] VRAM pre-flight: 3.21 GB free, ~0.80 GB needed (batch=1, duration=30s, mode=turbo).\u001b[0m\n\u001b[32m2026-09-28 11:01:41.841\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_target\u001b[0m:\u001b[36m_prepare_target_latents_and_wavs\u001b[0m:\u001b[36m78\u001b[0m - \u001b[1m[generate_music] Decoding audio codes for item 0...\u001b[0m\n\u001b[32m2026-09-28 11:01:41.846\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_precomputed_lm_hints\u001b[0m:\u001b[36m31\u001b[0m - \u001b[1m[generate_music] Decoding audio codes for LM hints for item 0...\u001b[0m\n\u001b[32m2026-09-28 11:01:41.849\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m119\u001b[0m - \u001b[1m\n======================================================================\u001b[0m\n\u001b[32m2026-09-28 11:01:41.849\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m120\u001b[0m - \u001b[1m🔍 [DEBUG] DiT TEXT ENCODER INPUT (Inference)\u001b[0m\n\u001b[32m2026-09-28 11:01:41.849\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m121\u001b[0m - \u001b[1m======================================================================\u001b[0m\n\u001b[32m2026-09-28 11:01:41.849\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m122\u001b[0m - \u001b[1mtext_prompt:\n# Instruction\nGenerate audio semantic tokens based on the given conditions:\n\n# Caption\nInstrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums\n\n# Metas\n- bpm: 85\n- timesignature: 4\n- keyscale: C minor\n- duration: 30 seconds\n<|endoftext|>\n\u001b[0m\n\u001b[32m2026-09-28 11:01:41.849\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m123\u001b[0m - \u001b[1m======================================================================\u001b[0m\n\u001b[32m2026-09-28 11:01:41.849\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m124\u001b[0m - \u001b[1mlyrics_text:\n# Languages\nen\n\n# Lyric\n[Instrumental]<|endoftext|>\u001b[0m\n\u001b[32m2026-09-28 11:01:41.849\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m125\u001b[0m - \u001b[1m======================================================================\n\u001b[0m\n\u001b[32m2026-09-28 11:01:41.851\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_embed\u001b[0m:\u001b[36mpreprocess_batch\u001b[0m:\u001b[36m110\u001b[0m - \u001b[1m[preprocess_batch] Inferring prompt embeddings...\u001b[0m\n\u001b[32m2026-09-28 11:01:41.884\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_embed\u001b[0m:\u001b[36mpreprocess_batch\u001b[0m:\u001b[36m113\u001b[0m - \u001b[1m[preprocess_batch] Inferring lyric embeddings...\u001b[0m\n\u001b[32m2026-09-28 11:01:41.884\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.service_generate_execute\u001b[0m:\u001b[36m_execute_service_generate_diffusion\u001b[0m:\u001b[36m161\u001b[0m - \u001b[1m[service_generate] Generating audio... (DiT backend: PyTorch (cuda))\u001b[0m\n\u001b[32m2026-09-28 11:01:41.900\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.service_generate_execute\u001b[0m:\u001b[36m_execute_service_generate_diffusion\u001b[0m:\u001b[36m263\u001b[0m - \u001b[1m[service_generate] DiT diffusion via PyTorch (cuda)...\u001b[0m\n\u001b[32m2026-09-28 11:01:41.915\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.models.common.dcw_correction\u001b[0m:\u001b[36m__init__\u001b[0m:\u001b[36m98\u001b[0m - \u001b[1m[DCW] Active — mode=double, scaler=0.0500, high_scaler=0.0200, wavelet='haar'\u001b[0m\n\u001b[32m2026-09-28 11:01:42.196\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_prepare_generate_music_decode_state\u001b[0m:\u001b[36m42\u001b[0m - \u001b[1m[generate_music] Model generation completed. Decoding latents...\u001b[0m\n\u001b[32m2026-09-28 11:01:42.197\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_prepare_generate_music_decode_state\u001b[0m:\u001b[36m64\u001b[0m - \u001b[34m\u001b[1m[generate_music] pred_latents: torch.Size([1, 750, 64]), dtype=torch.bfloat16\u001b[0m\n\u001b[32m2026-09-28 11:01:42.197\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_prepare_generate_music_decode_state\u001b[0m:\u001b[36m65\u001b[0m - \u001b[34m\u001b[1m[generate_music] time_costs: {'encoder_time_cost': 0.014510154724121094, 'diffusion_time_cost': 0.28099656105041504, 'diffusion_per_step_time_cost': 0.03512457013130188, 'total_time_cost': 0.29550671577453613, 'offload_time_cost': 0.0}\u001b[0m\n\u001b[32m2026-09-28 11:01:42.206\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m127\u001b[0m - \u001b[1m[generate_music] Decoding latents with VAE...\u001b[0m\n\u001b[32m2026-09-28 11:01:42.207\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m136\u001b[0m - \u001b[34m\u001b[1m[generate_music] Before VAE decode: allocated=9.53GB, max=9.91GB\u001b[0m\n\u001b[32m2026-09-28 11:01:42.208\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m154\u001b[0m - \u001b[1m[generate_music] Effective free VRAM before VAE decode: 3.19 GB\u001b[0m\n\u001b[32m2026-09-28 11:01:42.208\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m172\u001b[0m - \u001b[1m[generate_music] Using tiled VAE decode to reduce VRAM usage...\u001b[0m\n\u001b[32m2026-09-28 11:01:42.208\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.memory_utils\u001b[0m:\u001b[36m_get_auto_decode_chunk_size\u001b[0m:\u001b[36m108\u001b[0m - \u001b[34m\u001b[1m[_get_auto_decode_chunk_size] Effective free VRAM: 3.19 GB\u001b[0m\n\u001b[32m2026-09-28 11:01:42.208\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.memory_utils\u001b[0m:\u001b[36m_should_offload_wav_to_cpu\u001b[0m:\u001b[36m131\u001b[0m - \u001b[34m\u001b[1m[_should_offload_wav_to_cpu] Effective free VRAM: 3.19 GB\u001b[0m\n\u001b[32m2026-09-28 11:01:42.208\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.vae_decode\u001b[0m:\u001b[36mtiled_decode\u001b[0m:\u001b[36m56\u001b[0m - \u001b[1m[tiled_decode] chunk_size=128, offload_wav_to_cpu=True, latents_shape=torch.Size([1, 64, 750])\u001b[0m\n\u001b[32m2026-09-28 11:01:42.208\u001b[0m | \u001b[33m\u001b[1mWARNING \u001b[0m | \u001b[36macestep.core.generation.handler.vae_decode_chunks\u001b[0m:\u001b[36m_tiled_decode_inner\u001b[0m:\u001b[36m39\u001b[0m - \u001b[33m\u001b[1m[tiled_decode] Reduced overlap from 64 to 32 for chunk_size=128\u001b[0m\n\u001b[32m2026-09-28 11:01:42.492\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m193\u001b[0m - \u001b[34m\u001b[1m[generate_music] After VAE decode: allocated=9.53GB, max=9.91GB\u001b[0m\n\u001b[32m2026-09-28 11:01:42.732\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_payload\u001b[0m:\u001b[36m_build_generate_music_success_payload\u001b[0m:\u001b[36m38\u001b[0m - \u001b[1m[generate_music] VAE decode completed. Preparing audio tensors...\u001b[0m\n\u001b[32m2026-09-28 11:01:42.732\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_payload\u001b[0m:\u001b[36m_build_generate_music_success_payload\u001b[0m:\u001b[36m50\u001b[0m - \u001b[1m[generate_music] Done! Generated 1 audio tensors.\u001b[0m\n\u001b[32m2026-09-28 11:01:42.959\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m981\u001b[0m - \u001b[1m[Normalization] Audio 0 BEFORE: Peak=1.0000, Target=-1.0dB\u001b[0m\n\u001b[32m2026-09-28 11:01:42.960\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m986\u001b[0m - \u001b[1m[Normalization] Audio 0 AFTER: Peak=0.8913\u001b[0m\n\u001b[32m2026-09-28 11:01:42.971\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.audio_utils\u001b[0m:\u001b[36msave_audio\u001b[0m:\u001b[36m319\u001b[0m - \u001b[34m\u001b[1m[AudioSaver] Saved audio to D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-09\\7ee3d732-150f-ca5d-f220-10fa0ec186e3.wav (wav, 48000Hz)\u001b[0m\n\u001b[32m2026-09-28 11:01:42.975\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m641\u001b[0m - \u001b[1m[generate_music] LLM usage decision: thinking=True, use_cot_caption=True, use_cot_language=True, use_cot_metas=True, need_lm_for_cot=True, llm_initialized=True, use_lm=True\u001b[0m\n\u001b[32m2026-09-28 11:01:42.975\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m699\u001b[0m - \u001b[1mLM chunk 1/1 (infer_type=llm_dit) (size: 1, seeds: [42])\u001b[0m\n\u001b[32m2026-09-28 11:01:42.975\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mgenerate_with_stop_condition\u001b[0m:\u001b[36m1428\u001b[0m - \u001b[1mPhase 1: Using user-provided metadata (skipping generation)\u001b[0m\n\u001b[32m2026-09-28 11:01:42.975\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mgenerate_with_stop_condition\u001b[0m:\u001b[36m1482\u001b[0m - \u001b[1mPhase 2: Generating audio codes...\u001b[0m\n\u001b[32m2026-09-28 11:01:42.976\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mgenerate_with_stop_condition\u001b[0m:\u001b[36m1490\u001b[0m - \u001b[1mgenerate_with_stop_condition: formatted_prompt_with_cot=<|im_start|>system\n# Instruction\nGenerate audio semantic tokens based on the given conditions:\n\n<|im_end|>\n<|im_start|>user\n# Caption\nInstrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums\n\n# Lyric\n[Instrumental]\n<|im_end|>\n<|im_start|>assistant\n<think>\nbpm: 85\nduration: 30\nkeyscale: C minor\ntimesignature: 4\n</think>\n\n\u001b[0m\n\u001b[32m2026-09-28 11:01:42.978\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36m_build_unconditional_prompt\u001b[0m:\u001b[36m395\u001b[0m - \u001b[1mCFG unconditional prompt (phase=codes, is_batch=False, negative_prompt='NO USER INPUT'):\n<|im_start|>system\n# Instruction\nGenerate audio semantic tokens based on the given conditions:\n\n<|im_end|>\n<|im_start|>user\nNO USER INPUT<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n\u001b[0m\n\u001b[32m2026-09-28 11:01:46.548\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mparse_lm_output\u001b[0m:\u001b[36m2813\u001b[0m - \u001b[34m\u001b[1mDebug output text: <|audio_code_35523|><|audio_code_612|><|audio_code_55819|><|audio_code_23789|><|audio_code_53317|><|audio_code_14061|><|audio_code_54035|><|audio_code_14571|><|audio_code_18179|><|audio_code_14139|><|audio_code_7626|><|audio_code_14187|><|audio_code_43972|><|audio_code_38888|><|audio_code_33264|><|audio_code_26553|><|audio_code_10691|><|audio_code_22989|><|audio_code_23963|><|audio_code_15300|><|audio_code_28123|><|audio_code_3158|><|audio_code_58374|><|audio_code_23653|><|audio_code_39428|><|audio_code_20524|><|audio_code_52739|><|audio_code_17969|><|audio_code_25418|><|audio_code_5306|><|audio_code_13524|><|audio_code_49507|><|audio_code_11581|><|audio_code_61789|><|audio_code_55164|><|audio_code_51173|><|audio_code_9989|><|audio_code_906|><|audio_code_10643|><|audio_code_47012|><|audio_code_10115|><|audio_code_29155|><|audio_code_11713|><|audio_code_23449|><|audio_code_32715|><|audio_code_25595|><|audio_code_58291|><|audio_code_11194|><|audio_code_15682|><|audio_code_7078|><|audio_code_34289|><|audio_code_2500|><|audio_code_3256|><|audio_code_36569|><|audio_code_37129|><|audio_code_6397|><|audio_code_63954|><|audio_code_11579|><|audio_code_24485|><|audio_code_38148|><|audio_code_11636|><|audio_code_36771|><|audio_code_25412|><|audio_code_56258|><|audio_code_11187|><|audio_code_1483|><|audio_code_48577|><|audio_code_52091|><|audio_code_24554|><|audio_code_450|><|audio_code_23002|><|audio_code_10706|><|audio_code_14308|><|audio_code_56777|><|audio_code_1341|><|audio_code_30145|><|audio_code_38368|><|audio_code_5611|><|audio_code_57127|><|audio_code_12285|><|audio_code_23709|><|audio_code_20174|><|audio_code_21061|><|audio_code_5753|><|audio_code_37289|><|audio_code_27969|><|audio_code_25474|><|audio_code_2425|><|audio_code_19268|><|audio_code_52065|><|audio_code_38344|><|audio_code_18920|><|audio_code_22992|><|audio_code_449|><|audio_code_13185|><|audio_code_26509|><|audio_code_48633|><|audio_code_1993|><|audio_code_5034|><|audio_code_52160|><|audio_code_56826|><|audio_code_4056|><|audio_code_36764|><|audio_code_15112|><|audio_code_27082|><|audio_code_33722|><|audio_code_16078|><|audio_code_25535|><|audio_code_16751|><|audio_code_30399|><|audio_code_10782|><|audio_code_43141|><|audio_code_23589|><|audio_code_25375|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_27879|><|audio_code_35855|><|audio_code_35847|><|im_end|>\u001b[0m\n\u001b[32m2026-09-28 11:01:46.548\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.llm_inference\u001b[0m:\u001b[36mgenerate_with_stop_condition\u001b[0m:\u001b[36m1650\u001b[0m - \u001b[1mPhase 2 completed in 3.57s. Generated 150 audio codes\u001b[0m\n\u001b[32m2026-09-28 11:01:46.548\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m304\u001b[0m - \u001b[1m[generate_music] Starting generation...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.548\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m307\u001b[0m - \u001b[1m[generate_music] Preparing inputs...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.548\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_request\u001b[0m:\u001b[36m_prepare_reference_and_source_audio\u001b[0m:\u001b[36m179\u001b[0m - \u001b[1m[generate_music] cover task: no src_audio but audio codes provided, proceeding with codes\u001b[0m\n\u001b[32m2026-09-28 11:01:46.548\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music\u001b[0m:\u001b[36m_vram_preflight_check\u001b[0m:\u001b[36m156\u001b[0m - \u001b[1m[generate_music] VRAM pre-flight: 3.06 GB free, ~0.80 GB needed (batch=1, duration=30s, mode=turbo).\u001b[0m\n\u001b[32m2026-09-28 11:01:46.548\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_target\u001b[0m:\u001b[36m_prepare_target_latents_and_wavs\u001b[0m:\u001b[36m78\u001b[0m - \u001b[1m[generate_music] Decoding audio codes for item 0...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.557\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_precomputed_lm_hints\u001b[0m:\u001b[36m31\u001b[0m - \u001b[1m[generate_music] Decoding audio codes for LM hints for item 0...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.562\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m119\u001b[0m - \u001b[1m\n======================================================================\u001b[0m\n\u001b[32m2026-09-28 11:01:46.562\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m120\u001b[0m - \u001b[1m🔍 [DEBUG] DiT TEXT ENCODER INPUT (Inference)\u001b[0m\n\u001b[32m2026-09-28 11:01:46.562\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m121\u001b[0m - \u001b[1m======================================================================\u001b[0m\n\u001b[32m2026-09-28 11:01:46.562\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m122\u001b[0m - \u001b[1mtext_prompt:\n# Instruction\nGenerate audio semantic tokens based on the given conditions:\n\n# Caption\nInstrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums\n\n# Metas\n- bpm: 85\n- timesignature: 4\n- keyscale: C minor\n- duration: 30 seconds\n<|endoftext|>\n\u001b[0m\n\u001b[32m2026-09-28 11:01:46.562\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m123\u001b[0m - \u001b[1m======================================================================\u001b[0m\n\u001b[32m2026-09-28 11:01:46.562\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m124\u001b[0m - \u001b[1mlyrics_text:\n# Languages\nen\n\n# Lyric\n[Instrumental]<|endoftext|>\u001b[0m\n\u001b[32m2026-09-28 11:01:46.562\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_text\u001b[0m:\u001b[36m_prepare_text_conditioning_inputs\u001b[0m:\u001b[36m125\u001b[0m - \u001b[1m======================================================================\n\u001b[0m\n\u001b[32m2026-09-28 11:01:46.565\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_embed\u001b[0m:\u001b[36mpreprocess_batch\u001b[0m:\u001b[36m110\u001b[0m - \u001b[1m[preprocess_batch] Inferring prompt embeddings...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.598\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.conditioning_embed\u001b[0m:\u001b[36mpreprocess_batch\u001b[0m:\u001b[36m113\u001b[0m - \u001b[1m[preprocess_batch] Inferring lyric embeddings...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.598\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.service_generate_execute\u001b[0m:\u001b[36m_execute_service_generate_diffusion\u001b[0m:\u001b[36m161\u001b[0m - \u001b[1m[service_generate] Generating audio... (DiT backend: PyTorch (cuda))\u001b[0m\n\u001b[32m2026-09-28 11:01:46.615\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.service_generate_execute\u001b[0m:\u001b[36m_execute_service_generate_diffusion\u001b[0m:\u001b[36m263\u001b[0m - \u001b[1m[service_generate] DiT diffusion via PyTorch (cuda)...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.630\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.models.common.dcw_correction\u001b[0m:\u001b[36m__init__\u001b[0m:\u001b[36m98\u001b[0m - \u001b[1m[DCW] Active — mode=double, scaler=0.0500, high_scaler=0.0200, wavelet='haar'\u001b[0m\n\u001b[32m2026-09-28 11:01:46.922\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_prepare_generate_music_decode_state\u001b[0m:\u001b[36m42\u001b[0m - \u001b[1m[generate_music] Model generation completed. Decoding latents...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.924\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_prepare_generate_music_decode_state\u001b[0m:\u001b[36m64\u001b[0m - \u001b[34m\u001b[1m[generate_music] pred_latents: torch.Size([1, 750, 64]), dtype=torch.bfloat16\u001b[0m\n\u001b[32m2026-09-28 11:01:46.924\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_prepare_generate_music_decode_state\u001b[0m:\u001b[36m65\u001b[0m - \u001b[34m\u001b[1m[generate_music] time_costs: {'encoder_time_cost': 0.012896299362182617, 'diffusion_time_cost': 0.29402947425842285, 'diffusion_per_step_time_cost': 0.036753684282302856, 'total_time_cost': 0.30692577362060547, 'offload_time_cost': 0.0}\u001b[0m\n\u001b[32m2026-09-28 11:01:46.931\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m127\u001b[0m - \u001b[1m[generate_music] Decoding latents with VAE...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.931\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m136\u001b[0m - \u001b[34m\u001b[1m[generate_music] Before VAE decode: allocated=9.53GB, max=9.91GB\u001b[0m\n\u001b[32m2026-09-28 11:01:46.931\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m154\u001b[0m - \u001b[1m[generate_music] Effective free VRAM before VAE decode: 3.06 GB\u001b[0m\n\u001b[32m2026-09-28 11:01:46.931\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m172\u001b[0m - \u001b[1m[generate_music] Using tiled VAE decode to reduce VRAM usage...\u001b[0m\n\u001b[32m2026-09-28 11:01:46.931\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.memory_utils\u001b[0m:\u001b[36m_get_auto_decode_chunk_size\u001b[0m:\u001b[36m108\u001b[0m - \u001b[34m\u001b[1m[_get_auto_decode_chunk_size] Effective free VRAM: 3.06 GB\u001b[0m\n\u001b[32m2026-09-28 11:01:46.931\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.memory_utils\u001b[0m:\u001b[36m_should_offload_wav_to_cpu\u001b[0m:\u001b[36m131\u001b[0m - \u001b[34m\u001b[1m[_should_offload_wav_to_cpu] Effective free VRAM: 3.06 GB\u001b[0m\n\u001b[32m2026-09-28 11:01:46.931\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.vae_decode\u001b[0m:\u001b[36mtiled_decode\u001b[0m:\u001b[36m56\u001b[0m - \u001b[1m[tiled_decode] chunk_size=128, offload_wav_to_cpu=True, latents_shape=torch.Size([1, 64, 750])\u001b[0m\n\u001b[32m2026-09-28 11:01:46.931\u001b[0m | \u001b[33m\u001b[1mWARNING \u001b[0m | \u001b[36macestep.core.generation.handler.vae_decode_chunks\u001b[0m:\u001b[36m_tiled_decode_inner\u001b[0m:\u001b[36m39\u001b[0m - \u001b[33m\u001b[1m[tiled_decode] Reduced overlap from 64 to 32 for chunk_size=128\u001b[0m\n\u001b[32m2026-09-28 11:01:47.225\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_decode\u001b[0m:\u001b[36m_decode_generate_music_pred_latents\u001b[0m:\u001b[36m193\u001b[0m - \u001b[34m\u001b[1m[generate_music] After VAE decode: allocated=9.53GB, max=9.91GB\u001b[0m\n\u001b[32m2026-09-28 11:01:47.464\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_payload\u001b[0m:\u001b[36m_build_generate_music_success_payload\u001b[0m:\u001b[36m38\u001b[0m - \u001b[1m[generate_music] VAE decode completed. Preparing audio tensors...\u001b[0m\n\u001b[32m2026-09-28 11:01:47.464\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.core.generation.handler.generate_music_payload\u001b[0m:\u001b[36m_build_generate_music_success_payload\u001b[0m:\u001b[36m50\u001b[0m - \u001b[1m[generate_music] Done! Generated 1 audio tensors.\u001b[0m\n\u001b[32m2026-09-28 11:01:47.699\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m981\u001b[0m - \u001b[1m[Normalization] Audio 0 BEFORE: Peak=0.9531, Target=-1.0dB\u001b[0m\n\u001b[32m2026-09-28 11:01:47.701\u001b[0m | \u001b[1mINFO    \u001b[0m | \u001b[36macestep.inference\u001b[0m:\u001b[36mgenerate_music\u001b[0m:\u001b[36m986\u001b[0m - \u001b[1m[Normalization] Audio 0 AFTER: Peak=0.8913\u001b[0m\n\u001b[32m2026-09-28 11:01:47.713\u001b[0m | \u001b[34m\u001b[1mDEBUG   \u001b[0m | \u001b[36macestep.audio_utils\u001b[0m:\u001b[36msave_audio\u001b[0m:\u001b[36m319\u001b[0m - \u001b[34m\u001b[1m[AudioSaver] Saved audio to D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0\\iter-10\\83b3c61a-84de-a4f0-520c-87dc656243a0.wav (wav, 48000Hz)\u001b[0m\n"
+}

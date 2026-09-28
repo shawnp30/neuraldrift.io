@@ -6,7 +6,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import type { AudioWorkloadDefinition, BenchmarkModelConfig, BenchmarkRuntimeConfig, FailureEvidence, FailureStage, LicenseInfo } from '../types';
-import type { GenerativeRuntimeAdapter, GenerationExecutionResult, RuntimeProbeResult } from './interface';
+import type { GenerativeRuntimeAdapter, GenerationContext, GenerationExecutionResult, GenerationSessionResult, RuntimeProbeResult } from './interface';
+import { sessionRequestIds } from './audioCpp';
 import { runMonitoredProcess } from '../telemetry';
 
 export const ACE_STEP_CODE_LICENSE: LicenseInfo = {
@@ -40,6 +41,8 @@ interface RunnerResult {
   loadMs?: number;
   generateMs?: number;
   outputPath?: string;
+  iterations?: { id: string; warmup: boolean; generateMs: number; outputPath: string | null; audioCodesPath: string | null; timeCosts: Record<string, number>; lmMetadata: unknown }[];
+  traceback?: string;
   errorType?: string;
   error?: string;
   [key: string]: unknown;
@@ -79,7 +82,7 @@ export class AceStepPythonAdapter implements GenerativeRuntimeAdapter {
     }
   }
 
-  async executeGeneration(model: BenchmarkModelConfig, workload: AudioWorkloadDefinition, outputDir: string): Promise<GenerationExecutionResult> {
+  private async launch(model: BenchmarkModelConfig, workload: AudioWorkloadDefinition, outputDir: string, context: GenerationContext, iterations?: { id: string; warmup: boolean }[]) {
     fs.mkdirSync(outputDir, { recursive: true });
     const s = workload.audioSettings;
     const request = {
@@ -89,6 +92,7 @@ export class AceStepPythonAdapter implements GenerativeRuntimeAdapter {
       lmBackend: this.opts.lmBackend,
       useFlashAttention: false,
       outputDir,
+      ...(iterations ? { iterations } : {}),
       settings: {
         route: s.route,
         lyrics: s.lyrics,
@@ -99,10 +103,10 @@ export class AceStepPythonAdapter implements GenerativeRuntimeAdapter {
         guidanceScale: s.guidanceScale,
         ...s.modelOptions,
       },
+      inputOptions: context.inputOptions ?? {},
     };
     const requestPath = path.join(outputDir, 'request.json');
     fs.writeFileSync(requestPath, JSON.stringify(request, null, 2));
-
     const args = [this.opts.runnerScript, '--ace-root', this.opts.aceRoot, '--request', requestPath];
     const run = await runMonitoredProcess(this.opts.pythonExe, args, {
       cwd: this.opts.aceRoot,
@@ -110,14 +114,10 @@ export class AceStepPythonAdapter implements GenerativeRuntimeAdapter {
       timeoutMs: this.opts.timeoutMs,
     });
     const reported = parseRunnerResult(run.stdout);
-    const rawOutput = reported?.outputPath ? path.resolve(outputDir, reported.outputPath) : null;
-    const outputPath = rawOutput && fs.existsSync(rawOutput) ? rawOutput : null;
-
     let failure: FailureEvidence | null = null;
     if (run.spawnError) failure = { stage: 'preflight', type: 'SPAWN_FAILED', message: run.spawnError };
     else if (!reported) failure = { stage: 'execution', type: run.exitCode === 0 ? 'NO_RESULT' : `EXIT_${run.exitCode}`, message: run.stderr.trim().split(/\r?\n/).slice(-6).join(' | ') || 'Runner produced no result line.' };
     else if (!reported.success) failure = { stage: failureStageFromRunner(reported.stage), type: reported.errorType ?? 'ERROR', message: reported.error ?? 'Unknown error' };
-    else if (!outputPath) failure = { stage: 'execution', type: 'NO_OUTPUT', message: `Runner reported ${reported.outputPath ?? 'no path'} but no file exists.` };
 
     const runtime: BenchmarkRuntimeConfig = {
       runtime: 'pytorch',
@@ -134,14 +134,30 @@ export class AceStepPythonAdapter implements GenerativeRuntimeAdapter {
       ...(reported?.attention ? { attentionBackend: reported.attention } : {}),
       license: ACE_STEP_CODE_LICENSE,
     };
+    const rawTrace = {
+      command: [this.opts.pythonExe, ...args],
+      request: { ...request, inputOptions: Object.fromEntries(Object.keys(request.inputOptions).map((k) => [k, '[from hashed workload input]'])) },
+      exitCode: run.exitCode,
+      runnerResult: reported ? { ...reported, traceback: reported.traceback } : null,
+      iterationAnnouncements: run.stdoutLines.filter((l) => l.line.startsWith('ND_ITERATION_START ')),
+      stderrTail: run.stderr.split(/\r?\n/).slice(-200).join('\n'),
+    };
+    return { run, reported, failure, runtime, rawTrace };
+  }
 
+  async executeGeneration(model: BenchmarkModelConfig, workload: AudioWorkloadDefinition, outputDir: string, context: GenerationContext = {}): Promise<GenerationExecutionResult> {
+    const { run, reported, failure: launchFailure, runtime, rawTrace } = await this.launch(model, workload, outputDir, context);
+    const rawOutput = reported?.outputPath ? path.resolve(outputDir, reported.outputPath) : null;
+    const outputPath = rawOutput && fs.existsSync(rawOutput) ? rawOutput : null;
+    const failure = launchFailure ?? (outputPath ? null : { stage: 'execution' as const, type: 'NO_OUTPUT', message: `Runner reported ${reported?.outputPath ?? 'no path'} but no file exists.` });
     return {
       outputPath,
       runtime,
       failure,
+      telemetry: run.telemetry,
       outputMetrics: {
         kind: 'audio',
-        requestedDurationSec: s.durationSec,
+        requestedDurationSec: workload.audioSettings.durationSec,
         outputDurationSec: null,
         generationTimeMs: run.spawnError ? null : Number(run.wallMs.toFixed(1)),
         realTimeFactor: null,
@@ -153,14 +169,29 @@ export class AceStepPythonAdapter implements GenerativeRuntimeAdapter {
         gpuUtilizationPct: run.peakGpuUtilizationPct,
         telemetryMethod: run.method,
       },
-      rawTrace: {
-        command: [this.opts.pythonExe, ...args],
-        request,
-        exitCode: run.exitCode,
-        runnerResult: reported,
-        telemetrySamples: { gpu: run.gpuSamples, ram: run.ramSamples },
-        stderrTail: run.stderr.split(/\r?\n/).slice(-200).join('\n'),
-      },
+      rawTrace: { ...rawTrace, telemetrySamples: { gpu: run.gpuSamples, ram: run.ramSamples } },
+    };
+  }
+
+  async executeSession(model: BenchmarkModelConfig, workload: AudioWorkloadDefinition, outputDir: string, context: GenerationContext = {}): Promise<GenerationSessionResult> {
+    const ids = sessionRequestIds(workload);
+    const { run, reported, failure, runtime, rawTrace } = await this.launch(model, workload, outputDir, context, ids);
+    const reportedIterations = new Map((reported?.iterations ?? []).map((it) => [it.id, it]));
+    const firstStart = run.stdoutLines.find((l) => l.line.startsWith('ND_ITERATION_START '));
+    return {
+      runtime,
+      failure,
+      telemetry: run.telemetry,
+      processWallMs: run.spawnError ? null : Number(run.wallMs.toFixed(1)),
+      startupAndLoadMs: firstStart ? firstStart.atMs : null,
+      startupAndLoadBasis: 'measured',
+      generationSource: 'ACE-Step runner: wall time around each generate_music call (CUDA-synchronized), one loaded session. Start-up and load: time from process spawn until the runner announced the first iteration.',
+      iterations: ids.map(({ id, warmup }, index) => {
+        const it = reportedIterations.get(id);
+        const out = it?.outputPath ? path.resolve(outputDir, it.outputPath) : null;
+        return { id, index, warmup, generationMs: it ? Number(it.generateMs.toFixed(1)) : null, outputPath: out && fs.existsSync(out) ? out : null };
+      }),
+      rawTrace,
     };
   }
 }

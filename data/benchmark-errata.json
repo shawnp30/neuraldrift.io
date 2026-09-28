@@ -1,0 +1,143 @@
+[
+  {
+    "recordId": "run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb",
+    "field": "sessionMetrics.startupAndLoadMs",
+    "recordedValue": 517376.1,
+    "correctedValue": 11907.4,
+    "correctedBasis": "derived",
+    "issue": "The recorded value is the arrival time of audio.cpp's 'request_index=0' stdout line. audiocpp_cli block-buffers stdout when it is piped, so that line arrived minutes after the request actually started; the warm-up output file was written 16 s after the process started.",
+    "correctionMethod": "Process wall time (853,979.3 ms) minus the sum of audio.cpp's reported request times (842,071.9 ms). Includes process exit. The adapter now derives the value this way for all audio.cpp sessions.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "derived",
+    "invalidatesRecord": true,
+    "issue": "The runner wrote the model request options (bpm, keyscale, timesignature, shift, infer_method, thinking, lm_* and audio_codes) as top-level keys of audio.cpp --request-sequence items. audiocpp_cli reads model options only from each item's nested \"options\" object (app/cli/request.cpp at commit ac16661d, line 184) and silently drops other top-level keys, so this session ran with audio.cpp defaults for those settings (for example shift 1.0 instead of the pinned 3.0, and planner-chosen metadata) rather than the workload's configuration.",
+    "correctionMethod": "Record invalidated: its outputs decoded and validated, but it does not implement the workload it names, so it is excluded from all statistics and comparisons. The adapter now nests every option under \"options\"; a sequence built that way produced audio byte-identical to the single-run CLI path (audio content hash 3059a13c…), and the session was re-run.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T14-56-54-574Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-d65a2be6",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "derived",
+    "invalidatesRecord": true,
+    "issue": "The runner wrote the model request options (bpm, keyscale, timesignature, shift, infer_method, thinking, lm_* and audio_codes) as top-level keys of audio.cpp --request-sequence items. audiocpp_cli reads model options only from each item's nested \"options\" object (app/cli/request.cpp at commit ac16661d, line 184) and silently drops other top-level keys, so this session ran with audio.cpp defaults for those settings (for example shift 1.0 instead of the pinned 3.0, and planner-chosen metadata) rather than the workload's configuration.",
+    "correctionMethod": "Record invalidated: its outputs decoded and validated, but it does not implement the workload it names, so it is excluded from all statistics and comparisons. The adapter now nests every option under \"options\"; a sequence built that way produced audio byte-identical to the single-run CLI path (audio content hash 3059a13c…), and the session was re-run.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-22-52-700Z-nd-audio-music-003-acestep-v15-turbo-audio_cpp-rtx-5080-a4b2ac85",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "derived",
+    "invalidatesRecord": true,
+    "issue": "The runner wrote the model request options (bpm, keyscale, timesignature, shift, infer_method, thinking, lm_* and audio_codes) as top-level keys of audio.cpp --request-sequence items. audiocpp_cli reads model options only from each item's nested \"options\" object (app/cli/request.cpp at commit ac16661d, line 184) and silently drops other top-level keys, so this session ran with audio.cpp defaults for those settings (for example shift 1.0 instead of the pinned 3.0, and planner-chosen metadata) rather than the workload's configuration. For ND-AUDIO-MUSIC-003 this means the fixed audio codes were ignored and the planner ran.",
+    "correctionMethod": "Record invalidated: its outputs decoded and validated, but it does not implement the workload it names, so it is excluded from all statistics and comparisons. The adapter now nests every option under \"options\"; a sequence built that way produced audio byte-identical to the single-run CLI path (audio content hash 3059a13c…), and the session was re-run.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-26-12-864Z-nd-audio-music-003-acestep-v15-turbo-audio_cpp-rtx-5080-7cb4659f",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "derived",
+    "invalidatesRecord": true,
+    "issue": "The runner wrote the model request options (bpm, keyscale, timesignature, shift, infer_method, thinking, lm_* and audio_codes) as top-level keys of audio.cpp --request-sequence items. audiocpp_cli reads model options only from each item's nested \"options\" object (app/cli/request.cpp at commit ac16661d, line 184) and silently drops other top-level keys, so this session ran with audio.cpp defaults for those settings (for example shift 1.0 instead of the pinned 3.0, and planner-chosen metadata) rather than the workload's configuration. For ND-AUDIO-MUSIC-003 this means the fixed audio codes were ignored and the planner ran.",
+    "correctionMethod": "Record invalidated: its outputs decoded and validated, but it does not implement the workload it names, so it is excluded from all statistics and comparisons. The adapter now nests every option under \"options\"; a sequence built that way produced audio byte-identical to the single-run CLI path (audio content hash 3059a13c…), and the session was re-run.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7",
+    "field": "sessionMetrics.distinctMeasuredOutputs",
+    "recordedValue": 5,
+    "correctedValue": 1,
+    "correctedBasis": "derived",
+    "issue": "The recorded count compares whole-file SHA-256 hashes. The five WAV files differ in exactly one byte inside the PEAK chunk, where the writer stamps a time; the audio data chunks are byte-identical (content hash 0185ceee…, maximum sample difference 0).",
+    "correctionMethod": "Distinct outputs counted by the SHA-256 of the WAV data chunk. New records store this as contentSha256 and count distinct audio, not distinct files.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-17-33-014Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-a2d0b9d4",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "measured",
+    "invalidatesRecord": true,
+    "issue": "This run claims a separate process held a fixed amount of VRAM for its whole duration. A follow-up measurement with Windows GPU process counters showed the opposite: a ballast holding 11.29 GiB of dedicated VRAM was demoted by Windows (WDDM) to 3.15 GiB while audio.cpp ran, with the rest moved to system memory, and it stayed demoted afterwards. The constraint this record describes was therefore not in effect.",
+    "correctionMethod": "Record invalidated as constrained-VRAM evidence and excluded from statistics. The runner now refuses --vram-ballast-gib on Windows. Per-configuration VRAM footprints are reported from unconstrained runs instead, and are not minimum requirements.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-18-06-653Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-0629512c",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "measured",
+    "invalidatesRecord": true,
+    "issue": "This run claims a separate process held a fixed amount of VRAM for its whole duration. A follow-up measurement with Windows GPU process counters showed the opposite: a ballast holding 11.29 GiB of dedicated VRAM was demoted by Windows (WDDM) to 3.15 GiB while audio.cpp ran, with the rest moved to system memory, and it stayed demoted afterwards. The constraint this record describes was therefore not in effect.",
+    "correctionMethod": "Record invalidated as constrained-VRAM evidence and excluded from statistics. The runner now refuses --vram-ballast-gib on Windows. Per-configuration VRAM footprints are reported from unconstrained runs instead, and are not minimum requirements.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-18-30-590Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-2ab87ab3",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "measured",
+    "invalidatesRecord": true,
+    "issue": "This run claims a separate process held a fixed amount of VRAM for its whole duration. A follow-up measurement with Windows GPU process counters showed the opposite: a ballast holding 11.29 GiB of dedicated VRAM was demoted by Windows (WDDM) to 3.15 GiB while audio.cpp ran, with the rest moved to system memory, and it stayed demoted afterwards. The constraint this record describes was therefore not in effect.",
+    "correctionMethod": "Record invalidated as constrained-VRAM evidence and excluded from statistics. The runner now refuses --vram-ballast-gib on Windows. Per-configuration VRAM footprints are reported from unconstrained runs instead, and are not minimum requirements.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-18-55-295Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-bc21119a",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "measured",
+    "invalidatesRecord": true,
+    "issue": "This run claims a separate process held a fixed amount of VRAM for its whole duration. A follow-up measurement with Windows GPU process counters showed the opposite: a ballast holding 11.29 GiB of dedicated VRAM was demoted by Windows (WDDM) to 3.15 GiB while audio.cpp ran, with the rest moved to system memory, and it stayed demoted afterwards. The constraint this record describes was therefore not in effect.",
+    "correctionMethod": "Record invalidated as constrained-VRAM evidence and excluded from statistics. The runner now refuses --vram-ballast-gib on Windows. Per-configuration VRAM footprints are reported from unconstrained runs instead, and are not minimum requirements.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-19-18-670Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-5c1dfa06",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "measured",
+    "invalidatesRecord": true,
+    "issue": "This run claims a separate process held a fixed amount of VRAM for its whole duration. A follow-up measurement with Windows GPU process counters showed the opposite: a ballast holding 11.29 GiB of dedicated VRAM was demoted by Windows (WDDM) to 3.15 GiB while audio.cpp ran, with the rest moved to system memory, and it stayed demoted afterwards. The constraint this record describes was therefore not in effect.",
+    "correctionMethod": "Record invalidated as constrained-VRAM evidence and excluded from statistics. The runner now refuses --vram-ballast-gib on Windows. Per-configuration VRAM footprints are reported from unconstrained runs instead, and are not minimum requirements.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-19-42-401Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-656586e3",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "measured",
+    "invalidatesRecord": true,
+    "issue": "This run claims a separate process held a fixed amount of VRAM for its whole duration. A follow-up measurement with Windows GPU process counters showed the opposite: a ballast holding 11.29 GiB of dedicated VRAM was demoted by Windows (WDDM) to 3.15 GiB while audio.cpp ran, with the rest moved to system memory, and it stayed demoted afterwards. The constraint this record describes was therefore not in effect.",
+    "correctionMethod": "Record invalidated as constrained-VRAM evidence and excluded from statistics. The runner now refuses --vram-ballast-gib on Windows. Per-configuration VRAM footprints are reported from unconstrained runs instead, and are not minimum requirements.",
+    "recordedAt": "2026-09-28"
+  },
+  {
+    "recordId": "run-2026-09-28T15-21-37-412Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-a9a31ade",
+    "field": "outcome",
+    "recordedValue": "PASS",
+    "correctedValue": "INVALIDATED",
+    "correctedBasis": "measured",
+    "invalidatesRecord": true,
+    "issue": "This run claims a separate process held a fixed amount of VRAM for its whole duration. A follow-up measurement with Windows GPU process counters showed the opposite: a ballast holding 11.29 GiB of dedicated VRAM was demoted by Windows (WDDM) to 3.15 GiB while audio.cpp ran, with the rest moved to system memory, and it stayed demoted afterwards. The constraint this record describes was therefore not in effect.",
+    "correctionMethod": "Record invalidated as constrained-VRAM evidence and excluded from statistics. The runner now refuses --vram-ballast-gib on Windows. Per-configuration VRAM footprints are reported from unconstrained runs instead, and are not minimum requirements.",
+    "recordedAt": "2026-09-28"
+  }
+]

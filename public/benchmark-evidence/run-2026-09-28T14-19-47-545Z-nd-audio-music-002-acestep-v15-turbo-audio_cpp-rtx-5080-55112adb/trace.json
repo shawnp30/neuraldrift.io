@@ -1,0 +1,518 @@
+{
+  "command": [
+    "D:\\AI\\audio.cpp\\v0.8.2-audio8-perf-hotfix-cuda13.3\\audiocpp_cli.exe",
+    "--task",
+    "gen",
+    "--family",
+    "ace_step",
+    "--model",
+    "D:/AI/audio.cpp/models/ACE-Step1.5-GGUF/turbo",
+    "--backend",
+    "cuda",
+    "--mode",
+    "offline",
+    "--device",
+    "0",
+    "--request-sequence",
+    "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb\\request-sequence.json",
+    "--out-dir",
+    "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb",
+    "--metrics"
+  ],
+  "requestSequence": {
+    "requests": [
+      {
+        "id": "warmup-01",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-01",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-02",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-03",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-04",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-05",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-06",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-07",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-08",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-09",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      },
+      {
+        "id": "iter-10",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": true,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9
+      }
+    ]
+  },
+  "exitCode": 0,
+  "versionOutput": "audio.cpp 0.8.2-audio8-perf-hotfix\r\ngit: ac16661d 2026-09-24\r\nbuild: Release, msvc 19.44.35229.0, Windows AMD64\r\nbackends: cpu,cuda",
+  "installManifest": {
+    "installedAt": "2026-09-27",
+    "installedBy": "NeuralDrift Local Audio phase (isolated install; no system CUDA, driver, Python or other runtime modified)",
+    "repository": "https://github.com/0xShug0/audio.cpp",
+    "release": "v0.8.2-audio8-perf-hotfix",
+    "releaseUrl": "https://github.com/0xShug0/audio.cpp/releases/tag/v0.8.2-audio8-perf-hotfix",
+    "gitCommit": "ac16661d",
+    "cudaRuntime": "13.3",
+    "cudaArchitectures": "75;80;86;89;90;120 (release.yml matrix for the CUDA 13.3 Windows build)",
+    "assets": [
+      {
+        "name": "audio-v0.8.2-audio8-perf-hotfix-bin-windows-x64-cuda13.3.zip",
+        "bytes": 272191107,
+        "sha256": "298255ed976244b70bc39cb15e9269e7bdb83a967ac37dfb34e50dfa4ddbb480",
+        "verifiedAgainst": "GitHub release asset digest"
+      },
+      {
+        "name": "audio-v0.8.2-audio8-perf-hotfix-cudart-windows-x64-cuda13.3.zip",
+        "bytes": 575457454,
+        "sha256": "f2c75df493c35fbe5b01c550dcf19770bd919f8f6668fc24c622f42ec1e5d024",
+        "verifiedAgainst": "GitHub release asset digest"
+      }
+    ],
+    "models": [
+      {
+        "path": "../models/ACE-Step1.5-GGUF/turbo/ace-step-1.5-turbo-bf16.gguf",
+        "source": "https://huggingface.co/audio-cpp/audio.cpp-gguf/blob/main/ACE-Step1.5-GGUF/turbo/ace-step-1.5-turbo-bf16.gguf",
+        "bytes": 10090398272,
+        "sha256": "93974239a29a1a821b3cc1b1ca7e1c6229b1a900a0e44a1a9770bb2271d2be5f",
+        "verifiedAgainst": "Hugging Face LFS oid"
+      }
+    ]
+  },
+  "runtimeReportedMetrics": {
+    "warmup-01": {
+      "wall_ms": "5042.85",
+      "memory.peak_rss_mb": "4735",
+      "memory.peak_footprint_mb": "16969",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "0.168095",
+      "x_realtime": "5.94902",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-01": {
+      "wall_ms": "50533.4",
+      "memory.peak_rss_mb": "4735",
+      "memory.peak_footprint_mb": "19354",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "1.68445",
+      "x_realtime": "0.593667",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-02": {
+      "wall_ms": "58126.4",
+      "memory.peak_rss_mb": "4735",
+      "memory.peak_footprint_mb": "19380",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "1.93755",
+      "x_realtime": "0.516117",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-03": {
+      "wall_ms": "71195.2",
+      "memory.peak_rss_mb": "4735",
+      "memory.peak_footprint_mb": "19380",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "2.37317",
+      "x_realtime": "0.421377",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-04": {
+      "wall_ms": "85790.5",
+      "memory.peak_rss_mb": "4735",
+      "memory.peak_footprint_mb": "19399",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "2.85968",
+      "x_realtime": "0.349689",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-05": {
+      "wall_ms": "96477.8",
+      "memory.peak_rss_mb": "4735",
+      "memory.peak_footprint_mb": "19399",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "3.21593",
+      "x_realtime": "0.310952",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-06": {
+      "wall_ms": "139112",
+      "memory.peak_rss_mb": "5330",
+      "memory.peak_footprint_mb": "19409",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "4.63706",
+      "x_realtime": "0.215654",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-07": {
+      "wall_ms": "70385.6",
+      "memory.peak_rss_mb": "5330",
+      "memory.peak_footprint_mb": "19421",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "2.34619",
+      "x_realtime": "0.426223",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-08": {
+      "wall_ms": "99823.2",
+      "memory.peak_rss_mb": "5330",
+      "memory.peak_footprint_mb": "19431",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "3.32744",
+      "x_realtime": "0.300531",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-09": {
+      "wall_ms": "84502.9",
+      "memory.peak_rss_mb": "5330",
+      "memory.peak_footprint_mb": "19442",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "2.81676",
+      "x_realtime": "0.355017",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-10": {
+      "wall_ms": "81082.1",
+      "memory.peak_rss_mb": "5330",
+      "memory.peak_footprint_mb": "19454",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "2.70274",
+      "x_realtime": "0.369995",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    }
+  },
+  "requestAnnouncements": [
+    {
+      "atMs": 517376.1,
+      "line": "request_index=0"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_id=warmup-01"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_index=1"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_id=iter-01"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_index=2"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_id=iter-02"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_index=3"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_id=iter-03"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_index=4"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_id=iter-04"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_index=5"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_id=iter-05"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_index=6"
+    },
+    {
+      "atMs": 517376.1,
+      "line": "request_id=iter-06"
+    },
+    {
+      "atMs": 853914.3,
+      "line": "request_index=7"
+    },
+    {
+      "atMs": 853914.3,
+      "line": "request_id=iter-07"
+    },
+    {
+      "atMs": 853914.3,
+      "line": "request_index=8"
+    },
+    {
+      "atMs": 853914.3,
+      "line": "request_id=iter-08"
+    },
+    {
+      "atMs": 853914.3,
+      "line": "request_index=9"
+    },
+    {
+      "atMs": 853914.3,
+      "line": "request_id=iter-09"
+    },
+    {
+      "atMs": 853914.3,
+      "line": "request_index=10"
+    },
+    {
+      "atMs": 853914.3,
+      "line": "request_id=iter-10"
+    }
+  ],
+  "stdoutTail": "metrics[iter-06].audio_duration_source=output\nmetrics[iter-06].sample_rate=48000\nmetrics[iter-06].channels=2\nrequest_index=7\nrequest_id=iter-07\n[TIMING] request.iter-07.wall_ms 70385.6\naudio_out=D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb\\iter-07.wav\nmetrics[iter-07].wall_ms=70385.6\nmetrics[iter-07].memory.peak_rss_mb=5330\nmetrics[iter-07].memory.peak_footprint_mb=19421\nmetrics[iter-07].memory.peak_footprint_source=windows_commit\nmetrics[iter-07].audio_duration_ms=30000\nmetrics[iter-07].rtf=2.34619\nmetrics[iter-07].x_realtime=0.426223\nmetrics[iter-07].audio_duration_source=output\nmetrics[iter-07].sample_rate=48000\nmetrics[iter-07].channels=2\nrequest_index=8\nrequest_id=iter-08\n[TIMING] request.iter-08.wall_ms 99823.2\naudio_out=D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb\\iter-08.wav\nmetrics[iter-08].wall_ms=99823.2\nmetrics[iter-08].memory.peak_rss_mb=5330\nmetrics[iter-08].memory.peak_footprint_mb=19431\nmetrics[iter-08].memory.peak_footprint_source=windows_commit\nmetrics[iter-08].audio_duration_ms=30000\nmetrics[iter-08].rtf=3.32744\nmetrics[iter-08].x_realtime=0.300531\nmetrics[iter-08].audio_duration_source=output\nmetrics[iter-08].sample_rate=48000\nmetrics[iter-08].channels=2\nrequest_index=9\nrequest_id=iter-09\n[TIMING] request.iter-09.wall_ms 84502.9\naudio_out=D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb\\iter-09.wav\nmetrics[iter-09].wall_ms=84502.9\nmetrics[iter-09].memory.peak_rss_mb=5330\nmetrics[iter-09].memory.peak_footprint_mb=19442\nmetrics[iter-09].memory.peak_footprint_source=windows_commit\nmetrics[iter-09].audio_duration_ms=30000\nmetrics[iter-09].rtf=2.81676\nmetrics[iter-09].x_realtime=0.355017\nmetrics[iter-09].audio_duration_source=output\nmetrics[iter-09].sample_rate=48000\nmetrics[iter-09].channels=2\nrequest_index=10\nrequest_id=iter-10\n[TIMING] request.iter-10.wall_ms 81082.1\naudio_out=D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb\\iter-10.wav\nmetrics[iter-10].wall_ms=81082.1\nmetrics[iter-10].memory.peak_rss_mb=5330\nmetrics[iter-10].memory.peak_footprint_mb=19454\nmetrics[iter-10].memory.peak_footprint_source=windows_commit\nmetrics[iter-10].audio_duration_ms=30000\nmetrics[iter-10].rtf=2.70274\nmetrics[iter-10].x_realtime=0.369995\nmetrics[iter-10].audio_duration_source=output\nmetrics[iter-10].sample_rate=48000\nmetrics[iter-10].channels=2\n",
+  "stderrTail": "ggml_cuda_init: found 1 CUDA devices (Total VRAM: 16275 MiB):\n  Device 0: NVIDIA GeForce RTX 5080, compute capability 12.0, VMM: yes, VRAM: 16275 MiB\nload_backend: loaded CUDA backend from D:\\AI\\audio.cpp\\v0.8.2-audio8-perf-hotfix-cuda13.3\\ggml-cuda.dll\nload_backend: loaded CPU backend from D:\\AI\\audio.cpp\\v0.8.2-audio8-perf-hotfix-cuda13.3\\ggml-cpu-cascadelake.dll\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\n"
+}

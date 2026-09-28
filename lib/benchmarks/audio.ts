@@ -124,6 +124,86 @@ export function analyzeWav(buffer: Uint8Array): AudioAnalysis {
   };
 }
 
+/** Byte range of the WAV data chunk (the audio payload), or null when there is none. */
+export function wavDataRange(buffer: Uint8Array): { offset: number; size: number } | null {
+  const view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+  let offset = 12;
+  while (offset + 8 <= buffer.byteLength) {
+    const id = String.fromCharCode(buffer[offset], buffer[offset + 1], buffer[offset + 2], buffer[offset + 3]);
+    const size = view.getUint32(offset + 4, true);
+    if (id === 'data') return { offset: offset + 8, size: Math.min(size, buffer.byteLength - offset - 8) };
+    offset += 8 + size + (size % 2);
+  }
+  return null;
+}
+
+/** Decodes a WAV to a mono (channel-averaged) Float32Array plus its sample rate. */
+export function decodeWavMono(buffer: Uint8Array): { sampleRateHz: number; samples: Float32Array } {
+  const a = analyzeWav(buffer); // Validates the container and format first
+  const view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
+  let offset = 12;
+  let dataOffset = -1;
+  let blockAlign = 0;
+  while (offset + 8 <= buffer.byteLength) {
+    const id = String.fromCharCode(buffer[offset], buffer[offset + 1], buffer[offset + 2], buffer[offset + 3]);
+    const size = view.getUint32(offset + 4, true);
+    if (id === 'fmt ') blockAlign = view.getUint16(offset + 20, true);
+    if (id === 'data') { dataOffset = offset + 8; break; }
+    offset += 8 + size + (size % 2);
+  }
+  const bytes = a.bitsPerSample / 8;
+  const read = (at: number) =>
+    a.sampleFormat === 'float'
+      ? (a.bitsPerSample === 64 ? view.getFloat64(at, true) : view.getFloat32(at, true))
+      : a.bitsPerSample === 16 ? view.getInt16(at, true) / 32768
+      : a.bitsPerSample === 32 ? view.getInt32(at, true) / 2147483648
+      : a.bitsPerSample === 24 ? (view.getUint8(at) | (view.getUint8(at + 1) << 8) | (view.getInt8(at + 2) << 16)) / 8388608
+      : (view.getUint8(at) - 128) / 128;
+  const samples = new Float32Array(a.frames);
+  for (let f = 0; f < a.frames; f++) {
+    let sum = 0;
+    for (let ch = 0; ch < a.channels; ch++) sum += read(dataOffset + f * blockAlign + ch * bytes);
+    samples[f] = sum / a.channels;
+  }
+  return { sampleRateHz: a.sampleRateHz, samples };
+}
+
+function pearson(x: ArrayLike<number>, y: ArrayLike<number>, n: number): number {
+  let mx = 0, my = 0;
+  for (let i = 0; i < n; i++) { mx += x[i]; my += y[i]; }
+  mx /= n; my /= n;
+  let sxy = 0, sxx = 0, syy = 0;
+  for (let i = 0; i < n; i++) { const dx = x[i] - mx, dy = y[i] - my; sxy += dx * dy; sxx += dx * dx; syy += dy * dy; }
+  return sxx && syy ? sxy / Math.sqrt(sxx * syy) : 0;
+}
+
+export interface WaveformComparison {
+  sampleCorrelation: number;    // Pearson r of mono samples (1 = same waveform)
+  envelopeCorrelation: number;  // Pearson r of 50 ms RMS envelopes (phase-insensitive loudness shape)
+  comparedSeconds: number;
+}
+
+/**
+ * Objective similarity of two decoded outputs at the same sample rate. Describes how alike two
+ * waveforms are; it is not a listening or quality judgement.
+ */
+export function compareWaveforms(a: { sampleRateHz: number; samples: Float32Array }, b: { sampleRateHz: number; samples: Float32Array }): WaveformComparison {
+  if (a.sampleRateHz !== b.sampleRateHz) throw new AudioDecodeError('Sample rates differ; resample before comparing.');
+  const n = Math.min(a.samples.length, b.samples.length);
+  const frame = Math.max(1, Math.round(a.sampleRateHz * 0.05));
+  const frames = Math.floor(n / frame);
+  const env = (s: Float32Array) => Float64Array.from({ length: frames }, (_, i) => {
+    let sum = 0;
+    for (let j = i * frame; j < (i + 1) * frame; j++) sum += s[j] * s[j];
+    return Math.sqrt(sum / frame);
+  });
+  return {
+    sampleCorrelation: Number(pearson(a.samples, b.samples, n).toFixed(6)),
+    envelopeCorrelation: Number(pearson(env(a.samples), env(b.samples), frames).toFixed(6)),
+    comparedSeconds: Number((n / a.sampleRateHz).toFixed(3)),
+  };
+}
+
 /** Builds a PCM16 or float32 WAV buffer. Used by tests to create known fixtures. */
 export function encodeWav(channelData: Float32Array[], sampleRateHz: number, sampleFormat: 'pcm16' | 'float32' = 'pcm16'): Uint8Array {
   const channels = channelData.length;

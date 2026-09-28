@@ -6,6 +6,7 @@ import { TUTORIALS } from '@/lib/tutorials';
 import { getNewsletterIssues } from '@/lib/newsletterIssues';
 import { TRACKED_MODELS } from '@/lib/emergingModels';
 import { getAllBenchmarks } from '@/lib/benchmarks/registry';
+import { isInvalidated } from '@/lib/benchmarks/errata';
 
 // Static, canonical public pages (each carries its own pageMeta()-based canonical/OG
 // metadata). Intentionally NOT included, with reasons:
@@ -38,6 +39,8 @@ const STATIC_PATHS = [
   '/lab',
   '/lab/compare',
   '/lab/audio',
+  '/lab/runtimes',
+  '/lab/research',
   '/about',
   '/glossary',
   '/privacy',
@@ -70,7 +73,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: issue.publishedAt,
     })),
     ...TRACKED_MODELS.map((model) => ({ url: `${SITE_URL}/lab/${model.slug}` })),
-    ...getAllBenchmarks().map((benchmark) => ({
+    // Invalidated results stay reachable (noindex) for transparency but are not offered for indexing.
+    ...getAllBenchmarks().filter((benchmark) => !isInvalidated(benchmark.id)).map((benchmark) => ({
       url: `${SITE_URL}/lab/benchmarks/${benchmark.id}`,
       lastModified: benchmark.timestamp.slice(0, 10),
     })),

@@ -38,6 +38,7 @@ export interface FingerprintPayload {
   runtimeFlags?: Record<string, unknown>;
   precision?: string;
   attentionBackend?: string;
+  vramBallastBytes?: number;
 }
 
 const sortedHashes = (files: { sha256: string }[] | undefined) =>
@@ -68,6 +69,8 @@ export function extractFingerprintPayload(record: BenchmarkRecord): FingerprintP
   if (record.runtime.flags && Object.keys(record.runtime.flags).length) payload.runtimeFlags = record.runtime.flags;
   if (record.runtime.precision) payload.precision = record.runtime.precision.trim().toLowerCase();
   if (record.runtime.attentionBackend) payload.attentionBackend = record.runtime.attentionBackend.trim().toLowerCase();
+  // Deliberately constrained runs are a different configuration from unconstrained ones.
+  if (record.executionConditions?.kind === 'constrained_vram') payload.vramBallastBytes = record.executionConditions.vramBallastBytes;
   return payload;
 }
 
@@ -163,6 +166,13 @@ export function checkComparability(a: BenchmarkRecord, b: BenchmarkRecord): Comp
       diffs.push({ variable, valueA, valueB });
       warnings.push(`Different ${variable === 'precision' ? 'runtime precision' : 'attention backend'} (${valueA ?? 'not recorded'} vs ${valueB ?? 'not recorded'}).`);
     }
+  }
+
+  const ballastA = a.executionConditions?.vramBallastBytes ?? null;
+  const ballastB = b.executionConditions?.vramBallastBytes ?? null;
+  if (ballastA !== ballastB) {
+    diffs.push({ variable: 'vramBallastBytes', valueA: ballastA, valueB: ballastB });
+    warnings.push('At least one run executed under deliberately constrained VRAM; its timing and memory reflect that constraint, not a different GPU.');
   }
 
   // Hardware comparison

@@ -1,7 +1,47 @@
 // lib/benchmarks/workloads.ts
 // Standardized, versioned workload suite for the NeuralDrift Local AI Benchmark Framework.
 
-import type { WorkloadDefinition } from './types';
+import type { AudioWorkloadDefinition, WorkloadDefinition } from './types';
+
+// ND-AUDIO-MUSIC-001 v1.0.0 definition. Workloads derived from it reuse these exact values.
+const MUSIC_001_PROMPT =
+  'Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums';
+
+const MUSIC_001_SETTINGS: AudioWorkloadDefinition['audioSettings'] = {
+  route: 'text2music',
+  lyrics: '[Instrumental]',
+  language: 'en',
+  durationSec: 30,
+  seed: 42,
+  inferenceSteps: 8,
+  guidanceScale: 1.0, // Turbo is guidance-distilled; both reference implementations use 1.0
+  outputFormat: 'wav',
+  // Pinned explicitly: implementations disagree on some defaults (e.g. shift), so nothing is left to one.
+  modelOptions: {
+    bpm: 85,
+    keyscale: 'C minor',
+    timesignature: '4',
+    shift: 3.0,
+    infer_method: 'ode',
+    thinking: true,
+    lm_temperature: 0.85,
+    lm_cfg_scale: 2.0,
+    lm_top_k: 0,
+    lm_top_p: 0.9,
+  },
+};
+
+const MUSIC_001_EXPECTED: AudioWorkloadDefinition['expectedResult'] = {
+  type: 'audio_artifact',
+  value: {
+    format: 'wav',
+    minDurationSec: 25,
+    maxDurationSec: 35,
+    sampleRateHz: 48000,
+    channels: 2,
+    minRmsDbfs: -45,
+  },
+};
 
 export const WORKLOAD_SUITE: WorkloadDefinition[] = [
   {
@@ -187,42 +227,55 @@ export const WORKLOAD_SUITE: WorkloadDefinition[] = [
     name: 'Fixed-Seed 30 s Instrumental Text-to-Music (ND-AUDIO-MUSIC-001)',
     description:
       'Generates one 30-second instrumental clip from a fixed prompt, seed and fully pinned planner/diffusion settings, then decodes the WAV and checks duration, format and signal level. Measures wall time (model load included), real-time factor, VRAM, RAM and GPU utilization. Different implementations of the same model use different random number generators, so outputs are not expected to be identical across runtimes.',
-    prompt:
-      'Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums',
+    prompt: MUSIC_001_PROMPT,
+    audioSettings: MUSIC_001_SETTINGS,
+    expectedResult: MUSIC_001_EXPECTED,
+  },
+  {
+    id: 'ND-AUDIO-MUSIC-002',
+    version: '1.0.0',
+    paradigm: 'raw_inference',
+    category: 'creator_audio',
+    audioTask: 'music',
+    name: 'Warm-Session Repeated Text-to-Music, 1 + 10 Iterations (ND-AUDIO-MUSIC-002)',
+    description:
+      'The exact ND-AUDIO-MUSIC-001 request repeated inside one loaded model session: one warm-up generation, then ten measured generations. Separates start-up and model loading from warm generation time, reports the distribution (median, mean, min, max, standard deviation, coefficient of variation), and tests whether a fixed seed reproduces identical output within a session. Every generated file is decoded and validated.',
+    prompt: MUSIC_001_PROMPT,
+    session: { warmupIterations: 1, measuredIterations: 10 },
+    audioSettings: MUSIC_001_SETTINGS,
+    expectedResult: MUSIC_001_EXPECTED,
+  },
+  {
+    id: 'ND-AUDIO-MUSIC-003',
+    version: '1.0.0',
+    paradigm: 'raw_inference',
+    category: 'creator_audio',
+    audioTask: 'music',
+    name: 'Fixed Audio Codes, Planner Bypassed, 1 + 5 Iterations (ND-AUDIO-MUSIC-003)',
+    description:
+      'The ND-AUDIO-MUSIC-001 request with the 5 Hz planner removed: a fixed, content-hashed set of 150 ACE-Step semantic audio codes (30 s) is supplied, and chain-of-thought planning is disabled. Isolates the DiT + VAE path, and tests whether each implementation reproduces identical output at a fixed seed once planner sampling is taken out. Runs as one warm session (one warm-up, five measured).',
+    prompt: MUSIC_001_PROMPT,
+    inputs: [
+      {
+        role: 'audio_codes',
+        optionKey: 'audio_codes',
+        path: 'data/benchmark-inputs/nd-audio-music-003-audio-codes.txt',
+        sha256: 'd6e89b37adeca98ebc3c790b0f088f30a97ab7afe64e30b03c223426f4557404',
+        bytes: 2976,
+      },
+    ],
+    session: { warmupIterations: 1, measuredIterations: 5 },
     audioSettings: {
-      route: 'text2music',
-      lyrics: '[Instrumental]',
-      language: 'en',
-      durationSec: 30,
-      seed: 42,
-      inferenceSteps: 8,
-      guidanceScale: 1.0, // Turbo is guidance-distilled; both reference implementations use 1.0
-      outputFormat: 'wav',
-      // Pinned explicitly: implementations disagree on some defaults (e.g. shift), so nothing is left to one.
+      ...MUSIC_001_SETTINGS,
       modelOptions: {
-        bpm: 85,
-        keyscale: 'C minor',
-        timesignature: '4',
-        shift: 3.0,
-        infer_method: 'ode',
-        thinking: true,
-        lm_temperature: 0.85,
-        lm_cfg_scale: 2.0,
-        lm_top_k: 0,
-        lm_top_p: 0.9,
+        ...MUSIC_001_SETTINGS.modelOptions,
+        thinking: false,
+        use_cot_metas: false,
+        use_cot_caption: false,
+        use_cot_language: false,
       },
     },
-    expectedResult: {
-      type: 'audio_artifact',
-      value: {
-        format: 'wav',
-        minDurationSec: 25,
-        maxDurationSec: 35,
-        sampleRateHz: 48000,
-        channels: 2,
-        minRmsDbfs: -45,
-      },
-    },
+    expectedResult: MUSIC_001_EXPECTED,
   },
 ];
 

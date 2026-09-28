@@ -12,6 +12,8 @@ import { MetricsGrid, getMetricsView, formatBytes } from '@/components/lab/Bench
 import { ArtifactPanel, FailurePanel, HashedFilesTable, LicensePanel, LimitationsPanel } from '@/components/lab/EvidencePanels';
 import { AUDIO_TASKS, audioTaskOf } from '@/lib/audio/catalog';
 import { knownLimitationsFor } from '@/lib/audio/comparison';
+import { ConditionsPanel, ErrataPanel, SessionPanel, TelemetryPanel } from '@/components/lab/SessionTelemetryPanels';
+import { errataFor, isInvalidated } from '@/lib/benchmarks/errata';
 
 interface Props {
   params: { id: string };
@@ -26,11 +28,13 @@ export function generateMetadata({ params }: Props): Metadata {
   if (!benchmark) {
     return { title: 'Benchmark Not Found | NeuralDrift Lab', robots: { index: false, follow: true } };
   }
-  return pageMeta(
+  const meta = pageMeta(
     `/lab/benchmarks/${benchmark.id}`,
     `${benchmark.model.displayName} on ${benchmark.hardware.gpuName} — NeuralDrift Benchmark`,
     `Measured ${benchmark.workloadId} workload performance on ${benchmark.hardware.gpuName} via ${benchmark.runtime.runtime}. Validated outcome: ${benchmark.outcome}.`
   );
+  // Invalidated records remain public with an explanation but are not offered for indexing.
+  return isInvalidated(benchmark.id) ? { ...meta, robots: { index: false, follow: true } } : meta;
 }
 
 export default function BenchmarkDetailPage({ params }: Props) {
@@ -41,6 +45,7 @@ export default function BenchmarkDetailPage({ params }: Props) {
   const audioTask = audioTaskOf(benchmark);
   const taskLabel = AUDIO_TASKS.find((t) => t.id === audioTask)?.label;
   const limitations = knownLimitationsFor(benchmark);
+  const errata = errataFor(benchmark.id);
   const hasLicense = Boolean(benchmark.runtime.license || benchmark.model.license);
 
   return (
@@ -63,6 +68,7 @@ export default function BenchmarkDetailPage({ params }: Props) {
               {benchmark.evidenceLevel.toUpperCase().replace(/_/g, ' ')}
             </span>
             {taskLabel && <span className="nd-badge">{taskLabel.toUpperCase()}</span>}
+            {benchmark.variant && <span className="nd-badge nd-badge-amber">VARIANT: {benchmark.variant.toUpperCase()}</span>}
           </div>
 
           <p className="nd-lead" style={{ marginTop: '0.75rem' }}>
@@ -80,14 +86,28 @@ export default function BenchmarkDetailPage({ params }: Props) {
           </div>
         </header>
 
+        {isInvalidated(benchmark.id) && (
+          <section className="nd-section" data-invalidated>
+            <div className="nd-card nd-card-body" style={{ borderColor: '#f87171', background: 'rgba(239, 68, 68, 0.08)' }}>
+              <p className="nd-eyebrow" style={{ color: '#f87171' }}>INVALIDATED RECORD · KEPT FOR TRANSPARENCY</p>
+              <p style={{ margin: 0 }}>This run did not execute the configuration its workload defines, so it is excluded from all NeuralDrift statistics and comparisons. See the errata below for what went wrong and what replaced it.</p>
+            </div>
+          </section>
+        )}
+
         {/* Primary Telemetry Grid */}
         <section className="nd-section">
           <h2>Measured Telemetry</h2>
           <p className="nd-subtle">{view?.description ?? 'No telemetry recorded for this run.'}</p>
+          {benchmark.executionConditions && <div style={{ marginBottom: '1rem' }}><ConditionsPanel conditions={benchmark.executionConditions} /></div>}
           <MetricsGrid run={benchmark} />
-          {benchmark.outputMetrics?.telemetryMethod && (
+          {benchmark.sessionMetrics && <div style={{ marginTop: '1rem' }}><SessionPanel session={benchmark.sessionMetrics} startupErratum={errata.find((e) => e.field === 'sessionMetrics.startupAndLoadMs') ?? null} /></div>}
+          {errata.length > 0 && <div style={{ marginTop: '1rem' }}><ErrataPanel errata={errata} /></div>}
+          {benchmark.telemetry ? (
+            <div style={{ marginTop: '1rem' }}><TelemetryPanel telemetry={benchmark.telemetry} /></div>
+          ) : benchmark.outputMetrics?.telemetryMethod ? (
             <p className="nd-subtle" style={{ marginTop: '0.75rem', fontSize: '0.85rem' }}>Method: {benchmark.outputMetrics.telemetryMethod}</p>
-          )}
+          ) : null}
         </section>
 
         {benchmark.failure && (

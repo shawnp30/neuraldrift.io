@@ -5,7 +5,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import type { ArtifactRef, HashedFileRef, WorkloadInputRef } from './types';
-import { analyzeWav } from './audio';
+import { analyzeWav, wavDataRange } from './audio';
 import type { AudioArtifactObservation } from './validators';
 
 /** Reads and decodes a generated WAV so the validator judges the real samples. */
@@ -64,7 +64,14 @@ export async function hashFileCached(filePath: string, root: string | undefined,
 }
 
 export async function buildArtifactRef(filePath: string, root: string, format: string): Promise<ArtifactRef> {
-  return { ...(await hashFile(filePath, root)), format, storage: 'local_only' };
+  const ref: ArtifactRef = { ...(await hashFile(filePath, root)), format, storage: 'local_only' };
+  if (format === 'wav') {
+    // Writers such as libsndfile stamp a time into the PEAK chunk, so identical audio can hash differently.
+    const buffer = await fs.promises.readFile(filePath);
+    const range = wavDataRange(buffer);
+    if (range) ref.contentSha256 = crypto.createHash('sha256').update(buffer.subarray(range.offset, range.offset + range.size)).digest('hex');
+  }
+  return ref;
 }
 
 /**

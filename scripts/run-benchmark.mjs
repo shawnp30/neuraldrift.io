@@ -9,6 +9,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { spawn } from 'node:child_process';
 import { LMStudioAdapter } from '../lib/benchmarks/adapters/lmStudio.ts';
 import { AudioCppAdapter } from '../lib/benchmarks/adapters/audioCpp.ts';
 import { AceStepPythonAdapter } from '../lib/benchmarks/adapters/aceStepPython.ts';
@@ -17,7 +18,7 @@ import { validateBenchmarkOutput } from '../lib/benchmarks/validators.ts';
 import { calculateConfigFingerprint, generateBenchmarkRunId } from '../lib/benchmarks/fingerprint.ts';
 import { detectEnvironment } from '../lib/benchmarks/environment.ts';
 import { readGpuSnapshot } from '../lib/benchmarks/telemetry.ts';
-import { assembleAudioRecord, BENCHMARK_SUITE_VERSION } from '../lib/benchmarks/audioRecord.ts';
+import { assembleAudioRecord, assembleAudioSessionRecord, BENCHMARK_SUITE_VERSION } from '../lib/benchmarks/audioRecord.ts';
 import { buildArtifactRef, hashFileCached, inspectAudioArtifact, verifyWorkloadInputs } from '../lib/benchmarks/artifacts.ts';
 import { AUDIO_MODELS } from '../lib/audio/models.ts';
 
@@ -105,46 +106,107 @@ async function runAudio() {
 
   const runId = generateBenchmarkRunId(workload.id, `${model.modelId}-${target.runtime}`, env.hardware.id.replace(/^local-/, ''));
   const artifactDir = path.join(repoRoot, 'evidence-artifacts', runId);
-  console.log(`[Executing] ${workload.id} via ${target.runtime} (target ${targetId}) ...`);
+  // Inputs that deliver text (e.g. audio codes) are read only after their content hash was verified.
+  const inputOptions = Object.fromEntries(
+    inputs.filter((i) => i.optionKey).map((i) => [i.optionKey, fs.readFileSync(path.join(repoRoot, i.path), 'utf8').trim()])
+  );
+  const context = { inputOptions };
+
+  // Optional VRAM ballast: a separate process holds VRAM for the whole run (constrained, not a smaller GPU).
+  const ballastGib = Number(getArg('--vram-ballast-gib', '0'));
+  let ballast = null;
+  let executionConditions = null;
+  if (ballastGib > 0 && process.platform === 'win32') {
+    // Measured 2026-09-28: Windows (WDDM) demoted an 11.29 GiB ballast to 3.15 GiB of dedicated VRAM
+    // while a benchmark ran, so a ballast cannot constrain VRAM here. Refuse rather than record a false condition.
+    console.error('--vram-ballast-gib is not valid on Windows: WDDM demotes the ballast allocation to system memory under pressure, so the VRAM constraint would not hold.');
+    process.exit(1);
+  }
+  if (ballastGib > 0) {
+    ballast = await startVramBallast(ballastGib, getArg('--ballast-python', target.ballastPython));
+    const free = env.hardware.vramBytes - (readGpuSnapshot()?.memoryUsedBytes ?? env.hardware.vramBytes);
+    executionConditions = {
+      kind: 'constrained_vram',
+      vramBallastBytes: ballast.bytes,
+      freeVramBeforeRunBytes: free,
+      method: `A separate process (scripts/vram_ballast.py, torch CUDA allocation) held ${ballastGib} GiB of VRAM for the whole run. This constrains available VRAM on the same GPU; it does not reproduce a GPU with less memory (bandwidth, compute and driver behaviour are unchanged).`,
+    };
+    console.log(`[Ballast] holding ${(ballast.bytes / 2 ** 30).toFixed(2)} GiB; free VRAM before run ${(free / 2 ** 30).toFixed(2)} GiB`);
+  }
+
+  const variant = target.variant ?? (ballastGib > 0 ? `vram-ballast-${ballastGib}gib` : undefined);
+  const common = { runId, workload, model, hardware: env.hardware, inputs, variant, executionConditions, limitations: target.limitations, notes: target.notes };
+  const unavailable = { stage: 'preflight', type: 'RUNTIME_UNAVAILABLE', message: probe.error ?? 'Runtime probe failed.' };
+  console.log(`[Executing] ${workload.id} via ${target.runtime} (target ${targetId}${variant ? `, variant ${variant}` : ''}) ...`);
   const timestamp = new Date().toISOString();
 
-  const execution = probe.available
-    ? await adapter.executeGeneration(model, workload, artifactDir)
-    : {
-        outputPath: null,
-        runtime: { runtime: target.runtime, runtimeVersion: probe.runtimeVersion, backend: 'cuda' },
-        failure: { stage: 'preflight', type: 'RUNTIME_UNAVAILABLE', message: probe.error ?? 'Runtime probe failed.' },
-        outputMetrics: { kind: 'audio', requestedDurationSec: workload.audioSettings.durationSec, outputDurationSec: null, generationTimeMs: null, realTimeFactor: null, sampleRateHz: null, channels: null, peakVramBytes: null, vramBaselineBytes: null, peakRamBytes: null, gpuUtilizationPct: null },
-        rawTrace: { probe },
-      };
-
-  const observation = execution.outputPath ? await inspectAudioArtifact(execution.outputPath) : undefined;
-  const artifact = execution.outputPath ? await buildArtifactRef(execution.outputPath, repoRoot, workload.audioSettings.outputFormat) : null;
-  const software = { ...env.software, ...(execution.rawTrace?.runnerResult?.python ? { pythonVersion: execution.rawTrace.runnerResult.python } : {}) };
-
-  const record = assembleAudioRecord({
-    runId,
-    timestamp,
-    workload,
-    model,
-    hardware: env.hardware,
-    software,
-    execution,
-    observation,
-    artifact,
-    inputs,
-    limitations: target.limitations,
-    notes: target.notes,
-  });
+  let record;
+  let trace;
+  try {
+    if (workload.session) {
+      if (!adapter.executeSession) throw new Error(`${target.runtime} adapter has no session mode.`);
+      const session = probe.available
+        ? await adapter.executeSession(model, workload, artifactDir, context)
+        : { runtime: { runtime: target.runtime, runtimeVersion: probe.runtimeVersion, backend: 'cuda' }, failure: unavailable, telemetry: null, processWallMs: null, startupAndLoadMs: null, startupAndLoadBasis: 'measured', generationSource: '', iterations: [], rawTrace: { probe } };
+      const outputs = new Map();
+      for (const it of session.iterations) {
+        if (!it.outputPath) continue;
+        outputs.set(it.id, { observation: await inspectAudioArtifact(it.outputPath), artifact: await buildArtifactRef(it.outputPath, repoRoot, workload.audioSettings.outputFormat) });
+      }
+      const python = session.rawTrace?.runnerResult?.python;
+      record = assembleAudioSessionRecord({ ...common, timestamp, software: { ...env.software, ...(python ? { pythonVersion: python } : {}) }, session, outputs });
+      trace = session.rawTrace;
+    } else {
+      const execution = probe.available
+        ? await adapter.executeGeneration(model, workload, artifactDir, context)
+        : {
+            outputPath: null,
+            runtime: { runtime: target.runtime, runtimeVersion: probe.runtimeVersion, backend: 'cuda' },
+            failure: unavailable,
+            telemetry: null,
+            outputMetrics: { kind: 'audio', requestedDurationSec: workload.audioSettings.durationSec, outputDurationSec: null, generationTimeMs: null, realTimeFactor: null, sampleRateHz: null, channels: null, peakVramBytes: null, vramBaselineBytes: null, peakRamBytes: null, gpuUtilizationPct: null },
+            rawTrace: { probe },
+          };
+      const observation = execution.outputPath ? await inspectAudioArtifact(execution.outputPath) : undefined;
+      const artifact = execution.outputPath ? await buildArtifactRef(execution.outputPath, repoRoot, workload.audioSettings.outputFormat) : null;
+      const python = execution.rawTrace?.runnerResult?.python;
+      record = assembleAudioRecord({ ...common, timestamp, software: { ...env.software, ...(python ? { pythonVersion: python } : {}) }, execution, observation, artifact });
+      trace = execution.rawTrace;
+    }
+  } finally {
+    ballast?.stop();
+  }
 
   const m = record.outputMetrics;
+  const t = record.telemetry;
   console.log(`[Result] ${record.outcome} · validator ${record.validation.validator}: ${record.validation.details}`);
   if (record.failure) console.log(`[Failure] ${record.failure.stage}/${record.failure.type}: ${record.failure.message}`);
-  console.log(`[Metrics] wall ${m.generationTimeMs} ms · output ${m.outputDurationSec} s · RTF ${m.realTimeFactor} · peak VRAM ${m.peakVramBytes} B (baseline ${m.vramBaselineBytes}) · peak RAM ${m.peakRamBytes} B · GPU ${m.gpuUtilizationPct}%`);
+  console.log(`[Metrics] gen ${m.generationTimeMs} ms · output ${m.outputDurationSec} s · RTF ${m.realTimeFactor} · device VRAM peak ${m.peakVramBytes} B (baseline ${m.vramBaselineBytes}) · process VRAM peak ${t?.processVramPeakBytes ?? 'n/a'} B · shared GPU mem peak ${t?.processSharedGpuMemoryPeakBytes ?? 'n/a'} B · RAM ${m.peakRamBytes} B · GPU ${m.gpuUtilizationPct}% · ${t?.gpuPowerPeakW ?? '?'} W · ${t?.gpuTemperaturePeakC ?? '?'} °C`);
+  if (record.sessionMetrics) {
+    const s = record.sessionMetrics;
+    console.log(`[Session] start-up+load ${s.startupAndLoadMs} ms · per-iteration ms: ${s.iterations.map((i) => `${i.warmup ? 'w' : ''}${i.generationMs}`).join(', ')} · distinct measured outputs ${s.distinctMeasuredOutputs}/${s.measuredIterations}`);
+    console.log(`[Session] generation ${JSON.stringify(s.generationMs)}`);
+  }
   console.log(`[Fingerprint] ${record.configFingerprint}`);
-  if (artifact) console.log(`[Artifact] ${artifact.path} sha256=${artifact.sha256} (${artifact.bytes} bytes, local only)`);
-  saveEvidence(record, execution.rawTrace, { register: !hasFlag('--no-register') });
+  for (const a of record.artifacts ?? []) console.log(`[Artifact] ${a.path} sha256=${a.sha256.slice(0, 16)}… (${a.bytes} bytes, local only)`);
+  saveEvidence(record, trace, { register: !hasFlag('--no-register') });
   console.log('=== BENCHMARK EXECUTION COMPLETE ===\n');
+}
+
+async function startVramBallast(gib, pythonExe) {
+  if (!pythonExe) throw new Error('--vram-ballast-gib needs --ballast-python or a target "ballastPython" interpreter with CUDA torch.');
+  const child = spawn(pythonExe, [path.join(repoRoot, 'scripts', 'vram_ballast.py'), String(gib)], { windowsHide: true });
+  const bytes = await new Promise((resolve, reject) => {
+    let out = '';
+    child.stdout.setEncoding('utf8').on('data', (d) => {
+      out += d;
+      const m = out.match(/READY (\d+)/);
+      if (m) resolve(Number(m[1]));
+    });
+    child.on('exit', (code) => reject(new Error(`VRAM ballast exited (${code}) before allocating: ${out}`)));
+  });
+  await new Promise((r) => setTimeout(r, 2000)); // Let the allocation settle before the baseline sample
+  return { bytes, stop: () => child.kill() };
 }
 
 // ---------------------------------------------------------------------------

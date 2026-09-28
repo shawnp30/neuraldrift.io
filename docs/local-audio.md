@@ -101,3 +101,51 @@ See the final phase report. In short: `outputMetrics` is a tagged union (`kind: 
 `{path, format, sha256, bytes, storage, publicUrl}`, validators dispatch by type and fail closed, the fingerprint already
 accepts workflow hash / model-file hashes / flags / precision / attention backend, the runner dispatches by workload
 category, and the Lab renders metrics through a per-kind view registry.
+
+## Evidence hardening (2026-09-28)
+
+New workloads: ND-AUDIO-MUSIC-002 v1.0.0 (the 001 request in one warm session: 1 warm-up + 10 measured)
+and ND-AUDIO-MUSIC-003 v1.0.0 (planner bypassed with 150 fixed, content-hashed audio codes in
+`data/benchmark-inputs/`; 1 warm-up + 5 measured). Figures below come from valid records only.
+
+| Configuration | Result |
+|---|---|
+| 001 cold, audio.cpp default (n=13) | median 12.82 s (12.59–30.89), process VRAM median 12.22 GiB |
+| 001 cold, audio.cpp mem_saver (n=4) | median 11.73 s, 10.45 GiB, output byte-identical to default |
+| 001 cold, audio.cpp DiT q8_0 (n=3) | median 18.15 s, 10.95 GiB, output correlation 0.999 vs BF16 |
+| 001 cold, audio.cpp mem_saver + DiT q8_0 (n=3) | median 18.33 s, 8.46 GiB |
+| 002 warm, audio.cpp default | median 2.13 s per 30 s clip (CV 0.6%), load 10.1 s (derived) |
+| 002 warm, audio.cpp mem_saver | median 2.18 s (CV 0.4%), 10.53 vs 13.34 GiB process VRAM |
+| 002 warm, ACE-Step Python | median 4.73 s (CV 5.2%), load 41.8 s, 10/10 different music |
+| 003 warm, audio.cpp mem_saver | median 0.98 s DiT + VAE (CV 1.1%) |
+| 003 warm, ACE-Step Python | median 1.08 s (CV 1.7%), audio bit-identical across iterations |
+
+- Same codes, both runtimes: waveform correlation 0.70, envelope correlation 0.95 (`data/audio-similarity.json`).
+- Cold-run slowdowns coincided with shared-memory spill (r = 0.95 over 10 sampled runs; one slow run dominates).
+- VRAM floor: not measurable with a ballast process on Windows. WDDM demoted an 11.29 GiB ballast to 3.15 GiB
+  during a run, so the seven constrained records are invalidated and the runner refuses `--vram-ballast-gib` on Windows.
+- Telemetry now records GPU utilization, memory-controller utilization, temperature, power and SM clock (200 ms);
+  process-tree RAM (500 ms); process-tree dedicated/shared GPU memory and adapter shared memory (Windows counters,
+  about 1 s); system CPU and RAM (500 ms); and the sample counts.
+
+### Errata (`data/benchmark-errata.json`)
+
+Recorded evidence is never rewritten; errata quote the stored value, state the defect and the correction.
+
+- Four audio.cpp session records (002/003) put model options at the top level of `--request-sequence` items.
+  audiocpp_cli reads them only from a nested `"options"` object (app/cli/request.cpp), so those sessions ran with
+  audio.cpp defaults. They are invalidated and were re-run; with nested options the sequence path reproduces the
+  CLI output byte for byte. An earlier "path-dependent output" observation was this bug and is withdrawn, as is a
+  "mem_saver is 20× faster" observation that came from the invalid sessions.
+- Seven constrained-VRAM records are invalidated (ballast demotion, above).
+- One start-up time was taken from block-buffered stdout (corrected by derivation), and one distinct-output count
+  compared whole files whose only difference was a WAV PEAK timestamp (corrected; artifacts now carry `contentSha256`).
+
+## Everyday tool
+
+`D:\AI\audio.cpp\everyday\` (outside the repository): `Start audio.cpp.bat` (desktop shortcut "audio.cpp (local
+audio)"), `AudioCpp.ps1` (start/stop/restart/status/health/open/version/music), `server.json` (ACE-Step 1.5 Turbo,
+mem_saver, lazy load, one resident model, 10-minute idle unload, 127.0.0.1:8080), outputs in `outputs\`. Verified
+2026-09-28: health ok on CUDA, WebUI served (Arena included; model management is not compiled into the release
+binary), two 30 s clips generated through `/v1/tasks/run` in 4.0 s and 3.7 s, both valid and audio-identical at a
+fixed seed, and stop released the VRAM.

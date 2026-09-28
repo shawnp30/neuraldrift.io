@@ -25,7 +25,7 @@ export function generateMetadata({ searchParams }: Props): Metadata {
 function formatBytes(bytes: number | null | undefined): string {
   if (!bytes) return 'N/A';
   const gb = bytes / (1024 * 1024 * 1024);
-  return `${gb.toFixed(2)} GB`;
+  return `${gb.toFixed(2)} GiB`;
 }
 
 const seconds = (ms: number | null | undefined) => (ms == null ? 'N/A' : `${(ms / 1000).toFixed(2)} s`);

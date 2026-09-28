@@ -124,7 +124,14 @@ export type AudioTask =
 
 // A workload input identified by content hash; the path alone is never trusted.
 export interface WorkloadInputRef extends HashedFileRef {
-  role: string;                   // e.g. "reference_voice", "source_audio"
+  role: string;                   // e.g. "reference_voice", "source_audio", "audio_codes"
+  optionKey?: string;             // When set, the file's UTF-8 text is passed as this request option
+}
+
+// Repeated generations inside one loaded model session.
+export interface WorkloadSession {
+  warmupIterations: number;
+  measuredIterations: number;
 }
 
 export type ValidatorType =
@@ -154,6 +161,7 @@ interface WorkloadDefinitionBase {
   description: string;
   prompt: string;                 // User / task prompt
   inputs?: WorkloadInputRef[];
+  session?: WorkloadSession;      // Present for warm-session workloads
   expectedResult: {
     type: ValidatorType;
     value: unknown;
@@ -247,9 +255,82 @@ export interface AudioOutputMetrics {
 
 export type OutputMetrics = AudioOutputMetrics;
 
+export interface DistributionStats {
+  n: number;
+  median: number;
+  mean: number;
+  min: number;
+  max: number;
+  stdev: number;                           // Sample standard deviation (n − 1)
+  cv: number;                              // stdev / mean
+  p95: number | null;                      // Only reported when n ≥ 20
+}
+
+export interface SessionIteration {
+  index: number;
+  warmup: boolean;
+  generationMs: number | null;             // Request time reported by the runtime for this generation
+  outputDurationSec: number | null;
+  realTimeFactor: number | null;
+  artifactSha256: string | null;
+  contentSha256?: string | null;           // Audio payload hash; identical audio can differ in file metadata
+  passed: boolean;                         // This iteration's artifact passed validation
+}
+
+export interface SessionMetrics {
+  kind: 'warm_session';
+  processWallMs: number | null;            // Whole session: spawn to exit
+  startupAndLoadMs: number | null;         // Time before the first request started
+  startupAndLoadBasis: 'measured' | 'derived';
+  warmupIterations: number;
+  measuredIterations: number;
+  iterations: SessionIteration[];
+  generationMs: DistributionStats | null;  // Measured (non-warm-up) iterations only
+  realTimeFactor: DistributionStats | null;
+  distinctMeasuredOutputs: number;
+  generationSource: string;                // Where per-iteration times come from
+}
+
+// How telemetry was sampled, plus what it saw. Stored with the record as evidence of method.
+export interface TelemetrySummary {
+  method: string;
+  gpuSampleIntervalMs: number;
+  gpuSamples: number;
+  vramBaselineBytes: number | null;        // Device-wide, before start
+  vramPeakBytes: number | null;            // Device-wide
+  gpuUtilizationPeakPct: number | null;
+  gpuUtilizationMeanPct: number | null;
+  gpuMemoryUtilizationPeakPct: number | null;
+  gpuTemperaturePeakC: number | null;
+  gpuPowerPeakW: number | null;
+  gpuPowerMeanW: number | null;
+  gpuSmClockMinMHz: number | null;
+  processSampleIntervalMs: number | null;
+  processSamples: number;
+  processRamPeakBytes: number | null;      // Working set of the process tree
+  processGpuSamples: number;
+  processVramPeakBytes: number | null;     // Dedicated VRAM of the process tree (OS GPU process counters)
+  processSharedGpuMemoryPeakBytes: number | null; // Shared (system) memory used by the process tree's GPU work
+  adapterSharedGpuMemoryStartBytes?: number | null; // Whole-adapter shared (system) memory in use at the first sample
+  adapterSharedGpuMemoryPeakBytes?: number | null;  // Whole-adapter peak; includes every process using the GPU
+  cpuUtilizationPeakPct: number | null;
+  cpuUtilizationMeanPct: number | null;
+  systemRamBaselineBytes: number | null;
+  systemRamPeakBytes: number | null;
+}
+
+// Deliberately constrained conditions. Results under these conditions are not physical-GPU evidence.
+export interface ExecutionConditions {
+  kind: 'constrained_vram';
+  vramBallastBytes: number;                // VRAM held by a separate process for the whole run
+  freeVramBeforeRunBytes: number | null;   // Device-wide free VRAM after the ballast, before the run
+  method: string;
+}
+
 export interface ArtifactRef extends HashedFileRef {
   format: string;                          // e.g. "wav"
   storage: 'local_only' | 'public';        // local_only artifacts are retained off-site; no playback is offered
+  contentSha256?: string;                  // Hash of the decoded payload only (e.g. the WAV data chunk); metadata such as timestamps excluded
   publicUrl?: string;                      // Set only when the file is actually served by the site
 }
 
@@ -295,6 +376,10 @@ export interface BenchmarkRecord {
   rawInferenceMetrics?: RawInferenceMetrics | null;
   workloadMetrics?: WorkloadMetrics | null;
   outputMetrics?: OutputMetrics | null;
+  sessionMetrics?: SessionMetrics | null;
+  telemetry?: TelemetrySummary | null;
+  variant?: string;                        // Human label for a non-baseline configuration, e.g. "mem_saver"
+  executionConditions?: ExecutionConditions | null;
   artifacts?: ArtifactRef[];
   failure?: FailureEvidence | null;
   validation: ValidationReport;

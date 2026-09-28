@@ -3,13 +3,23 @@
 // new output kind is added by registering one more builder instead of editing every page.
 
 import type { BenchmarkRecord } from '@/lib/benchmarks/types';
+import { effectiveValue } from '@/lib/benchmarks/errata';
+
+export type MetricBasis = 'measured' | 'derived' | 'runtime_reported';
 
 export interface MetricItem {
   label: string;
   value: string;
   note?: string;
   tone?: 'good' | 'bad';
+  basis?: MetricBasis; // Evidence class of this figure: measured by NeuralDrift, derived from measurements, or reported by the runtime
 }
+
+export const BASIS_LABEL: Record<MetricBasis, string> = {
+  measured: 'NEURALDRIFT MEASURED',
+  derived: 'NEURALDRIFT DERIVED',
+  runtime_reported: 'RUNTIME REPORTED',
+};
 
 export interface MetricsView {
   kind: string;
@@ -21,7 +31,7 @@ export interface MetricsView {
 const GiB = 1024 * 1024 * 1024;
 export function formatBytes(bytes: number | null | undefined, missing = 'Not Measured'): string {
   if (!bytes) return missing;
-  return `${(bytes / GiB).toFixed(2)} GB`;
+  return `${(bytes / GiB).toFixed(2)} GiB`;
 }
 const seconds = (ms: number | null | undefined, digits = 2) => (ms == null ? 'Not Measured' : `${(ms / 1000).toFixed(digits)} s`);
 
@@ -77,17 +87,46 @@ const audioView: ViewBuilder = (run) => {
   const m = run.outputMetrics;
   if (m?.kind !== 'audio') return null;
   const rtf = m.realTimeFactor;
+  const session = run.sessionMetrics;
+  const rtfNote = rtf != null ? `${rtf < 1 ? `${(1 / rtf).toFixed(2)}× faster` : `${rtf.toFixed(2)}× slower`} than real time.` : 'Requires a decoded output.';
+  const common: MetricItem[] = [
+    { label: 'SAMPLE RATE / CHANNELS', value: m.sampleRateHz != null ? `${(m.sampleRateHz / 1000).toFixed(1)} kHz · ${m.channels ?? '?'} ch` : 'Not Measured', note: 'Read from the WAV header and verified by decoding.', basis: 'measured' },
+    { label: 'PEAK VRAM (DEVICE)', value: formatBytes(m.peakVramBytes), note: `Device-wide peak; ${formatBytes(m.vramBaselineBytes, 'unknown')} was in use before the run.`, basis: 'measured' },
+    ...(run.telemetry?.processVramPeakBytes != null ? [{ label: 'PEAK VRAM (PROCESS)', value: formatBytes(run.telemetry.processVramPeakBytes), note: `Dedicated VRAM of the runtime's own processes${run.telemetry.processSharedGpuMemoryPeakBytes ? `; ${formatBytes(run.telemetry.processSharedGpuMemoryPeakBytes)} spilled to shared system memory` : ''}.`, basis: 'measured' as const }] : []),
+    { label: 'PEAK RAM (PROCESS TREE)', value: formatBytes(m.peakRamBytes), note: 'Sampled working set of the generation process and its children.', basis: 'measured' },
+    { label: 'GPU UTILIZATION', value: m.gpuUtilizationPct != null ? `${m.gpuUtilizationPct}%` : 'Not Measured', note: 'Peak sampled utilization.', basis: 'measured' },
+  ];
+  if (session) {
+    const g = session.generationMs;
+    const startup = effectiveValue<number | null>(run, 'sessionMetrics.startupAndLoadMs');
+    const distinct = effectiveValue<number>(run, 'sessionMetrics.distinctMeasuredOutputs');
+    return {
+      kind: 'audio',
+      description: `Warm session: the model loads once, then the same request runs ${session.warmupIterations} time(s) as warm-up and ${session.measuredIterations} times measured. Figures below summarize the measured iterations; every output was decoded and validated.`,
+      cards: [
+        { label: 'MEDIAN WARM GENERATION', value: seconds(g?.median), note: g ? `Mean ${seconds(g.mean)} · range ${seconds(g.min)}–${seconds(g.max)} · CV ${(g.cv * 100).toFixed(1)}% (n = ${g.n}).` : 'Not measured.', basis: 'derived' },
+        { label: 'START-UP + MODEL LOAD', value: seconds(startup.value), note: startup.erratum ? 'Corrected value; see the erratum on this page.' : session.startupAndLoadBasis === 'derived' ? 'Session wall time minus the reported generation times.' : 'Process start until the first generation began.', basis: startup.erratum || session.startupAndLoadBasis === 'derived' ? 'derived' : 'measured' },
+        { label: 'MEDIAN REAL-TIME FACTOR', value: rtf != null ? rtf.toFixed(3) : 'Not Measured', note: rtfNote, basis: 'derived' },
+        { label: 'OUTPUT DURATION', value: m.outputDurationSec != null ? `${m.outputDurationSec.toFixed(2)} s` : 'Not Measured', note: `Median decoded duration (requested ${m.requestedDurationSec ?? '—'} s).`, basis: 'measured' },
+        { label: 'DISTINCT AUDIO OUTPUTS', value: `${distinct.value} / ${session.measuredIterations}`, note: distinct.erratum ? 'Corrected: files differed only in WAV metadata; see the erratum.' : 'Distinct audio among measured iterations at a fixed seed.', basis: 'derived' },
+        ...common,
+      ],
+      summary: [
+        { label: 'Warm Gen', value: seconds(g?.median) },
+        { label: 'Load', value: seconds(startup.value) },
+        { label: 'RTF', value: rtf != null ? rtf.toFixed(3) : 'N/A' },
+        { label: 'Peak VRAM', value: formatBytes(m.peakVramBytes) },
+      ],
+    };
+  }
   return {
     kind: 'audio',
     description: 'Audio generation metrics. Wall time runs from process start to exit and includes model loading. Output properties come from decoding the generated file.',
     cards: [
-      { label: 'GENERATION TIME', value: seconds(m.generationTimeMs), note: 'Process wall time, model load included.' },
-      { label: 'OUTPUT DURATION', value: m.outputDurationSec != null ? `${m.outputDurationSec.toFixed(2)} s` : 'Not Measured', note: `Decoded from the artifact (requested ${m.requestedDurationSec ?? '—'} s).` },
-      { label: 'REAL-TIME FACTOR', value: rtf != null ? rtf.toFixed(3) : 'Not Measured', note: rtf != null ? `Generation time ÷ output duration; ${rtf < 1 ? `${(1 / rtf).toFixed(2)}× faster than real time` : `${rtf.toFixed(2)}× slower than real time`}.` : 'Requires a decoded output.' },
-      { label: 'SAMPLE RATE / CHANNELS', value: m.sampleRateHz != null ? `${(m.sampleRateHz / 1000).toFixed(1)} kHz · ${m.channels ?? '?'} ch` : 'Not Measured', note: 'Read from the WAV header and verified by decoding.' },
-      { label: 'PEAK VRAM (DEVICE)', value: formatBytes(m.peakVramBytes), note: `Device-wide peak; ${formatBytes(m.vramBaselineBytes, 'unknown')} was in use before the run.` },
-      { label: 'PEAK RAM (PROCESS TREE)', value: formatBytes(m.peakRamBytes), note: 'Sampled working set of the generation process and its children.' },
-      { label: 'GPU UTILIZATION', value: m.gpuUtilizationPct != null ? `${m.gpuUtilizationPct}%` : 'Not Measured', note: 'Peak sampled utilization.' },
+      { label: 'GENERATION TIME', value: seconds(m.generationTimeMs), note: 'Process wall time, model load included.', basis: 'measured' },
+      { label: 'OUTPUT DURATION', value: m.outputDurationSec != null ? `${m.outputDurationSec.toFixed(2)} s` : 'Not Measured', note: `Decoded from the artifact (requested ${m.requestedDurationSec ?? '—'} s).`, basis: 'measured' },
+      { label: 'REAL-TIME FACTOR', value: rtf != null ? rtf.toFixed(3) : 'Not Measured', note: rtf != null ? `Generation time ÷ output duration; ${rtfNote}` : rtfNote, basis: 'derived' },
+      ...common,
     ],
     summary: [
       { label: 'Gen Time', value: seconds(m.generationTimeMs) },
@@ -124,6 +163,7 @@ export function MetricsGrid({ run }: { run: BenchmarkRecord }) {
           <p className="nd-eyebrow">{card.label}</p>
           <h2 style={card.tone ? { color: card.tone === 'good' ? '#5eead4' : '#f87171' } : undefined}>{card.value}</h2>
           {card.note && <p className="nd-subtle">{card.note}</p>}
+          {card.basis && <p className="nd-subtle" style={{ fontSize: '0.7rem', letterSpacing: '0.06em', marginTop: '0.25rem' }} data-basis={card.basis}>{BASIS_LABEL[card.basis]}</p>}
         </div>
       ))}
     </div>

@@ -81,7 +81,8 @@ fs.writeFileSync(wavPath, wavBytes);
 const expectedSha = crypto.createHash('sha256').update(wavBytes).digest('hex');
 assert.equal(await sha256File(wavPath), expectedSha);
 const ref = await buildArtifactRef(wavPath, tmp, 'wav');
-assert.deepEqual(ref, { path: 'clip.wav', sha256: expectedSha, bytes: wavBytes.length, format: 'wav', storage: 'local_only' });
+const expectedContentSha = crypto.createHash('sha256').update(wavBytes.subarray(44)).digest('hex'); // data chunk only
+assert.deepEqual(ref, { path: 'clip.wav', sha256: expectedSha, bytes: wavBytes.length, format: 'wav', storage: 'local_only', contentSha256: expectedContentSha });
 const cacheFile = path.join(tmp, 'cache.json');
 const first = await hashFileCached(wavPath, tmp, cacheFile);
 assert.equal(first.sha256, expectedSha);
@@ -242,5 +243,144 @@ assert.equal(UPSTREAM_FAMILIES.find((f) => f.family === 'ace_step').licenseInfo.
 assert.equal(UPSTREAM_FAMILIES.find((f) => f.family === 'yue2').licenseInfo.commercialUse, 'NON_COMMERCIAL', 'non-commercial licenses must not be upgraded');
 console.log('10. Task discovery data is sourced and license-labelled: PASS');
 
+// 11. Distribution statistics -------------------------------------------------------
+const { distribution } = await import('../lib/benchmarks/stats.ts');
+const d10 = distribution([10, 12, 11, 13, 50, 12, 11, 10, 12, 11]);
+assert.equal(d10.n, 10);
+assert.equal(d10.median, 11.5);
+assert.equal(d10.max, 50, 'outliers stay in the distribution');
+assert.equal(d10.p95, null, 'p95 is not reported for n < 20');
+assert(d10.cv > 0.5 && d10.stdev > 10);
+const d20 = distribution(Array.from({ length: 20 }, (_, i) => i + 1));
+assert.equal(d20.p95, 19, 'nearest-rank p95 for n = 20');
+assert.equal(distribution([]), null);
+console.log('11. Distribution statistics (median, mean, stdev, CV, p95 only when n ≥ 20): PASS');
+
+// 12. Warm-session record assembly ----------------------------------------------------
+const { assembleAudioSessionRecord } = await import('../lib/benchmarks/audioRecord.ts');
+const session002 = getWorkloadById('ND-AUDIO-MUSIC-002');
+assert(session002 && session002.session.measuredIterations === 10 && session002.session.warmupIterations === 1);
+assert.deepEqual(session002.audioSettings, music.audioSettings, 'ND-AUDIO-MUSIC-002 must reuse ND-AUDIO-MUSIC-001 settings exactly');
+assert.equal(session002.prompt, music.prompt);
+const miniSession = { ...session002, session: { warmupIterations: 1, measuredIterations: 3 } };
+const sess = (iterations, failure = null) => ({ runtime: execution().runtime, failure, telemetry: null, processWallMs: 60000, startupAndLoadMs: 9000, startupAndLoadBasis: 'derived', generationSource: 'test', iterations, rawTrace: {} });
+const its = [['warmup-01', true, 5000], ['iter-01', false, 9000], ['iter-02', false, 11000], ['iter-03', false, 10000]].map(([id, warmup, ms], index) => ({ id, index, warmup, generationMs: ms, outputPath: `${id}.wav` }));
+const outputsFor = (obsFor) => new Map(its.map((it) => [it.id, { observation: obsFor(it.id), artifact: { ...base.artifact, path: `${it.id}.wav`, sha256: 'e'.repeat(64) } }]));
+const sessRec = assembleAudioSessionRecord({ ...base, runId: 'run-test-session', workload: miniSession, session: sess(its), outputs: outputsFor(() => obs(good)) });
+assert.equal(sessRec.outcome, 'PASS');
+assert.equal(sessRec.sessionMetrics.measuredIterations, 3);
+assert.equal(sessRec.sessionMetrics.generationMs.median, 10000, 'warm-up iterations are excluded from the statistics');
+assert.equal(sessRec.sessionMetrics.distinctMeasuredOutputs, 1);
+assert.equal(sessRec.outputMetrics.generationTimeMs, 10000);
+assert.equal(sessRec.artifacts.length, 4, 'every iteration artifact, warm-up included, is recorded');
+const oneBad = assembleAudioSessionRecord({ ...base, runId: 'run-test-session-bad', workload: miniSession, session: sess(its), outputs: outputsFor((id) => (id === 'iter-02' ? failCases.silent : obs(good))) });
+assert.equal(oneBad.outcome, 'FAIL', 'one invalid iteration fails the whole session');
+const incomplete = assembleAudioSessionRecord({ ...base, runId: 'run-test-session-short', workload: miniSession, session: sess(its.slice(0, 3)), outputs: outputsFor(() => obs(good)) });
+assert.equal(incomplete.outcome, 'FAIL', 'fewer measured iterations than declared must not PASS');
+console.log('12. Warm-session assembly: warm-up excluded, every output validated, incomplete sessions fail: PASS');
+
+// 13. audio.cpp request options fail closed -----------------------------------------
+const { audioCppRequestOptions, buildAudioCppRequestSequence, UnsupportedOptionError } = await import('../lib/benchmarks/adapters/audioCpp.ts');
+assert.throws(() => audioCppRequestOptions({ ...music, audioSettings: { ...music.audioSettings, modelOptions: { shfit: 3 } } }, 'ace_step'), UnsupportedOptionError, 'a misspelled option must be refused, not silently ignored');
+assert.throws(() => audioCppRequestOptions(music, 'some_unverified_family'), UnsupportedOptionError);
+assert.equal(audioCppRequestOptions(music, 'ace_step', { audio_codes: '<|audio_code_1|>' }).audio_codes, '<|audio_code_1|>');
+const seq = buildAudioCppRequestSequence(session002, 'ace_step');
+assert.equal(seq.requests.length, 11);
+assert.equal(seq.requests[0].id, 'warmup-01');
+assert.equal(seq.requests[10].id, 'iter-10');
+// audiocpp_cli reads model options for sequence items only from the nested "options" object
+// (app/cli/request.cpp); top-level keys outside a fixed list are silently dropped.
+for (const r of seq.requests) {
+  assert.deepEqual(Object.keys(r).sort(), ['id', 'language', 'options', 'text'], 'sequence items carry only text/language/id at top level; every model option goes under "options"');
+  assert.equal(r.text, music.prompt);
+  for (const [k, v] of Object.entries({ seed: '42', duration_seconds: '30', shift: '3', bpm: '85', keyscale: 'C minor', thinking: 'true', route: 'text2music', lyrics: '[Instrumental]' })) {
+    assert.equal(r.options[k], v, `pinned option ${k} must be nested under options`);
+  }
+}
+const seq3 = buildAudioCppRequestSequence(getWorkloadById('ND-AUDIO-MUSIC-003'), 'ace_step', { audio_codes: '<|audio_code_1|>' });
+assert.equal(seq3.requests[0].options.audio_codes, '<|audio_code_1|>', 'input-delivered audio codes are nested under options');
+assert.equal(seq3.requests[0].options.thinking, 'false');
+console.log('13. audio.cpp request options: allow-listed, misspellings refused, sequence options nested: PASS');
+
+// 14. Telemetry parsing ---------------------------------------------------------------
+const { parseGpuSampleLine, parseTreeSampleLine } = await import('../lib/benchmarks/telemetry.ts');
+assert.deepEqual(parseGpuSampleLine('15392, 99, 70, 69, 282.24, 2970'), { memoryUsedBytes: 15392 * 1024 * 1024, utilizationPct: 99, memoryUtilizationPct: 70, temperatureC: 69, powerW: 282.24, smClockMHz: 2970 });
+assert.equal(parseGpuSampleLine('[N/A], 3'), null);
+assert.equal(parseGpuSampleLine('1000, 5, 1, 40, [N/A], 600').powerW, null, 'unavailable fields become null, never 0');
+assert.deepEqual(parseTreeSampleLine('4102508544|1234,5678'), { workingSetBytes: 4102508544, pids: [1234, 5678] });
+assert.equal(parseTreeSampleLine('garbage'), null);
+console.log('14. Telemetry sample parsing (nulls for unavailable fields): PASS');
+
+// 15. Errata keep recorded evidence intact -----------------------------------------------
+const { ERRATA, effectiveValue, readField } = await import('../lib/benchmarks/errata.ts');
+for (const e of ERRATA) {
+  const rec = getAllBenchmarks().find((r) => r.id === e.recordId);
+  assert(rec, `erratum references a missing record: ${e.recordId}`);
+  assert.deepEqual(readField(rec, e.field), e.recordedValue, `erratum for ${e.recordId} must quote the stored value exactly (evidence is never rewritten)`);
+  assert.equal(effectiveValue(rec, e.field).value, e.correctedValue);
+  assert(e.issue.length > 40 && e.correctionMethod.length > 20);
+}
+console.log(`15. ${ERRATA.length} erratum/errata: recorded values untouched, corrections explicit: PASS`);
+
+// 16. Constrained VRAM is its own configuration -------------------------------------------
+const constrained = { ...passRec, executionConditions: { kind: 'constrained_vram', vramBallastBytes: 6 * 2 ** 30, freeVramBeforeRunBytes: 7e9, method: 'test' } };
+assert.notEqual(calculateConfigFingerprint(constrained), passRec.configFingerprint, 'a VRAM ballast must enter the fingerprint');
+assert(checkComparability(passRec, constrained).warnings.some((w) => w.includes('constrained VRAM')));
+console.log('16. Constrained-VRAM runs fingerprinted and flagged in comparisons: PASS');
+
+// 17. Session / errata / conditions rendering -------------------------------------------
+const { SessionPanel, ConditionsPanel, ErrataPanel } = await import('../components/lab/SessionTelemetryPanels.tsx');
+const sessHtml = html(createElement(SessionPanel, { session: sessRec.sessionMetrics }));
+assert(sessHtml.includes('1 WARM-UP + 3 MEASURED') && sessHtml.includes('CV') && sessHtml.includes('n &lt; 20'));
+assert(html(createElement(MetricsGrid, { run: sessRec })).includes('MEDIAN WARM GENERATION'));
+assert(html(createElement(ConditionsPanel, { conditions: constrained.executionConditions })).includes('NOT A DIFFERENT GPU'));
+if (ERRATA.length) assert(html(createElement(ErrataPanel, { errata: ERRATA })).includes('RECORDED EVIDENCE IS UNCHANGED'));
+console.log('17. Session, constrained-VRAM and errata panels render: PASS');
+
+// 18. Audio content identity and waveform comparison -------------------------------------
+const { compareWaveforms, decodeWavMono, wavDataRange } = await import('../lib/benchmarks/audio.ts');
+const plain = encodeWav([sine(1, 16000), sine(1, 16000)], 16000);
+// Same audio with an extra metadata chunk before "data" (as writers add PEAK/LIST chunks).
+const meta = new Uint8Array(plain.length + 16);
+meta.set(plain.subarray(0, 36), 0);
+meta.set(new TextEncoder().encode('LIST'), 36);
+new DataView(meta.buffer).setUint32(40, 8, true);
+meta.set(new TextEncoder().encode('INFOtest'), 44);
+meta.set(plain.subarray(36), 52);
+new DataView(meta.buffer).setUint32(4, meta.length - 8, true);
+fs.writeFileSync(path.join(tmp, 'plain.wav'), plain);
+fs.writeFileSync(path.join(tmp, 'meta.wav'), meta);
+const refPlain = await buildArtifactRef(path.join(tmp, 'plain.wav'), tmp, 'wav');
+const refMeta = await buildArtifactRef(path.join(tmp, 'meta.wav'), tmp, 'wav');
+assert.notEqual(refPlain.sha256, refMeta.sha256, 'files differ');
+assert.equal(refPlain.contentSha256, refMeta.contentSha256, 'identical audio payloads share a content hash despite different metadata');
+assert.deepEqual(wavDataRange(meta), { offset: 60, size: plain.length - 44 });
+const w = decodeWavMono(plain);
+assert.equal(compareWaveforms(w, w).sampleCorrelation, 1);
+assert.equal(compareWaveforms(w, { ...w, samples: w.samples.map((x) => -x) }).sampleCorrelation, -1);
+const noise = { sampleRateHz: 16000, samples: Float32Array.from({ length: 16000 }, (_, i) => Math.sin(i * 12.9898) * 43758.5453 % 1) };
+assert(Math.abs(compareWaveforms(w, noise).sampleCorrelation) < 0.2, 'unrelated signals correlate weakly');
+const sessWithContent = assembleAudioSessionRecord({ ...base, runId: 'run-test-content', workload: miniSession, session: sess(its), outputs: new Map(its.map((it, i) => [it.id, { observation: obs(good), artifact: { ...base.artifact, sha256: String(i).repeat(64).slice(0, 64), contentSha256: 'c'.repeat(64) } }])) });
+assert.equal(sessWithContent.sessionMetrics.distinctMeasuredOutputs, 1, 'distinct outputs count audio content, not file bytes');
+console.log('18. Audio content hashes ignore metadata; waveform comparison; distinct audio counted by content: PASS');
+
+// 19. Invalidated records stay visible but never enter statistics ------------------------
+const { isInvalidated } = await import('../lib/benchmarks/errata.ts');
+const { warmSessionRows, configurationRows } = await import('../lib/audio/comparison.ts');
+const invalidated = ERRATA.filter((e) => e.invalidatesRecord).map((e) => e.recordId);
+assert(invalidated.length > 0);
+for (const id of invalidated) {
+  assert(isInvalidated(id));
+  assert(getAllBenchmarks().some((r) => r.id === id), 'invalidated records remain published');
+}
+const used = [
+  ...groupAudioRuns('ND-AUDIO-MUSIC-001').flatMap((g) => g.runs),
+  ...['ND-AUDIO-MUSIC-001', 'ND-AUDIO-MUSIC-002', 'ND-AUDIO-MUSIC-003'].flatMap((w) => configurationRows(w).flatMap((r) => r.runs)),
+  ...['ND-AUDIO-MUSIC-002', 'ND-AUDIO-MUSIC-003'].flatMap((w) => warmSessionRows(w).map((r) => r.record)),
+].map((r) => r.id);
+assert(!used.some((id) => invalidated.includes(id)), 'invalidated records are excluded from every statistic and comparison');
+assert(fs.readFileSync('scripts/run-benchmark.mjs', 'utf8').includes("ballastGib > 0 && process.platform === 'win32'"), 'the runner refuses VRAM ballasts on Windows, where WDDM demotes them');
+console.log(`19. ${invalidated.length} invalidated records published but excluded from statistics; Windows ballast refused: PASS`);
+
 fs.rmSync(tmp, { recursive: true, force: true });
-console.log('\n--- ALL LOCAL AUDIO BENCHMARK TESTS PASSED (10/10) ---');
+console.log('\n--- ALL LOCAL AUDIO BENCHMARK TESTS PASSED (19/19) ---');

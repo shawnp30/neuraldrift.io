@@ -9,8 +9,10 @@ import type { BenchmarkRecord } from '@/lib/benchmarks/types';
 import { getWorkloadById } from '@/lib/benchmarks/workloads';
 import { formatBytes } from '@/components/lab/BenchmarkMetrics';
 import { AUDIO_TASKS, COMMERCIAL_USE_LABEL, UPSTREAM_SOURCE, audioTaskOf, getAudioBenchmarks, upstreamFamiliesForTask } from '@/lib/audio/catalog';
-import { ACE_STEP_AB, RUNTIME_LABEL, groupAudioRuns, implementationComparability, type MetricStat, type RuntimeRunGroup } from '@/lib/audio/comparison';
+import { ACE_STEP_AB, HARDENING_FINDINGS, RUNTIME_LABEL, configurationRows, groupAudioRuns, implementationComparability, warmSessionRows, type MetricStat, type RuntimeRunGroup } from '@/lib/audio/comparison';
+import { ConfigurationTable, WarmSessionTable } from '@/components/lab/AudioHardeningTables';
 import { AUDIO_CPP_LICENSE } from '@/lib/benchmarks/adapters/audioCpp';
+import { isInvalidated } from '@/lib/benchmarks/errata';
 import { ACE_STEP_CODE_LICENSE } from '@/lib/benchmarks/adapters/aceStepPython';
 
 interface Props {
@@ -52,7 +54,7 @@ export default function LocalAudioPage() {
   const runs = getAudioBenchmarks();
   const groups = groupAudioRuns(ACE_STEP_AB.workloadId);
   const comparability = implementationComparability(groups);
-  const flagship = runs.find((r) => r.runtime.runtime === 'audio_cpp' && r.outcome === 'PASS');
+  const flagship = runs.find((r) => r.runtime.runtime === 'audio_cpp' && r.outcome === 'PASS' && !r.variant && !r.executionConditions && !r.sessionMetrics && !isInvalidated(r.id));
   const workload = getWorkloadById(ACE_STEP_AB.workloadId);
 
   return (
@@ -96,7 +98,7 @@ export default function LocalAudioPage() {
                       <tr key={r.id}>
                         <td style={cell}><Link href={`/lab/benchmarks/${r.id}`}>{r.workloadId} · {r.timestamp.slice(0, 16).replace('T', ' ')} UTC</Link></td>
                         <td style={cell}>{RUNTIME_LABEL[r.runtime.runtime] ?? r.runtime.runtime}<br /><span className="nd-subtle">{r.runtime.runtimeVersion}</span></td>
-                        <td style={cell}><span className={`nd-badge ${r.outcome === 'PASS' ? 'nd-badge-tested' : 'nd-badge-amber'}`}>{r.outcome}</span></td>
+                        <td style={cell}>{isInvalidated(r.id) ? <span className="nd-badge nd-badge-amber">INVALIDATED</span> : <span className={`nd-badge ${r.outcome === 'PASS' ? 'nd-badge-tested' : 'nd-badge-amber'}`}>{r.outcome}</span>}</td>
                         <td style={cell}>{m?.generationTimeMs != null ? secs(m.generationTimeMs) : '—'}</td>
                         <td style={cell}>{m?.realTimeFactor?.toFixed(3) ?? '—'}</td>
                         <td style={cell}>{formatBytes(m?.peakVramBytes)}</td>
@@ -164,6 +166,26 @@ export default function LocalAudioPage() {
           </section>
         )}
 
+        {/* HARDENING */}
+        <section className="nd-section" id="hardening">
+          <h2>Evidence Hardening: Warm Sessions, Planner Bypass, Memory Floor</h2>
+          <p className="nd-subtle">
+            Follow-up experiments on the same model and prompt. Warm sessions load the model once and repeat the request; the planner-bypass runs feed identical, content-hashed audio codes to both implementations; memory configurations and constrained-VRAM runs show what executes when less memory is used or available. Constrained runs hold VRAM on the same RTX 5080 with a separate process — they are not evidence about GPUs with less memory.
+          </p>
+          {HARDENING_FINDINGS.length > 0 && (
+            <div className="nd-card nd-card-body" style={{ marginBottom: '1rem' }}>
+              <p className="nd-eyebrow">WHAT THE EXPERIMENTS SHOWED</p>
+              <ul style={{ paddingLeft: '1.1rem', margin: 0 }}>{HARDENING_FINDINGS.map((f) => <li key={f} style={{ marginBottom: '0.4rem' }}>{f}</li>)}</ul>
+            </div>
+          )}
+          <h3>Warm sessions (ND-AUDIO-MUSIC-002: 1 warm-up + 10 measured)</h3>
+          <WarmSessionTable rows={warmSessionRows('ND-AUDIO-MUSIC-002')} />
+          <h3 style={{ marginTop: '1.5rem' }}>Planner bypassed with fixed audio codes (ND-AUDIO-MUSIC-003: 1 warm-up + 5 measured)</h3>
+          <WarmSessionTable rows={warmSessionRows('ND-AUDIO-MUSIC-003')} />
+          <h3 style={{ marginTop: '1.5rem' }}>Cold single runs by memory configuration (ND-AUDIO-MUSIC-001)</h3>
+          <ConfigurationTable rows={configurationRows('ND-AUDIO-MUSIC-001')} />
+        </section>
+
         {/* RUNTIMES */}
         <section className="nd-section">
           <h2>Runtimes</h2>
@@ -200,7 +222,7 @@ export default function LocalAudioPage() {
             “Tested” means a NeuralDrift benchmark record exists. Everything else is an <strong>upstream claim</strong>: audio.cpp&apos;s supported-model table and its model license reference at release {UPSTREAM_SOURCE.release} (read {UPSTREAM_SOURCE.retrievedAt}). Commercial-use labels summarize those licenses; always read the license itself, and none of this is legal advice.
           </p>
           {AUDIO_TASKS.map((task) => {
-            const tested = runs.filter((r) => audioTaskOf(r) === task.id && r.outcome === 'PASS');
+            const tested = runs.filter((r) => audioTaskOf(r) === task.id && r.outcome === 'PASS' && !isInvalidated(r.id));
             const families = upstreamFamiliesForTask(task.id);
             return (
               <div className="nd-card nd-card-body" id={task.id} key={task.id} style={{ marginBottom: '1rem', scrollMarginTop: '5rem' }}>
