@@ -178,6 +178,52 @@ export const WORKLOAD_SUITE: WorkloadDefinition[] = [
       seed: 42,
     },
   },
+  {
+    id: 'ND-AUDIO-MUSIC-001',
+    version: '1.0.0',
+    paradigm: 'raw_inference',
+    category: 'creator_audio',
+    audioTask: 'music',
+    name: 'Fixed-Seed 30 s Instrumental Text-to-Music (ND-AUDIO-MUSIC-001)',
+    description:
+      'Generates one 30-second instrumental clip from a fixed prompt, seed and fully pinned planner/diffusion settings, then decodes the WAV and checks duration, format and signal level. Measures wall time (model load included), real-time factor, VRAM, RAM and GPU utilization. Different implementations of the same model use different random number generators, so outputs are not expected to be identical across runtimes.',
+    prompt:
+      'Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums',
+    audioSettings: {
+      route: 'text2music',
+      lyrics: '[Instrumental]',
+      language: 'en',
+      durationSec: 30,
+      seed: 42,
+      inferenceSteps: 8,
+      guidanceScale: 1.0, // Turbo is guidance-distilled; both reference implementations use 1.0
+      outputFormat: 'wav',
+      // Pinned explicitly: implementations disagree on some defaults (e.g. shift), so nothing is left to one.
+      modelOptions: {
+        bpm: 85,
+        keyscale: 'C minor',
+        timesignature: '4',
+        shift: 3.0,
+        infer_method: 'ode',
+        thinking: true,
+        lm_temperature: 0.85,
+        lm_cfg_scale: 2.0,
+        lm_top_k: 0,
+        lm_top_p: 0.9,
+      },
+    },
+    expectedResult: {
+      type: 'audio_artifact',
+      value: {
+        format: 'wav',
+        minDurationSec: 25,
+        maxDurationSec: 35,
+        sampleRateHz: 48000,
+        channels: 2,
+        minRmsDbfs: -45,
+      },
+    },
+  },
 ];
 
 export function getWorkloadById(id: string): WorkloadDefinition | undefined {

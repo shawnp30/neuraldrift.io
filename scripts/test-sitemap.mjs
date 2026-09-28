@@ -25,7 +25,7 @@ console.log('2. No duplicate URLs: PASS');
 const REQUIRED_PATHS = [
   '/', '/workflows', '/guides', '/compatibility', '/hardware', '/hardware/rtx-5080',
   '/gpu-guide', '/tools', '/tools/vram-calculator', '/tools/caption-generator',
-  '/tutorials', '/lab',
+  '/tutorials', '/lab', '/lab/audio',
   '/about', '/glossary', '/privacy', '/terms', '/optimizer', '/optimizer/fix-my-pc',
   '/prompt-generator', '/proofs', '/newsletter',
 ];

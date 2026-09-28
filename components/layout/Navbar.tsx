@@ -27,6 +27,7 @@ const SEARCHABLE_PAGES = [
   { name: "Workflow Errors", href: "/guides/workflow-errors", desc: "Troubleshoot workflow failures" },
   { name: "LTX Video 2.3", href: "/guides/ltx-video-cinematic-action", desc: "Cinematic video generation" },
   { name: "ACE-Step 1.5", href: "/guides/ace-step-1-5-comfyui", desc: "Audio synthesis in ComfyUI" },
+  { name: "Local Audio AI", href: "/lab/audio", desc: "ACE-Step 1.5 via audio.cpp on RTX 5080 — measured" },
   { name: "RTX 5080 Evidence", href: "/hardware/rtx-5080", desc: "Execution records for RTX 5080" },
   { name: "Hardware Hub", href: "/hardware", desc: "GPU capability overview" },
   { name: "Model Library", href: "/models", desc: "Browse available models" },

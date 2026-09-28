@@ -37,6 +37,7 @@ const STATIC_PATHS = [
   '/tutorials/monetizing-comfyui',
   '/lab',
   '/lab/compare',
+  '/lab/audio',
   '/about',
   '/glossary',
   '/privacy',

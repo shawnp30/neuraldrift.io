@@ -11,21 +11,18 @@ import { PremiumPackInterest } from "@/components/monetization/PremiumPackIntere
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 import { TRACKED_MODELS } from "@/lib/emergingModels";
 import { getAllBenchmarks } from "@/lib/benchmarks/registry";
+import { MetricsSummary } from "@/components/lab/BenchmarkMetrics";
+import { getAudioBenchmarks } from "@/lib/audio/catalog";
 
 export const metadata = pageMeta(
   "/lab",
   "NeuralDrift Lab — Local AI Workload Benchmarking & Evidence",
-  "Transparent local AI workload evaluations: raw inference throughput, agentic tool execution, retrieval, ComfyUI graphs, and hardware telemetry on real testbenches."
+  "Transparent local AI workload evaluations: raw inference throughput, agentic tool execution, retrieval, local audio generation, ComfyUI graphs, and hardware telemetry on real testbenches."
 );
-
-function formatBytes(bytes: number | null | undefined): string {
-  if (!bytes) return "Not Measured";
-  const gb = bytes / (1024 * 1024 * 1024);
-  return `${gb.toFixed(2)} GB`;
-}
 
 export default function LabPage() {
   const benchmarks = getAllBenchmarks();
+  const audioRuns = getAudioBenchmarks();
   const current = EXECUTIONS.filter((record) => record.outcome === "SUCCESS" && evidenceFreshness(record) === "CURRENT");
   const failures = EXECUTIONS.filter((record) => record.outcome === "FAILURE" || record.outcome === "INDETERMINATE");
   const latestComfy = [...current].sort((a, b) => b.testDate.localeCompare(a.testDate)).slice(0, 8);
@@ -45,6 +42,9 @@ export default function LabPage() {
             <Link className="nd-button" href="/lab/compare">
               Compare benchmark runs →
             </Link>
+            <Link className="nd-text-link" href="/lab/audio">
+              Local Audio AI →
+            </Link>
             <Link className="nd-text-link" href="/guides/local-ai-benchmark-methodology">
               Read benchmark methodology →
             </Link>
@@ -59,7 +59,7 @@ export default function LabPage() {
           <div className="nd-card nd-card-body">
             <p className="nd-eyebrow">WORKLOAD BENCHMARKS</p>
             <h2>{benchmarks.length}</h2>
-            <p>Controlled LLM & agent benchmark records with reproducible fingerprints.</p>
+            <p>Controlled LLM, agent &amp; audio benchmark records with reproducible fingerprints ({audioRuns.length} audio).</p>
           </div>
           <div className="nd-card nd-card-body">
             <p className="nd-eyebrow">COMFYUI RUNS</p>
@@ -106,7 +106,7 @@ export default function LabPage() {
             <div className="nd-card nd-card-body">
               <p className="nd-eyebrow">WORKLOADS</p>
               <h3>Useful Work</h3>
-              <p>Deterministic calculation, tool selection, multi-step agent actions, RAG retrieval, and creator image/video synthesis.</p>
+              <p>Deterministic calculation, tool selection, multi-step agent actions, RAG retrieval, creator image/video synthesis, and <Link href="/lab/audio">local audio generation</Link>.</p>
             </div>
           </div>
         </section>
@@ -164,7 +164,6 @@ export default function LabPage() {
           {benchmarks.length > 0 ? (
             <div className="nd-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
               {benchmarks.map((run) => {
-                const isRaw = run.paradigm === 'raw_inference';
                 return (
                   <article className="nd-card nd-card-body" key={run.id}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
@@ -183,21 +182,7 @@ export default function LabPage() {
                     </p>
 
                     <div style={{ marginTop: '0.75rem', padding: '0.75rem', background: 'rgba(0,0,0,0.4)', borderRadius: '8px', fontSize: '0.85rem' }}>
-                      {isRaw && run.rawInferenceMetrics ? (
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                          <div><strong>TTFT:</strong> {run.rawInferenceMetrics.ttftMs != null ? `${run.rawInferenceMetrics.ttftMs.toFixed(1)} ms` : 'N/A'}</div>
-                          <div><strong>Speed:</strong> {run.rawInferenceMetrics.generationTokensPerSec != null ? `${run.rawInferenceMetrics.generationTokensPerSec.toFixed(1)} tok/s` : 'N/A'}</div>
-                          <div><strong>Prompt:</strong> {run.rawInferenceMetrics.promptTokensPerSec != null ? `${run.rawInferenceMetrics.promptTokensPerSec.toFixed(0)} tok/s` : 'N/A'}</div>
-                          <div><strong>Peak VRAM:</strong> {formatBytes(run.rawInferenceMetrics.peakVramBytes)}</div>
-                        </div>
-                      ) : run.workloadMetrics ? (
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                          <div><strong>Task Time:</strong> {(run.workloadMetrics.taskCompletionTimeMs / 1000).toFixed(2)} s</div>
-                          <div><strong>Tool Calls:</strong> {run.workloadMetrics.successfulToolCalls}/{run.workloadMetrics.toolCallsCount}</div>
-                          <div><strong>Tool Latency:</strong> {run.workloadMetrics.toolCallLatencyMs != null ? `${run.workloadMetrics.toolCallLatencyMs.toFixed(2)} ms` : 'N/A'}</div>
-                          <div><strong>Peak VRAM:</strong> {formatBytes(run.workloadMetrics.peakVramBytes)}</div>
-                        </div>
-                      ) : null}
+                      <MetricsSummary run={run} />
                     </div>
 
                     <p className="nd-subtle" style={{ marginTop: '0.75rem', fontSize: '0.8rem', wordBreak: 'break-all' }}>

@@ -35,6 +35,18 @@ for (const path of ['/', '/workflows', '/workflows/06', '/workflows/07', '/workf
 for (const path of ['/workflows?search=8GB', '/workflows?search=sdxl', '/workflows?search=16gb', '/models?query=sentence-transformers']) {
   await assertPage(path, { indexable: false, canonicalPath: path.startsWith('/workflows') ? '/workflows' : '/models' });
 }
+// Local Audio: clean hub indexable and SSR-visible; parameterized states noindex with the clean canonical.
+await assertPage('/lab/audio', { indexable: true, canonicalPath: '/lab/audio' });
+await assertPage('/lab/audio?task=tts', { indexable: false, canonicalPath: '/lab/audio' });
+{
+  const { body } = await request('/lab/audio');
+  assert(body.includes('ND-AUDIO-MUSIC-001') && body.includes('Voice Cloning') && body.includes('audio.cpp'), '/lab/audio must server-render its results and task discovery');
+  const detail = body.match(/href="(\/lab\/benchmarks\/run-[^"]*nd-audio-music-001[^"]*)"/)?.[1];
+  assert(detail, '/lab/audio must link to its audio result pages');
+  const { body: result } = await request(detail);
+  assert(result.includes('REAL-TIME FACTOR') && result.includes('RUNTIME LICENSE') && result.includes('MODEL LICENSE'), 'audio result pages must server-render audio metrics and both licenses');
+  assert(!/<audio[\s>]/i.test(result), 'local-only artifacts must not render an audio player');
+}
 await assertPage('/datasets', { indexable: false, canonicalPath: '/datasets' });
 await assertPage('/train', { indexable: false, canonicalPath: '/train' });
 await assertPage('/cloud-generators', { indexable: false, canonicalPath: '/cloud-generators' });

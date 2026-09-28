@@ -61,4 +61,19 @@ for (const file of [...files(join(root, 'app')), ...files(join(root, 'components
   for (const href of forbiddenLinks) assert(!text.includes(href), `stale internal link ${href} remains in ${file}`);
 }
 
+// Local Audio hub: self-canonical, indexable only as the clean URL, in the sitemap without parameters.
+const audioPage = await import('../app/lab/audio/page.tsx');
+const audioClean = audioPage.generateMetadata({ searchParams: {} });
+assert.equal(audioClean.alternates.canonical, `${SITE_URL}/lab/audio`, '/lab/audio must be self-canonical');
+assert.equal(audioClean.robots.index, true, 'clean /lab/audio must be indexable');
+const audioFiltered = audioPage.generateMetadata({ searchParams: { task: 'tts' } });
+assert.equal(audioFiltered.robots.index, false, 'parameterized /lab/audio URLs must be noindex');
+assert.equal(audioFiltered.robots.follow, true);
+assert.equal(audioFiltered.alternates.canonical, `${SITE_URL}/lab/audio`, 'parameterized /lab/audio must canonicalize to the clean URL');
+assert.notEqual(audioClean.title, (await import('../app/lab/page.tsx')).metadata.title, '/lab/audio needs unique metadata');
+assert(urls.includes(`${SITE_URL}/lab/audio`), '/lab/audio must be in the sitemap');
+assert(!urls.some((url) => url.startsWith(`${SITE_URL}/lab/audio?`)), 'filtered audio URLs must not enter the sitemap');
+const { getAudioBenchmarks } = await import('../lib/audio/catalog.ts');
+for (const run of getAudioBenchmarks()) assert(urls.includes(`${SITE_URL}/lab/benchmarks/${run.id}`), `audio result ${run.id} must be in the sitemap`);
+
 console.log(`Indexability source policy: PASS (${urls.length} sitemap URLs, ${CATALOG.length} workflows, ${getIndexableGuides().length} indexable guides, ${TUTORIALS.length} tutorials)`);

@@ -1,13 +1,58 @@
 // lib/benchmarks/validators.ts
 // Objective validation engine for the NeuralDrift Local AI Benchmark Framework.
 
-import type { ValidationReport, WorkloadDefinition } from './types';
+import type { AudioArtifactExpectation, ValidationReport, WorkloadDefinition } from './types';
+import type { AudioAnalysis } from './audio';
+
+// What the runner observed about a generated audio file. Gathered by inspectAudioArtifact()
+// in artifacts-node code so this module stays free of file-system access.
+export interface AudioArtifactObservation {
+  path: string;
+  exists: boolean;
+  analysis?: AudioAnalysis;
+  decodeError?: string;
+}
+
+function validateAudioArtifact(expected: AudioArtifactExpectation, observed: AudioArtifactObservation | undefined): ValidationReport {
+  const fail = (details: string, actualOutput = observed?.path ?? 'No artifact reported'): ValidationReport => ({
+    passed: false,
+    validator: 'audio_artifact',
+    actualOutput,
+    expectedOutput: expected,
+    details,
+    errors: [details],
+  });
+  if (!observed) return fail('No audio artifact was reported by the runtime.');
+  if (!observed.exists) return fail(`Audio artifact does not exist: ${observed.path}`);
+  if (!observed.analysis) return fail(`Audio artifact could not be decoded: ${observed.decodeError ?? 'unknown decode error'}`);
+
+  const a = observed.analysis;
+  const summary = `${a.format} ${a.sampleFormat}${a.bitsPerSample} · ${a.sampleRateHz} Hz · ${a.channels} ch · ${a.durationSec.toFixed(2)} s · RMS ${a.rmsDbfs.toFixed(1)} dBFS · peak ${a.peakDbfs.toFixed(1)} dBFS`;
+  const errors: string[] = [];
+  if (a.format !== expected.format) errors.push(`Expected ${expected.format}, got ${a.format}.`);
+  if (a.durationSec < expected.minDurationSec || a.durationSec > expected.maxDurationSec) {
+    errors.push(`Duration ${a.durationSec.toFixed(2)} s is outside ${expected.minDurationSec}–${expected.maxDurationSec} s.`);
+  }
+  if (expected.sampleRateHz != null && a.sampleRateHz !== expected.sampleRateHz) errors.push(`Sample rate ${a.sampleRateHz} Hz, expected ${expected.sampleRateHz} Hz.`);
+  if (expected.channels != null && a.channels !== expected.channels) errors.push(`${a.channels} channels, expected ${expected.channels}.`);
+  if (!(a.rmsDbfs >= expected.minRmsDbfs)) errors.push(`Effectively silent: RMS ${a.rmsDbfs.toFixed(1)} dBFS is below ${expected.minRmsDbfs} dBFS.`);
+
+  return {
+    passed: errors.length === 0,
+    validator: 'audio_artifact',
+    actualOutput: summary,
+    expectedOutput: expected,
+    details: errors.length === 0 ? `Decoded and measured the artifact: ${summary}.` : errors.join(' '),
+    errors: errors.length ? errors : undefined,
+  };
+}
 
 export function validateBenchmarkOutput(
   workload: WorkloadDefinition,
   rawOutput: string,
   extraContext?: {
     toolCalls?: { name: string; arguments: Record<string, unknown> }[];
+    audioArtifact?: AudioArtifactObservation;
   }
 ): ValidationReport {
   const expected = workload.expectedResult;
@@ -150,13 +195,18 @@ export function validateBenchmarkOutput(
       };
     }
 
+    case 'audio_artifact':
+      return validateAudioArtifact(expected.value as AudioArtifactExpectation, extraContext?.audioArtifact);
+
     default:
+      // Fail closed: a validator this engine does not implement can never produce a PASS.
       return {
-        passed: true,
-        validator: 'fallback_presence',
+        passed: false,
+        validator: 'unsupported_validator',
         actualOutput: actualText,
         expectedOutput: expected.value,
-        details: 'Custom or unclassified validator passed by default with non-empty output.',
+        details: `Validator type "${String(expected.type)}" is not implemented; the output was not validated.`,
+        errors: [`Unsupported validator type: ${String(expected.type)}`],
       };
   }
 }

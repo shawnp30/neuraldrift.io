@@ -7,6 +7,11 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { pageMeta } from '@/lib/seo';
 import { getBenchmarkById, getAllBenchmarks } from '@/lib/benchmarks/registry';
+import { servedArtifactUrls } from '@/lib/benchmarks/publicArtifacts';
+import { MetricsGrid, getMetricsView, formatBytes } from '@/components/lab/BenchmarkMetrics';
+import { ArtifactPanel, FailurePanel, HashedFilesTable, LicensePanel, LimitationsPanel } from '@/components/lab/EvidencePanels';
+import { AUDIO_TASKS, audioTaskOf } from '@/lib/audio/catalog';
+import { knownLimitationsFor } from '@/lib/audio/comparison';
 
 interface Props {
   params: { id: string };
@@ -28,19 +33,15 @@ export function generateMetadata({ params }: Props): Metadata {
   );
 }
 
-function formatBytes(bytes: number | null | undefined): string {
-  if (!bytes) return 'Not Measured';
-  const gb = bytes / (1024 * 1024 * 1024);
-  return `${gb.toFixed(2)} GB`;
-}
-
 export default function BenchmarkDetailPage({ params }: Props) {
   const benchmark = getBenchmarkById(params.id);
   if (!benchmark) notFound();
 
-  const isRaw = benchmark.paradigm === 'raw_inference';
-  const rawMetrics = benchmark.rawInferenceMetrics;
-  const workMetrics = benchmark.workloadMetrics;
+  const view = getMetricsView(benchmark);
+  const audioTask = audioTaskOf(benchmark);
+  const taskLabel = AUDIO_TASKS.find((t) => t.id === audioTask)?.label;
+  const limitations = knownLimitationsFor(benchmark);
+  const hasLicense = Boolean(benchmark.runtime.license || benchmark.model.license);
 
   return (
     <div className="nd-site">
@@ -61,6 +62,7 @@ export default function BenchmarkDetailPage({ params }: Props) {
             <span className="nd-badge nd-badge-blue">
               {benchmark.evidenceLevel.toUpperCase().replace(/_/g, ' ')}
             </span>
+            {taskLabel && <span className="nd-badge">{taskLabel.toUpperCase()}</span>}
           </div>
 
           <p className="nd-lead" style={{ marginTop: '0.75rem' }}>
@@ -74,92 +76,26 @@ export default function BenchmarkDetailPage({ params }: Props) {
             <a href={benchmark.rawEvidenceUrl} download className="nd-text-link" target="_blank" rel="noopener noreferrer">
               Download raw evidence JSON
             </a>
+            {audioTask && <Link href="/lab/audio" className="nd-text-link">Local Audio AI →</Link>}
           </div>
         </header>
 
         {/* Primary Telemetry Grid */}
         <section className="nd-section">
           <h2>Measured Telemetry</h2>
-          <p className="nd-subtle">
-            {isRaw
-              ? 'Raw inference metrics capturing model execution throughput and sub-second token latency.'
-              : 'End-to-end agentic metrics capturing tool selection, argument execution, and task completion.'}
-          </p>
-
-          <div className="nd-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
-            {isRaw && rawMetrics ? (
-              <>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">TIME TO FIRST TOKEN (TTFT)</p>
-                  <h2>{rawMetrics.ttftMs != null ? `${rawMetrics.ttftMs.toFixed(1)} ms` : 'Not Measured'}</h2>
-                  <p className="nd-subtle">Streaming latency to initial token emission.</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">GENERATION THROUGHPUT</p>
-                  <h2>{rawMetrics.generationTokensPerSec != null ? `${rawMetrics.generationTokensPerSec.toFixed(1)} tok/s` : 'Not Measured'}</h2>
-                  <p className="nd-subtle">Sustained token generation rate.</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">PROMPT PROCESSING</p>
-                  <h2>{rawMetrics.promptTokensPerSec != null ? `${rawMetrics.promptTokensPerSec.toFixed(0)} tok/s` : 'Not Measured'}</h2>
-                  <p className="nd-subtle">Context ingestion rate ({rawMetrics.promptTokens} tokens in {rawMetrics.promptProcessingMs?.toFixed(1)} ms).</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">TOTAL TIME</p>
-                  <h2>{(rawMetrics.totalExecutionTimeMs / 1000).toFixed(2)} s</h2>
-                  <p className="nd-subtle">Total wall-clock duration for {rawMetrics.totalTokens} tokens.</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">PEAK VRAM OBSERVED</p>
-                  <h2>{formatBytes(rawMetrics.peakVramBytes)}</h2>
-                  <p className="nd-subtle">Dedicated GPU memory usage during generation.</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">GPU UTILIZATION</p>
-                  <h2>{rawMetrics.gpuUtilizationPct != null ? `${rawMetrics.gpuUtilizationPct}%` : 'Not Measured'}</h2>
-                  <p className="nd-subtle">Active compute engine utilization.</p>
-                </div>
-              </>
-            ) : workMetrics ? (
-              <>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">TASK COMPLETION TIME</p>
-                  <h2>{(workMetrics.taskCompletionTimeMs / 1000).toFixed(2)} s</h2>
-                  <p className="nd-subtle">End-to-end task time including agent reasoning & tools.</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">TOOL CALLS</p>
-                  <h2>{workMetrics.successfulToolCalls} / {workMetrics.toolCallsCount}</h2>
-                  <p className="nd-subtle">Successful calls vs total attempted invocations.</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">TOOL LATENCY</p>
-                  <h2>{workMetrics.toolCallLatencyMs != null ? `${workMetrics.toolCallLatencyMs.toFixed(2)} ms` : 'N/A'}</h2>
-                  <p className="nd-subtle">Average local tool execution resolution time.</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">TASK OUTCOME</p>
-                  <h2 style={{ color: workMetrics.finalTaskSuccess ? '#5eead4' : '#f87171' }}>
-                    {workMetrics.finalTaskSuccess ? 'SUCCESS' : 'FAILED'}
-                  </h2>
-                  <p className="nd-subtle">Validated objective result.</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">PEAK VRAM OBSERVED</p>
-                  <h2>{formatBytes(workMetrics.peakVramBytes)}</h2>
-                  <p className="nd-subtle">Dedicated GPU memory usage during agent run.</p>
-                </div>
-                <div className="nd-card nd-card-body">
-                  <p className="nd-eyebrow">RETRIES REQUIRED</p>
-                  <h2>{workMetrics.retriesCount}</h2>
-                  <p className="nd-subtle">Error recovery turns needed.</p>
-                </div>
-              </>
-            ) : (
-              <p className="nd-subtle">No telemetry recorded for this run.</p>
-            )}
-          </div>
+          <p className="nd-subtle">{view?.description ?? 'No telemetry recorded for this run.'}</p>
+          <MetricsGrid run={benchmark} />
+          {benchmark.outputMetrics?.telemetryMethod && (
+            <p className="nd-subtle" style={{ marginTop: '0.75rem', fontSize: '0.85rem' }}>Method: {benchmark.outputMetrics.telemetryMethod}</p>
+          )}
         </section>
+
+        {benchmark.failure && (
+          <section className="nd-section">
+            <h2>Failure Evidence</h2>
+            <FailurePanel failure={benchmark.failure} />
+          </section>
+        )}
 
         {/* Validation Details */}
         <section className="nd-section">
@@ -186,6 +122,20 @@ export default function BenchmarkDetailPage({ params }: Props) {
             </pre>
           </div>
         </section>
+
+        {benchmark.artifacts && (
+          <section className="nd-section">
+            <h2>Generated Artifact</h2>
+            <ArtifactPanel artifacts={benchmark.artifacts} playableUrls={servedArtifactUrls(benchmark)} />
+          </section>
+        )}
+
+        {hasLicense && (
+          <section className="nd-section">
+            <h2>License</h2>
+            <LicensePanel run={benchmark} />
+          </section>
+        )}
 
         {/* Environment & Provenance */}
         <section className="nd-section">
@@ -214,7 +164,11 @@ export default function BenchmarkDetailPage({ params }: Props) {
                   <tr><td style={{ padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>GPU Driver</td><td style={{ textAlign: 'right' }}>{benchmark.software.driverVersion}</td></tr>
                   <tr><td style={{ padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>Operating System</td><td style={{ textAlign: 'right' }}>{benchmark.software.os}</td></tr>
                   <tr><td style={{ padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>Model Quantization</td><td style={{ textAlign: 'right' }}>{benchmark.model.quantization}</td></tr>
-                  <tr><td style={{ padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>Context Limit</td><td style={{ textAlign: 'right' }}>{benchmark.model.contextLength ? `${benchmark.model.contextLength} tokens` : 'Default'}</td></tr>
+                  {benchmark.runtime.precision && <tr><td style={{ padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>Runtime Precision</td><td style={{ textAlign: 'right' }}>{benchmark.runtime.precision}</td></tr>}
+                  {benchmark.runtime.attentionBackend && <tr><td style={{ padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>Attention</td><td style={{ textAlign: 'right' }}>{benchmark.runtime.attentionBackend}</td></tr>}
+                  {benchmark.software.pythonVersion && <tr><td style={{ padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>Python</td><td style={{ textAlign: 'right' }}>{benchmark.software.pythonVersion}</td></tr>}
+                  {benchmark.software.cudaVersion && <tr><td style={{ padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>Driver CUDA Version</td><td style={{ textAlign: 'right' }}>{benchmark.software.cudaVersion}</td></tr>}
+                  {!audioTask && <tr><td style={{ padding: '6px 0', color: 'rgba(255,255,255,0.6)' }}>Context Limit</td><td style={{ textAlign: 'right' }}>{benchmark.model.contextLength ? `${benchmark.model.contextLength} tokens` : 'Default'}</td></tr>}
                 </tbody>
               </table>
             </div>
@@ -223,7 +177,7 @@ export default function BenchmarkDetailPage({ params }: Props) {
           <div className="nd-card nd-card-body" style={{ marginTop: '1.5rem' }}>
             <p className="nd-eyebrow">CONFIGURATION FINGERPRINT</p>
             <p className="nd-subtle">
-              Deterministic SHA-256 hash across model, quantization, runtime, runtime version, GPU, driver, workload version, and generation settings. Two runs must share material variables to be directly comparable.
+              Deterministic SHA-256 hash across model, quantization, runtime, runtime version, backend, GPU, driver, and workload ID and version (which pin the prompt and generation settings), plus, when recorded, model-file and input content hashes, workflow hash, runtime flags, precision and attention backend. Two runs must share material variables to be directly comparable.
             </p>
             <code style={{
               display: 'block',
@@ -241,7 +195,27 @@ export default function BenchmarkDetailPage({ params }: Props) {
               Run ID: <code>{benchmark.id}</code> · Recorded at: {benchmark.timestamp} · Benchmark Suite v{benchmark.benchmarkVersion}
             </p>
           </div>
+
+          {benchmark.model.files?.length ? (
+            <div className="nd-card nd-card-body" style={{ marginTop: '1.5rem' }}>
+              <p className="nd-eyebrow">MODEL FILES (CONTENT-HASHED)</p>
+              <HashedFilesTable files={benchmark.model.files} />
+            </div>
+          ) : null}
+          {benchmark.inputs?.length ? (
+            <div className="nd-card nd-card-body" style={{ marginTop: '1.5rem' }}>
+              <p className="nd-eyebrow">WORKLOAD INPUTS (CONTENT-HASHED)</p>
+              <HashedFilesTable files={benchmark.inputs} />
+            </div>
+          ) : null}
         </section>
+
+        {limitations.length > 0 && (
+          <section className="nd-section">
+            <h2>Known Limitations</h2>
+            <LimitationsPanel items={limitations} />
+          </section>
+        )}
       </div>
     </div>
   );
