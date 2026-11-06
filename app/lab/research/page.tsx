@@ -9,7 +9,7 @@ import { EvidenceClassBadge } from '@/components/lab/EvidenceClassBadge';
 
 export const metadata = pageMeta(
   '/lab/research',
-  'Local AI Research & Decisions — What Changed and What NeuralDrift Did | NeuralDrift Lab',
+  'Local AI Research & Decisions — What Changed and What NeuralDrift Did',
   'Investigated local-AI developments (runtimes, ComfyUI, 3D, audio) with primary sources, evidence classes, RTX 5080 relevance, and the action NeuralDrift took: track, test, benchmark or skip.'
 );
 

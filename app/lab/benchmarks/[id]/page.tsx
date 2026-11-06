@@ -26,11 +26,11 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const benchmark = getBenchmarkById(params.id);
   if (!benchmark) {
-    return { title: 'Benchmark Not Found | NeuralDrift Lab', robots: { index: false, follow: true } };
+    return { title: 'Benchmark Not Found', robots: { index: false, follow: true } };
   }
   const meta = pageMeta(
     `/lab/benchmarks/${benchmark.id}`,
-    `${benchmark.model.displayName} on ${benchmark.hardware.gpuName} — NeuralDrift Benchmark`,
+    `${benchmark.model.displayName} on ${benchmark.hardware.gpuName} via ${benchmark.runtime.runtime} — ${benchmark.workloadId}, ${benchmark.timestamp.slice(0, 16).replace("T", " ")} UTC`,
     `Measured ${benchmark.workloadId} workload performance on ${benchmark.hardware.gpuName} via ${benchmark.runtime.runtime}. Validated outcome: ${benchmark.outcome}.`
   );
   // Invalidated records remain public with an explanation but are not offered for indexing.

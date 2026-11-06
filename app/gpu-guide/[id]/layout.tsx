@@ -3,7 +3,7 @@ import { SITE_URL } from "@/lib/seo";
 
 const GPU_TITLES: Record<string, { title: string; description: string }> = {
   runpod: {
-    title: "RunPod GPU Guide for ComfyUI | NeuralDrift",
+    title: "RunPod GPU Guide for ComfyUI",
     description:
       "RunPod on-demand GPUs for ComfyUI: pricing snapshot, what runs well, and when cloud pods make sense.",
   },
@@ -20,7 +20,7 @@ export async function generateMetadata({
 
   if (!meta) {
     return {
-      title: "GPU Guide | NeuralDrift",
+      title: "GPU Guide",
       description: "GPU provider overview for ComfyUI builders.",
       robots: { index: false, follow: true },
       alternates: { canonical: url },

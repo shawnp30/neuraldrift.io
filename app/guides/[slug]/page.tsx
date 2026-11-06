@@ -103,7 +103,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   
   if (!existsSync(filePath)) {
     return {
-      title: "Guide Not Found | NeuralDrift",
+      title: "Guide Not Found",
       robots: { index: false, follow: true },
       alternates: {
         canonical: `https://neuraldrift.io/guides/${slug}`,

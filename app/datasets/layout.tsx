@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 const baseMetadata = pageMeta(
   "/datasets",
-  "Datasets Hub — Training Data for Local AI | NeuralDrift",
+  "Datasets Hub — Training Data for Local AI",
   "Browse a live discovery interface for third-party training datasets. Dataset availability, licenses, and suitability must be verified with the source."
 );
 

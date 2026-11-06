@@ -9,7 +9,7 @@ export function generateMetadata({ searchParams }: Props) {
   return {
     ...pageMeta(
       '/compatibility',
-      'ComfyUI GPU Compatibility — Tested Workflows by VRAM | NeuralDrift',
+      'ComfyUI GPU Compatibility — Tested Workflows by VRAM',
       'Evidence-backed ComfyUI workflow compatibility matrix. Query by GPU model or VRAM to view directly tested runs, measured speeds, and conservative hardware feasibility.'
     ),
     robots: {

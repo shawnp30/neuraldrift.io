@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/optimizer",
-  "Hardware Optimizer — NeuralDrift",
+  "Hardware Optimizer",
   "Tune ComfyUI and local AI for your GPU: goals, bottlenecks, and practical launch settings."
 );
 

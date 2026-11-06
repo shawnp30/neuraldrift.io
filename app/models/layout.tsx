@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 const baseMetadata = pageMeta(
   "/models",
-  "Models Hub — Local AI Model Discovery | NeuralDrift",
+  "Models Hub — Local AI Model Discovery",
   "Browse a live discovery interface for third-party local AI models. Verify model availability, licenses, and compatibility with the original source."
 );
 

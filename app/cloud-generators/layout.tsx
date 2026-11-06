@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 const baseMetadata = pageMeta(
   "/cloud-generators",
-  "Cloud Generator Reference — NeuralDrift",
+  "Cloud Generator Reference",
   "A legacy cloud-generator reference awaiting source review and current provider verification."
 );
 

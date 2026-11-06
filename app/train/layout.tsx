@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 const baseMetadata = pageMeta(
   "/train",
-  "Training Workspace — NeuralDrift",
+  "Training Workspace",
   "A local training workspace that requires configuration and evidence review before it can be promoted as public search content."
 );
 
