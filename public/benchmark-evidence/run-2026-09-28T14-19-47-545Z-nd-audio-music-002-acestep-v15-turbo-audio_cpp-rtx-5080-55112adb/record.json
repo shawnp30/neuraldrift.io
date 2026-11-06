@@ -1,0 +1,337 @@
+{
+  "id": "run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb",
+  "workloadId": "ND-AUDIO-MUSIC-002",
+  "workloadVersion": "1.0.0",
+  "paradigm": "raw_inference",
+  "category": "creator_audio",
+  "timestamp": "2026-09-28T14:19:47.545Z",
+  "benchmarkVersion": "1.0.0",
+  "evidenceLevel": "neuraldrift_benchmarked",
+  "outcome": "PASS",
+  "model": {
+    "provider": "ACE-Step",
+    "modelId": "acestep-v15-turbo",
+    "displayName": "ACE-Step 1.5 Turbo",
+    "parameterSize": "Turbo DiT + 1.7B LM planner",
+    "architecture": "ACE-Step 1.5 (DiT + 5Hz LM planner)",
+    "quantization": "BF16",
+    "version": "1.5",
+    "license": {
+      "id": "MIT",
+      "commercialUse": "COMMERCIAL_OK",
+      "sourceUrl": "https://huggingface.co/ACE-Step/Ace-Step1.5",
+      "verifiedAt": "2026-09-27",
+      "notes": "Model card (revision 19671f4) declares MIT and states generated music may be used commercially. The planner LMs are fine-tuned from Qwen3; the bundled Qwen3-Embedding-0.6B text encoder is Apache-2.0. Informational, not legal advice."
+    },
+    "files": [
+      {
+        "path": "ACE-Step1.5-GGUF/turbo/ace-step-1.5-turbo-bf16.gguf",
+        "sha256": "93974239a29a1a821b3cc1b1ca7e1c6229b1a900a0e44a1a9770bb2271d2be5f",
+        "bytes": 10090398272
+      }
+    ]
+  },
+  "runtime": {
+    "runtime": "audio_cpp",
+    "runtimeVersion": "0.8.2-audio8-perf-hotfix",
+    "backend": "cuda",
+    "backendVersion": "CUDA 13.3 (bundled runtime)",
+    "flags": {
+      "gitCommit": "ac16661d"
+    },
+    "precision": "bf16",
+    "attentionBackend": "ggml",
+    "license": {
+      "id": "Apache-2.0",
+      "commercialUse": "COMMERCIAL_OK",
+      "sourceUrl": "https://github.com/0xShug0/audio.cpp/blob/main/LICENSE",
+      "verifiedAt": "2026-09-27",
+      "notes": "Copyright 2026 ShugoAI LLC. Covers the audio.cpp engine only; each model has its own license."
+    }
+  },
+  "hardware": {
+    "id": "local-rtx-5080",
+    "gpuName": "NVIDIA GeForce RTX 5080",
+    "gpuArch": "Blackwell",
+    "gpuCount": 1,
+    "vramBytes": 17094934528,
+    "systemRamBytes": 66185273344,
+    "cpuModel": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "formFactor": "desktop",
+    "isCloud": false
+  },
+  "software": {
+    "os": "win32 10.0.26200",
+    "driverVersion": "616.92",
+    "cudaVersion": "13.4",
+    "pythonVersion": null
+  },
+  "configFingerprint": "9ce9b14a43b0a3c8dad0fb43978563ca9a9d66509fe48eb9e4b6c55c91b60a90",
+  "rawInferenceMetrics": null,
+  "workloadMetrics": null,
+  "outputMetrics": {
+    "kind": "audio",
+    "requestedDurationSec": 30,
+    "outputDurationSec": 30,
+    "generationTimeMs": 82792.5,
+    "realTimeFactor": 2.7598,
+    "sampleRateHz": 48000,
+    "channels": 2,
+    "peakVramBytes": 16654532608,
+    "vramBaselineBytes": 2689597440,
+    "peakRamBytes": 5576359936,
+    "gpuUtilizationPct": 100,
+    "telemetryMethod": "Warm-session record: generation time and RTF are medians of 10 measured iterations (see session metrics); memory and GPU figures cover the whole session. Wall time: process spawn to exit (model load included). Device GPU: nvidia-smi every 200 ms (memory used, utilization, memory utilization, temperature, power, SM clock; includes other processes; baseline recorded before start). Process tree: working set every 500 ms and Windows \"GPU Process Memory\" dedicated/shared counters about once per second (lower bounds on true peaks). System: CPU utilization and used RAM every 500 ms."
+  },
+  "sessionMetrics": {
+    "kind": "warm_session",
+    "processWallMs": 853979.3,
+    "startupAndLoadMs": 517376.1,
+    "startupAndLoadBasis": "measured",
+    "warmupIterations": 1,
+    "measuredIterations": 10,
+    "iterations": [
+      {
+        "index": 0,
+        "warmup": true,
+        "generationMs": 5042.85,
+        "outputDurationSec": 30,
+        "realTimeFactor": 0.1681,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 1,
+        "warmup": false,
+        "generationMs": 50533.4,
+        "outputDurationSec": 30,
+        "realTimeFactor": 1.6844,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 2,
+        "warmup": false,
+        "generationMs": 58126.4,
+        "outputDurationSec": 30,
+        "realTimeFactor": 1.9375,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 3,
+        "warmup": false,
+        "generationMs": 71195.2,
+        "outputDurationSec": 30,
+        "realTimeFactor": 2.3732,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 4,
+        "warmup": false,
+        "generationMs": 85790.5,
+        "outputDurationSec": 30,
+        "realTimeFactor": 2.8597,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 5,
+        "warmup": false,
+        "generationMs": 96477.8,
+        "outputDurationSec": 30,
+        "realTimeFactor": 3.2159,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 6,
+        "warmup": false,
+        "generationMs": 139112,
+        "outputDurationSec": 30,
+        "realTimeFactor": 4.6371,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 7,
+        "warmup": false,
+        "generationMs": 70385.6,
+        "outputDurationSec": 30,
+        "realTimeFactor": 2.3462,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 8,
+        "warmup": false,
+        "generationMs": 99823.2,
+        "outputDurationSec": 30,
+        "realTimeFactor": 3.3274,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 9,
+        "warmup": false,
+        "generationMs": 84502.9,
+        "outputDurationSec": 30,
+        "realTimeFactor": 2.8168,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      },
+      {
+        "index": 10,
+        "warmup": false,
+        "generationMs": 81082.1,
+        "outputDurationSec": 30,
+        "realTimeFactor": 2.7027,
+        "artifactSha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+        "passed": true
+      }
+    ],
+    "generationMs": {
+      "n": 10,
+      "median": 82792.5,
+      "mean": 83702.91,
+      "min": 50533.4,
+      "max": 139112,
+      "stdev": 24929.3742,
+      "cv": 0.2978,
+      "p95": null
+    },
+    "realTimeFactor": {
+      "n": 10,
+      "median": 2.7598,
+      "mean": 2.7901,
+      "min": 1.6844,
+      "max": 4.6371,
+      "stdev": 0.831,
+      "cv": 0.2978,
+      "p95": null
+    },
+    "distinctMeasuredOutputs": 1,
+    "generationSource": "audio.cpp per-request metrics[<id>].wall_ms (runtime-reported, one loaded session). Start-up and load: time from process spawn until audio.cpp announced the first request."
+  },
+  "telemetry": {
+    "method": "Wall time: process spawn to exit (model load included). Device GPU: nvidia-smi every 200 ms (memory used, utilization, memory utilization, temperature, power, SM clock; includes other processes; baseline recorded before start). Process tree: working set every 500 ms and Windows \"GPU Process Memory\" dedicated/shared counters about once per second (lower bounds on true peaks). System: CPU utilization and used RAM every 500 ms.",
+    "gpuSampleIntervalMs": 200,
+    "gpuSamples": 4195,
+    "vramBaselineBytes": 2689597440,
+    "vramPeakBytes": 16654532608,
+    "gpuUtilizationPeakPct": 100,
+    "gpuUtilizationMeanPct": 94.1,
+    "gpuMemoryUtilizationPeakPct": 70,
+    "gpuTemperaturePeakC": 69,
+    "gpuPowerPeakW": 282.24,
+    "gpuPowerMeanW": 84.9,
+    "gpuSmClockMinMHz": 637,
+    "processSampleIntervalMs": 500,
+    "processSamples": 1198,
+    "processRamPeakBytes": 5576359936,
+    "processGpuSamples": 833,
+    "processVramPeakBytes": 14766497792,
+    "processSharedGpuMemoryPeakBytes": 1702887424,
+    "cpuUtilizationPeakPct": 89.7,
+    "cpuUtilizationMeanPct": 21.5,
+    "systemRamBaselineBytes": 40005005312,
+    "systemRamPeakBytes": 63689555968
+  },
+  "artifacts": [
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/warmup-01.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-01.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-02.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-03.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-04.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-05.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-06.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-07.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-08.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-09.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/iter-10.wav",
+      "sha256": "c90fdd2ad89507277dd56cf266349883ae2c3fc3ebaef466561acaef135d7ab7",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    }
+  ],
+  "failure": null,
+  "validation": {
+    "passed": true,
+    "validator": "audio_artifact",
+    "actualOutput": "wav pcm16 · 48000 Hz · 2 ch · 30.00 s · RMS -15.5 dBFS · peak -0.0 dBFS",
+    "expectedOutput": {
+      "format": "wav",
+      "minDurationSec": 25,
+      "maxDurationSec": 35,
+      "sampleRateHz": 48000,
+      "channels": 2,
+      "minRmsDbfs": -45
+    },
+    "details": "All 11 session outputs (10 measured, 1 warm-up) decoded and validated. First measured: wav pcm16 · 48000 Hz · 2 ch · 30.00 s · RMS -15.5 dBFS · peak -0.0 dBFS."
+  },
+  "rawEvidenceUrl": "/benchmark-evidence/run-2026-09-28T14-19-47-545Z-nd-audio-music-002-acestep-v15-turbo-audio_cpp-rtx-5080-55112adb/record.json",
+  "logsSummary": "Warm session of ND-AUDIO-MUSIC-002 v1.0.0 on NVIDIA GeForce RTX 5080 via audio_cpp 0.8.2-audio8-perf-hotfix: PASS."
+}

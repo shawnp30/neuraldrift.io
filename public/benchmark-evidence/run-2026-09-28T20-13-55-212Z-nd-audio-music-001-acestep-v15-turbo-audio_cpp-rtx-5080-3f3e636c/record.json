@@ -1,0 +1,141 @@
+{
+  "id": "run-2026-09-28T20-13-55-212Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-3f3e636c",
+  "workloadId": "ND-AUDIO-MUSIC-001",
+  "workloadVersion": "1.0.0",
+  "paradigm": "raw_inference",
+  "category": "creator_audio",
+  "timestamp": "2026-09-28T20:13:55.212Z",
+  "benchmarkVersion": "1.0.0",
+  "evidenceLevel": "neuraldrift_benchmarked",
+  "outcome": "PASS",
+  "model": {
+    "provider": "ACE-Step",
+    "modelId": "acestep-v15-turbo",
+    "displayName": "ACE-Step 1.5 Turbo",
+    "parameterSize": "Turbo DiT + 1.7B LM planner",
+    "architecture": "ACE-Step 1.5 (DiT + 5Hz LM planner)",
+    "quantization": "BF16",
+    "version": "1.5",
+    "license": {
+      "id": "MIT",
+      "commercialUse": "COMMERCIAL_OK",
+      "sourceUrl": "https://huggingface.co/ACE-Step/Ace-Step1.5",
+      "verifiedAt": "2026-09-27",
+      "notes": "Model card (revision 19671f4) declares MIT and states generated music may be used commercially. The planner LMs are fine-tuned from Qwen3; the bundled Qwen3-Embedding-0.6B text encoder is Apache-2.0. Informational, not legal advice."
+    },
+    "files": [
+      {
+        "path": "ACE-Step1.5-GGUF/turbo/ace-step-1.5-turbo-bf16.gguf",
+        "sha256": "93974239a29a1a821b3cc1b1ca7e1c6229b1a900a0e44a1a9770bb2271d2be5f",
+        "bytes": 10090398272
+      }
+    ]
+  },
+  "runtime": {
+    "runtime": "audio_cpp",
+    "runtimeVersion": "0.8.2-audio8-perf-hotfix",
+    "backend": "cuda",
+    "backendVersion": "CUDA 13.3 (bundled runtime)",
+    "flags": {
+      "gitCommit": "ac16661d",
+      "ace_step.mem_saver": "true",
+      "ace_step.dit_weight_type": "q8_0"
+    },
+    "precision": "bf16",
+    "attentionBackend": "ggml",
+    "license": {
+      "id": "Apache-2.0",
+      "commercialUse": "COMMERCIAL_OK",
+      "sourceUrl": "https://github.com/0xShug0/audio.cpp/blob/main/LICENSE",
+      "verifiedAt": "2026-09-27",
+      "notes": "Copyright 2026 ShugoAI LLC. Covers the audio.cpp engine only; each model has its own license."
+    }
+  },
+  "hardware": {
+    "id": "local-rtx-5080",
+    "gpuName": "NVIDIA GeForce RTX 5080",
+    "gpuArch": "Blackwell",
+    "gpuCount": 1,
+    "vramBytes": 17094934528,
+    "systemRamBytes": 66185273344,
+    "cpuModel": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "formFactor": "desktop",
+    "isCloud": false
+  },
+  "software": {
+    "os": "win32 10.0.26200",
+    "driverVersion": "616.92",
+    "cudaVersion": "13.4",
+    "pythonVersion": null
+  },
+  "configFingerprint": "6deddddd92bfe6576328777e22b3d9ce9a663b2014daa71e0e8a34e1e79ef932",
+  "variant": "mem_saver+dit_q8_0",
+  "rawInferenceMetrics": null,
+  "workloadMetrics": null,
+  "outputMetrics": {
+    "kind": "audio",
+    "requestedDurationSec": 30,
+    "outputDurationSec": 30,
+    "generationTimeMs": 18331.8,
+    "realTimeFactor": 0.6111,
+    "sampleRateHz": 48000,
+    "channels": 2,
+    "peakVramBytes": 11149508608,
+    "vramBaselineBytes": 2070937600,
+    "peakRamBytes": 4775677952,
+    "gpuUtilizationPct": 98,
+    "telemetryMethod": "Wall time: process spawn to exit (model load included). Device GPU: nvidia-smi every 200 ms (memory used, utilization, memory utilization, temperature, power, SM clock; includes other processes; baseline recorded before start). Process tree: working set every 500 ms and Windows \"GPU Process Memory\" dedicated/shared counters about once per second (lower bounds on true peaks). System: CPU utilization and used RAM every 500 ms."
+  },
+  "telemetry": {
+    "method": "Wall time: process spawn to exit (model load included). Device GPU: nvidia-smi every 200 ms (memory used, utilization, memory utilization, temperature, power, SM clock; includes other processes; baseline recorded before start). Process tree: working set every 500 ms and Windows \"GPU Process Memory\" dedicated/shared counters about once per second (lower bounds on true peaks). System: CPU utilization and used RAM every 500 ms.",
+    "gpuSampleIntervalMs": 200,
+    "gpuSamples": 89,
+    "vramBaselineBytes": 2070937600,
+    "vramPeakBytes": 11149508608,
+    "gpuUtilizationPeakPct": 98,
+    "gpuUtilizationMeanPct": 14.7,
+    "gpuMemoryUtilizationPeakPct": 70,
+    "gpuTemperaturePeakC": 53,
+    "gpuPowerPeakW": 249.16,
+    "gpuPowerMeanW": 54.7,
+    "gpuSmClockMinMHz": 300,
+    "processSampleIntervalMs": 500,
+    "processSamples": 32,
+    "processRamPeakBytes": 4775677952,
+    "processGpuSamples": 13,
+    "processVramPeakBytes": 9080242176,
+    "processSharedGpuMemoryPeakBytes": 81788928,
+    "adapterSharedGpuMemoryStartBytes": 130297856,
+    "adapterSharedGpuMemoryPeakBytes": 130297856,
+    "cpuUtilizationPeakPct": 12.1,
+    "cpuUtilizationMeanPct": 6.7,
+    "systemRamBaselineBytes": 22479757312,
+    "systemRamPeakBytes": 27558187008
+  },
+  "artifacts": [
+    {
+      "path": "evidence-artifacts/run-2026-09-28T20-13-55-212Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-3f3e636c/output.wav",
+      "sha256": "582761f4eb531124c46560619a6b198cbb9e9f864841ade662d0a139e814d9da",
+      "bytes": 5760044,
+      "format": "wav",
+      "storage": "local_only"
+    }
+  ],
+  "failure": null,
+  "validation": {
+    "passed": true,
+    "validator": "audio_artifact",
+    "actualOutput": "wav pcm16 · 48000 Hz · 2 ch · 30.00 s · RMS -16.2 dBFS · peak -0.0 dBFS",
+    "expectedOutput": {
+      "format": "wav",
+      "minDurationSec": 25,
+      "maxDurationSec": 35,
+      "sampleRateHz": 48000,
+      "channels": 2,
+      "minRmsDbfs": -45
+    },
+    "details": "Decoded and measured the artifact: wav pcm16 · 48000 Hz · 2 ch · 30.00 s · RMS -16.2 dBFS · peak -0.0 dBFS."
+  },
+  "rawEvidenceUrl": "/benchmark-evidence/run-2026-09-28T20-13-55-212Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-3f3e636c/record.json",
+  "logsSummary": "Executed ND-AUDIO-MUSIC-001 v1.0.0 on NVIDIA GeForce RTX 5080 via audio_cpp 0.8.2-audio8-perf-hotfix: PASS."
+}

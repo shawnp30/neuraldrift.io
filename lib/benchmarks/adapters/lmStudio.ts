@@ -5,7 +5,7 @@ import type {
   BenchmarkModelConfig,
   RawInferenceMetrics,
   WorkloadMetrics,
-  WorkloadDefinition,
+  TextWorkloadDefinition,
 } from '../types';
 import type {
   RuntimeAdapter,
@@ -40,7 +40,7 @@ export class LMStudioAdapter implements RuntimeAdapter {
       return {
         available: true,
         runtime: 'lm_studio',
-        runtimeVersion: '0.3.9', // Standard LM Studio release
+        runtimeVersion: 'unknown', // The OpenAI-compatible API does not report a version; the runner accepts --runtime-version
         backend: 'cuda',
         models,
       };
@@ -60,7 +60,7 @@ export class LMStudioAdapter implements RuntimeAdapter {
   async executeRawInference(
     endpoint = 'http://127.0.0.1:1234',
     model: BenchmarkModelConfig,
-    workload: WorkloadDefinition
+    workload: TextWorkloadDefinition
   ): Promise<RawInferenceExecutionResult> {
     const url = `${endpoint}/v1/chat/completions`;
     const messages: { role: string; content: string }[] = [];
@@ -193,7 +193,7 @@ export class LMStudioAdapter implements RuntimeAdapter {
   async executeWorkload(
     endpoint = 'http://127.0.0.1:1234',
     model: BenchmarkModelConfig,
-    workload: WorkloadDefinition
+    workload: TextWorkloadDefinition
   ): Promise<WorkloadExecutionResult> {
     const url = `${endpoint}/v1/chat/completions`;
     const toolsPayload = (workload.tools || []).map((t) => ({

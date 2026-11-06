@@ -1,0 +1,29 @@
+{
+  "acestep-turbo-audiocpp": {
+    "runtime": "audio_cpp",
+    "modelKey": "acestep-v15-turbo",
+    "binDir": "D:/AI/audio.cpp/v0.8.2-audio8-perf-hotfix-cuda13.3",
+    "modelPath": "D:/AI/audio.cpp/models/ACE-Step1.5-GGUF/turbo",
+    "modelFiles": ["D:/AI/audio.cpp/models/ACE-Step1.5-GGUF/turbo/ace-step-1.5-turbo-bf16.gguf"],
+    "modelFilesRoot": "D:/AI/audio.cpp/models",
+    "family": "ace_step",
+    "backend": "cuda",
+    "device": 0
+  },
+  "acestep-turbo-python": {
+    "runtime": "pytorch",
+    "modelKey": "acestep-v15-turbo",
+    "aceRoot": "C:/Users/you/ACE-Step-1.5",
+    "pythonExe": "C:/Users/you/ACE-Step-1.5/.venv/Scripts/python.exe",
+    "ditModel": "acestep-v15-turbo",
+    "lmModel": "acestep-5Hz-lm-1.7B",
+    "lmBackend": "vllm",
+    "modelFiles": [
+      "C:/Users/you/ACE-Step-1.5/checkpoints/acestep-v15-turbo/model.safetensors",
+      "C:/Users/you/ACE-Step-1.5/checkpoints/acestep-5Hz-lm-1.7B/model.safetensors",
+      "C:/Users/you/ACE-Step-1.5/checkpoints/Qwen3-Embedding-0.6B/model.safetensors",
+      "C:/Users/you/ACE-Step-1.5/checkpoints/vae/diffusion_pytorch_model.safetensors"
+    ],
+    "modelFilesRoot": "C:/Users/you/ACE-Step-1.5/checkpoints"
+  }
+}

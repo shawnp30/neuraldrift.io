@@ -2,11 +2,15 @@
 // Standardized interface for local AI runtime adapters.
 
 import type {
+  AudioWorkloadDefinition,
   BenchmarkModelConfig,
   BenchmarkRuntimeConfig,
+  FailureEvidence,
+  OutputMetrics,
   RawInferenceMetrics,
+  TelemetrySummary,
+  TextWorkloadDefinition,
   WorkloadMetrics,
-  WorkloadDefinition,
 } from '../types';
 
 export interface RuntimeProbeResult {
@@ -43,6 +47,7 @@ export interface WorkloadExecutionResult {
   rawTrace: unknown;
 }
 
+// Text runtimes (LLM / agent) exchange strings and tool calls.
 export interface RuntimeAdapter {
   name: string;
   probe(endpoint?: string): Promise<RuntimeProbeResult>;
@@ -50,12 +55,46 @@ export interface RuntimeAdapter {
   executeRawInference(
     endpoint: string,
     model: BenchmarkModelConfig,
-    workload: WorkloadDefinition
+    workload: TextWorkloadDefinition
   ): Promise<RawInferenceExecutionResult>;
 
   executeWorkload(
     endpoint: string,
     model: BenchmarkModelConfig,
-    workload: WorkloadDefinition
+    workload: TextWorkloadDefinition
   ): Promise<WorkloadExecutionResult>;
+}
+
+// Generative runtimes write files. The adapter reports what it ran and where the output landed;
+// the runner hashes, decodes and validates the file itself rather than trusting the adapter.
+export interface GenerationExecutionResult {
+  outputPath: string | null;       // Absolute path of the generated file, when one was written
+  outputMetrics: OutputMetrics;
+  runtime: BenchmarkRuntimeConfig; // Runtime configuration as actually executed
+  failure: FailureEvidence | null;
+  telemetry: TelemetrySummary | null;
+  rawTrace: unknown;               // Command line, exit status, runtime-reported metrics, log tail
+}
+
+export interface GenerationContext {
+  inputOptions?: Record<string, string>; // Request options whose values come from verified, hashed input files
+}
+
+export interface GenerationSessionResult {
+  runtime: BenchmarkRuntimeConfig;
+  failure: FailureEvidence | null;
+  telemetry: TelemetrySummary | null;
+  processWallMs: number | null;
+  startupAndLoadMs: number | null;
+  startupAndLoadBasis: 'measured' | 'derived';
+  generationSource: string;
+  iterations: { id: string; index: number; warmup: boolean; generationMs: number | null; outputPath: string | null }[];
+  rawTrace: unknown;
+}
+
+export interface GenerativeRuntimeAdapter<W = AudioWorkloadDefinition> {
+  name: string;
+  probe(): Promise<RuntimeProbeResult>;
+  executeGeneration(model: BenchmarkModelConfig, workload: W, outputDir: string, context?: GenerationContext): Promise<GenerationExecutionResult>;
+  executeSession?(model: BenchmarkModelConfig, workload: W, outputDir: string, context?: GenerationContext): Promise<GenerationSessionResult>;
 }

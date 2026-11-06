@@ -1,0 +1,337 @@
+{
+  "command": [
+    "D:\\AI\\audio.cpp\\v0.8.2-audio8-perf-hotfix-cuda13.3\\audiocpp_cli.exe",
+    "--task",
+    "gen",
+    "--family",
+    "ace_step",
+    "--model",
+    "D:/AI/audio.cpp/models/ACE-Step1.5-GGUF/turbo",
+    "--backend",
+    "cuda",
+    "--mode",
+    "offline",
+    "--device",
+    "0",
+    "--request-sequence",
+    "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T15-22-52-700Z-nd-audio-music-003-acestep-v15-turbo-audio_cpp-rtx-5080-a4b2ac85\\request-sequence.json",
+    "--out-dir",
+    "D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T15-22-52-700Z-nd-audio-music-003-acestep-v15-turbo-audio_cpp-rtx-5080-a4b2ac85",
+    "--metrics"
+  ],
+  "requestSequence": {
+    "requests": [
+      {
+        "id": "warmup-01",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": false,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9,
+        "use_cot_metas": false,
+        "use_cot_caption": false,
+        "use_cot_language": false,
+        "audio_codes": "<|audio_code_34234|><|audio_code_58821|><|audio_code_37142|><|audio_code_61420|><|audio_code_13133|><|audio_code_60399|><|audio_code_26028|><|audio_code_11732|><|audio_code_46563|><|audio_code_8586|><|audio_code_15341|><|audio_code_24632|><|audio_code_41064|><|audio_code_24825|><|audio_code_356|><|audio_code_54446|><|audio_code_38222|><|audio_code_10173|><|audio_code_53621|><|audio_code_28607|><|audio_code_48629|><|audio_code_420|><|audio_code_8207|><|audio_code_17710|><|audio_code_23694|><|audio_code_14968|><|audio_code_3256|><|audio_code_51920|><|audio_code_15857|><|audio_code_32955|><|audio_code_60356|><|audio_code_60795|><|audio_code_38204|><|audio_code_18667|><|audio_code_30524|><|audio_code_13785|><|audio_code_15130|><|audio_code_28138|><|audio_code_62970|><|audio_code_41156|><|audio_code_48088|><|audio_code_11713|><|audio_code_26929|><|audio_code_23464|><|audio_code_26090|><|audio_code_55784|><|audio_code_43844|><|audio_code_7072|><|audio_code_2368|><|audio_code_61920|><|audio_code_62944|><|audio_code_7088|><|audio_code_22992|><|audio_code_40797|><|audio_code_36674|><|audio_code_11754|><|audio_code_26526|><|audio_code_10564|><|audio_code_32566|><|audio_code_50981|><|audio_code_17805|><|audio_code_63860|><|audio_code_510|><|audio_code_41931|><|audio_code_61939|><|audio_code_2372|><|audio_code_48618|><|audio_code_12773|><|audio_code_3120|><|audio_code_36056|><|audio_code_24376|><|audio_code_12779|><|audio_code_59614|><|audio_code_375|><|audio_code_8549|><|audio_code_38701|><|audio_code_18757|><|audio_code_60845|><|audio_code_61900|><|audio_code_7694|><|audio_code_53108|><|audio_code_11429|><|audio_code_2176|><|audio_code_18672|><|audio_code_48856|><|audio_code_1008|><|audio_code_2187|><|audio_code_49638|><|audio_code_48875|><|audio_code_42229|><|audio_code_38147|><|audio_code_39779|><|audio_code_1465|><|audio_code_62866|><|audio_code_12692|><|audio_code_25489|><|audio_code_41605|><|audio_code_50656|><|audio_code_12787|><|audio_code_14624|><|audio_code_20914|><|audio_code_24002|><|audio_code_55768|><|audio_code_9656|><|audio_code_55792|><|audio_code_12649|><|audio_code_23491|><|audio_code_39888|><|audio_code_58280|><|audio_code_7528|><|audio_code_60874|><|audio_code_30912|><|audio_code_15168|><|audio_code_13118|><|audio_code_25446|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_27815|><|audio_code_35855|><|audio_code_35847|><|audio_code_35847|>"
+      },
+      {
+        "id": "iter-01",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": false,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9,
+        "use_cot_metas": false,
+        "use_cot_caption": false,
+        "use_cot_language": false,
+        "audio_codes": "<|audio_code_34234|><|audio_code_58821|><|audio_code_37142|><|audio_code_61420|><|audio_code_13133|><|audio_code_60399|><|audio_code_26028|><|audio_code_11732|><|audio_code_46563|><|audio_code_8586|><|audio_code_15341|><|audio_code_24632|><|audio_code_41064|><|audio_code_24825|><|audio_code_356|><|audio_code_54446|><|audio_code_38222|><|audio_code_10173|><|audio_code_53621|><|audio_code_28607|><|audio_code_48629|><|audio_code_420|><|audio_code_8207|><|audio_code_17710|><|audio_code_23694|><|audio_code_14968|><|audio_code_3256|><|audio_code_51920|><|audio_code_15857|><|audio_code_32955|><|audio_code_60356|><|audio_code_60795|><|audio_code_38204|><|audio_code_18667|><|audio_code_30524|><|audio_code_13785|><|audio_code_15130|><|audio_code_28138|><|audio_code_62970|><|audio_code_41156|><|audio_code_48088|><|audio_code_11713|><|audio_code_26929|><|audio_code_23464|><|audio_code_26090|><|audio_code_55784|><|audio_code_43844|><|audio_code_7072|><|audio_code_2368|><|audio_code_61920|><|audio_code_62944|><|audio_code_7088|><|audio_code_22992|><|audio_code_40797|><|audio_code_36674|><|audio_code_11754|><|audio_code_26526|><|audio_code_10564|><|audio_code_32566|><|audio_code_50981|><|audio_code_17805|><|audio_code_63860|><|audio_code_510|><|audio_code_41931|><|audio_code_61939|><|audio_code_2372|><|audio_code_48618|><|audio_code_12773|><|audio_code_3120|><|audio_code_36056|><|audio_code_24376|><|audio_code_12779|><|audio_code_59614|><|audio_code_375|><|audio_code_8549|><|audio_code_38701|><|audio_code_18757|><|audio_code_60845|><|audio_code_61900|><|audio_code_7694|><|audio_code_53108|><|audio_code_11429|><|audio_code_2176|><|audio_code_18672|><|audio_code_48856|><|audio_code_1008|><|audio_code_2187|><|audio_code_49638|><|audio_code_48875|><|audio_code_42229|><|audio_code_38147|><|audio_code_39779|><|audio_code_1465|><|audio_code_62866|><|audio_code_12692|><|audio_code_25489|><|audio_code_41605|><|audio_code_50656|><|audio_code_12787|><|audio_code_14624|><|audio_code_20914|><|audio_code_24002|><|audio_code_55768|><|audio_code_9656|><|audio_code_55792|><|audio_code_12649|><|audio_code_23491|><|audio_code_39888|><|audio_code_58280|><|audio_code_7528|><|audio_code_60874|><|audio_code_30912|><|audio_code_15168|><|audio_code_13118|><|audio_code_25446|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_27815|><|audio_code_35855|><|audio_code_35847|><|audio_code_35847|>"
+      },
+      {
+        "id": "iter-02",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": false,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9,
+        "use_cot_metas": false,
+        "use_cot_caption": false,
+        "use_cot_language": false,
+        "audio_codes": "<|audio_code_34234|><|audio_code_58821|><|audio_code_37142|><|audio_code_61420|><|audio_code_13133|><|audio_code_60399|><|audio_code_26028|><|audio_code_11732|><|audio_code_46563|><|audio_code_8586|><|audio_code_15341|><|audio_code_24632|><|audio_code_41064|><|audio_code_24825|><|audio_code_356|><|audio_code_54446|><|audio_code_38222|><|audio_code_10173|><|audio_code_53621|><|audio_code_28607|><|audio_code_48629|><|audio_code_420|><|audio_code_8207|><|audio_code_17710|><|audio_code_23694|><|audio_code_14968|><|audio_code_3256|><|audio_code_51920|><|audio_code_15857|><|audio_code_32955|><|audio_code_60356|><|audio_code_60795|><|audio_code_38204|><|audio_code_18667|><|audio_code_30524|><|audio_code_13785|><|audio_code_15130|><|audio_code_28138|><|audio_code_62970|><|audio_code_41156|><|audio_code_48088|><|audio_code_11713|><|audio_code_26929|><|audio_code_23464|><|audio_code_26090|><|audio_code_55784|><|audio_code_43844|><|audio_code_7072|><|audio_code_2368|><|audio_code_61920|><|audio_code_62944|><|audio_code_7088|><|audio_code_22992|><|audio_code_40797|><|audio_code_36674|><|audio_code_11754|><|audio_code_26526|><|audio_code_10564|><|audio_code_32566|><|audio_code_50981|><|audio_code_17805|><|audio_code_63860|><|audio_code_510|><|audio_code_41931|><|audio_code_61939|><|audio_code_2372|><|audio_code_48618|><|audio_code_12773|><|audio_code_3120|><|audio_code_36056|><|audio_code_24376|><|audio_code_12779|><|audio_code_59614|><|audio_code_375|><|audio_code_8549|><|audio_code_38701|><|audio_code_18757|><|audio_code_60845|><|audio_code_61900|><|audio_code_7694|><|audio_code_53108|><|audio_code_11429|><|audio_code_2176|><|audio_code_18672|><|audio_code_48856|><|audio_code_1008|><|audio_code_2187|><|audio_code_49638|><|audio_code_48875|><|audio_code_42229|><|audio_code_38147|><|audio_code_39779|><|audio_code_1465|><|audio_code_62866|><|audio_code_12692|><|audio_code_25489|><|audio_code_41605|><|audio_code_50656|><|audio_code_12787|><|audio_code_14624|><|audio_code_20914|><|audio_code_24002|><|audio_code_55768|><|audio_code_9656|><|audio_code_55792|><|audio_code_12649|><|audio_code_23491|><|audio_code_39888|><|audio_code_58280|><|audio_code_7528|><|audio_code_60874|><|audio_code_30912|><|audio_code_15168|><|audio_code_13118|><|audio_code_25446|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_27815|><|audio_code_35855|><|audio_code_35847|><|audio_code_35847|>"
+      },
+      {
+        "id": "iter-03",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": false,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9,
+        "use_cot_metas": false,
+        "use_cot_caption": false,
+        "use_cot_language": false,
+        "audio_codes": "<|audio_code_34234|><|audio_code_58821|><|audio_code_37142|><|audio_code_61420|><|audio_code_13133|><|audio_code_60399|><|audio_code_26028|><|audio_code_11732|><|audio_code_46563|><|audio_code_8586|><|audio_code_15341|><|audio_code_24632|><|audio_code_41064|><|audio_code_24825|><|audio_code_356|><|audio_code_54446|><|audio_code_38222|><|audio_code_10173|><|audio_code_53621|><|audio_code_28607|><|audio_code_48629|><|audio_code_420|><|audio_code_8207|><|audio_code_17710|><|audio_code_23694|><|audio_code_14968|><|audio_code_3256|><|audio_code_51920|><|audio_code_15857|><|audio_code_32955|><|audio_code_60356|><|audio_code_60795|><|audio_code_38204|><|audio_code_18667|><|audio_code_30524|><|audio_code_13785|><|audio_code_15130|><|audio_code_28138|><|audio_code_62970|><|audio_code_41156|><|audio_code_48088|><|audio_code_11713|><|audio_code_26929|><|audio_code_23464|><|audio_code_26090|><|audio_code_55784|><|audio_code_43844|><|audio_code_7072|><|audio_code_2368|><|audio_code_61920|><|audio_code_62944|><|audio_code_7088|><|audio_code_22992|><|audio_code_40797|><|audio_code_36674|><|audio_code_11754|><|audio_code_26526|><|audio_code_10564|><|audio_code_32566|><|audio_code_50981|><|audio_code_17805|><|audio_code_63860|><|audio_code_510|><|audio_code_41931|><|audio_code_61939|><|audio_code_2372|><|audio_code_48618|><|audio_code_12773|><|audio_code_3120|><|audio_code_36056|><|audio_code_24376|><|audio_code_12779|><|audio_code_59614|><|audio_code_375|><|audio_code_8549|><|audio_code_38701|><|audio_code_18757|><|audio_code_60845|><|audio_code_61900|><|audio_code_7694|><|audio_code_53108|><|audio_code_11429|><|audio_code_2176|><|audio_code_18672|><|audio_code_48856|><|audio_code_1008|><|audio_code_2187|><|audio_code_49638|><|audio_code_48875|><|audio_code_42229|><|audio_code_38147|><|audio_code_39779|><|audio_code_1465|><|audio_code_62866|><|audio_code_12692|><|audio_code_25489|><|audio_code_41605|><|audio_code_50656|><|audio_code_12787|><|audio_code_14624|><|audio_code_20914|><|audio_code_24002|><|audio_code_55768|><|audio_code_9656|><|audio_code_55792|><|audio_code_12649|><|audio_code_23491|><|audio_code_39888|><|audio_code_58280|><|audio_code_7528|><|audio_code_60874|><|audio_code_30912|><|audio_code_15168|><|audio_code_13118|><|audio_code_25446|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_27815|><|audio_code_35855|><|audio_code_35847|><|audio_code_35847|>"
+      },
+      {
+        "id": "iter-04",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": false,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9,
+        "use_cot_metas": false,
+        "use_cot_caption": false,
+        "use_cot_language": false,
+        "audio_codes": "<|audio_code_34234|><|audio_code_58821|><|audio_code_37142|><|audio_code_61420|><|audio_code_13133|><|audio_code_60399|><|audio_code_26028|><|audio_code_11732|><|audio_code_46563|><|audio_code_8586|><|audio_code_15341|><|audio_code_24632|><|audio_code_41064|><|audio_code_24825|><|audio_code_356|><|audio_code_54446|><|audio_code_38222|><|audio_code_10173|><|audio_code_53621|><|audio_code_28607|><|audio_code_48629|><|audio_code_420|><|audio_code_8207|><|audio_code_17710|><|audio_code_23694|><|audio_code_14968|><|audio_code_3256|><|audio_code_51920|><|audio_code_15857|><|audio_code_32955|><|audio_code_60356|><|audio_code_60795|><|audio_code_38204|><|audio_code_18667|><|audio_code_30524|><|audio_code_13785|><|audio_code_15130|><|audio_code_28138|><|audio_code_62970|><|audio_code_41156|><|audio_code_48088|><|audio_code_11713|><|audio_code_26929|><|audio_code_23464|><|audio_code_26090|><|audio_code_55784|><|audio_code_43844|><|audio_code_7072|><|audio_code_2368|><|audio_code_61920|><|audio_code_62944|><|audio_code_7088|><|audio_code_22992|><|audio_code_40797|><|audio_code_36674|><|audio_code_11754|><|audio_code_26526|><|audio_code_10564|><|audio_code_32566|><|audio_code_50981|><|audio_code_17805|><|audio_code_63860|><|audio_code_510|><|audio_code_41931|><|audio_code_61939|><|audio_code_2372|><|audio_code_48618|><|audio_code_12773|><|audio_code_3120|><|audio_code_36056|><|audio_code_24376|><|audio_code_12779|><|audio_code_59614|><|audio_code_375|><|audio_code_8549|><|audio_code_38701|><|audio_code_18757|><|audio_code_60845|><|audio_code_61900|><|audio_code_7694|><|audio_code_53108|><|audio_code_11429|><|audio_code_2176|><|audio_code_18672|><|audio_code_48856|><|audio_code_1008|><|audio_code_2187|><|audio_code_49638|><|audio_code_48875|><|audio_code_42229|><|audio_code_38147|><|audio_code_39779|><|audio_code_1465|><|audio_code_62866|><|audio_code_12692|><|audio_code_25489|><|audio_code_41605|><|audio_code_50656|><|audio_code_12787|><|audio_code_14624|><|audio_code_20914|><|audio_code_24002|><|audio_code_55768|><|audio_code_9656|><|audio_code_55792|><|audio_code_12649|><|audio_code_23491|><|audio_code_39888|><|audio_code_58280|><|audio_code_7528|><|audio_code_60874|><|audio_code_30912|><|audio_code_15168|><|audio_code_13118|><|audio_code_25446|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_27815|><|audio_code_35855|><|audio_code_35847|><|audio_code_35847|>"
+      },
+      {
+        "id": "iter-05",
+        "text": "Instrumental lo-fi hip hop beat with warm Rhodes piano chords, mellow sub bass, soft vinyl crackle and relaxed boom-bap drums",
+        "language": "en",
+        "route": "text2music",
+        "duration_seconds": 30,
+        "seed": 42,
+        "num_inference_steps": 8,
+        "guidance_scale": 1,
+        "lyrics": "[Instrumental]",
+        "bpm": 85,
+        "keyscale": "C minor",
+        "timesignature": "4",
+        "shift": 3,
+        "infer_method": "ode",
+        "thinking": false,
+        "lm_temperature": 0.85,
+        "lm_cfg_scale": 2,
+        "lm_top_k": 0,
+        "lm_top_p": 0.9,
+        "use_cot_metas": false,
+        "use_cot_caption": false,
+        "use_cot_language": false,
+        "audio_codes": "<|audio_code_34234|><|audio_code_58821|><|audio_code_37142|><|audio_code_61420|><|audio_code_13133|><|audio_code_60399|><|audio_code_26028|><|audio_code_11732|><|audio_code_46563|><|audio_code_8586|><|audio_code_15341|><|audio_code_24632|><|audio_code_41064|><|audio_code_24825|><|audio_code_356|><|audio_code_54446|><|audio_code_38222|><|audio_code_10173|><|audio_code_53621|><|audio_code_28607|><|audio_code_48629|><|audio_code_420|><|audio_code_8207|><|audio_code_17710|><|audio_code_23694|><|audio_code_14968|><|audio_code_3256|><|audio_code_51920|><|audio_code_15857|><|audio_code_32955|><|audio_code_60356|><|audio_code_60795|><|audio_code_38204|><|audio_code_18667|><|audio_code_30524|><|audio_code_13785|><|audio_code_15130|><|audio_code_28138|><|audio_code_62970|><|audio_code_41156|><|audio_code_48088|><|audio_code_11713|><|audio_code_26929|><|audio_code_23464|><|audio_code_26090|><|audio_code_55784|><|audio_code_43844|><|audio_code_7072|><|audio_code_2368|><|audio_code_61920|><|audio_code_62944|><|audio_code_7088|><|audio_code_22992|><|audio_code_40797|><|audio_code_36674|><|audio_code_11754|><|audio_code_26526|><|audio_code_10564|><|audio_code_32566|><|audio_code_50981|><|audio_code_17805|><|audio_code_63860|><|audio_code_510|><|audio_code_41931|><|audio_code_61939|><|audio_code_2372|><|audio_code_48618|><|audio_code_12773|><|audio_code_3120|><|audio_code_36056|><|audio_code_24376|><|audio_code_12779|><|audio_code_59614|><|audio_code_375|><|audio_code_8549|><|audio_code_38701|><|audio_code_18757|><|audio_code_60845|><|audio_code_61900|><|audio_code_7694|><|audio_code_53108|><|audio_code_11429|><|audio_code_2176|><|audio_code_18672|><|audio_code_48856|><|audio_code_1008|><|audio_code_2187|><|audio_code_49638|><|audio_code_48875|><|audio_code_42229|><|audio_code_38147|><|audio_code_39779|><|audio_code_1465|><|audio_code_62866|><|audio_code_12692|><|audio_code_25489|><|audio_code_41605|><|audio_code_50656|><|audio_code_12787|><|audio_code_14624|><|audio_code_20914|><|audio_code_24002|><|audio_code_55768|><|audio_code_9656|><|audio_code_55792|><|audio_code_12649|><|audio_code_23491|><|audio_code_39888|><|audio_code_58280|><|audio_code_7528|><|audio_code_60874|><|audio_code_30912|><|audio_code_15168|><|audio_code_13118|><|audio_code_25446|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_35847|><|audio_code_27815|><|audio_code_35855|><|audio_code_35847|><|audio_code_35847|>"
+      }
+    ]
+  },
+  "exitCode": 0,
+  "versionOutput": "audio.cpp 0.8.2-audio8-perf-hotfix\r\ngit: ac16661d 2026-09-24\r\nbuild: Release, msvc 19.44.35229.0, Windows AMD64\r\nbackends: cpu,cuda",
+  "installManifest": {
+    "installedAt": "2026-09-27",
+    "installedBy": "NeuralDrift Local Audio phase (isolated install; no system CUDA, driver, Python or other runtime modified)",
+    "repository": "https://github.com/0xShug0/audio.cpp",
+    "release": "v0.8.2-audio8-perf-hotfix",
+    "releaseUrl": "https://github.com/0xShug0/audio.cpp/releases/tag/v0.8.2-audio8-perf-hotfix",
+    "gitCommit": "ac16661d",
+    "cudaRuntime": "13.3",
+    "cudaArchitectures": "75;80;86;89;90;120 (release.yml matrix for the CUDA 13.3 Windows build)",
+    "assets": [
+      {
+        "name": "audio-v0.8.2-audio8-perf-hotfix-bin-windows-x64-cuda13.3.zip",
+        "bytes": 272191107,
+        "sha256": "298255ed976244b70bc39cb15e9269e7bdb83a967ac37dfb34e50dfa4ddbb480",
+        "verifiedAgainst": "GitHub release asset digest"
+      },
+      {
+        "name": "audio-v0.8.2-audio8-perf-hotfix-cudart-windows-x64-cuda13.3.zip",
+        "bytes": 575457454,
+        "sha256": "f2c75df493c35fbe5b01c550dcf19770bd919f8f6668fc24c622f42ec1e5d024",
+        "verifiedAgainst": "GitHub release asset digest"
+      }
+    ],
+    "models": [
+      {
+        "path": "../models/ACE-Step1.5-GGUF/turbo/ace-step-1.5-turbo-bf16.gguf",
+        "source": "https://huggingface.co/audio-cpp/audio.cpp-gguf/blob/main/ACE-Step1.5-GGUF/turbo/ace-step-1.5-turbo-bf16.gguf",
+        "bytes": 10090398272,
+        "sha256": "93974239a29a1a821b3cc1b1ca7e1c6229b1a900a0e44a1a9770bb2271d2be5f",
+        "verifiedAgainst": "Hugging Face LFS oid"
+      }
+    ]
+  },
+  "runtimeReportedMetrics": {
+    "warmup-01": {
+      "wall_ms": "3995.13",
+      "memory.peak_rss_mb": "4736",
+      "memory.peak_footprint_mb": "16971",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "0.133171",
+      "x_realtime": "7.50914",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-01": {
+      "wall_ms": "23550.3",
+      "memory.peak_rss_mb": "4736",
+      "memory.peak_footprint_mb": "19451",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "0.785011",
+      "x_realtime": "1.27387",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-02": {
+      "wall_ms": "21808.4",
+      "memory.peak_rss_mb": "4736",
+      "memory.peak_footprint_mb": "19451",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "0.726947",
+      "x_realtime": "1.37562",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-03": {
+      "wall_ms": "19733.3",
+      "memory.peak_rss_mb": "4736",
+      "memory.peak_footprint_mb": "19514",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "0.657776",
+      "x_realtime": "1.52028",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-04": {
+      "wall_ms": "19803.7",
+      "memory.peak_rss_mb": "4736",
+      "memory.peak_footprint_mb": "19514",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "0.660125",
+      "x_realtime": "1.51487",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    },
+    "iter-05": {
+      "wall_ms": "19804.5",
+      "memory.peak_rss_mb": "4736",
+      "memory.peak_footprint_mb": "19536",
+      "memory.peak_footprint_source": "windows_commit",
+      "audio_duration_ms": "30000",
+      "rtf": "0.660151",
+      "x_realtime": "1.5148",
+      "audio_duration_source": "output",
+      "sample_rate": "48000",
+      "channels": "2"
+    }
+  },
+  "requestAnnouncements": [
+    {
+      "atMs": 118389.6,
+      "line": "request_index=0"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_id=warmup-01"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_index=1"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_id=iter-01"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_index=2"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_id=iter-02"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_index=3"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_id=iter-03"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_index=4"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_id=iter-04"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_index=5"
+    },
+    {
+      "atMs": 118389.6,
+      "line": "request_id=iter-05"
+    }
+  ],
+  "stdoutTail": "metrics[iter-01].audio_duration_source=output\nmetrics[iter-01].sample_rate=48000\nmetrics[iter-01].channels=2\nrequest_index=2\nrequest_id=iter-02\n[TIMING] request.iter-02.wall_ms 21808.4\naudio_out=D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T15-22-52-700Z-nd-audio-music-003-acestep-v15-turbo-audio_cpp-rtx-5080-a4b2ac85\\iter-02.wav\nmetrics[iter-02].wall_ms=21808.4\nmetrics[iter-02].memory.peak_rss_mb=4736\nmetrics[iter-02].memory.peak_footprint_mb=19451\nmetrics[iter-02].memory.peak_footprint_source=windows_commit\nmetrics[iter-02].audio_duration_ms=30000\nmetrics[iter-02].rtf=0.726947\nmetrics[iter-02].x_realtime=1.37562\nmetrics[iter-02].audio_duration_source=output\nmetrics[iter-02].sample_rate=48000\nmetrics[iter-02].channels=2\nrequest_index=3\nrequest_id=iter-03\n[TIMING] request.iter-03.wall_ms 19733.3\naudio_out=D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T15-22-52-700Z-nd-audio-music-003-acestep-v15-turbo-audio_cpp-rtx-5080-a4b2ac85\\iter-03.wav\nmetrics[iter-03].wall_ms=19733.3\nmetrics[iter-03].memory.peak_rss_mb=4736\nmetrics[iter-03].memory.peak_footprint_mb=19514\nmetrics[iter-03].memory.peak_footprint_source=windows_commit\nmetrics[iter-03].audio_duration_ms=30000\nmetrics[iter-03].rtf=0.657776\nmetrics[iter-03].x_realtime=1.52028\nmetrics[iter-03].audio_duration_source=output\nmetrics[iter-03].sample_rate=48000\nmetrics[iter-03].channels=2\nrequest_index=4\nrequest_id=iter-04\n[TIMING] request.iter-04.wall_ms 19803.7\naudio_out=D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T15-22-52-700Z-nd-audio-music-003-acestep-v15-turbo-audio_cpp-rtx-5080-a4b2ac85\\iter-04.wav\nmetrics[iter-04].wall_ms=19803.7\nmetrics[iter-04].memory.peak_rss_mb=4736\nmetrics[iter-04].memory.peak_footprint_mb=19514\nmetrics[iter-04].memory.peak_footprint_source=windows_commit\nmetrics[iter-04].audio_duration_ms=30000\nmetrics[iter-04].rtf=0.660125\nmetrics[iter-04].x_realtime=1.51487\nmetrics[iter-04].audio_duration_source=output\nmetrics[iter-04].sample_rate=48000\nmetrics[iter-04].channels=2\nrequest_index=5\nrequest_id=iter-05\n[TIMING] request.iter-05.wall_ms 19804.5\naudio_out=D:\\neuraldrift.io-main\\neuraldrift.io-main\\evidence-artifacts\\run-2026-09-28T15-22-52-700Z-nd-audio-music-003-acestep-v15-turbo-audio_cpp-rtx-5080-a4b2ac85\\iter-05.wav\nmetrics[iter-05].wall_ms=19804.5\nmetrics[iter-05].memory.peak_rss_mb=4736\nmetrics[iter-05].memory.peak_footprint_mb=19536\nmetrics[iter-05].memory.peak_footprint_source=windows_commit\nmetrics[iter-05].audio_duration_ms=30000\nmetrics[iter-05].rtf=0.660151\nmetrics[iter-05].x_realtime=1.5148\nmetrics[iter-05].audio_duration_source=output\nmetrics[iter-05].sample_rate=48000\nmetrics[iter-05].channels=2\n",
+  "stderrTail": "ggml_cuda_init: found 1 CUDA devices (Total VRAM: 16275 MiB):\n  Device 0: NVIDIA GeForce RTX 5080, compute capability 12.0, VMM: yes, VRAM: 16275 MiB\nload_backend: loaded CUDA backend from D:\\AI\\audio.cpp\\v0.8.2-audio8-perf-hotfix-cuda13.3\\ggml-cuda.dll\nload_backend: loaded CPU backend from D:\\AI\\audio.cpp\\v0.8.2-audio8-perf-hotfix-cuda13.3\\ggml-cpu-cascadelake.dll\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\nggml_backend_cuda_graph_compute: CUDA graph warmup complete\n"
+}

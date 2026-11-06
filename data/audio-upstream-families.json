@@ -1,0 +1,1365 @@
+{
+  "source": {
+    "repository": "https://github.com/0xShug0/audio.cpp",
+    "commit": "ac16661d",
+    "release": "v0.8.2-audio8-perf-hotfix",
+    "supportedModelsUrl": "https://github.com/0xShug0/audio.cpp/blob/ac16661d/README.md#supported-models",
+    "licenseReferenceUrl": "https://github.com/0xShug0/audio.cpp/blob/ac16661d/docs/model_licenses.md",
+    "retrievedAt": "2026-09-27",
+    "claimBasis": "upstream_claim"
+  },
+  "families": [
+    {
+      "family": "breeze_tts",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Design",
+        "Ctrl"
+      ],
+      "languages": "zh, en",
+      "variants": [
+        "BreezeTTS 2 instruction-conditioned TTS and prompt-audio voice cloning"
+      ],
+      "runtime": "GGUF BF16/Q8, Stream",
+      "licenseInfo": {
+        "license": "BreezeBlue Research and Non-Commercial License",
+        "commercialUse": "NON_COMMERCIAL",
+        "licenseSourceUrl": "https://huggingface.co/BreezeBlue/Breeze-TTS-2/blob/main/LICENSE",
+        "weightsUrl": "https://huggingface.co/BreezeBlue/Breeze-TTS-2",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "chatterbox",
+      "tags": [
+        "TTS",
+        "Clone",
+        "VC"
+      ],
+      "languages": "ar, da, de, el, en, es, fi, fr, hi, it, ko, ms, nl, no, pl, pt, sv, sw, tr",
+      "variants": [
+        "Chatterbox with 0.5B backbone"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/ResembleAI/chatterbox",
+        "weightsUrl": "https://huggingface.co/ResembleAI/chatterbox",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning",
+        "voice_conversion"
+      ]
+    },
+    {
+      "family": "confucius4_tts",
+      "tags": [
+        "Clone"
+      ],
+      "languages": "zh, en, ja, ko, de, fr, es, id, it, th, pt, ru, ms, vi",
+      "variants": [
+        "Confucius4-TTS multilingual voice cloning"
+      ],
+      "runtime": "GGUF F32, Stream",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/netease-youdao/Confucius4-TTS",
+        "weightsUrl": "https://huggingface.co/netease-youdao/Confucius4-TTS",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "cosyvoice3",
+      "tags": [
+        "TTS",
+        "Clone"
+      ],
+      "languages": "zh, en, ja, ko, de, es, fr, it, ru, yue",
+      "variants": [
+        "Fun-CosyVoice3 zero-shot, cross-lingual, and instruction-conditioned TTS"
+      ],
+      "runtime": "GGUF F32/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/FunAudioLLM/Fun-CosyVoice3-0.5B-2512",
+        "weightsUrl": "https://huggingface.co/FunAudioLLM/Fun-CosyVoice3-0.5B-2512",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "dots_tts",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Edit",
+        "Ctrl"
+      ],
+      "languages": "multilingual",
+      "variants": [
+        "DotTTS SOAR",
+        "DotTTS MeanFlow",
+        "DotTTS Edit"
+      ],
+      "runtime": "GGUF 16/Q8, Stream",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/dots-studio/dots.tts-soar",
+        "weightsUrl": "https://huggingface.co/dots-studio/dots.tts-soar",
+        "notes": "The dots.tts.edit card defers to the dots.tts project, which is Apache-2.0.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "dramabox",
+      "tags": [
+        "TTS",
+        "Clone"
+      ],
+      "languages": "en",
+      "variants": [
+        "DramaBox expressive TTS and voice cloning"
+      ],
+      "runtime": "GGUF Q8",
+      "licenseInfo": {
+        "license": "LTX-2 Community License",
+        "commercialUse": "RESTRICTED",
+        "licenseSourceUrl": "https://huggingface.co/ResembleAI/Dramabox/blob/main/LICENSE",
+        "weightsUrl": "https://huggingface.co/ResembleAI/Dramabox",
+        "notes": "A paid license is needed from USD 10M yearly revenue. Generated content must be disclosed as machine-generated. Not for products that compete with Lightricks'. The Gemma 3 text encoder falls under the Gemma Terms of Use.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "fish_audio",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Ctrl"
+      ],
+      "languages": "auto, en, zh",
+      "variants": [
+        "Fish Audio S2 Pro"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "Fish Audio Research License",
+        "commercialUse": "NON_COMMERCIAL",
+        "licenseSourceUrl": "https://huggingface.co/fishaudio/s2-pro/blob/main/LICENSE.md",
+        "weightsUrl": "https://huggingface.co/fishaudio/s2-pro",
+        "notes": "Commercial use needs a separate license from Fish Audio.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "firered_audio",
+      "tags": [
+        "ASR",
+        "TTS",
+        "Clone",
+        "Design",
+        "Ctrl"
+      ],
+      "languages": "zh, en",
+      "variants": [
+        "FireRedAudio multimodal speech/audio model with ASR, understanding, cloning, design, and edit paths"
+      ],
+      "runtime": "GGUF original/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/FireRedTeam/FireRedAudio",
+        "weightsUrl": "https://huggingface.co/FireRedTeam/FireRedAudio",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning",
+        "asr"
+      ]
+    },
+    {
+      "family": "fireredtts3",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Design",
+        "Ctrl"
+      ],
+      "languages": "24 langs + 21 zh dialects",
+      "variants": [
+        "FireRedTTS3 Base",
+        "FireRedTTS3 Instruct/Voicedesign"
+      ],
+      "runtime": "GGUF original/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/FireRedTeam/FireRedTTS3",
+        "weightsUrl": "https://huggingface.co/FireRedTeam/FireRedTTS3",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "higgs_audio_tts",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Ctrl"
+      ],
+      "languages": "auto",
+      "variants": [
+        "Higgs Audio v3 TTS 4B"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "Boson Higgs TTS 3 Research and Non-Commercial License",
+        "commercialUse": "NON_COMMERCIAL",
+        "licenseSourceUrl": "https://huggingface.co/bosonai/higgs-tts-3-4b/blob/main/LICENSE",
+        "weightsUrl": "https://huggingface.co/bosonai/higgs-tts-3-4b",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "index_tts2",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Ctrl"
+      ],
+      "languages": "zh, en, ja, es, ar",
+      "variants": [
+        "IndexTTS-2",
+        "IndexTTS-2.5"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "bilibili Model Use License",
+        "commercialUse": "RESTRICTED",
+        "licenseSourceUrl": "https://huggingface.co/IndexTeam/IndexTTS-2.5/blob/main/LICENSE",
+        "weightsUrl": "https://huggingface.co/IndexTeam/IndexTTS-2",
+        "notes": "A separate license is needed above RMB 1 billion yearly revenue or 100 million monthly users. The model and its outputs may not be used to improve other commercial AI models.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "kokoro_tts",
+      "tags": [
+        "TTS"
+      ],
+      "languages": "en-us, en-gb, es, fr, hi, it, ja, pt-br, zh",
+      "variants": [
+        "Kokoro 82M, 54 preset voices"
+      ],
+      "runtime": "Safetensors, local GGUF BF16/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/hexgrad/Kokoro-82M",
+        "weightsUrl": "https://huggingface.co/hexgrad/Kokoro-82M",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts"
+      ]
+    },
+    {
+      "family": "irodori_tts",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Design",
+        "Ctrl"
+      ],
+      "languages": "ja",
+      "variants": [
+        "Irodori-TTS-v4.1-Small",
+        "Irodori-TTS-v4.1-Anime",
+        "Irodori-TTS-500M-v3",
+        "Irodori-TTS-600M-v3-VoiceDesign"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/Aratako/Irodori-TTS-500M-v3",
+        "weightsUrl": "https://huggingface.co/Aratako/Irodori-TTS-500M-v3",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "magpie_tts",
+      "tags": [
+        "TTS"
+      ],
+      "languages": "ar-AE, ar-MSA, ar-SA, de, en, es, fr, hi, it, ko, pt-BR, vi, zh",
+      "variants": [
+        "NVIDIA MagpieTTS Multilingual 357M (v2607) with baked speaker prompts and NanoCodec decode"
+      ],
+      "runtime": "GGUF original/Q8",
+      "licenseInfo": {
+        "license": "NVIDIA Open Model License",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://www.nvidia.com/en-us/agreements/enterprise-software/nvidia-open-model-license/",
+        "weightsUrl": "https://huggingface.co/nvidia/magpie_tts_multilingual_357m",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts"
+      ]
+    },
+    {
+      "family": "miotts",
+      "tags": [
+        "TTS",
+        "Clone"
+      ],
+      "languages": "en, ja",
+      "variants": [
+        "MioTTS-1.7B"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/Aratako/MioTTS-1.7B",
+        "weightsUrl": "https://huggingface.co/Aratako/MioTTS-1.7B",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "moss_tts_local",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Ctrl"
+      ],
+      "languages": "auto, optional language hint",
+      "variants": [
+        "MOSS-TTS-Local-Transformer-v1.5"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5",
+        "weightsUrl": "https://huggingface.co/OpenMOSS-Team/MOSS-TTS-Local-Transformer-v1.5",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "moss_tts_nano",
+      "tags": [
+        "TTS",
+        "Clone"
+      ],
+      "languages": "auto",
+      "variants": [
+        "MOSS-TTS-Nano-100M"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/OpenMOSS-Team/MOSS-TTS-Nano-100M",
+        "weightsUrl": "https://huggingface.co/OpenMOSS-Team/MOSS-TTS-Nano-100M",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "neutts",
+      "tags": [
+        "TTS",
+        "Ctrl"
+      ],
+      "languages": "en",
+      "variants": [
+        "NeuTTS 2E with built-in speaker prompts and emotion control"
+      ],
+      "runtime": "GGUF original precision, Stream",
+      "licenseInfo": {
+        "license": "NeuTTS Open License v1.0",
+        "commercialUse": "RESTRICTED",
+        "licenseSourceUrl": "https://huggingface.co/neuphonic/neutts-2e/blob/main/LICENSE",
+        "weightsUrl": "https://huggingface.co/neuphonic/neutts-2e",
+        "notes": "Commercial use is licensed only while yearly revenue stays under USD 5M.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts"
+      ]
+    },
+    {
+      "family": "omnivoice",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Design",
+        "Ctrl"
+      ],
+      "languages": "646+ langs",
+      "variants": [
+        "OmniVoice, Qwen3-0.6B based"
+      ],
+      "runtime": "GGUF 16/Q8, Stream",
+      "licenseInfo": {
+        "license": "CC-BY-NC",
+        "commercialUse": "NON_COMMERCIAL",
+        "licenseSourceUrl": "https://huggingface.co/k2-fsa/OmniVoice#license",
+        "weightsUrl": "https://huggingface.co/k2-fsa/OmniVoice",
+        "notes": "Changed from Apache-2.0 on 2026-07-03, \"due to constraints from its training data (e.g., Emilia)\". The code is Apache-2.0. The audio tokenizer, bosonai/higgs-audio-v2-tokenizer, is under the Boson Higgs Audio 2 Community License.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "pocket_tts",
+      "tags": [
+        "TTS",
+        "Clone"
+      ],
+      "languages": "en, de, it, pt, es",
+      "variants": [
+        "PocketTTS-100M English/German/Italian/Portuguese/Spanish"
+      ],
+      "runtime": "GGUF 16/Q8, Stream",
+      "licenseInfo": {
+        "license": "CC-BY-4.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/kyutai/pocket-tts",
+        "weightsUrl": "https://huggingface.co/kyutai/pocket-tts",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "qwen3_tts",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Design",
+        "Ctrl"
+      ],
+      "languages": "zh, en, fr, de, it, ja, ko, pt, ru, es",
+      "variants": [
+        "Qwen3-TTS-12Hz-0.6B-Base",
+        "Qwen3-TTS-12Hz-1.7B-Base",
+        "Qwen3-TTS-12Hz-1.7B-CustomVoice",
+        "Qwen3-TTS-12Hz-1.7B-VoiceDesign"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-0.6B-Base",
+        "weightsUrl": "https://huggingface.co/Qwen/Qwen3-TTS-12Hz-0.6B-Base",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "supertonic",
+      "tags": [
+        "TTS"
+      ],
+      "languages": "en, ko, ja, ar, bg, cs, da, de, el, es, et, fi, fr, hi, hr, hu, id, it, lt, lv, nl, pl, pt, ro, ru, sk, sl, sv, tr, uk, vi, na",
+      "variants": [
+        "Supertonic 3"
+      ],
+      "runtime": "GGUF F32, Stream",
+      "licenseInfo": {
+        "license": "BigScience OpenRAIL-M",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/Supertone/supertonic-3/blob/main/LICENSE",
+        "weightsUrl": "https://huggingface.co/Supertone/supertonic-3",
+        "notes": "Its use restrictions apply and must be passed on.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts"
+      ]
+    },
+    {
+      "family": "vibevoice",
+      "tags": [
+        "TTS",
+        "Dialogue"
+      ],
+      "languages": "en, zh",
+      "variants": [
+        "VibeVoice-1.5B",
+        "VibeVoice-7B"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/microsoft/VibeVoice-1.5B",
+        "weightsUrl": "https://huggingface.co/microsoft/VibeVoice-1.5B",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts"
+      ]
+    },
+    {
+      "family": "voxcpm2",
+      "tags": [
+        "TTS",
+        "Clone",
+        "Design",
+        "Ctrl"
+      ],
+      "languages": "ar, da, de, el, en, es, fi, fr, he, hi, id, it, ja, km, ko, lo, ms, my, nl, no, pl, pt, ru, sv, sw, th, tl, tr, vi, zh",
+      "variants": [
+        "VoxCPM2-2B, 48 kHz"
+      ],
+      "runtime": "GGUF 16/Q8, Stream",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/openbmb/VoxCPM2",
+        "weightsUrl": "https://huggingface.co/openbmb/VoxCPM2",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_cloning"
+      ]
+    },
+    {
+      "family": "canary_asr",
+      "tags": [
+        "ASR",
+        "Translate"
+      ],
+      "languages": "en, de, es, fr",
+      "variants": [
+        "Canary 180M Flash"
+      ],
+      "runtime": "GGUF F32/Q8",
+      "licenseInfo": {
+        "license": "CC-BY-4.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/nvidia/canary-180m-flash",
+        "weightsUrl": "https://huggingface.co/nvidia/canary-180m-flash",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "citrinet_asr",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "en",
+      "variants": [
+        "Citrinet-256"
+      ],
+      "runtime": "GGUF Q8",
+      "licenseInfo": {
+        "license": "CC-BY-4.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/nvidia/stt_en_citrinet_256_ls",
+        "weightsUrl": "https://huggingface.co/nvidia/stt_en_citrinet_256_ls",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "cohere_asr",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "en, fr, de, es, it, pt, nl, pl, el, ar, ja, zh, vi, ko",
+      "variants": [
+        "Cohere Transcribe 03-2026"
+      ],
+      "runtime": "GGUF BF16/Q8/Q4_0",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/CohereLabs/cohere-transcribe-03-2026",
+        "weightsUrl": "https://huggingface.co/CohereLabs/cohere-transcribe-03-2026",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "fun_asr_nano",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "auto, zh, en, ja",
+      "variants": [
+        "Fun-ASR-Nano-2512"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/FunAudioLLM/Fun-ASR-Nano-2512",
+        "weightsUrl": "https://huggingface.co/FunAudioLLM/Fun-ASR-Nano-2512",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "higgs_audio_stt",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "en",
+      "variants": [
+        "Higgs Audio v3 STT"
+      ],
+      "runtime": "GGUF 16/Q8, Stream",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/bosonai/higgs-audio-v3-stt",
+        "weightsUrl": "https://huggingface.co/bosonai/higgs-audio-v3-stt",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "hviske_asr",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "da",
+      "variants": [
+        "Hviske v5.3"
+      ],
+      "runtime": "GGUF Q8",
+      "licenseInfo": {
+        "license": "CC-BY-NC-4.0",
+        "commercialUse": "NON_COMMERCIAL",
+        "licenseSourceUrl": "https://huggingface.co/syvai/hviske-v5.3",
+        "weightsUrl": "https://huggingface.co/syvai/hviske-v5.3",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "moonshine_asr",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "en",
+      "variants": [
+        "Moonshine Streaming Tiny/Small/Medium"
+      ],
+      "runtime": "GGUF Q8, Stream",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/moonshine-ai/moonshine-streaming-tiny",
+        "weightsUrl": "https://huggingface.co/moonshine-ai/moonshine-streaming-tiny",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "moss_transcribe_diarize",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "auto, 50+ languages",
+      "variants": [
+        "MOSS-Transcribe-Diarize with speaker labels and timestamps"
+      ],
+      "runtime": "GGUF BF16/Q8/Q4_K, Stream",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/OpenMOSS-Team/MOSS-Transcribe-Diarize",
+        "weightsUrl": "https://huggingface.co/OpenMOSS-Team/MOSS-Transcribe-Diarize",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr",
+        "diarization"
+      ]
+    },
+    {
+      "family": "nemotron_3_diar",
+      "tags": [
+        "Diar"
+      ],
+      "languages": "multilingual",
+      "variants": [
+        "NVIDIA Nemotron 3 Diarization with eight-speaker arrival-order diarization"
+      ],
+      "runtime": "GGUF BF16, Batch, Stream",
+      "licenseInfo": {
+        "license": "OpenMDW-1.1",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://openmdw.ai/license/1-1/",
+        "weightsUrl": "https://huggingface.co/nvidia/Nemotron-3-Diarization",
+        "checked": "2026-09-24"
+      },
+      "tasks": [
+        "diarization"
+      ]
+    },
+    {
+      "family": "nemotron_asr",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "100+ ASR prompt codes incl. auto",
+      "variants": [
+        "Nemotron 3.5 ASR Streaming 0.6B"
+      ],
+      "runtime": "GGUF 16/Q8, Stream",
+      "licenseInfo": {
+        "license": "OpenMDW-1.1",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://openmdw.ai/license/1-1/",
+        "weightsUrl": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "niagara_asr",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "en",
+      "variants": [
+        "Niagara 19M Batch English",
+        "Niagara 38M Batch English"
+      ],
+      "runtime": "GGUF F32",
+      "licenseInfo": {
+        "license": "Applied Brain Research Open License v1.1",
+        "commercialUse": "RESTRICTED",
+        "licenseSourceUrl": "https://www.appliedbrainresearch.com/license",
+        "weightsUrl": "https://huggingface.co/abr-ai/niagara-19m-batch.en",
+        "notes": "Any use while yearly gross revenue, including affiliates, stays under USD 1M; above that, non-commercial research only.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "qwen3_asr",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "zh, en, yue, ar, de, fr, es, pt, id, it, ko, ru, th, vi, ja, tr, hi, ms, nl, sv, da, fi, pl, cs, fil, fa, el, ro, hu, mk",
+      "variants": [
+        "Qwen3-ASR-0.6B",
+        "Qwen3-ASR-1.7B-hf"
+      ],
+      "runtime": "GGUF 16/Q8, Stream",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/Qwen/Qwen3-ASR-0.6B",
+        "weightsUrl": "https://huggingface.co/Qwen/Qwen3-ASR-0.6B",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "sortformer_diar",
+      "tags": [
+        "Diar"
+      ],
+      "languages": "en",
+      "variants": [
+        "Sortformer-4spk-v1"
+      ],
+      "runtime": "-",
+      "licenseInfo": {
+        "license": "CC-BY-NC-4.0",
+        "commercialUse": "NON_COMMERCIAL",
+        "licenseSourceUrl": "https://huggingface.co/nvidia/diar_sortformer_4spk-v1",
+        "weightsUrl": "https://huggingface.co/nvidia/diar_sortformer_4spk-v1",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "diarization"
+      ]
+    },
+    {
+      "family": "vibevoice_asr",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "auto",
+      "variants": [
+        "VibeVoice ASR"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/microsoft/VibeVoice-ASR",
+        "weightsUrl": "https://huggingface.co/microsoft/VibeVoice-ASR",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "vibevoice_asr_streaming",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "en, zh, es, pt, de, ja, ko, fr, ru, it",
+      "variants": [
+        "VibeVoice ASR Streaming 7B/1.5B with persistent decoder state and speaker turns"
+      ],
+      "runtime": "GGUF BF16/Q8/Q4, Stream",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/microsoft/VibeVoice-ASR-Streaming-7B",
+        "weightsUrl": "https://huggingface.co/microsoft/VibeVoice-ASR-Streaming-7B",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "voxtral_realtime",
+      "tags": [
+        "ASR"
+      ],
+      "languages": "auto",
+      "variants": [
+        "Voxtral-Mini-4B-Realtime-2602"
+      ],
+      "runtime": "GGUF 16/Q8/Q4, Stream",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/mistralai/Voxtral-Mini-4B-Realtime-2602",
+        "weightsUrl": "https://huggingface.co/mistralai/Voxtral-Mini-4B-Realtime-2602",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "asr"
+      ]
+    },
+    {
+      "family": "audiosr",
+      "tags": [
+        "S2S"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "AudioSR Basic audio super-resolution package"
+      ],
+      "runtime": "GGUF F32",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/haoheliu/audiosr_basic",
+        "weightsUrl": "https://huggingface.co/haoheliu/audiosr_basic",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "restoration"
+      ]
+    },
+    {
+      "family": "apollo",
+      "tags": [
+        "S2S"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "Apollo music restoration"
+      ],
+      "runtime": "GGUF F32",
+      "licenseInfo": {
+        "license": "CC-BY-SA-4.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/JusperLee/Apollo",
+        "weightsUrl": "https://huggingface.co/JusperLee/Apollo",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "restoration"
+      ]
+    },
+    {
+      "family": "universr",
+      "tags": [
+        "S2S"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "UniverSR Audio and Speech super-resolution"
+      ],
+      "runtime": "GGUF F32",
+      "licenseInfo": {
+        "license": "CC-BY-4.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/woongzip1/universr-audio",
+        "weightsUrl": "https://huggingface.co/woongzip1/universr-audio",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "restoration"
+      ]
+    },
+    {
+      "family": "bs_roformer",
+      "tags": [
+        "Sep"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "BS-RoFormer vocal separation checkpoints"
+      ],
+      "runtime": "GGUF Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0, as listed in the audio.cpp GGUF repo",
+        "commercialUse": "LICENSE_REVIEW_REQUIRED",
+        "licenseSourceUrl": null,
+        "weightsUrl": null,
+        "notes": "The source of the ep368 checkpoint is not documented.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "source_separation"
+      ]
+    },
+    {
+      "family": "controlfoley",
+      "tags": [
+        "SFX"
+      ],
+      "languages": "auto",
+      "variants": [
+        "ControlFoley 44 kHz multimodal Foley generation from text, video, and reference audio conditioning"
+      ],
+      "runtime": "GGUF F32/Q8",
+      "licenseInfo": {
+        "license": "CC-BY-NC-4.0",
+        "commercialUse": "NON_COMMERCIAL",
+        "licenseSourceUrl": "https://huggingface.co/YJX-Xiaomi/ControlFoley",
+        "weightsUrl": "https://huggingface.co/YJX-Xiaomi/ControlFoley",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "sfx"
+      ]
+    },
+    {
+      "family": "htdemucs",
+      "tags": [
+        "Sep"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "HTDemucs",
+        "HTDemucs_ft"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://github.com/facebookresearch/demucs",
+        "weightsUrl": "https://github.com/facebookresearch/demucs",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "source_separation"
+      ]
+    },
+    {
+      "family": "meanvc2",
+      "tags": [
+        "VC"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "MeanVC2 120 ms/40 ms zero-shot voice conversion"
+      ],
+      "runtime": "GGUF F32/Q4, Stream",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/ASLP-lab/MeanVC2",
+        "weightsUrl": "https://huggingface.co/ASLP-lab/MeanVC2",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "voice_conversion"
+      ]
+    },
+    {
+      "family": "mel_band_roformer",
+      "tags": [
+        "Sep"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "Mel-Band RoFormer MLX vocal separation variants"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/mlx-community/mel-roformer-mlx",
+        "weightsUrl": "https://huggingface.co/mlx-community/mel-roformer-mlx",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "source_separation"
+      ]
+    },
+    {
+      "family": "miocodec",
+      "tags": [
+        "Codec",
+        "VC"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "MioCodec v2, 25 Hz, 44.1 kHz"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/Aratako/MioCodec-25Hz-44.1kHz-v2",
+        "weightsUrl": "https://huggingface.co/Aratako/MioCodec-25Hz-44.1kHz-v2",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "voice_conversion"
+      ]
+    },
+    {
+      "family": "rvc",
+      "tags": [
+        "VC"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "RVC F16 GGUF with packaged v1/v2 voices and optional retrieval blending"
+      ],
+      "runtime": "GGUF 16",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "LICENSE_REVIEW_REQUIRED",
+        "licenseSourceUrl": "https://huggingface.co/lj1995/VoiceConversionWebUI",
+        "weightsUrl": "https://huggingface.co/lj1995/VoiceConversionWebUI",
+        "notes": "The base models (HuBERT, RMVPE) are MIT. The packaged voices (`manthos`, `chocola`, `fraise`) have no documented source or license.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "voice_conversion"
+      ]
+    },
+    {
+      "family": "seed_vc",
+      "tags": [
+        "VC"
+      ],
+      "languages": "lang agnostic",
+      "variants": [
+        "SeedVC XLS-R + HiFT",
+        "SeedVC Whisper-small + BigVGAN"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "GPL-3.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/Plachta/Seed-VC",
+        "weightsUrl": "https://huggingface.co/Plachta/Seed-VC",
+        "notes": "Copyleft.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "voice_conversion"
+      ]
+    },
+    {
+      "family": "ace_step",
+      "tags": [
+        "Music",
+        "Edit"
+      ],
+      "languages": "50+ langs",
+      "variants": [
+        "ACE-Step 1.5 Turbo",
+        "ACE-Step 1.5 Base",
+        "ACE-Step 1.5 XL Turbo",
+        "ACE-Step 1.5 XL SFT"
+      ],
+      "runtime": "GGUF 16",
+      "licenseInfo": {
+        "license": "MIT",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/ACE-Step/Ace-Step1.5",
+        "weightsUrl": "https://huggingface.co/ACE-Step/Ace-Step1.5",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "music"
+      ]
+    },
+    {
+      "family": "heartmula",
+      "tags": [
+        "Music"
+      ],
+      "languages": "zh, en, ja, ko, es",
+      "variants": [
+        "HeartMuLa-oss-3B with HeartCodec-oss"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/HeartMuLa/HeartMuLa-oss-3B",
+        "weightsUrl": "https://huggingface.co/HeartMuLa/HeartMuLa-oss-3B",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "music"
+      ]
+    },
+    {
+      "family": "midashenglm_gen",
+      "tags": [
+        "Music",
+        "SFX"
+      ],
+      "languages": "auto",
+      "variants": [
+        "MiDashengLM-Gen structured-prompt generation for speech, music, sound effects, and ambience"
+      ],
+      "runtime": "GGUF F32/Q8",
+      "licenseInfo": {
+        "license": "Apache-2.0",
+        "commercialUse": "COMMERCIAL_OK",
+        "licenseSourceUrl": "https://huggingface.co/mispeech/midashenglm-gen",
+        "weightsUrl": "https://huggingface.co/mispeech/midashenglm-gen",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "music",
+        "sfx"
+      ]
+    },
+    {
+      "family": "minimax_h3",
+      "tags": [
+        "Video",
+        "Music",
+        "TTS/Dialogue"
+      ],
+      "languages": "auto",
+      "variants": [
+        "MiniMax-H3 Q4_K with optional INT8 ConvRot DiT"
+      ],
+      "runtime": "GGUF Q4/INT8",
+      "licenseInfo": {
+        "license": "MiniMax H3 Community License",
+        "commercialUse": "RESTRICTED",
+        "licenseSourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/LICENSE",
+        "weightsUrl": "https://huggingface.co/MiniMaxAI/MiniMax-H3",
+        "notes": "Grants no rights in the EU, the UK, South Korea or the USA. Elsewhere, written authorization is needed above USD 20M yearly revenue, and \"MiniMax H3\" must be shown in the product's user interface.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "music"
+      ]
+    },
+    {
+      "family": "minimax_music3",
+      "tags": [
+        "Music"
+      ],
+      "languages": "auto",
+      "variants": [
+        "MiniMax Music 3 text-to-music generation with lyrics conditioning"
+      ],
+      "runtime": "GGUF Q4/Q8",
+      "licenseInfo": {
+        "license": "MiniMax-Music3 Community License",
+        "commercialUse": "RESTRICTED",
+        "licenseSourceUrl": "https://huggingface.co/MiniMaxAI/MiniMax-Music3/blob/main/LICENSE",
+        "weightsUrl": "https://huggingface.co/MiniMaxAI/MiniMax-Music3",
+        "notes": "\"MiniMax-Music3\" must be shown in the product's user interface. Written authorization is needed above USD 20M yearly revenue. Content published in public must be disclosed as machine-generated.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "music"
+      ]
+    },
+    {
+      "family": "stable_audio",
+      "tags": [
+        "Music",
+        "SFX",
+        "Edit"
+      ],
+      "languages": "en",
+      "variants": [
+        "Stable Audio 3 Small Music",
+        "Stable Audio 3 Small SFX",
+        "Stable Audio 3 Medium"
+      ],
+      "runtime": "GGUF 16/Q8",
+      "licenseInfo": {
+        "license": "Stability AI Community License",
+        "commercialUse": "RESTRICTED",
+        "licenseSourceUrl": "https://huggingface.co/stabilityai/stable-audio-3-small-sfx/blob/main/LICENSE.md",
+        "weightsUrl": "https://huggingface.co/stabilityai/stable-audio-3-small-sfx",
+        "notes": "Free while the yearly revenue of you and your affiliates stays under USD 1M; above that an enterprise license is needed. Register commercial use with Stability AI, and display \"Powered by Stability AI\". The Gemma text encoder falls under the Gemma Terms of Use.",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "music",
+        "sfx"
+      ]
+    },
+    {
+      "family": "vevo2",
+      "tags": [
+        "TTS",
+        "Music",
+        "VC",
+        "Edit"
+      ],
+      "languages": "en, zh",
+      "variants": [
+        "Vevo2 with Qwen2.5-0.5B AR model"
+      ],
+      "runtime": "GGUF 16",
+      "licenseInfo": {
+        "license": "CC-BY-NC-ND-4.0",
+        "commercialUse": "NON_COMMERCIAL",
+        "licenseSourceUrl": "https://huggingface.co/RMSnow/Vevo2",
+        "weightsUrl": "https://huggingface.co/RMSnow/Vevo2",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "tts",
+        "voice_conversion",
+        "music"
+      ]
+    },
+    {
+      "family": "yue2",
+      "tags": [
+        "Music"
+      ],
+      "languages": "en",
+      "variants": [
+        "YuE2-3B lyrics-conditioned song generation with optional ABC score planning and conditioning"
+      ],
+      "runtime": "GGUF BF16/Q8/Q4",
+      "licenseInfo": {
+        "license": "CC-BY-NC-4.0",
+        "commercialUse": "NON_COMMERCIAL",
+        "licenseSourceUrl": "https://huggingface.co/m-a-p/YuE2-3B",
+        "weightsUrl": "https://huggingface.co/m-a-p/YuE2-3B",
+        "checked": "2026-09-21"
+      },
+      "tasks": [
+        "music"
+      ]
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import { TUTORIALS } from '../lib/tutorials.ts';
 import { NEWSLETTER_ISSUES } from '../lib/newsletterIssues.ts';
 import { TRACKED_MODELS } from '../lib/emergingModels.ts';
 import { getAllBenchmarks } from '../lib/benchmarks/registry.ts';
+import { isInvalidated } from '../lib/benchmarks/errata.ts';
 import { SITE_URL } from '../lib/seo.ts';
 
 console.log('--- Running NeuralDrift Sitemap Coverage Tests ---');
@@ -25,7 +26,7 @@ console.log('2. No duplicate URLs: PASS');
 const REQUIRED_PATHS = [
   '/', '/workflows', '/guides', '/compatibility', '/hardware', '/hardware/rtx-5080',
   '/gpu-guide', '/tools', '/tools/vram-calculator', '/tools/caption-generator',
-  '/tutorials', '/lab',
+  '/tutorials', '/lab', '/lab/audio', '/lab/runtimes', '/lab/research',
   '/about', '/glossary', '/privacy', '/terms', '/optimizer', '/optimizer/fix-my-pc',
   '/prompt-generator', '/proofs', '/newsletter',
 ];
@@ -52,7 +53,11 @@ for (const slug of INDEXABILITY_HOLD_GUIDES) assert(!urls.includes(`${SITE_URL}/
 for (const tutorial of TUTORIALS) assert(urls.includes(`${SITE_URL}/tutorials/${tutorial.slug}`), `missing dynamic tutorial entry ${tutorial.slug}`);
 for (const issue of NEWSLETTER_ISSUES) assert(urls.includes(`${SITE_URL}/newsletter/${issue.slug}`), `missing newsletter issue entry ${issue.slug}`);
 for (const model of TRACKED_MODELS) assert(urls.includes(`${SITE_URL}/lab/${model.slug}`), `missing tracked-model Lab entry ${model.slug}`);
-for (const benchmark of getAllBenchmarks()) assert(urls.includes(`${SITE_URL}/lab/benchmarks/${benchmark.id}`), `missing dynamic benchmark entry ${benchmark.id}`);
+for (const benchmark of getAllBenchmarks()) {
+  const url = `${SITE_URL}/lab/benchmarks/${benchmark.id}`;
+  if (isInvalidated(benchmark.id)) assert(!urls.includes(url), `invalidated benchmark must not be in the sitemap: ${benchmark.id}`);
+  else assert(urls.includes(url), `missing dynamic benchmark entry ${benchmark.id}`);
+}
 console.log('5. All dynamic workflow, guide, tutorial, newsletter issue, and benchmark entries present: PASS');
 
 const byUrl = new Map(entries.map(e => [e.url, e]));

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { pageMeta } from '@/lib/seo';
 import { getAllBenchmarks, getBenchmarkById } from '@/lib/benchmarks/registry';
 import { checkComparability } from '@/lib/benchmarks/fingerprint';
+import type { BenchmarkRecord } from '@/lib/benchmarks/types';
 
 interface Props {
   searchParams: { a?: string; b?: string };
@@ -24,8 +25,12 @@ export function generateMetadata({ searchParams }: Props): Metadata {
 function formatBytes(bytes: number | null | undefined): string {
   if (!bytes) return 'N/A';
   const gb = bytes / (1024 * 1024 * 1024);
-  return `${gb.toFixed(2)} GB`;
+  return `${gb.toFixed(2)} GiB`;
 }
+
+const seconds = (ms: number | null | undefined) => (ms == null ? 'N/A' : `${(ms / 1000).toFixed(2)} s`);
+const audioOf = (run: BenchmarkRecord | undefined) => (run?.outputMetrics?.kind === 'audio' ? run.outputMetrics : null);
+const peakVram = (run: BenchmarkRecord) => run.rawInferenceMetrics?.peakVramBytes || run.workloadMetrics?.peakVramBytes || run.outputMetrics?.peakVramBytes;
 
 export default function BenchmarkComparePage({ searchParams }: Props) {
   const allRuns = getAllBenchmarks();
@@ -36,6 +41,8 @@ export default function BenchmarkComparePage({ searchParams }: Props) {
   const runB = runBId ? getBenchmarkById(runBId) : undefined;
 
   const comparability = runA && runB ? checkComparability(runA, runB) : null;
+  const audioA = audioOf(runA);
+  const audioB = audioOf(runB);
 
   return (
     <div className="nd-site">
@@ -48,7 +55,7 @@ export default function BenchmarkComparePage({ searchParams }: Props) {
           </div>
           <h1>Scientific Benchmark Comparison</h1>
           <p className="nd-lead">
-            Isolate independent variables across local LLM inference and agent workloads. NeuralDrift never collapses multi-dimensional performance into a single misleading composite score.
+            Isolate independent variables across local LLM inference, agent and audio generation workloads. NeuralDrift never collapses multi-dimensional performance into a single misleading composite score.
           </p>
         </header>
 
@@ -264,10 +271,40 @@ export default function BenchmarkComparePage({ searchParams }: Props) {
                         </>
                       )}
 
+                      {/* Audio Output Rows */}
+                      {audioA && audioB && (
+                        <>
+                          <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                            <td style={{ padding: '12px 16px', color: 'rgba(255,255,255,0.6)' }}>Generation Time</td>
+                            <td style={{ padding: '12px 16px' }}>{seconds(audioA.generationTimeMs)}</td>
+                            <td style={{ padding: '12px 16px' }}>{seconds(audioB.generationTimeMs)}</td>
+                            <td style={{ padding: '12px 16px' }}>{audioA.generationTimeMs != null && audioB.generationTimeMs != null ? `${((audioB.generationTimeMs - audioA.generationTimeMs) / 1000).toFixed(2)} s delta` : 'N/A'}</td>
+                          </tr>
+                          <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                            <td style={{ padding: '12px 16px', color: 'rgba(255,255,255,0.6)' }}>Real-Time Factor</td>
+                            <td style={{ padding: '12px 16px' }}>{audioA.realTimeFactor?.toFixed(3) ?? 'N/A'}</td>
+                            <td style={{ padding: '12px 16px' }}>{audioB.realTimeFactor?.toFixed(3) ?? 'N/A'}</td>
+                            <td style={{ padding: '12px 16px' }}>Generation time ÷ output duration</td>
+                          </tr>
+                          <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                            <td style={{ padding: '12px 16px', color: 'rgba(255,255,255,0.6)' }}>Output Duration</td>
+                            <td style={{ padding: '12px 16px' }}>{audioA.outputDurationSec != null ? `${audioA.outputDurationSec.toFixed(2)} s` : 'N/A'}</td>
+                            <td style={{ padding: '12px 16px' }}>{audioB.outputDurationSec != null ? `${audioB.outputDurationSec.toFixed(2)} s` : 'N/A'}</td>
+                            <td style={{ padding: '12px 16px' }}>Decoded from each artifact</td>
+                          </tr>
+                          <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                            <td style={{ padding: '12px 16px', color: 'rgba(255,255,255,0.6)' }}>Peak RAM (process tree)</td>
+                            <td style={{ padding: '12px 16px' }}>{formatBytes(audioA.peakRamBytes)}</td>
+                            <td style={{ padding: '12px 16px' }}>{formatBytes(audioB.peakRamBytes)}</td>
+                            <td style={{ padding: '12px 16px' }}>Sampled working set</td>
+                          </tr>
+                        </>
+                      )}
+
                       <tr>
                         <td style={{ padding: '12px 16px', color: 'rgba(255,255,255,0.6)' }}>Peak VRAM</td>
-                        <td style={{ padding: '12px 16px' }}>{formatBytes(runA.rawInferenceMetrics?.peakVramBytes || runA.workloadMetrics?.peakVramBytes)}</td>
-                        <td style={{ padding: '12px 16px' }}>{formatBytes(runB.rawInferenceMetrics?.peakVramBytes || runB.workloadMetrics?.peakVramBytes)}</td>
+                        <td style={{ padding: '12px 16px' }}>{formatBytes(peakVram(runA))}</td>
+                        <td style={{ padding: '12px 16px' }}>{formatBytes(peakVram(runB))}</td>
                         <td style={{ padding: '12px 16px' }}>Hardware footprint</td>
                       </tr>
                     </tbody>

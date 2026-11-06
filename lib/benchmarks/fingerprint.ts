@@ -30,13 +30,25 @@ export interface FingerprintPayload {
   workloadId: string;
   workloadVersion: string;
   paradigm: string;
+  // Optional reproducibility inputs. A key is present only when the record carries the value,
+  // so records that predate these fields serialize (and hash) exactly as before.
+  workflowSha256?: string;
+  modelFileSha256?: string[];
+  inputSha256?: string[];
+  runtimeFlags?: Record<string, unknown>;
+  precision?: string;
+  attentionBackend?: string;
+  vramBallastBytes?: number;
 }
+
+const sortedHashes = (files: { sha256: string }[] | undefined) =>
+  files && files.length ? files.map((f) => f.sha256.toLowerCase()).sort() : undefined;
 
 /**
  * Extracts material configuration variables that dictate deterministic comparability.
  */
 export function extractFingerprintPayload(record: BenchmarkRecord): FingerprintPayload {
-  return {
+  const payload: FingerprintPayload = {
     modelId: record.model.modelId.trim().toLowerCase(),
     quantization: (record.model.quantization || 'unknown').trim().toUpperCase(),
     runtime: record.runtime.runtime.trim().toLowerCase(),
@@ -48,6 +60,18 @@ export function extractFingerprintPayload(record: BenchmarkRecord): FingerprintP
     workloadVersion: record.workloadVersion.trim(),
     paradigm: record.paradigm,
   };
+  // Content hashes, never filenames: a renamed or replaced file must change the fingerprint.
+  if (record.workflow?.sha256) payload.workflowSha256 = record.workflow.sha256.toLowerCase();
+  const modelHashes = sortedHashes(record.model.files);
+  if (modelHashes) payload.modelFileSha256 = modelHashes;
+  const inputHashes = sortedHashes(record.inputs);
+  if (inputHashes) payload.inputSha256 = inputHashes;
+  if (record.runtime.flags && Object.keys(record.runtime.flags).length) payload.runtimeFlags = record.runtime.flags;
+  if (record.runtime.precision) payload.precision = record.runtime.precision.trim().toLowerCase();
+  if (record.runtime.attentionBackend) payload.attentionBackend = record.runtime.attentionBackend.trim().toLowerCase();
+  // Deliberately constrained runs are a different configuration from unconstrained ones.
+  if (record.executionConditions?.kind === 'constrained_vram') payload.vramBallastBytes = record.executionConditions.vramBallastBytes;
+  return payload;
 }
 
 /**
@@ -102,6 +126,20 @@ export function checkComparability(a: BenchmarkRecord, b: BenchmarkRecord): Comp
     reasons.push(`Different benchmark paradigms: ${a.paradigm} vs ${b.paradigm}.`);
   }
 
+  // A different workflow graph or different input content is a different task, whatever the workload ID says.
+  const workflowA = a.workflow?.sha256 ?? null;
+  const workflowB = b.workflow?.sha256 ?? null;
+  if (workflowA !== workflowB) {
+    diffs.push({ variable: 'workflowSha256', valueA: workflowA, valueB: workflowB });
+    reasons.push('Different workflow graphs (workflow SHA-256 differs).');
+  }
+  const inputsA = sortedHashes(a.inputs)?.join(',') ?? null;
+  const inputsB = sortedHashes(b.inputs)?.join(',') ?? null;
+  if (inputsA !== inputsB) {
+    diffs.push({ variable: 'inputSha256', valueA: inputsA, valueB: inputsB });
+    reasons.push('Different workload inputs (input content hashes differ).');
+  }
+
   // Model comparison
   const sameModel = a.model.modelId.toLowerCase() === b.model.modelId.toLowerCase();
   if (!sameModel) {
@@ -113,6 +151,28 @@ export function checkComparability(a: BenchmarkRecord, b: BenchmarkRecord): Comp
   if (!sameQuant) {
     diffs.push({ variable: 'quantization', valueA: a.model.quantization, valueB: b.model.quantization });
     warnings.push(`Differing quantization (${a.model.quantization || 'Unknown'} vs ${b.model.quantization || 'Unknown'}) impacts throughput and memory.`);
+  }
+
+  const filesA = sortedHashes(a.model.files)?.join(',') ?? null;
+  const filesB = sortedHashes(b.model.files)?.join(',') ?? null;
+  if (sameModel && filesA && filesB && filesA !== filesB) {
+    diffs.push({ variable: 'modelFileSha256', valueA: filesA, valueB: filesB });
+    warnings.push('Same model ID but different weight files (content hashes differ), e.g. a converted or re-packaged checkpoint.');
+  }
+  for (const variable of ['precision', 'attentionBackend'] as const) {
+    const valueA = a.runtime[variable] ?? null;
+    const valueB = b.runtime[variable] ?? null;
+    if (valueA !== valueB) {
+      diffs.push({ variable, valueA, valueB });
+      warnings.push(`Different ${variable === 'precision' ? 'runtime precision' : 'attention backend'} (${valueA ?? 'not recorded'} vs ${valueB ?? 'not recorded'}).`);
+    }
+  }
+
+  const ballastA = a.executionConditions?.vramBallastBytes ?? null;
+  const ballastB = b.executionConditions?.vramBallastBytes ?? null;
+  if (ballastA !== ballastB) {
+    diffs.push({ variable: 'vramBallastBytes', valueA: ballastA, valueB: ballastB });
+    warnings.push('At least one run executed under deliberately constrained VRAM; its timing and memory reflect that constraint, not a different GPU.');
   }
 
   // Hardware comparison

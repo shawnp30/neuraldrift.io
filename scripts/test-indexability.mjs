@@ -61,4 +61,37 @@ for (const file of [...files(join(root, 'app')), ...files(join(root, 'components
   for (const href of forbiddenLinks) assert(!text.includes(href), `stale internal link ${href} remains in ${file}`);
 }
 
+// Local Audio hub: self-canonical, indexable only as the clean URL, in the sitemap without parameters.
+const audioPage = await import('../app/lab/audio/page.tsx');
+const audioClean = audioPage.generateMetadata({ searchParams: {} });
+assert.equal(audioClean.alternates.canonical, `${SITE_URL}/lab/audio`, '/lab/audio must be self-canonical');
+assert.equal(audioClean.robots.index, true, 'clean /lab/audio must be indexable');
+const audioFiltered = audioPage.generateMetadata({ searchParams: { task: 'tts' } });
+assert.equal(audioFiltered.robots.index, false, 'parameterized /lab/audio URLs must be noindex');
+assert.equal(audioFiltered.robots.follow, true);
+assert.equal(audioFiltered.alternates.canonical, `${SITE_URL}/lab/audio`, 'parameterized /lab/audio must canonicalize to the clean URL');
+assert.notEqual(audioClean.title, (await import('../app/lab/page.tsx')).metadata.title, '/lab/audio needs unique metadata');
+assert(urls.includes(`${SITE_URL}/lab/audio`), '/lab/audio must be in the sitemap');
+assert(!urls.some((url) => url.startsWith(`${SITE_URL}/lab/audio?`)), 'filtered audio URLs must not enter the sitemap');
+for (const [path, mod] of [['/lab/runtimes', '../app/lab/runtimes/page.tsx'], ['/lab/research', '../app/lab/research/page.tsx']]) {
+  const { metadata } = await import(mod);
+  assert.equal(metadata.alternates.canonical, `${SITE_URL}${path}`, `${path} must be self-canonical`);
+  assert(!metadata.robots || metadata.robots.index !== false, `${path} must be indexable`);
+  assert(urls.includes(`${SITE_URL}${path}`), `${path} must be in the sitemap`);
+}
+const { getAudioBenchmarks } = await import('../lib/audio/catalog.ts');
+const { isInvalidated } = await import('../lib/benchmarks/errata.ts');
+const detailPage = await import('../app/lab/benchmarks/[id]/page.tsx');
+for (const run of getAudioBenchmarks()) {
+  const inSitemap = urls.includes(`${SITE_URL}/lab/benchmarks/${run.id}`);
+  const robots = detailPage.generateMetadata({ params: { id: run.id } }).robots;
+  if (isInvalidated(run.id)) {
+    assert(!inSitemap, `invalidated result ${run.id} must not be in the sitemap`);
+    assert.equal(robots?.index, false, `invalidated result ${run.id} must be noindex`);
+  } else {
+    assert(inSitemap, `audio result ${run.id} must be in the sitemap`);
+    assert(!robots || robots.index !== false, `valid audio result ${run.id} must be indexable`);
+  }
+}
+
 console.log(`Indexability source policy: PASS (${urls.length} sitemap URLs, ${CATALOG.length} workflows, ${getIndexableGuides().length} indexable guides, ${TUTORIALS.length} tutorials)`);

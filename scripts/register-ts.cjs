@@ -15,7 +15,14 @@ registerHooks({
     if (url?.startsWith('file:') && !extname(fileURLToPath(url))) {
       for (const suffix of ['.ts', '.tsx', '/index.ts']) if (existsSync(fileURLToPath(url + suffix))) return next(url + suffix, context);
     }
-    return next(url ?? specifier, context);
+    try {
+      return next(url ?? specifier, context);
+    } catch (err) {
+      // Packages without an "exports" map (e.g. next/link) rely on CommonJS extension probing,
+      // which ESM resolution does not do; retry bare subpath specifiers with ".js".
+      if (err?.code === 'ERR_MODULE_NOT_FOUND' && !url && /^[@a-z][^:]*\/[^.]+$/i.test(specifier)) return next(`${specifier}.js`, context);
+      throw err;
+    }
   },
   load(url, context, next) {
     if (url.startsWith('file:') && /\.(ts|tsx)$/.test(url)) return { format: 'module', shortCircuit: true, source: ts.transpileModule(readFileSync(fileURLToPath(url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.ESNext, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } }).outputText };

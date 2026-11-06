@@ -1,0 +1,636 @@
+{
+  "generatedAt": "2026-09-28",
+  "evidenceClass": "NEURALDRIFT_DERIVED",
+  "method": "Mono downmix; Pearson correlation of samples over the common length, and of 50 ms RMS envelopes. Describes waveform similarity, not audio quality.",
+  "comparisons": [
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "cf44885f1ebc83d32bbca62e2d642d44942d9e190f671c9028dcd17880b81c4f",
+      "b": "d30ac760b633f42644c2a5b65785b7b827f28f88f483e8262d0cb3c6c8a296ea",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "cf44885f1ebc83d32bbca62e2d642d44942d9e190f671c9028dcd17880b81c4f",
+      "b": "527c65eb14011474a95dd563d541339294e496a0cd94ad858c9807970e05ce11",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "cf44885f1ebc83d32bbca62e2d642d44942d9e190f671c9028dcd17880b81c4f",
+      "b": "3a9c6f9fc306ef07b8cf92fbd5ab472f6a344a4de10543c877baea361c4255d9",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "cf44885f1ebc83d32bbca62e2d642d44942d9e190f671c9028dcd17880b81c4f",
+      "b": "fa326881dcf4083ffcc689e5e12ad7266dd1eda1d2869f92bc20dea18ef2008c",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "d30ac760b633f42644c2a5b65785b7b827f28f88f483e8262d0cb3c6c8a296ea",
+      "b": "527c65eb14011474a95dd563d541339294e496a0cd94ad858c9807970e05ce11",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "d30ac760b633f42644c2a5b65785b7b827f28f88f483e8262d0cb3c6c8a296ea",
+      "b": "3a9c6f9fc306ef07b8cf92fbd5ab472f6a344a4de10543c877baea361c4255d9",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "d30ac760b633f42644c2a5b65785b7b827f28f88f483e8262d0cb3c6c8a296ea",
+      "b": "fa326881dcf4083ffcc689e5e12ad7266dd1eda1d2869f92bc20dea18ef2008c",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "527c65eb14011474a95dd563d541339294e496a0cd94ad858c9807970e05ce11",
+      "b": "3a9c6f9fc306ef07b8cf92fbd5ab472f6a344a4de10543c877baea361c4255d9",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "527c65eb14011474a95dd563d541339294e496a0cd94ad858c9807970e05ce11",
+      "b": "fa326881dcf4083ffcc689e5e12ad7266dd1eda1d2869f92bc20dea18ef2008c",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-003 pytorch",
+      "recordIds": [
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "3a9c6f9fc306ef07b8cf92fbd5ab472f6a344a4de10543c877baea361c4255d9",
+      "b": "fa326881dcf4083ffcc689e5e12ad7266dd1eda1d2869f92bc20dea18ef2008c",
+      "sampleCorrelation": 1,
+      "envelopeCorrelation": 1,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "69a875b4b8024c113643b8205464bc5046e21d3da18e831c246a628bad9ffadb",
+      "b": "beadace78984b09bab70511853d639995b93f3d8ac38026fc1ad077dee37d830",
+      "sampleCorrelation": 0.050757,
+      "envelopeCorrelation": 0.260581,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "69a875b4b8024c113643b8205464bc5046e21d3da18e831c246a628bad9ffadb",
+      "b": "8c87b37efd670bcbb168df540f955a35194a086d16446275215cfbef3ffe9d9d",
+      "sampleCorrelation": 0.033421,
+      "envelopeCorrelation": 0.267256,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "69a875b4b8024c113643b8205464bc5046e21d3da18e831c246a628bad9ffadb",
+      "b": "39300702eb80c4a1d5e3312afdc2dac982fa308d99aa4a9d9b0d70d430933245",
+      "sampleCorrelation": 0.086217,
+      "envelopeCorrelation": 0.64653,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "69a875b4b8024c113643b8205464bc5046e21d3da18e831c246a628bad9ffadb",
+      "b": "79ed4bf7874fb238871dac70d577fa9877d618fbe3f9353d78aae2008e689c25",
+      "sampleCorrelation": 0.039478,
+      "envelopeCorrelation": 0.322936,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "69a875b4b8024c113643b8205464bc5046e21d3da18e831c246a628bad9ffadb",
+      "b": "94d549957d94bf89633878d341abcad1f8a0017446b8ec649cdc89629185f1e1",
+      "sampleCorrelation": 0.049692,
+      "envelopeCorrelation": 0.337974,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "69a875b4b8024c113643b8205464bc5046e21d3da18e831c246a628bad9ffadb",
+      "b": "234e1240fc9b8e2b7d6fd72fd0c8593fc450c164f645c439bc6aa7c1de9ba33a",
+      "sampleCorrelation": 0.00771,
+      "envelopeCorrelation": 0.693955,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "69a875b4b8024c113643b8205464bc5046e21d3da18e831c246a628bad9ffadb",
+      "b": "ae87331558f4af6388750f559eb891a418bae435b708807224aef6c708b9e396",
+      "sampleCorrelation": 0.042986,
+      "envelopeCorrelation": 0.281802,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "69a875b4b8024c113643b8205464bc5046e21d3da18e831c246a628bad9ffadb",
+      "b": "af0fcd368db15021074456dae94bfb6df444ecefa915ad7a186ead776e95bf3a",
+      "sampleCorrelation": 0.028228,
+      "envelopeCorrelation": 0.358572,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "69a875b4b8024c113643b8205464bc5046e21d3da18e831c246a628bad9ffadb",
+      "b": "61891c0956cd53d4d92bd0b0075afee92d9955ec70319ba864f37104f4f847ba",
+      "sampleCorrelation": 0.052978,
+      "envelopeCorrelation": 0.371778,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "beadace78984b09bab70511853d639995b93f3d8ac38026fc1ad077dee37d830",
+      "b": "8c87b37efd670bcbb168df540f955a35194a086d16446275215cfbef3ffe9d9d",
+      "sampleCorrelation": 0.02042,
+      "envelopeCorrelation": 0.711267,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "beadace78984b09bab70511853d639995b93f3d8ac38026fc1ad077dee37d830",
+      "b": "39300702eb80c4a1d5e3312afdc2dac982fa308d99aa4a9d9b0d70d430933245",
+      "sampleCorrelation": 0.060137,
+      "envelopeCorrelation": 0.247024,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "beadace78984b09bab70511853d639995b93f3d8ac38026fc1ad077dee37d830",
+      "b": "79ed4bf7874fb238871dac70d577fa9877d618fbe3f9353d78aae2008e689c25",
+      "sampleCorrelation": 0.032871,
+      "envelopeCorrelation": 0.460599,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "beadace78984b09bab70511853d639995b93f3d8ac38026fc1ad077dee37d830",
+      "b": "94d549957d94bf89633878d341abcad1f8a0017446b8ec649cdc89629185f1e1",
+      "sampleCorrelation": 0.084256,
+      "envelopeCorrelation": 0.585602,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "beadace78984b09bab70511853d639995b93f3d8ac38026fc1ad077dee37d830",
+      "b": "234e1240fc9b8e2b7d6fd72fd0c8593fc450c164f645c439bc6aa7c1de9ba33a",
+      "sampleCorrelation": 0.028666,
+      "envelopeCorrelation": 0.240804,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "beadace78984b09bab70511853d639995b93f3d8ac38026fc1ad077dee37d830",
+      "b": "ae87331558f4af6388750f559eb891a418bae435b708807224aef6c708b9e396",
+      "sampleCorrelation": 0.085953,
+      "envelopeCorrelation": 0.540683,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "beadace78984b09bab70511853d639995b93f3d8ac38026fc1ad077dee37d830",
+      "b": "af0fcd368db15021074456dae94bfb6df444ecefa915ad7a186ead776e95bf3a",
+      "sampleCorrelation": 0.030585,
+      "envelopeCorrelation": 0.252507,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "beadace78984b09bab70511853d639995b93f3d8ac38026fc1ad077dee37d830",
+      "b": "61891c0956cd53d4d92bd0b0075afee92d9955ec70319ba864f37104f4f847ba",
+      "sampleCorrelation": 0.077693,
+      "envelopeCorrelation": 0.561395,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "8c87b37efd670bcbb168df540f955a35194a086d16446275215cfbef3ffe9d9d",
+      "b": "39300702eb80c4a1d5e3312afdc2dac982fa308d99aa4a9d9b0d70d430933245",
+      "sampleCorrelation": -0.005634,
+      "envelopeCorrelation": 0.218451,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "8c87b37efd670bcbb168df540f955a35194a086d16446275215cfbef3ffe9d9d",
+      "b": "79ed4bf7874fb238871dac70d577fa9877d618fbe3f9353d78aae2008e689c25",
+      "sampleCorrelation": 0.253137,
+      "envelopeCorrelation": 0.591651,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "8c87b37efd670bcbb168df540f955a35194a086d16446275215cfbef3ffe9d9d",
+      "b": "94d549957d94bf89633878d341abcad1f8a0017446b8ec649cdc89629185f1e1",
+      "sampleCorrelation": 0.210755,
+      "envelopeCorrelation": 0.729432,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "8c87b37efd670bcbb168df540f955a35194a086d16446275215cfbef3ffe9d9d",
+      "b": "234e1240fc9b8e2b7d6fd72fd0c8593fc450c164f645c439bc6aa7c1de9ba33a",
+      "sampleCorrelation": 0.02129,
+      "envelopeCorrelation": 0.221037,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "8c87b37efd670bcbb168df540f955a35194a086d16446275215cfbef3ffe9d9d",
+      "b": "ae87331558f4af6388750f559eb891a418bae435b708807224aef6c708b9e396",
+      "sampleCorrelation": 0.204342,
+      "envelopeCorrelation": 0.618582,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "8c87b37efd670bcbb168df540f955a35194a086d16446275215cfbef3ffe9d9d",
+      "b": "af0fcd368db15021074456dae94bfb6df444ecefa915ad7a186ead776e95bf3a",
+      "sampleCorrelation": 0.031514,
+      "envelopeCorrelation": 0.366726,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "8c87b37efd670bcbb168df540f955a35194a086d16446275215cfbef3ffe9d9d",
+      "b": "61891c0956cd53d4d92bd0b0075afee92d9955ec70319ba864f37104f4f847ba",
+      "sampleCorrelation": 0.254588,
+      "envelopeCorrelation": 0.712118,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "39300702eb80c4a1d5e3312afdc2dac982fa308d99aa4a9d9b0d70d430933245",
+      "b": "79ed4bf7874fb238871dac70d577fa9877d618fbe3f9353d78aae2008e689c25",
+      "sampleCorrelation": 0.048567,
+      "envelopeCorrelation": 0.186204,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "39300702eb80c4a1d5e3312afdc2dac982fa308d99aa4a9d9b0d70d430933245",
+      "b": "94d549957d94bf89633878d341abcad1f8a0017446b8ec649cdc89629185f1e1",
+      "sampleCorrelation": 0.032603,
+      "envelopeCorrelation": 0.221033,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "39300702eb80c4a1d5e3312afdc2dac982fa308d99aa4a9d9b0d70d430933245",
+      "b": "234e1240fc9b8e2b7d6fd72fd0c8593fc450c164f645c439bc6aa7c1de9ba33a",
+      "sampleCorrelation": 0.114486,
+      "envelopeCorrelation": 0.820084,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "39300702eb80c4a1d5e3312afdc2dac982fa308d99aa4a9d9b0d70d430933245",
+      "b": "ae87331558f4af6388750f559eb891a418bae435b708807224aef6c708b9e396",
+      "sampleCorrelation": 0.022902,
+      "envelopeCorrelation": 0.201355,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "39300702eb80c4a1d5e3312afdc2dac982fa308d99aa4a9d9b0d70d430933245",
+      "b": "af0fcd368db15021074456dae94bfb6df444ecefa915ad7a186ead776e95bf3a",
+      "sampleCorrelation": 0.016978,
+      "envelopeCorrelation": 0.355029,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "39300702eb80c4a1d5e3312afdc2dac982fa308d99aa4a9d9b0d70d430933245",
+      "b": "61891c0956cd53d4d92bd0b0075afee92d9955ec70319ba864f37104f4f847ba",
+      "sampleCorrelation": -0.002872,
+      "envelopeCorrelation": 0.257976,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "79ed4bf7874fb238871dac70d577fa9877d618fbe3f9353d78aae2008e689c25",
+      "b": "94d549957d94bf89633878d341abcad1f8a0017446b8ec649cdc89629185f1e1",
+      "sampleCorrelation": 0.231342,
+      "envelopeCorrelation": 0.607812,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "79ed4bf7874fb238871dac70d577fa9877d618fbe3f9353d78aae2008e689c25",
+      "b": "234e1240fc9b8e2b7d6fd72fd0c8593fc450c164f645c439bc6aa7c1de9ba33a",
+      "sampleCorrelation": 0.031162,
+      "envelopeCorrelation": 0.220404,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "79ed4bf7874fb238871dac70d577fa9877d618fbe3f9353d78aae2008e689c25",
+      "b": "ae87331558f4af6388750f559eb891a418bae435b708807224aef6c708b9e396",
+      "sampleCorrelation": 0.195969,
+      "envelopeCorrelation": 0.526009,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "79ed4bf7874fb238871dac70d577fa9877d618fbe3f9353d78aae2008e689c25",
+      "b": "af0fcd368db15021074456dae94bfb6df444ecefa915ad7a186ead776e95bf3a",
+      "sampleCorrelation": 0.045712,
+      "envelopeCorrelation": 0.307311,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "79ed4bf7874fb238871dac70d577fa9877d618fbe3f9353d78aae2008e689c25",
+      "b": "61891c0956cd53d4d92bd0b0075afee92d9955ec70319ba864f37104f4f847ba",
+      "sampleCorrelation": 0.145698,
+      "envelopeCorrelation": 0.609403,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "94d549957d94bf89633878d341abcad1f8a0017446b8ec649cdc89629185f1e1",
+      "b": "234e1240fc9b8e2b7d6fd72fd0c8593fc450c164f645c439bc6aa7c1de9ba33a",
+      "sampleCorrelation": 0.000163,
+      "envelopeCorrelation": 0.254068,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "94d549957d94bf89633878d341abcad1f8a0017446b8ec649cdc89629185f1e1",
+      "b": "ae87331558f4af6388750f559eb891a418bae435b708807224aef6c708b9e396",
+      "sampleCorrelation": 0.325089,
+      "envelopeCorrelation": 0.589247,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "94d549957d94bf89633878d341abcad1f8a0017446b8ec649cdc89629185f1e1",
+      "b": "af0fcd368db15021074456dae94bfb6df444ecefa915ad7a186ead776e95bf3a",
+      "sampleCorrelation": 0.034975,
+      "envelopeCorrelation": 0.469333,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "94d549957d94bf89633878d341abcad1f8a0017446b8ec649cdc89629185f1e1",
+      "b": "61891c0956cd53d4d92bd0b0075afee92d9955ec70319ba864f37104f4f847ba",
+      "sampleCorrelation": 0.285995,
+      "envelopeCorrelation": 0.741039,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "234e1240fc9b8e2b7d6fd72fd0c8593fc450c164f645c439bc6aa7c1de9ba33a",
+      "b": "ae87331558f4af6388750f559eb891a418bae435b708807224aef6c708b9e396",
+      "sampleCorrelation": 0.010333,
+      "envelopeCorrelation": 0.212798,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "234e1240fc9b8e2b7d6fd72fd0c8593fc450c164f645c439bc6aa7c1de9ba33a",
+      "b": "af0fcd368db15021074456dae94bfb6df444ecefa915ad7a186ead776e95bf3a",
+      "sampleCorrelation": 0.075929,
+      "envelopeCorrelation": 0.343801,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "234e1240fc9b8e2b7d6fd72fd0c8593fc450c164f645c439bc6aa7c1de9ba33a",
+      "b": "61891c0956cd53d4d92bd0b0075afee92d9955ec70319ba864f37104f4f847ba",
+      "sampleCorrelation": 0.004666,
+      "envelopeCorrelation": 0.332681,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "ae87331558f4af6388750f559eb891a418bae435b708807224aef6c708b9e396",
+      "b": "af0fcd368db15021074456dae94bfb6df444ecefa915ad7a186ead776e95bf3a",
+      "sampleCorrelation": 0.060789,
+      "envelopeCorrelation": 0.339494,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "ae87331558f4af6388750f559eb891a418bae435b708807224aef6c708b9e396",
+      "b": "61891c0956cd53d4d92bd0b0075afee92d9955ec70319ba864f37104f4f847ba",
+      "sampleCorrelation": 0.245281,
+      "envelopeCorrelation": 0.556471,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "within session: ND-AUDIO-MUSIC-002 pytorch",
+      "recordIds": [
+        "run-2026-09-28T14-59-57-754Z-nd-audio-music-002-acestep-v15-turbo-pytorch-rtx-5080-402a21a0"
+      ],
+      "a": "af0fcd368db15021074456dae94bfb6df444ecefa915ad7a186ead776e95bf3a",
+      "b": "61891c0956cd53d4d92bd0b0075afee92d9955ec70319ba864f37104f4f847ba",
+      "sampleCorrelation": 0.079571,
+      "envelopeCorrelation": 0.382272,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "cross-runtime, identical audio codes: audio.cpp vs ACE-Step Python (ND-AUDIO-MUSIC-003)",
+      "recordIds": [
+        "run-2026-09-28T20-19-12-628Z-nd-audio-music-003-acestep-v15-turbo-audio_cpp-rtx-5080-442956ed",
+        "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7"
+      ],
+      "a": "9f85ea9ef327611daf1846bb3e85f5b55ffbe44b725bf1f078120dc431a69631",
+      "b": "cf44885f1ebc83d32bbca62e2d642d44942d9e190f671c9028dcd17880b81c4f",
+      "sampleCorrelation": 0.702493,
+      "envelopeCorrelation": 0.948643,
+      "comparedSeconds": 30
+    },
+    {
+      "label": "configuration effect: audio.cpp DiT BF16 vs DiT q8_0 (ND-AUDIO-MUSIC-001)",
+      "recordIds": [
+        "run-2026-09-28T15-04-03-676Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-a173f425",
+        "run-2026-09-28T20-13-11-437Z-nd-audio-music-001-acestep-v15-turbo-audio_cpp-rtx-5080-87eb5920"
+      ],
+      "a": "1d4531e72296785bd8d99983027d006356073faf3bed636d4f9adb87b91e92b6",
+      "b": "582761f4eb531124c46560619a6b198cbb9e9f864841ade662d0a139e814d9da",
+      "sampleCorrelation": 0.998957,
+      "envelopeCorrelation": 0.999786,
+      "comparedSeconds": 30
+    }
+  ]
+}

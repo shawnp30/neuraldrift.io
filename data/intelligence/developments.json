@@ -1,0 +1,105 @@
+[
+  {
+    "id": "audio-cpp-0-8-2",
+    "title": "audio.cpp 0.8.2: Windows CUDA 13.3 build with Blackwell (sm_120) kernels and ACE-Step 1.5",
+    "area": "audio",
+    "upstreamDate": "2026-09-25",
+    "reviewedAt": "2026-09-28",
+    "whatChanged": "The v0.8.2-audio8-perf-hotfix release ships prebuilt Windows CUDA 13.3 binaries compiled for architectures up to 120, with ACE-Step 1.5 among 80+ supported audio model families.",
+    "whyItMatters": "A Python-free local audio runtime covering TTS, ASR, voice conversion, separation and music on consumer NVIDIA GPUs.",
+    "alreadyTracked": "/lab/audio",
+    "canTest": "yes",
+    "hardwareFit": "Executed on the RTX 5080 (see benchmark records).",
+    "safeInstallPath": "Portable release archives in an isolated folder (D:\\AI\\audio.cpp); no system CUDA or Python changes.",
+    "actions": ["CREATE_BENCHMARK", "RUN_PERFORMANCE_TEST", "PROMOTE_TO_EVERYDAY_TOOL"],
+    "decision": "Benchmarked (ND-AUDIO-MUSIC-001/002) and packaged as an everyday tool with a launcher.",
+    "status": "in_progress",
+    "claims": [
+      { "claim": "The Windows CUDA 13.3 release build targets CUDA architectures 75;80;86;89;90;120.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "audio.cpp release workflow", "url": "https://github.com/0xShug0/audio.cpp/blob/ac16661d/.github/workflows/release.yml", "type": "official_repo", "retrievedAt": "2026-09-27" }, "version": "v0.8.2-audio8-perf-hotfix" },
+      { "claim": "ACE-Step 1.5 Turbo ran through audio.cpp on an RTX 5080 and produced validated 30 s WAV output.", "evidenceClass": "NEURALDRIFT_VERIFIED", "source": { "title": "NeuralDrift Local Audio AI", "url": "https://neuraldrift.io/lab/audio", "type": "neuraldrift_evidence", "retrievedAt": "2026-09-28" }, "version": "0.8.2-audio8-perf-hotfix" }
+    ]
+  },
+  {
+    "id": "comfyui-minimax-h3-vae-optimizations",
+    "title": "ComfyUI 0.36: MiniMax-H3 VAE optimizations (comfy-kitchen fused kernels, fp16-accumulation conv path)",
+    "area": "video",
+    "upstreamDate": "2026-09-15",
+    "reviewedAt": "2026-09-28",
+    "whatChanged": "PR #16187 folds norm, SiLU, padding and residual adds of the H3 video VAE into comfy-kitchen kernels, uses an fp16 conv3d path when --fast fp16_accumulation is enabled (cuDNN otherwise), and decodes tiles in batches of up to 4. PR #16332 lowers MiniMax VAE memory use. An earlier VAE optimization (#15446) landed in 0.32.",
+    "whyItMatters": "VAE encode/decode is a visible share of H3 generation time on consumer GPUs. The change affects the VAE only, so any gain applies to VAE stages, not to the whole pipeline by the same percentage.",
+    "alreadyTracked": "/lab/fasth3-8-step-v2 (FastH3 distillation, documented, not tested)",
+    "canTest": "conditional",
+    "hardwareFit": "Unknown until executed. Both a ComfyUI 0.33.0 git install and the ComfyUI Desktop 0.37.0 install exist on the workstation, and a 20 GB pruned INT8 H3 ref2va diffusion model is present; the H3 VAE and text encoder files still need to be located or downloaded.",
+    "safeInstallPath": "Compare the two existing, unmodified ComfyUI installs with an identical workflow, seed, resolution and frame count; no upgrade of either install.",
+    "actions": ["RUN_PERFORMANCE_TEST"],
+    "decision": "Queue a before/after benchmark (VAE encode, VAE decode, total, VRAM, RAM) once a ComfyUI benchmark adapter exists; test fp16 accumulation as a separate variant.",
+    "status": "open",
+    "claims": [
+      { "claim": "MiniMax-H3 VAE optimizations were merged on 2026-09-15 and released in ComfyUI v0.36.0.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "Comfy-Org/ComfyUI PR #16187", "url": "https://github.com/Comfy-Org/ComfyUI/pull/16187", "type": "official_pr", "retrievedAt": "2026-09-28" }, "version": "v0.36.0" },
+      { "claim": "The fp16 conv3d kernel is used only under --fast fp16_accumulation; otherwise cuDNN is used.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "Comfy-Org/ComfyUI PR #16187", "url": "https://github.com/Comfy-Org/ComfyUI/pull/16187", "type": "official_pr", "retrievedAt": "2026-09-28" } },
+      { "claim": "The PR states no speedup percentage.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "Comfy-Org/ComfyUI PR #16187", "url": "https://github.com/Comfy-Org/ComfyUI/pull/16187", "type": "official_pr", "retrievedAt": "2026-09-28" } }
+    ]
+  },
+  {
+    "id": "vllm-0-30",
+    "title": "vLLM 0.30.0: consumer-Blackwell (SM120/121) NVFP4 defaults and B12X attention",
+    "area": "runtime",
+    "upstreamDate": "2026-09-22",
+    "reviewedAt": "2026-09-28",
+    "whatChanged": "W4A4 NVFP4 is now preferred over weight-only kernels on SM120/121; a B12X causal paged attention backend was added for SM120/121; FlashInfer GDN prefill on SM12x; AutoRound 2/3/5/6/7-bit on CUDA; Model Runner V2 supports platforms without pinned memory such as WSL.",
+    "whyItMatters": "SM120 is the RTX 50 series architecture, so these changes target consumer Blackwell cards directly rather than datacenter parts.",
+    "alreadyTracked": null,
+    "canTest": "conditional",
+    "hardwareFit": "RTX 5080 is SM120 (compute capability 12.0, measured). vLLM does not support Windows natively; a test needs WSL. No consumer-Blackwell performance claim is made.",
+    "safeInstallPath": "An isolated WSL distribution with its own Python environment; nothing on the Windows side changes.",
+    "actions": ["TRACK", "RUN_COMPATIBILITY_TEST"],
+    "decision": "Track. A fair llama.cpp / LM Studio / Ollama / vLLM comparison (same model, same quantization) is a future benchmark; it needs a WSL environment first.",
+    "status": "open",
+    "claims": [
+      { "claim": "W4A4 NVFP4 is preferred over weight-only kernels on SM120/121 as a new default.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "vLLM v0.30.0 release notes", "url": "https://github.com/vllm-project/vllm/releases/tag/v0.30.0", "type": "official_release", "retrievedAt": "2026-09-28" }, "version": "v0.30.0" },
+      { "claim": "B12X causal paged attention is available for SM120/SM121 via --attention-backend B12X_ATTN.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "vLLM v0.30.0 release notes", "url": "https://github.com/vllm-project/vllm/releases/tag/v0.30.0", "type": "official_release", "retrievedAt": "2026-09-28" }, "version": "v0.30.0" },
+      { "claim": "vLLM does not support Windows natively; WSL or community forks are the documented routes.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "vLLM GPU installation docs (v0.30.0)", "url": "https://github.com/vllm-project/vllm/blob/v0.30.0/docs/getting_started/installation/gpu.md", "type": "official_docs", "retrievedAt": "2026-09-28" }, "version": "v0.30.0" }
+    ]
+  },
+  {
+    "id": "trellis-2",
+    "title": "TRELLIS.2-4B image-to-3D, with native ComfyUI nodes",
+    "area": "3d",
+    "upstreamDate": "2025-12-27",
+    "reviewedAt": "2026-09-28",
+    "whatChanged": "Microsoft's 4B-parameter image-to-3D model generates textured meshes with PBR materials (512³–1536³). ComfyUI now includes native TRELLIS.2 nodes, and ComfyUI 0.35 lowered TRELLIS workflow VRAM, RAM and remesh memory.",
+    "whyItMatters": "A permissively licensed local image-to-3D path, and the leading candidate for NeuralDrift's Local 3D phase.",
+    "alreadyTracked": null,
+    "canTest": "conditional",
+    "hardwareFit": "Upstream states at least 24 GB of GPU memory and Linux-only testing (A100/H100). The RTX 5080 has 16 GB, below that stated requirement. The native ComfyUI path is the candidate to test; compatibility is unknown until executed.",
+    "safeInstallPath": "Use the existing ComfyUI Desktop install's native TRELLIS.2 nodes with the model in its own folder, or an isolated environment; no system CUDA change.",
+    "actions": ["TRACK", "RUN_COMPATIBILITY_TEST"],
+    "decision": "Local 3D phase candidate. Build the mesh validator and ComfyUI adapter first; then test the native ComfyUI TRELLIS.2 path on the RTX 5080.",
+    "status": "open",
+    "claims": [
+      { "claim": "TRELLIS.2 needs an NVIDIA GPU with at least 24 GB of memory and is tested only on Linux (A100, H100).", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "microsoft/TRELLIS.2 README", "url": "https://github.com/microsoft/TRELLIS.2", "type": "official_repo", "retrievedAt": "2026-09-28" } },
+      { "claim": "Code and TRELLIS.2-4B weights are MIT licensed.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "microsoft/TRELLIS.2-4B model card", "url": "https://huggingface.co/microsoft/TRELLIS.2-4B", "type": "official_model_card", "retrievedAt": "2026-09-28" } },
+      { "claim": "ComfyUI 0.37.0 ships native TRELLIS.2 nodes (comfy_extras/nodes_trellis2.py).", "evidenceClass": "NEURALDRIFT_VERIFIED", "source": { "title": "Local ComfyUI Desktop 0.37.0 install inspection", "url": "https://github.com/Comfy-Org/ComfyUI/releases/tag/v0.37.0", "type": "official_release", "retrievedAt": "2026-09-28" }, "version": "v0.37.0" }
+    ]
+  },
+  {
+    "id": "pixal3d",
+    "title": "Pixal3D (SIGGRAPH 2026): pixel-aligned image-to-3D on a TRELLIS.2 backbone",
+    "area": "3d",
+    "upstreamDate": "2026-08-31",
+    "reviewedAt": "2026-09-28",
+    "whatChanged": "TencentARC released Pixal3D, which back-projects pixel features into 3D; its main branch builds on TRELLIS.2 and offers a --low_vram mode (on-demand model loading, 1024 resolution by default) and an SDPA attention option.",
+    "whyItMatters": "The low-VRAM mode and SDPA option are the most relevant features for a 16 GB consumer GPU.",
+    "alreadyTracked": null,
+    "canTest": "conditional",
+    "hardwareFit": "Unknown. It requires the TRELLIS.2 environment (compiled CUDA extensions, Linux-tested) plus NATTEN. No RTX 5080 claim is made.",
+    "safeInstallPath": "Only in an isolated environment (likely WSL), after the TRELLIS.2 native ComfyUI path is evaluated.",
+    "actions": ["TRACK"],
+    "decision": "Track behind TRELLIS.2; test only if the native TRELLIS.2 path works and Pixal3D offers a measurable advantage.",
+    "status": "open",
+    "claims": [
+      { "claim": "Pixal3D's main branch is built on the TRELLIS.2 backbone and supports a --low_vram mode.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "TencentARC/Pixal3D README", "url": "https://github.com/TencentARC/Pixal3D", "type": "official_repo", "retrievedAt": "2026-09-28" } },
+      { "claim": "Code and weights are MIT licensed.", "evidenceClass": "UPSTREAM_VERIFIED", "source": { "title": "TencentARC/Pixal3D model card", "url": "https://huggingface.co/TencentARC/Pixal3D", "type": "official_model_card", "retrievedAt": "2026-09-28" } }
+    ]
+  }
+]

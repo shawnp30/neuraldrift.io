@@ -1,0 +1,286 @@
+{
+  "id": "run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7",
+  "workloadId": "ND-AUDIO-MUSIC-003",
+  "workloadVersion": "1.0.0",
+  "paradigm": "raw_inference",
+  "category": "creator_audio",
+  "timestamp": "2026-09-28T15:24:53.250Z",
+  "benchmarkVersion": "1.0.0",
+  "evidenceLevel": "neuraldrift_benchmarked",
+  "outcome": "PASS",
+  "model": {
+    "provider": "ACE-Step",
+    "modelId": "acestep-v15-turbo",
+    "displayName": "ACE-Step 1.5 Turbo",
+    "parameterSize": "Turbo DiT + 1.7B LM planner",
+    "architecture": "ACE-Step 1.5 (DiT + 5Hz LM planner)",
+    "quantization": "BF16",
+    "version": "1.5",
+    "license": {
+      "id": "MIT",
+      "commercialUse": "COMMERCIAL_OK",
+      "sourceUrl": "https://huggingface.co/ACE-Step/Ace-Step1.5",
+      "verifiedAt": "2026-09-27",
+      "notes": "Model card (revision 19671f4) declares MIT and states generated music may be used commercially. The planner LMs are fine-tuned from Qwen3; the bundled Qwen3-Embedding-0.6B text encoder is Apache-2.0. Informational, not legal advice."
+    },
+    "files": [
+      {
+        "path": "acestep-v15-turbo/model.safetensors",
+        "sha256": "3f6e0797fad420a39bd33979eb6e840e30989e34a3794e843d23b60ec6e422d7",
+        "bytes": 4787825604
+      },
+      {
+        "path": "acestep-5Hz-lm-1.7B/model.safetensors",
+        "sha256": "f161689da73e5ecefa28ff780d51c2d92a00f056d021d7933c779ed5c6cd7db8",
+        "bytes": 3708521528
+      },
+      {
+        "path": "Qwen3-Embedding-0.6B/model.safetensors",
+        "sha256": "0437e45c94563b09e13cb7a64478fc406947a93cb34a7e05870fc8dcd48e23fd",
+        "bytes": 1191586416
+      },
+      {
+        "path": "vae/diffusion_pytorch_model.safetensors",
+        "sha256": "da17edb604c40deaf09e9b24974e590d1ca83a374070e5d0884cfa4bed9a99b0",
+        "bytes": 337431388
+      }
+    ]
+  },
+  "runtime": {
+    "runtime": "pytorch",
+    "runtimeVersion": "ace-step 1.5.0",
+    "backend": "cuda",
+    "backendVersion": "torch 2.7.1+cu128 (CUDA 12.8)",
+    "flags": {
+      "gitCommit": "6d467e4",
+      "ditModel": "acestep-v15-turbo",
+      "lmModel": "acestep-5Hz-lm-1.7B",
+      "lmBackend": "pt"
+    },
+    "precision": "bf16",
+    "attentionBackend": "sdpa",
+    "license": {
+      "id": "MIT",
+      "commercialUse": "COMMERCIAL_OK",
+      "sourceUrl": "https://github.com/ace-step/ACE-Step-1.5/blob/main/LICENSE",
+      "verifiedAt": "2026-09-27",
+      "notes": "License of the ACE-Step 1.5 Python code used as the runtime. The model weights carry their own license."
+    }
+  },
+  "hardware": {
+    "id": "local-rtx-5080",
+    "gpuName": "NVIDIA GeForce RTX 5080",
+    "gpuArch": "Blackwell",
+    "gpuCount": 1,
+    "vramBytes": 17094934528,
+    "systemRamBytes": 66185273344,
+    "cpuModel": "AMD Ryzen 9 9950X3D 16-Core Processor",
+    "formFactor": "desktop",
+    "isCloud": false
+  },
+  "software": {
+    "os": "win32 10.0.26200",
+    "driverVersion": "616.92",
+    "cudaVersion": "13.4",
+    "pythonVersion": "3.12.11"
+  },
+  "configFingerprint": "9a5dc89606cfb5eb63f5a955c310dadda4bb5fbb2fa0041eee962db2088669b4",
+  "inputs": [
+    {
+      "role": "audio_codes",
+      "optionKey": "audio_codes",
+      "path": "data/benchmark-inputs/nd-audio-music-003-audio-codes.txt",
+      "sha256": "d6e89b37adeca98ebc3c790b0f088f30a97ab7afe64e30b03c223426f4557404",
+      "bytes": 2976
+    }
+  ],
+  "rawInferenceMetrics": null,
+  "workloadMetrics": null,
+  "outputMetrics": {
+    "kind": "audio",
+    "requestedDurationSec": 30,
+    "outputDurationSec": 30,
+    "generationTimeMs": 1084.5,
+    "realTimeFactor": 0.0362,
+    "sampleRateHz": 48000,
+    "channels": 2,
+    "peakVramBytes": 16201547776,
+    "vramBaselineBytes": 1062207488,
+    "peakRamBytes": 9343053824,
+    "gpuUtilizationPct": 97,
+    "telemetryMethod": "Warm-session record: generation time and RTF are medians of 5 measured iterations (see session metrics); memory and GPU figures cover the whole session. Wall time: process spawn to exit (model load included). Device GPU: nvidia-smi every 200 ms (memory used, utilization, memory utilization, temperature, power, SM clock; includes other processes; baseline recorded before start). Process tree: working set every 500 ms and Windows \"GPU Process Memory\" dedicated/shared counters about once per second (lower bounds on true peaks). System: CPU utilization and used RAM every 500 ms."
+  },
+  "sessionMetrics": {
+    "kind": "warm_session",
+    "processWallMs": 58369.1,
+    "startupAndLoadMs": 34127.6,
+    "startupAndLoadBasis": "measured",
+    "warmupIterations": 1,
+    "measuredIterations": 5,
+    "iterations": [
+      {
+        "index": 0,
+        "warmup": true,
+        "generationMs": 17885.1,
+        "outputDurationSec": 30,
+        "realTimeFactor": 0.5962,
+        "artifactSha256": "742a32b7205a13d69eac9ce40292d94209e2d88002ada80631c8873f6f87fb66",
+        "passed": true
+      },
+      {
+        "index": 1,
+        "warmup": false,
+        "generationMs": 1105.2,
+        "outputDurationSec": 30,
+        "realTimeFactor": 0.0368,
+        "artifactSha256": "cf44885f1ebc83d32bbca62e2d642d44942d9e190f671c9028dcd17880b81c4f",
+        "passed": true
+      },
+      {
+        "index": 2,
+        "warmup": false,
+        "generationMs": 1084.5,
+        "outputDurationSec": 30,
+        "realTimeFactor": 0.0362,
+        "artifactSha256": "d30ac760b633f42644c2a5b65785b7b827f28f88f483e8262d0cb3c6c8a296ea",
+        "passed": true
+      },
+      {
+        "index": 3,
+        "warmup": false,
+        "generationMs": 1065.7,
+        "outputDurationSec": 30,
+        "realTimeFactor": 0.0355,
+        "artifactSha256": "527c65eb14011474a95dd563d541339294e496a0cd94ad858c9807970e05ce11",
+        "passed": true
+      },
+      {
+        "index": 4,
+        "warmup": false,
+        "generationMs": 1081.3,
+        "outputDurationSec": 30,
+        "realTimeFactor": 0.036,
+        "artifactSha256": "3a9c6f9fc306ef07b8cf92fbd5ab472f6a344a4de10543c877baea361c4255d9",
+        "passed": true
+      },
+      {
+        "index": 5,
+        "warmup": false,
+        "generationMs": 1109.4,
+        "outputDurationSec": 30,
+        "realTimeFactor": 0.037,
+        "artifactSha256": "fa326881dcf4083ffcc689e5e12ad7266dd1eda1d2869f92bc20dea18ef2008c",
+        "passed": true
+      }
+    ],
+    "generationMs": {
+      "n": 5,
+      "median": 1084.5,
+      "mean": 1089.22,
+      "min": 1065.7,
+      "max": 1109.4,
+      "stdev": 18.0332,
+      "cv": 0.0166,
+      "p95": null
+    },
+    "realTimeFactor": {
+      "n": 5,
+      "median": 0.0362,
+      "mean": 0.0363,
+      "min": 0.0355,
+      "max": 0.037,
+      "stdev": 0.0006,
+      "cv": 0.0168,
+      "p95": null
+    },
+    "distinctMeasuredOutputs": 5,
+    "generationSource": "ACE-Step runner: wall time around each generate_music call (CUDA-synchronized), one loaded session. Start-up and load: time from process spawn until the runner announced the first iteration."
+  },
+  "telemetry": {
+    "method": "Wall time: process spawn to exit (model load included). Device GPU: nvidia-smi every 200 ms (memory used, utilization, memory utilization, temperature, power, SM clock; includes other processes; baseline recorded before start). Process tree: working set every 500 ms and Windows \"GPU Process Memory\" dedicated/shared counters about once per second (lower bounds on true peaks). System: CPU utilization and used RAM every 500 ms.",
+    "gpuSampleIntervalMs": 200,
+    "gpuSamples": 282,
+    "vramBaselineBytes": 1062207488,
+    "vramPeakBytes": 16201547776,
+    "gpuUtilizationPeakPct": 97,
+    "gpuUtilizationMeanPct": 7.7,
+    "gpuMemoryUtilizationPeakPct": 76,
+    "gpuTemperaturePeakC": 53,
+    "gpuPowerPeakW": 169.89,
+    "gpuPowerMeanW": 42.6,
+    "gpuSmClockMinMHz": 277,
+    "processSampleIntervalMs": 500,
+    "processSamples": 101,
+    "processRamPeakBytes": 9343053824,
+    "processGpuSamples": 45,
+    "processVramPeakBytes": 15103307776,
+    "processSharedGpuMemoryPeakBytes": 85983232,
+    "adapterSharedGpuMemoryStartBytes": 38146048,
+    "adapterSharedGpuMemoryPeakBytes": 123961344,
+    "cpuUtilizationPeakPct": 58.7,
+    "cpuUtilizationMeanPct": 12.6,
+    "systemRamBaselineBytes": 22313373696,
+    "systemRamPeakBytes": 33304514560
+  },
+  "artifacts": [
+    {
+      "path": "evidence-artifacts/run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7/warmup-01/46c178d7-0fc6-bebb-ce6b-b00e436d5bf5.wav",
+      "sha256": "742a32b7205a13d69eac9ce40292d94209e2d88002ada80631c8873f6f87fb66",
+      "bytes": 11520088,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7/iter-01/46c178d7-0fc6-bebb-ce6b-b00e436d5bf5.wav",
+      "sha256": "cf44885f1ebc83d32bbca62e2d642d44942d9e190f671c9028dcd17880b81c4f",
+      "bytes": 11520088,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7/iter-02/46c178d7-0fc6-bebb-ce6b-b00e436d5bf5.wav",
+      "sha256": "d30ac760b633f42644c2a5b65785b7b827f28f88f483e8262d0cb3c6c8a296ea",
+      "bytes": 11520088,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7/iter-03/46c178d7-0fc6-bebb-ce6b-b00e436d5bf5.wav",
+      "sha256": "527c65eb14011474a95dd563d541339294e496a0cd94ad858c9807970e05ce11",
+      "bytes": 11520088,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7/iter-04/46c178d7-0fc6-bebb-ce6b-b00e436d5bf5.wav",
+      "sha256": "3a9c6f9fc306ef07b8cf92fbd5ab472f6a344a4de10543c877baea361c4255d9",
+      "bytes": 11520088,
+      "format": "wav",
+      "storage": "local_only"
+    },
+    {
+      "path": "evidence-artifacts/run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7/iter-05/46c178d7-0fc6-bebb-ce6b-b00e436d5bf5.wav",
+      "sha256": "fa326881dcf4083ffcc689e5e12ad7266dd1eda1d2869f92bc20dea18ef2008c",
+      "bytes": 11520088,
+      "format": "wav",
+      "storage": "local_only"
+    }
+  ],
+  "failure": null,
+  "validation": {
+    "passed": true,
+    "validator": "audio_artifact",
+    "actualOutput": "wav float32 · 48000 Hz · 2 ch · 30.00 s · RMS -18.7 dBFS · peak -1.0 dBFS",
+    "expectedOutput": {
+      "format": "wav",
+      "minDurationSec": 25,
+      "maxDurationSec": 35,
+      "sampleRateHz": 48000,
+      "channels": 2,
+      "minRmsDbfs": -45
+    },
+    "details": "All 6 session outputs (5 measured, 1 warm-up) decoded and validated. First measured: wav float32 · 48000 Hz · 2 ch · 30.00 s · RMS -18.7 dBFS · peak -1.0 dBFS."
+  },
+  "rawEvidenceUrl": "/benchmark-evidence/run-2026-09-28T15-24-53-249Z-nd-audio-music-003-acestep-v15-turbo-pytorch-rtx-5080-2cf41fa7/record.json",
+  "logsSummary": "Warm session of ND-AUDIO-MUSIC-003 v1.0.0 on NVIDIA GeForce RTX 5080 via pytorch ace-step 1.5.0: PASS."
+}

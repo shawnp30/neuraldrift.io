@@ -44,3 +44,7 @@ repo_structure.txt
 
 tmp/
 .system_generated/
+
+# Local benchmark artifacts (generated audio etc.) and machine-specific benchmark targets
+evidence-artifacts/
+benchmark-targets.local.json

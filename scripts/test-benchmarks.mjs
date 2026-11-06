@@ -10,6 +10,7 @@ import {
   calculateConfigFingerprint,
   checkComparability,
   canonicalJson,
+  extractFingerprintPayload,
   generateBenchmarkRunId,
 } from '../lib/benchmarks/fingerprint.ts';
 import { getAllBenchmarks, getBenchmarkById } from '../lib/benchmarks/registry.ts';
@@ -251,4 +252,69 @@ assert(sampleRunId.includes('nd-llm-001'), 'Run ID must include workload ID');
 assert(sampleRunId.includes('rtx-5080'), 'Run ID must include GPU ID');
 console.log('8. Unique traceable benchmark run IDs: PASS');
 
-console.log('\n--- ALL LOCAL AI BENCHMARK TESTS PASSED (8/8) ---');
+// =========================================================================
+// 9. Backward compatibility: historical fingerprints are pinned
+// =========================================================================
+// These values were recorded before the audio/modality extensions. They must never change,
+// and historical evidence must never be rewritten to match new code.
+const HISTORICAL_FINGERPRINTS = {
+  'ND-LLM-001': '108fb295b3130c072e3126b845837ae53cd1638d7960a88a7299c96232d1f552',
+  'ND-AGENT-001': '6b3f1ce29db8cc1abf3b4a381de01901eea5b6024f5e1e430dc89f24205a5629',
+};
+for (const [wid, pinned] of Object.entries(HISTORICAL_FINGERPRINTS)) {
+  const historical = liveRecords.find((r) => r.workloadId === wid && r.timestamp.startsWith('2026-09-17'));
+  assert(historical, `Historical ${wid} record must still load from data/benchmark-records.json`);
+  assert.equal(historical.configFingerprint, pinned, `Stored ${wid} fingerprint must be unchanged`);
+  assert.equal(calculateConfigFingerprint(historical), pinned, `Recomputed ${wid} fingerprint must equal the pinned historical value`);
+}
+console.log('9. Historical ND-LLM-001 / ND-AGENT-001 fingerprints recompute identically: PASS');
+
+// =========================================================================
+// 10. Optional reproducibility fields: absent means absent
+// =========================================================================
+const legacyKeys = ['backend', 'driverVersion', 'gpuName', 'modelId', 'paradigm', 'quantization', 'runtime', 'runtimeVersion', 'workloadId', 'workloadVersion'];
+assert.deepEqual(Object.keys(extractFingerprintPayload(fixtureA)).sort(), legacyKeys, 'A record without optional fields must serialize only the legacy keys');
+const withEmptyOptionals = { ...fixtureA, model: { ...fixtureA.model, files: [] }, runtime: { ...fixtureA.runtime, flags: {} }, inputs: [], workflow: null };
+assert.equal(calculateConfigFingerprint(withEmptyOptionals), fp1, 'Empty optional collections must not alter the fingerprint');
+const hashed = (sha, p = 'model.gguf') => ({ path: p, sha256: sha, bytes: 1 });
+const withModelFile = { ...fixtureA, model: { ...fixtureA.model, files: [hashed('a'.repeat(64))] } };
+assert.notEqual(calculateConfigFingerprint(withModelFile), fp1, 'A recorded model-file hash must enter the fingerprint');
+const renamedModelFile = { ...fixtureA, model: { ...fixtureA.model, files: [hashed('a'.repeat(64), 'renamed/other-name.gguf')] } };
+assert.equal(calculateConfigFingerprint(renamedModelFile), calculateConfigFingerprint(withModelFile), 'Renaming a model file (same content) must not change the fingerprint');
+const changedModelFile = { ...fixtureA, model: { ...fixtureA.model, files: [hashed('b'.repeat(64))] } };
+assert.notEqual(calculateConfigFingerprint(changedModelFile), calculateConfigFingerprint(withModelFile), 'Changing model-file content must change the fingerprint');
+const withInput = { ...fixtureA, inputs: [{ role: 'reference_voice', ...hashed('c'.repeat(64), 'voice.wav') }] };
+const withOtherInput = { ...fixtureA, inputs: [{ role: 'reference_voice', ...hashed('d'.repeat(64), 'voice.wav') }] };
+assert.notEqual(calculateConfigFingerprint(withInput), calculateConfigFingerprint(withOtherInput), 'Same input filename with different content must change the fingerprint');
+for (const [label, variant] of [
+  ['workflow hash', { ...fixtureA, workflow: { id: 'wf-1', sha256: 'e'.repeat(64) } }],
+  ['runtime flags', { ...fixtureA, runtime: { ...fixtureA.runtime, flags: { flashAttention: true } } }],
+  ['precision', { ...fixtureA, runtime: { ...fixtureA.runtime, precision: 'bf16' } }],
+  ['attention backend', { ...fixtureA, runtime: { ...fixtureA.runtime, attentionBackend: 'sdpa' } }],
+]) {
+  assert.notEqual(calculateConfigFingerprint(variant), fp1, `A recorded ${label} must enter the fingerprint`);
+}
+assert.equal(checkComparability(withInput, withOtherInput).comparable, false, 'Runs on different input content must be incomparable');
+assert.equal(checkComparability(fixtureA, { ...fixtureA, workflow: { id: 'wf-1', sha256: 'e'.repeat(64) } }).comparable, false, 'Different workflow graphs must be incomparable');
+const fileDiff = checkComparability(withModelFile, changedModelFile);
+assert.equal(fileDiff.comparable, true);
+assert(fileDiff.warnings.some((w) => w.includes('different weight files')), 'Different weight files for the same model ID must be flagged');
+console.log('10. Optional fingerprint inputs: absent fields inert, content hashes (not filenames) enforced: PASS');
+
+// =========================================================================
+// 11. Validators fail closed
+// =========================================================================
+for (const type of ['custom_validator', 'numeric', 'not_a_real_validator']) {
+  const w = { ...wJson, expectedResult: { type, value: {} } };
+  const report = validateBenchmarkOutput(w, 'Any plausible, non-empty model output.');
+  assert.equal(report.passed, false, `Unknown/unimplemented validator "${type}" must FAIL, never pass by default`);
+  assert.equal(report.validator, 'unsupported_validator');
+  assert(report.errors?.[0].includes(type));
+}
+// Existing validators keep their behavior on unchanged inputs.
+assert.equal(validateBenchmarkOutput(wJson, validJsonOutput).passed, true);
+assert.equal(validateBenchmarkOutput(wTool, '', validToolCallContext).passed, true);
+assert.equal(validateBenchmarkOutput(wRag, validRagText).passed, true);
+console.log('11. Unknown validators FAIL closed; existing validators unchanged: PASS');
+
+console.log('\n--- ALL LOCAL AI BENCHMARK TESTS PASSED (11/11) ---');
