@@ -455,6 +455,8 @@ pre code {
   line-height: 1.12; 
   letter-spacing: -0.035em; 
   font-weight: 700; 
+  /* File names and paths have no spaces; wrap them instead of widening the page. */
+  overflow-wrap: anywhere;
 }
 
 .nd-site h1 { 
@@ -520,6 +522,7 @@ pre code {
   color: #cbd5e1; 
   line-height: 1.7; 
   font-weight: 400;
+  overflow-wrap: anywhere;
 }
 
 /* Hero Section */
@@ -1122,7 +1125,7 @@ pre code {
 
 .nd-site dl { 
   display: grid; 
-  grid-template-columns: 1fr 1fr; 
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); 
   gap: 0.8rem 1.2rem; 
 }
 
@@ -1185,6 +1188,11 @@ pre code {
 
 .nd-prose { 
   max-width: 840px; 
+}
+
+/* Inline paths and file names have no break points; wrap them on narrow screens. */
+.nd-site code { 
+  overflow-wrap: anywhere; 
 }
 
 .nd-site pre { 

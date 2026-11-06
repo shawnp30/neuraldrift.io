@@ -7,6 +7,7 @@ import { getNewsletterIssues } from '@/lib/newsletterIssues';
 import { TRACKED_MODELS } from '@/lib/emergingModels';
 import { getAllBenchmarks } from '@/lib/benchmarks/registry';
 import { isInvalidated } from '@/lib/benchmarks/errata';
+import { MODEL_FILES, SOURCES_CHECKED_AT, isIndexableModelFile } from '@/lib/modelFiles';
 
 // Static, canonical public pages (each carries its own pageMeta()-based canonical/OG
 // metadata). Intentionally NOT included, with reasons:
@@ -17,7 +18,6 @@ import { isInvalidated } from '@/lib/benchmarks/errata';
 // - /train, /cloud-generators — no canonical metadata wired up and not linked from
 //   primary navigation; not part of this pass's public content surface.
 // - /models/[...slug] — client-only mock/placeholder detail data (not real content).
-// - /pricing — describes a paid tier with no working checkout; not ready to index.
 // - /guides/best-workflows-8gb — placeholder stub outside the real content/guides system.
 // - /tools/benchmark-lookup, /gpu-guide/runpod, /workflows/create, /lora-training —
 //   contain estimates, example data, or simulated behavior without evidence sufficient
@@ -26,6 +26,7 @@ const STATIC_PATHS = [
   '/',
   '/workflows',
   '/guides',
+  '/model-files',
   '/compatibility',
   '/hardware',
   '/hardware/rtx-5080',
@@ -77,6 +78,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...getAllBenchmarks().filter((benchmark) => !isInvalidated(benchmark.id)).map((benchmark) => ({
       url: `${SITE_URL}/lab/benchmarks/${benchmark.id}`,
       lastModified: benchmark.timestamp.slice(0, 10),
+    })),
+    // Model files without a verified official source stay reachable but noindex.
+    ...MODEL_FILES.filter(isIndexableModelFile).map((model) => ({
+      url: `${SITE_URL}/model-files/${model.slug}`,
+      lastModified: SOURCES_CHECKED_AT,
     })),
   ];
 

@@ -39,7 +39,6 @@ const FORBIDDEN_PREFIXES = ['/api/', '/admin/', '/dashboard', '/auth/', '/stash'
 for (const prefix of FORBIDDEN_PREFIXES) {
   assert(!urls.some(url => url.startsWith(`${SITE_URL}${prefix}`)), `sitemap must not include private/API/result route: ${prefix}`);
 }
-assert(!urls.includes(`${SITE_URL}/pricing`), 'sitemap must not include the non-functional pricing page');
 assert(!urls.includes(`${SITE_URL}/guides/best-workflows-8gb`), 'sitemap must not include the placeholder guide stub');
 assert(!urls.some(url => url.startsWith(`${SITE_URL}/models/`)), 'sitemap must not include mock-data model detail pages');
 assert(!urls.includes(`${SITE_URL}/models`), 'sitemap must not include the live, client-fed model discovery hub');

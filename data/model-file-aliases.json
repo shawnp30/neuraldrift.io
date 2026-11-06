@@ -1,0 +1,17 @@
+{
+  "mm_sd_v15_v3.ckpt": {
+    "officialFile": "v3_sd15_mm.ckpt",
+    "officialUrl": "https://huggingface.co/guoyww/animatediff/resolve/main/v3_sd15_mm.ckpt",
+    "note": "The AnimateDiff repository publishes its v3 motion module for SD 1.5 as v3_sd15_mm.ckpt. No file named mm_sd_v15_v3.ckpt exists in the official repository."
+  },
+  "dreamshaper_8.safetensors": {
+    "officialFile": "DreamShaper_8_pruned.safetensors",
+    "officialUrl": "https://huggingface.co/Lykon/DreamShaper/resolve/main/DreamShaper_8_pruned.safetensors",
+    "note": "Lykon's Hugging Face repository publishes DreamShaper 8 as DreamShaper_8_pruned.safetensors. No file named dreamshaper_8.safetensors exists there."
+  },
+  "controlnet-canny-sdxl-1.0.safetensors": {
+    "officialFile": "diffusion_pytorch_model.safetensors",
+    "officialUrl": "https://huggingface.co/diffusers/controlnet-canny-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors",
+    "note": "The diffusers/controlnet-canny-sdxl-1.0 repository stores the model under the generic diffusers name diffusion_pytorch_model.safetensors. Workflows usually rename it after download so it can be told apart from other ControlNets."
+  }
+}

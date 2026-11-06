@@ -537,7 +537,7 @@
       {
         "file": "realisticVisionV60B1_v60B1VAE.safetensors",
         "dir": "ComfyUI/models/checkpoints/",
-        "downloadUrl": "https://huggingface.co/SG_161222/Realistic_Vision_V6.0_B1_noVAE"
+        "downloadUrl": null
       },
       {
         "file": "mm_sd_v15_v3.ckpt",
@@ -582,7 +582,9 @@
       }
     ],
     "inputFiles": [],
-    "missingModelSources": []
+    "missingModelSources": [
+      "realisticVisionV60B1_v60B1VAE.safetensors"
+    ]
   },
   "16": {
     "source": "Existing NeuralDrift workflow asset",
@@ -704,7 +706,7 @@
       {
         "file": "deliberate_v6.safetensors",
         "dir": "ComfyUI/models/checkpoints/",
-        "downloadUrl": "https://huggingface.co/XpucT/Deliberate"
+        "downloadUrl": null
       },
       {
         "file": "mm_sd_v15_v3.ckpt",
@@ -749,7 +751,9 @@
       }
     ],
     "inputFiles": [],
-    "missingModelSources": []
+    "missingModelSources": [
+      "deliberate_v6.safetensors"
+    ]
   },
   "19": {
     "source": "Existing NeuralDrift workflow asset",
@@ -867,7 +871,7 @@
       {
         "file": "RealESRGAN_x4plus.pth",
         "dir": "ComfyUI/models/upscale_models/",
-        "downloadUrl": "https://huggingface.co/ai-forever/Real-ESRGAN/tree/main"
+        "downloadUrl": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth"
       }
     ],
     "nodeTypes": [
@@ -893,7 +897,7 @@
       {
         "file": "RealESRGAN_x4plus_anime_6B.pth",
         "dir": "ComfyUI/models/upscale_models/",
-        "downloadUrl": "https://huggingface.co/ai-forever/Real-ESRGAN/tree/main"
+        "downloadUrl": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth"
       }
     ],
     "nodeTypes": [
@@ -1091,7 +1095,7 @@
       {
         "file": "sd-v1-5-inpainting.ckpt",
         "dir": "ComfyUI/models/checkpoints/",
-        "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5"
+        "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.ckpt"
       }
     ],
     "nodeTypes": [
@@ -1412,7 +1416,7 @@
       {
         "file": "v1-5-pruned-emaonly-fp16.safetensors",
         "dir": "ComfyUI/models/checkpoints/",
-        "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5"
+        "downloadUrl": "https://huggingface.co/Comfy-Org/stable-diffusion-1.5/resolve/main/v1-5-pruned-emaonly-fp16.safetensors"
       },
       {
         "file": "control_v11p_sd15_openpose.pth",
@@ -1532,7 +1536,7 @@
       {
         "file": "v1-5-pruned-emaonly-fp16.safetensors",
         "dir": "ComfyUI/models/checkpoints/",
-        "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5"
+        "downloadUrl": "https://huggingface.co/Comfy-Org/stable-diffusion-1.5/resolve/main/v1-5-pruned-emaonly-fp16.safetensors"
       },
       {
         "file": "control_v11f1e_sd15_tile.pth",
@@ -1894,7 +1898,7 @@
       {
         "file": "deliberate_v6.safetensors",
         "dir": "ComfyUI/models/checkpoints/",
-        "downloadUrl": "https://huggingface.co/XpucT/Deliberate"
+        "downloadUrl": null
       }
     ],
     "nodeTypes": [
@@ -1933,7 +1937,9 @@
       }
     ],
     "inputFiles": [],
-    "missingModelSources": []
+    "missingModelSources": [
+      "deliberate_v6.safetensors"
+    ]
   },
   "43": {
     "source": "https://github.com/Comfy-Org/workflow_templates/blob/main/templates/audio_ace_step_1_5_checkpoint.json",
@@ -2546,7 +2552,7 @@
       {
         "file": "v1-5-pruned-emaonly-fp16.safetensors",
         "dir": "ComfyUI/models/checkpoints/",
-        "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-v1-5"
+        "downloadUrl": "https://huggingface.co/Comfy-Org/stable-diffusion-1.5/resolve/main/v1-5-pruned-emaonly-fp16.safetensors"
       }
     ],
     "nodeTypes": [

@@ -21,10 +21,12 @@
     "test:indexability": "node --require ./scripts/register-ts.cjs scripts/test-indexability.mjs",
     "test:benchmarks": "node --require ./scripts/register-ts.cjs scripts/test-benchmarks.mjs && node --require ./scripts/register-ts.cjs scripts/test-audio-benchmarks.mjs",
     "newsletter:broadcast": "node --require ./scripts/register-ts.cjs scripts/publish-neuraldrift-weekly.mjs",
-    "test": "npm run test:compatibility && npm run test:multi-gpu && npm run test:runner && npm run test:workflow-download && npm run test:newsletter && npm run test:broadcast && npm run test:sitemap && npm run test:indexability && npm run test:benchmarks",
+    "test": "npm run test:compatibility && npm run test:multi-gpu && npm run test:runner && npm run test:workflow-download && npm run test:newsletter && npm run test:broadcast && npm run test:sitemap && npm run test:model-files && npm run test:indexability && npm run test:benchmarks",
     "evidence:run": "node scripts/run-execution.mjs",
     "evidence:hardware": "node --require ./scripts/register-ts.cjs scripts/register-hardware.mjs",
-    "test:runner": "node scripts/test-execution-runner.mjs"
+    "test:runner": "node scripts/test-execution-runner.mjs",
+    "test:model-files": "node --require ./scripts/register-ts.cjs scripts/test-model-files.mjs",
+    "model-sources:verify": "node scripts/verify-model-sources.mjs"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",

@@ -1,0 +1,375 @@
+{
+  "checkedAt": "2026-11-06",
+  "files": {
+    "ace_step_1.5_turbo_aio.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/ACE-Step-1.5",
+      "path": "checkpoints/ace_step_1.5_turbo_aio.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/ACE-Step-1.5/resolve/main/checkpoints/ace_step_1.5_turbo_aio.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/ACE-Step-1.5/blob/main/checkpoints/ace_step_1.5_turbo_aio.safetensors",
+      "sizeBytes": 10025478736,
+      "sha256": "67b0f43aa5c51c840bd0228e6a935d8ff416ec87e5df2fc0637da17a561252bc",
+      "gated": false
+    },
+    "ae.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Lumina-Image-2",
+      "path": "split_files/vae/ae.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Lumina-Image-2/resolve/main/split_files/vae/ae.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Lumina-Image-2/blob/main/split_files/vae/ae.safetensors",
+      "sizeBytes": 335304388,
+      "sha256": "afc8e28272cd15db3919bacdb6918ce9c1ed22e96cb12c4d5ed0fba823529e38",
+      "gated": false
+    },
+    "Chroma1-HD-fp8mixed.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Chroma1-HD",
+      "path": "split_files/diffusion_models/Chroma1-HD-fp8mixed.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Chroma1-HD/resolve/main/split_files/diffusion_models/Chroma1-HD-fp8mixed.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Chroma1-HD/blob/main/split_files/diffusion_models/Chroma1-HD-fp8mixed.safetensors",
+      "sizeBytes": 9193379316,
+      "sha256": "a2928ca6075f308f4d5e2182e2b96120fa8ad270ec6ea9b1b5c724c85c49a575",
+      "gated": false
+    },
+    "clip_g_hidream.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/HiDream",
+      "path": "split_files/text_encoders/clip_g_hidream.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream/resolve/main/split_files/text_encoders/clip_g_hidream.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/HiDream/blob/main/split_files/text_encoders/clip_g_hidream.safetensors",
+      "sizeBytes": 1389743104,
+      "sha256": "3771e70e36450e5199f30bad61a53faae85a2e02606974bcda0a6a573c0519d5",
+      "gated": false
+    },
+    "clip_l_hidream.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/HiDream",
+      "path": "split_files/text_encoders/clip_l_hidream.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream/resolve/main/split_files/text_encoders/clip_l_hidream.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/HiDream/blob/main/split_files/text_encoders/clip_l_hidream.safetensors",
+      "sizeBytes": 247586528,
+      "sha256": "706fdb88e22e18177b207837c02f4b86a652abca0302821f2bfa24ac6aea4f71",
+      "gated": false
+    },
+    "clip_l.safetensors": {
+      "host": "huggingface",
+      "repo": "comfyanonymous/flux_text_encoders",
+      "path": "clip_l.safetensors",
+      "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors",
+      "pageUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/clip_l.safetensors",
+      "sizeBytes": 246144152,
+      "sha256": "660c6f5b1abae9dc498ac2d21e1347d2abdb0cf6c0c0c8576cd796491d9a6cdd",
+      "gated": false
+    },
+    "control_v11f1e_sd15_tile.pth": {
+      "host": "huggingface",
+      "repo": "lllyasviel/ControlNet-v1-1",
+      "path": "control_v11f1e_sd15_tile.pth",
+      "downloadUrl": "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11f1e_sd15_tile.pth",
+      "pageUrl": "https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11f1e_sd15_tile.pth",
+      "sizeBytes": 1445235023,
+      "sha256": "8aa69b8d391e72c2fced6a650268137dc0ed594cafe8a2c0f8b994799a21979b",
+      "gated": false
+    },
+    "control_v11p_sd15_lineart.pth": {
+      "host": "huggingface",
+      "repo": "lllyasviel/ControlNet-v1-1",
+      "path": "control_v11p_sd15_lineart.pth",
+      "downloadUrl": "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart.pth",
+      "pageUrl": "https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_lineart.pth",
+      "sizeBytes": 1445235365,
+      "sha256": "fb5fb912696830da948e5056b50adfa3fcc68ff760c43e4e7a8499853af43c61",
+      "gated": false
+    },
+    "control_v11p_sd15_openpose.pth": {
+      "host": "huggingface",
+      "repo": "lllyasviel/ControlNet-v1-1",
+      "path": "control_v11p_sd15_openpose.pth",
+      "downloadUrl": "https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_openpose.pth",
+      "pageUrl": "https://huggingface.co/lllyasviel/ControlNet-v1-1/blob/main/control_v11p_sd15_openpose.pth",
+      "sizeBytes": 1445235707,
+      "sha256": "db97becd92cd19aff71352a60e93c2508decba3dee64f01f686727b9b406a9dd",
+      "gated": false
+    },
+    "controlnet-canny-sdxl-1.0.safetensors": {
+      "host": "huggingface",
+      "repo": "diffusers/controlnet-canny-sdxl-1.0",
+      "path": "diffusion_pytorch_model.safetensors",
+      "downloadUrl": "https://huggingface.co/diffusers/controlnet-canny-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors",
+      "pageUrl": "https://huggingface.co/diffusers/controlnet-canny-sdxl-1.0/blob/main/diffusion_pytorch_model.safetensors",
+      "sizeBytes": 5004167864,
+      "sha256": "ea99040544a999f814fd854575a3aee069a005d026864c8d321b82576706a221",
+      "gated": false
+    },
+    "diffusion_pytorch_model.safetensors": {
+      "host": "huggingface",
+      "repo": "diffusers/controlnet-depth-sdxl-1.0",
+      "path": "diffusion_pytorch_model.safetensors",
+      "downloadUrl": "https://huggingface.co/diffusers/controlnet-depth-sdxl-1.0/resolve/main/diffusion_pytorch_model.safetensors",
+      "pageUrl": "https://huggingface.co/diffusers/controlnet-depth-sdxl-1.0/blob/main/diffusion_pytorch_model.safetensors",
+      "sizeBytes": 5004167860,
+      "sha256": "b760b1ed26970c7c60abbcef08e7238bb9428bee510a405aff239e06a1471945",
+      "gated": false
+    },
+    "dreamshaper_8.safetensors": {
+      "host": "huggingface",
+      "repo": "Lykon/DreamShaper",
+      "path": "DreamShaper_8_pruned.safetensors",
+      "downloadUrl": "https://huggingface.co/Lykon/DreamShaper/resolve/main/DreamShaper_8_pruned.safetensors",
+      "pageUrl": "https://huggingface.co/Lykon/DreamShaper/blob/main/DreamShaper_8_pruned.safetensors",
+      "sizeBytes": 2132625894,
+      "sha256": "879db523c30d3b9017143d56705015e15a2cb5628762c11d086fed9538abd7fd",
+      "gated": false
+    },
+    "flux1-dev.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Flux-1-Dev",
+      "path": "flux1-dev.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Flux-1-Dev/resolve/main/flux1-dev.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Flux-1-Dev/blob/main/flux1-dev.safetensors",
+      "sizeBytes": 23802932552,
+      "sha256": "4610115bb0c89560703c892c59ac2742fa821e60ef5871b33493ba544683abd7",
+      "gated": false
+    },
+    "flux1-schnell.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Flux-1-Schnell",
+      "path": "flux1-schnell.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Flux-1-Schnell/resolve/main/flux1-schnell.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Flux-1-Schnell/blob/main/flux1-schnell.safetensors",
+      "sizeBytes": 23782506688,
+      "sha256": "9403429e0052277ac2a87ad800adece5481eecefd9ed334e1f348723621d2a0a",
+      "gated": false
+    },
+    "gemma_3_12B_it_fp4_mixed.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/ltx-2",
+      "path": "split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/ltx-2/blob/main/split_files/text_encoders/gemma_3_12B_it_fp4_mixed.safetensors",
+      "sizeBytes": 9447702218,
+      "sha256": "aaca463d11e6d8d2a4bdb0d6299214c15ef78a3f73e0ef8113d5a9d0219b3f6d",
+      "gated": false
+    },
+    "gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/ltx-2",
+      "path": "split_files/loras/gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2/resolve/main/split_files/loras/gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/ltx-2/blob/main/split_files/loras/gemma-3-12b-it-abliterated_lora_rank64_bf16.safetensors",
+      "sizeBytes": 628203616,
+      "sha256": "87bcabeac9bec9f374232b5122d6511c2b2112d479e50176149e944b3712eb4a",
+      "gated": false
+    },
+    "hidream_i1_dev_fp8.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/HiDream",
+      "path": "split_files/diffusion_models/hidream_i1_dev_fp8.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream/resolve/main/split_files/diffusion_models/hidream_i1_dev_fp8.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/HiDream/blob/main/split_files/diffusion_models/hidream_i1_dev_fp8.safetensors",
+      "sizeBytes": 17105946040,
+      "sha256": "9a372d7384d56e34a8cc7fd77a0fa3d26d6b75d82c7582fd5347e2fd9e6f8664",
+      "gated": false
+    },
+    "llama_3.1_8b_instruct_fp8_scaled.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/HiDream",
+      "path": "split_files/text_encoders/llama_3.1_8b_instruct_fp8_scaled.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream/resolve/main/split_files/text_encoders/llama_3.1_8b_instruct_fp8_scaled.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/HiDream/blob/main/split_files/text_encoders/llama_3.1_8b_instruct_fp8_scaled.safetensors",
+      "sizeBytes": 9081258056,
+      "sha256": "9f86897bbeb933ef4fd06297740edb8dd962c94efcd92b373a11460c33765ea6",
+      "gated": false
+    },
+    "ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/ltx-2.3",
+      "path": "split_files/loras/ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/ltx-2.3/resolve/main/split_files/loras/ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/ltx-2.3/blob/main/split_files/loras/ltx_2.3_22b_distilled_1.1_lora_dynamic_fro09_avg_rank_111_bf16.safetensors",
+      "sizeBytes": 2741024390,
+      "sha256": "31e0c0195fb841bf31af78e8b60858f489e87ddcea4a5239abc80943da65e3ac",
+      "gated": false
+    },
+    "ltx-2.3-22b-dev-fp8.safetensors": {
+      "host": "huggingface",
+      "repo": "Lightricks/LTX-2.3-fp8",
+      "path": "ltx-2.3-22b-dev-fp8.safetensors",
+      "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3-fp8/resolve/main/ltx-2.3-22b-dev-fp8.safetensors",
+      "pageUrl": "https://huggingface.co/Lightricks/LTX-2.3-fp8/blob/main/ltx-2.3-22b-dev-fp8.safetensors",
+      "sizeBytes": 29145431166,
+      "sha256": "28606c5b5a06ce56f896d4dfcb20f212739e07a68fbe48e53638188449d26450",
+      "gated": false
+    },
+    "ltx-2.3-spatial-upscaler-x2-1.1.safetensors": {
+      "host": "huggingface",
+      "repo": "Lightricks/LTX-2.3",
+      "path": "ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+      "downloadUrl": "https://huggingface.co/Lightricks/LTX-2.3/resolve/main/ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+      "pageUrl": "https://huggingface.co/Lightricks/LTX-2.3/blob/main/ltx-2.3-spatial-upscaler-x2-1.1.safetensors",
+      "sizeBytes": 995743560,
+      "sha256": "5f416311fa8172b65af67530758964708d29a317b830d689a51143b7f91913ed",
+      "gated": false
+    },
+    "mm_sd_v15_v3.ckpt": {
+      "host": "huggingface",
+      "repo": "guoyww/animatediff",
+      "path": "v3_sd15_mm.ckpt",
+      "downloadUrl": "https://huggingface.co/guoyww/animatediff/resolve/main/v3_sd15_mm.ckpt",
+      "pageUrl": "https://huggingface.co/guoyww/animatediff/blob/main/v3_sd15_mm.ckpt",
+      "sizeBytes": 1673262583,
+      "sha256": "2412711886f61091846f53204aabc38aa6e09356d62a9808abe4daa802168343",
+      "gated": false
+    },
+    "qwen_2.5_vl_7b_fp8_scaled.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Qwen-Image",
+      "path": "split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Qwen-Image/resolve/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Qwen-Image/blob/main/split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors",
+      "sizeBytes": 9384670680,
+      "sha256": "cb5636d852a0ea6a9075ab1bef496c0db7aef13c02350571e388aea959c5c0b4",
+      "gated": false
+    },
+    "qwen_image_edit_fp8_e4m3fn.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Qwen-Image-Edit",
+      "path": "split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Qwen-Image-Edit/resolve/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Qwen-Image-Edit/blob/main/split_files/diffusion_models/qwen_image_edit_fp8_e4m3fn.safetensors",
+      "sizeBytes": 20430635136,
+      "sha256": "393c6743d1de2e9031b5197027b36116f2096958ccc0223526d34e1860266021",
+      "gated": false
+    },
+    "qwen_image_vae.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Qwen-Image",
+      "path": "split_files/vae/qwen_image_vae.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Qwen-Image/resolve/main/split_files/vae/qwen_image_vae.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Qwen-Image/blob/main/split_files/vae/qwen_image_vae.safetensors",
+      "sizeBytes": 253806246,
+      "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f",
+      "gated": false
+    },
+    "Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors": {
+      "host": "huggingface",
+      "repo": "lightx2v/Qwen-Image-Lightning",
+      "path": "Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors",
+      "downloadUrl": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/resolve/main/Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors",
+      "pageUrl": "https://huggingface.co/lightx2v/Qwen-Image-Lightning/blob/main/Qwen-Image-Edit-Lightning-4steps-V1.0-bf16.safetensors",
+      "sizeBytes": 849608296,
+      "sha256": "d8132c32e7df906603dd6b072ff2fb0af88ab15ef0f3ac697a2011c8b47bbeb1",
+      "gated": false
+    },
+    "RealESRGAN_x4plus_anime_6B.pth": {
+      "host": "github",
+      "repo": "xinntao/Real-ESRGAN",
+      "path": "RealESRGAN_x4plus_anime_6B.pth",
+      "downloadUrl": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.2.2.4/RealESRGAN_x4plus_anime_6B.pth",
+      "pageUrl": "https://github.com/xinntao/Real-ESRGAN/releases/tag/v0.2.2.4",
+      "sizeBytes": 17938799,
+      "sha256": null,
+      "gated": false
+    },
+    "RealESRGAN_x4plus.pth": {
+      "host": "github",
+      "repo": "xinntao/Real-ESRGAN",
+      "path": "RealESRGAN_x4plus.pth",
+      "downloadUrl": "https://github.com/xinntao/Real-ESRGAN/releases/download/v0.1.0/RealESRGAN_x4plus.pth",
+      "pageUrl": "https://github.com/xinntao/Real-ESRGAN/releases/tag/v0.1.0",
+      "sizeBytes": 67040989,
+      "sha256": null,
+      "gated": false
+    },
+    "sd_xl_base_1.0.safetensors": {
+      "host": "huggingface",
+      "repo": "stabilityai/stable-diffusion-xl-base-1.0",
+      "path": "sd_xl_base_1.0.safetensors",
+      "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/resolve/main/sd_xl_base_1.0.safetensors",
+      "pageUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/sd_xl_base_1.0.safetensors",
+      "sizeBytes": 6938078334,
+      "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b",
+      "gated": false
+    },
+    "sd_xl_refiner_1.0.safetensors": {
+      "host": "huggingface",
+      "repo": "stabilityai/stable-diffusion-xl-refiner-1.0",
+      "path": "sd_xl_refiner_1.0.safetensors",
+      "downloadUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/resolve/main/sd_xl_refiner_1.0.safetensors",
+      "pageUrl": "https://huggingface.co/stabilityai/stable-diffusion-xl-refiner-1.0/blob/main/sd_xl_refiner_1.0.safetensors",
+      "sizeBytes": 6075981930,
+      "sha256": "7440042bbdc8a24813002c09b6b69b64dc90fded4472613437b7f55f9b7d9c5f",
+      "gated": false
+    },
+    "sd-v1-5-inpainting.ckpt": {
+      "host": "huggingface",
+      "repo": "stable-diffusion-v1-5/stable-diffusion-inpainting",
+      "path": "sd-v1-5-inpainting.ckpt",
+      "downloadUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting/resolve/main/sd-v1-5-inpainting.ckpt",
+      "pageUrl": "https://huggingface.co/stable-diffusion-v1-5/stable-diffusion-inpainting/blob/main/sd-v1-5-inpainting.ckpt",
+      "sizeBytes": 4265437280,
+      "sha256": "c6bbc15e3224e6973459ba78de4998b80b50112b0ae5b5c67113d56b4e366b19",
+      "gated": false
+    },
+    "t5xxl_fp16.safetensors": {
+      "host": "huggingface",
+      "repo": "comfyanonymous/flux_text_encoders",
+      "path": "t5xxl_fp16.safetensors",
+      "downloadUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors",
+      "pageUrl": "https://huggingface.co/comfyanonymous/flux_text_encoders/blob/main/t5xxl_fp16.safetensors",
+      "sizeBytes": 9787841024,
+      "sha256": "6e480b09fae049a72d2a8c5fbccb8d3e92febeb233bbe9dfe7256958a9167635",
+      "gated": false
+    },
+    "t5xxl_fp8_e4m3fn_scaled.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/HiDream",
+      "path": "split_files/text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/HiDream/resolve/main/split_files/text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/HiDream/blob/main/split_files/text_encoders/t5xxl_fp8_e4m3fn_scaled.safetensors",
+      "sizeBytes": 5157348688,
+      "sha256": "a498f0485dc9536735258018417c3fd7758dc3bccc0a645feaa472b34955557a",
+      "gated": false
+    },
+    "umt5_xxl_fp8_e4m3fn_scaled.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Wan-2.1",
+      "path": "split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Wan-2.1/resolve/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Wan-2.1/blob/main/split_files/text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "sizeBytes": 6735906897,
+      "sha256": "c3355d30191f1f066b26d93fba017ae9809dce6c627dda5f6a66eaa651204f68",
+      "gated": false
+    },
+    "v1-5-pruned-emaonly-fp16.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/stable-diffusion-1.5",
+      "path": "v1-5-pruned-emaonly-fp16.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/stable-diffusion-1.5/resolve/main/v1-5-pruned-emaonly-fp16.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/stable-diffusion-1.5/blob/main/v1-5-pruned-emaonly-fp16.safetensors",
+      "sizeBytes": 2132696762,
+      "sha256": "e9476a13728cd75d8279f6ec8bad753a66a1957ca375a1464dc63b37db6e3916",
+      "gated": false
+    },
+    "wan_2.1_vae.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Wan-2.1",
+      "path": "split_files/vae/wan_2.1_vae.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Wan-2.1/resolve/main/split_files/vae/wan_2.1_vae.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Wan-2.1/blob/main/split_files/vae/wan_2.1_vae.safetensors",
+      "sizeBytes": 253815318,
+      "sha256": "2fc39d31359a4b0a64f55876d8ff7fa8d780956ae2cb13463b0223e15148976b",
+      "gated": false
+    },
+    "wan2.1_t2v_1.3B_fp16.safetensors": {
+      "host": "huggingface",
+      "repo": "Comfy-Org/Wan-2.1",
+      "path": "split_files/diffusion_models/wan2.1_t2v_1.3B_fp16.safetensors",
+      "downloadUrl": "https://huggingface.co/Comfy-Org/Wan-2.1/resolve/main/split_files/diffusion_models/wan2.1_t2v_1.3B_fp16.safetensors",
+      "pageUrl": "https://huggingface.co/Comfy-Org/Wan-2.1/blob/main/split_files/diffusion_models/wan2.1_t2v_1.3B_fp16.safetensors",
+      "sizeBytes": 2838303560,
+      "sha256": "be531024cd9018cb5b48c40cfbb6a6191645b1c792eb8bf4f8c1c6e10f924dc5",
+      "gated": false
+    }
+  }
+}
