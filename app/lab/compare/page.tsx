@@ -16,8 +16,8 @@ interface Props {
 export function generateMetadata({ searchParams }: Props): Metadata {
   const base = pageMeta(
     '/lab/compare',
-    'Benchmark Comparison Engine — NeuralDrift Lab',
-    'Scientifically compare local AI benchmark runs across hardware, runtimes, and models with strict comparability validation.'
+    'Compare Local AI Benchmark Runs Side by Side',
+    'Pick two NeuralDrift benchmark runs and compare LLM, agent, and audio metrics across GPUs, runtimes, and models, with checks that flag runs that are not comparable.'
   );
   return { ...base, robots: { index: !searchParams.a && !searchParams.b, follow: true } };
 }

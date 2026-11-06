@@ -4,7 +4,7 @@ import { pageMeta } from "@/lib/seo";
 
 const baseMetadata = pageMeta(
   "/pricing",
-  "Pricing | NeuralDrift",
+  "Pricing",
   "Simple pricing for premium workflows and tools on NeuralDrift."
 );
 

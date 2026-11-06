@@ -4,7 +4,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/changelog",
-  "Changelog | NeuralDrift",
+  "Changelog",
   "Recent updates and new workflows added to NeuralDrift."
 );
 

@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 export const metadata: Metadata = pageMeta(
   "/tools",
-  "AI Builder Tools — VRAM, Captions & Benchmarks | NeuralDrift",
+  "AI Builder Tools — VRAM, Captions & Benchmarks",
   "Free utilities for local AI: VRAM calculator, dataset captioning, and GPU benchmark lookup."
 );
 

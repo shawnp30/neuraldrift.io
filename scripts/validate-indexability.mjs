@@ -50,8 +50,10 @@ await assertPage('/lab/audio?task=tts', { indexable: false, canonicalPath: '/lab
 await assertPage('/datasets', { indexable: false, canonicalPath: '/datasets' });
 await assertPage('/train', { indexable: false, canonicalPath: '/train' });
 await assertPage('/cloud-generators', { indexable: false, canonicalPath: '/cloud-generators' });
-for (const path of ['/guides/comfyui-complete-setup', '/guides/ltx-video-cinematic-action', '/guides/train-flux-lora']) {
-  await assertPage(path, { indexable: false, canonicalPath: path });
+await assertPage('/guides/ltx-video-cinematic-action', { indexable: false, canonicalPath: '/guides/ltx-video-cinematic-action' });
+// Released from the evidence hold once their run times were tied to execution records.
+for (const path of ['/guides/comfyui-complete-setup', '/guides/train-flux-lora']) {
+  await assertPage(path, { indexable: true, canonicalPath: path });
 }
 
 for (const [path, target] of [['/workflows/7', '/workflows/07'], ['/proof', '/proofs'], ['/proof/upload', '/proofs/upload'], ['/loras', '/lora-training'], ['/tools/prompt-generator', '/prompt-generator']]) {

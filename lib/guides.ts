@@ -7,9 +7,7 @@ import matter from 'gray-matter';
 // primary-source review. They remain available as references, but must not be
 // promoted as canonical search content until that editorial work is complete.
 export const INDEXABILITY_HOLD_GUIDES = new Set([
-  'comfyui-complete-setup',
   'ltx-video-cinematic-action',
-  'train-flux-lora',
 ]);
 
 export function isIndexableGuide(slug: string) {

@@ -23,11 +23,11 @@ export function generateMetadata({ params }: Props): Metadata {
   const issue = getNewsletterIssueBySlug(params.slug);
   if (!issue) {
     return {
-      title: "Issue Not Found | NeuralDrift Weekly",
+      title: "Issue Not Found",
       robots: { index: false, follow: true },
     };
   }
-  const base = pageMeta(`/newsletter/${issue.slug}`, `${issue.title} | NeuralDrift Weekly`, issue.description);
+  const base = pageMeta(`/newsletter/${issue.slug}`, issue.title, issue.description);
   return { ...base, openGraph: { ...base.openGraph, type: "article" } };
 }
 

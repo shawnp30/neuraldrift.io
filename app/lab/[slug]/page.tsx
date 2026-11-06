@@ -40,11 +40,11 @@ export function generateStaticParams() {
 export function generateMetadata({ params }: Props): Metadata {
   const model = getTrackedModelBySlug(params.slug);
   if (!model) {
-    return { title: "Not Found | NeuralDrift Lab", robots: { index: false, follow: true } };
+    return { title: "Not Found", robots: { index: false, follow: true } };
   }
   return pageMeta(
     `/lab/${model.slug}`,
-    `${model.shortName} — NeuralDrift Lab`,
+    model.shortName,
     model.summary
   );
 }

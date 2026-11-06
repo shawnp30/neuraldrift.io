@@ -22,7 +22,7 @@ interface Props {
 export function generateMetadata({ searchParams }: Props): Metadata {
   const base = pageMeta(
     '/lab/audio',
-    'Local Audio AI on RTX 5080 — ACE-Step 1.5 via audio.cpp | NeuralDrift Lab',
+    'Local Audio AI on RTX 5080 — ACE-Step 1.5 via audio.cpp',
     'Measured local audio generation: ACE-Step 1.5 Turbo through audio.cpp and the ACE-Step Python reference on an RTX 5080, with telemetry, validated artifacts, fingerprints, licenses, and audio.cpp model support by task.'
   );
   // Only the clean URL is indexable; any parameterized variant is noindex, follow.

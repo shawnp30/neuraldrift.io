@@ -7,7 +7,7 @@ import { resolveHardwareTarget } from '@/lib/hardware/compatibility';
 
 type Props = { searchParams: Record<string, string | string[] | undefined> };
 export function generateMetadata({ searchParams }: Props) {
-  return { ...pageMeta('/workflows', 'ComfyUI workflow catalog', 'Find ComfyUI workflows by available VRAM, output type, model and difficulty. Explore setup details and download JSON files.'), robots: { index: Object.keys(searchParams).length === 0, follow: true } };
+  return { ...pageMeta('/workflows', 'ComfyUI Workflows — JSON Downloads by VRAM, Model & Output', 'Find ComfyUI workflows by available VRAM, output type, model and difficulty. Explore setup details and download JSON files.'), robots: { index: Object.keys(searchParams).length === 0, follow: true } };
 }
 export default function WorkflowsPage({ searchParams }: Props) {
   const gpuParam = typeof searchParams.gpu === 'string' ? searchParams.gpu : '';

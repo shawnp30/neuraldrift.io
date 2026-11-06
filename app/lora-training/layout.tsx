@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 const baseMetadata = pageMeta(
   "/lora-training",
-  "LoRA Training — Guides & Resources | NeuralDrift",
+  "LoRA Training — Guides & Resources",
   "Learn how to train LoRAs for Flux, SDXL, and more with practical dataset and tooling guidance."
 );
 

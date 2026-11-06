@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { CATALOG } from "@/lib/catalog";
+import { CATALOG, WORKFLOW_ASSETS } from "@/lib/catalog";
 import { SITE_URL } from "@/lib/seo";
 
 export async function generateMetadata({
@@ -20,13 +20,20 @@ export async function generateMetadata({
     };
   }
 
+  // Name the required model files and their folders: searches for a model
+  // filename land on these pages, and the snippet should answer "where does it go".
+  const models = WORKFLOW_ASSETS[workflow.id]?.models ?? [];
+  const description = models.length
+    ? `${workflow.description} Models: ${models.map((m) => `${m.file} → ${m.dir.replace(/^ComfyUI\//, "")}`).join(", ")}.`
+    : workflow.description;
+
   return {
     title: workflow.title,
-    description: workflow.description,
+    description,
     alternates: { canonical: url },
     openGraph: {
       title: workflow.title,
-      description: workflow.description,
+      description,
       url,
       siteName: "NeuralDrift",
       type: "article",
@@ -44,7 +51,7 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       title: workflow.title,
-      description: workflow.description,
+      description,
       images: [
         workflow.imageUrl.startsWith("http")
           ? workflow.imageUrl

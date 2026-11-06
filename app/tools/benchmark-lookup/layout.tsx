@@ -3,7 +3,7 @@ import { pageMeta } from "@/lib/seo";
 
 const baseMetadata = pageMeta(
   "/tools/benchmark-lookup",
-  "GPU Benchmark Lookup — NeuralDrift",
+  "GPU Benchmark Lookup",
   "Look up inference-oriented GPU benchmarks to sanity-check ComfyUI and local model performance."
 );
 

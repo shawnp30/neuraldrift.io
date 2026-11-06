@@ -9,7 +9,7 @@ import { EvidenceClassBadge } from '@/components/lab/EvidenceClassBadge';
 
 export const metadata = pageMeta(
   '/lab/runtimes',
-  'Local AI Runtimes — Tested Versions, Evidence & Everyday Status | NeuralDrift Lab',
+  'Local AI Runtimes — Tested Versions, Evidence & Everyday Status',
   'audio.cpp, ACE-Step, ComfyUI, WanGP, llama.cpp, LM Studio and vLLM: the versions NeuralDrift actually ran, licenses, known issues, and which claims are tested versus upstream-reported.'
 );
 
