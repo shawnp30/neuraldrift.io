@@ -185,7 +185,7 @@ export default function CaptionGeneratorPage() {
           <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">
             {"// Tools"}
           </p>
-          <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">
+          <h1 className="font-syne text-3xl sm:text-5xl font-black tracking-tight text-white mb-4">
             Caption Generator
           </h1>
           <p className="text-muted max-w-xl leading-relaxed">
@@ -195,7 +195,7 @@ export default function CaptionGeneratorPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-[1fr_320px] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_320px] gap-8">
           {/* ── LEFT: Main tool ── */}
           <div className="space-y-5">
             {/* Mode + Style */}

@@ -115,7 +115,7 @@ export default function OptimizerPage() {
         <div className="border-b border-border bg-gradient-to-b from-surface/50 to-transparent">
           <div className="max-w-7xl mx-auto px-10 pt-10 pb-8">
             <p className="font-mono text-xs text-accent tracking-widest uppercase mb-3">{"// Workflow Optimizer"}</p>
-            <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-3">
+            <h1 className="font-syne text-3xl sm:text-5xl font-black tracking-tight text-white mb-3">
               Find the best workflow<br />for your hardware.
             </h1>
             <p className="text-muted max-w-xl leading-relaxed">
@@ -125,7 +125,7 @@ export default function OptimizerPage() {
         </div>
 
         <div className="max-w-7xl mx-auto px-10 mt-10">
-          <div className="grid grid-cols-[320px_1fr] gap-8 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)] gap-8 items-start">
 
             {/* LEFT: Hardware form */}
             <div className="sticky top-24">

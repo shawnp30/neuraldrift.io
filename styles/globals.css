@@ -541,8 +541,9 @@ pre code {
   position: absolute;
   top: 12%;
   left: -5%;
-  width: 450px;
-  height: 450px;
+  /* Capped to the hero's width so the glow never widens the page on phones. */
+  width: min(450px, 100%);
+  aspect-ratio: 1;
   background: radial-gradient(circle, rgba(94, 234, 212, 0.07) 0%, transparent 70%);
   filter: blur(60px);
   pointer-events: none;
@@ -1256,7 +1257,7 @@ pre code {
     gap: 2.5rem; 
   } 
   .nd-grid, .nd-trust, .nd-detail-grid, .nd-filters { 
-    grid-template-columns: 1fr; 
+    grid-template-columns: minmax(0, 1fr); 
   } 
   .nd-search { 
     grid-column: auto; 
@@ -1299,6 +1300,12 @@ pre code {
   }
   .nd-actions .nd-button {
     width: 100%;
+  }
+  .nh-container {
+    padding: 0 20px;
+  }
+  .nh-h2 {
+    font-size: 36px;
   }
 }
 

@@ -797,7 +797,7 @@ export default function PromptGenerator() {
               {(mode === "image" || mode === "video") && (
                  <div className="bg-[#12151c] border border-[#1f2330] rounded-2xl p-6">
                   <label className="block text-indigo-400 font-[800] text-[10px] uppercase tracking-widest mb-4">Master Quality Output</label>
-                  <div className="grid grid-cols-4 gap-2 mb-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
                     {QUALITY_TIERS.map((key) => (
                       <button key={key} onClick={() => setQualityTier(key)} className={cn(
                         "py-3 px-3 rounded-xl font-[800] text-xs transition-all border capitalize",

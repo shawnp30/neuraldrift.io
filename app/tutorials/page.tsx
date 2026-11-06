@@ -26,7 +26,7 @@ export default function TutorialsPage() {
           <PlayCircle className="w-8 h-8" />
         </div>
         <p className="text-[#7c6af7] font-[800] tracking-widest uppercase text-sm mb-4">Neuraldrift Academy</p>
-        <h1 className="font-syne text-5xl md:text-7xl font-[900] tracking-tight text-white mb-6 drop-shadow-xl leading-[0.85]">
+        <h1 className="font-syne text-4xl sm:text-5xl md:text-7xl font-[900] tracking-tight text-white mb-6 drop-shadow-xl leading-[0.85] [overflow-wrap:anywhere]">
           ACADEMY <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7c6af7] to-[#22d3ee]">MASTERCLASS.</span>
         </h1>
         <p className="text-lg md:text-xl font-[500] text-[#8888a0] max-w-2xl mx-auto leading-relaxed">

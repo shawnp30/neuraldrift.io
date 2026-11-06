@@ -13,9 +13,9 @@ export default function ToolsPage() {
 
       <main className="pt-24 pb-20 px-10 max-w-7xl mx-auto">
         <p className="font-mono text-xs text-accent tracking-widest uppercase mb-4">{"// Tools"}</p>
-        <h1 className="font-syne text-5xl font-black tracking-tight text-white mb-4">Builder Utilities.</h1>
+        <h1 className="font-syne text-4xl sm:text-5xl font-black tracking-tight text-white mb-4">Builder Utilities.</h1>
         <p className="text-muted max-w-lg leading-relaxed mb-16">Free tools for AI builders — VRAM calculators, captioning, benchmarks.</p>
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {TOOLS.map((t) => (
             <Link key={t.href} href={t.href} className="bg-card border border-border rounded-lg p-8 block hover:-translate-y-1 hover:border-accent/30 transition-all duration-200">
               <span className="text-3xl block mb-4">{t.icon}</span>

@@ -52,7 +52,7 @@ export default function NewsletterIssuePage({ params }: Props) {
             <p className="font-mono text-[10px] text-[#7c6af7] tracking-widest uppercase mb-4">
               ISSUE #{issue.issueNumber} · {issue.publishedAt}
             </p>
-            <h1 className="font-syne text-4xl md:text-5xl font-black text-[#e8e8f0] mb-6 tracking-tight leading-[1.1]">
+            <h1 className="font-syne text-3xl sm:text-4xl md:text-5xl font-black text-[#e8e8f0] mb-6 tracking-tight leading-[1.1] [overflow-wrap:anywhere]">
               {issue.title}
             </h1>
             <p className="text-xl text-[#8888a0] leading-relaxed">{issue.description}</p>

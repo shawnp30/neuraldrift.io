@@ -98,9 +98,9 @@ export function NewsletterSignup({ source, variant = "nd" }: { source: Newslette
 
   if (variant === "panel") {
     return (
-      <section ref={containerRef} className="rounded-3xl border border-[#2a2a30] bg-[#111113] p-8 md:p-12 text-center">
+      <section ref={containerRef} className="rounded-3xl border border-[#2a2a30] bg-[#111113] p-6 sm:p-8 md:p-12 text-center">
         <p className="font-mono text-[10px] text-[#7c6af7] tracking-widest uppercase mb-4 font-[800]">{"// NeuralDrift Weekly"}</p>
-        <h2 className="font-syne text-3xl md:text-4xl font-[900] text-white mb-4 tracking-tight">Get NeuralDrift Weekly</h2>
+        <h2 className="font-syne text-2xl sm:text-3xl md:text-4xl font-[900] text-white mb-4 tracking-tight">Get NeuralDrift Weekly</h2>
         <p className="text-[#8888a0] max-w-lg mx-auto leading-relaxed mb-8">{COPY}</p>
 
         {!configured ? (

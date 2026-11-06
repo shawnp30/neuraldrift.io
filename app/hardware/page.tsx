@@ -281,11 +281,11 @@ export default function HardwareHubPage() {
       <section className="max-w-7xl mx-auto px-6 md:px-10 mt-20">
         <div className="mb-10">
           <p className="font-mono text-xs text-[#7c6af7] tracking-[0.25em] uppercase mb-2">&#47;&#47; Benchmarks</p>
-          <h2 className="font-syne text-3xl font-black text-white mb-2">Real-World <span className="text-[#7c6af7]">Benchmarks</span></h2>
+          <h2 className="font-syne text-2xl sm:text-3xl font-black text-white mb-2">Real-World <span className="text-[#7c6af7]">Benchmarks</span></h2>
           <p className="text-[#a8b0c4] text-sm font-mono tracking-widest uppercase">Estimated inference speeds from registry data</p>
         </div>
         
-        <div className="overflow-hidden rounded-3xl border border-[#2a2a30] bg-[#111113]">
+        <div className="overflow-x-auto rounded-3xl border border-[#2a2a30] bg-[#111113]">
           <table className="w-full text-left font-mono text-xs md:text-sm">
             <thead>
               <tr className="bg-[#0a0a0b] text-[#8888a0] border-b border-[#2a2a30]">

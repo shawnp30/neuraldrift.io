@@ -1,3 +1,4 @@
+import type { ComponentPropsWithoutRef } from "react";
 import type { Metadata } from "next";
 import { compileMDX } from "next-mdx-remote/rsc";
 import { readFileSync, existsSync, readdirSync } from "fs";
@@ -27,16 +28,16 @@ interface Frontmatter {
 // Custom MDX Components
 const components = {
   h1: (props: any) => (
-    <h1 className="font-syne text-4xl md:text-5xl font-black text-[#e8e8f0] mt-12 mb-8 tracking-tight leading-[1.1]" {...props} />
+    <h1 className="font-syne text-3xl sm:text-4xl md:text-5xl font-black text-[#e8e8f0] mt-12 mb-8 tracking-tight leading-[1.1] [overflow-wrap:anywhere]" {...props} />
   ),
   h2: (props: any) => (
-    <h2 className="font-syne text-2xl md:text-3xl font-bold text-[#e8e8f0] mt-16 mb-6 border-b border-[#2a2a30] pb-3 tracking-tight group" {...props}>
+    <h2 className="font-syne text-2xl md:text-3xl font-bold text-[#e8e8f0] mt-16 mb-6 border-b border-[#2a2a30] pb-3 tracking-tight group [overflow-wrap:anywhere]" {...props}>
       <span className="text-[#7c6af7] mr-3 opacity-50 group-hover:opacity-100 transition-opacity">#</span>
       {props.children}
     </h2>
   ),
   h3: (props: any) => (
-    <h3 className="font-syne text-xl md:text-2xl font-semibold text-[#e8e8f0] mt-10 mb-4 tracking-tight" {...props} />
+    <h3 className="font-syne text-xl md:text-2xl font-semibold text-[#e8e8f0] mt-10 mb-4 tracking-tight [overflow-wrap:anywhere]" {...props} />
   ),
   p: (props: any) => (
     <p className="text-[18px] leading-[1.8] text-[#e8e8f0]/90 mb-6 font-sans antialiased" {...props} />
@@ -47,14 +48,14 @@ const components = {
   li: (props: any) => (
     <li className="flex items-start gap-3 text-[17px] text-[#e8e8f0]/80 leading-relaxed" {...props}>
       <span className="text-[#4ade80] mt-1 flex-shrink-0">→</span>
-      <span>{props.children}</span>
+      <span className="min-w-0 flex-1">{props.children}</span>
     </li>
   ),
   code: ({ children, className }: any) => {
     const isInline = !className;
     if (isInline) {
       return (
-        <code className="bg-[#111113] border border-[#2a2a30] text-[#22d3ee] px-1.5 py-0.5 rounded-md font-mono text-[0.9em]">
+        <code className="bg-[#111113] border border-[#2a2a30] text-[#22d3ee] px-1.5 py-0.5 rounded-md font-mono text-[0.9em] [overflow-wrap:anywhere]">
           {children}
         </code>
       );
@@ -87,6 +88,19 @@ const components = {
     <a className="text-[#22d3ee] hover:text-[#22d3ee]/80 underline decoration-[#22d3ee]/20 underline-offset-4 transition-colors" {...props} />
   ),
   hr: () => <hr className="border-[#2a2a30] my-12" />,
+  // Benchmark tables are wider than a phone; scroll them inside their own box
+  // instead of widening the page.
+  table: (props: ComponentPropsWithoutRef<"table">) => (
+    <div className="my-8 overflow-x-auto rounded-xl border border-[#2a2a30]">
+      <table className="w-full min-w-max border-collapse text-left text-[15px]" {...props} />
+    </div>
+  ),
+  th: (props: ComponentPropsWithoutRef<"th">) => (
+    <th className="border-b border-[#2a2a30] bg-[#111113] px-4 py-3 font-mono text-xs uppercase tracking-wider text-[#8888a0]" {...props} />
+  ),
+  td: (props: ComponentPropsWithoutRef<"td">) => (
+    <td className="border-b border-[#2a2a30]/60 px-4 py-3 text-[#e8e8f0]/90" {...props} />
+  ),
 };
 
 function extractHeadings(content: string) {
@@ -236,7 +250,7 @@ export default async function GuidePage({ params }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-16 items-start">
           
           {/* Main Article Container */}
-          <div className="max-w-[720px] mx-auto w-full">
+          <div className="max-w-[720px] mx-auto w-full min-w-0">
             
             {/* Header */}
             <header className="mb-16">
@@ -247,7 +261,7 @@ export default async function GuidePage({ params }: Props) {
                   </span>
                 ))}
               </div>
-              <h1 className="font-syne text-5xl md:text-6xl font-black text-[#e8e8f0] mb-6 tracking-tight leading-[1.05]">
+              <h1 className="font-syne text-3xl sm:text-5xl md:text-6xl font-black text-[#e8e8f0] mb-6 tracking-tight leading-[1.05] [overflow-wrap:anywhere]">
                 {frontmatter.title}
               </h1>
               <p className="text-xl text-[#8888a0] leading-relaxed mb-8">
