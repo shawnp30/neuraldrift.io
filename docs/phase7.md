@@ -36,6 +36,7 @@ Run commands from the project root with the installed dependencies. The test loa
 node scripts/discover-hardware.mjs http://known-comfy-host:8188
 npm run evidence:hardware -- unique-testbench-id gpu-reference-slug http://known-comfy-host:8188
 npm run evidence:run -- path/to/execution-config.json
+npm run evidence:batch -- path/to/base-config.json --repeats 3
 npm run evidence:hashes
 npm test
 ```
@@ -62,6 +63,26 @@ STANDARD submits the unchanged catalog graph converted using the live node schem
 Model paths must refer to the actual installed files on the execution host. Remote runs do not hash similarly named local files. Missing hashes remain null. Historical model hashes are not retroactively assigned from current files. For controlled comparisons, complete the verified manifest fields using measurements on the execution host; the runner deliberately leaves comparison eligibility unset when precision, node versions, or cache protocol are not proven.
 
 Every attempt saves `public/workflow-executions/<id>/workflow.json`, `raw.json`, `record.json`, and downloaded artifacts before updating the execution index under an exclusive lock. If indexing is interrupted, the immutable record directory remains available for recovery. Review raw history and prompt ID before retrying a timeout: it is an unknown outcome, not an OOM or confirmed execution failure.
+
+### Timing, cold starts and VRAM
+
+`runtimeSeconds` comes from ComfyUI's own `execution_start` and `execution_success` timestamps (millisecond resolution), not from polling. The legacy batch scripts (`run-batch-tests.mjs`, `run-phase5-batch.mjs`, `run-animatediff-batch.mjs`) polled `/history` every 2 seconds and timed the wall clock, so their `generationSeconds` values are rounded up to the next poll by as much as 2 seconds.
+
+Before submitting, the runner calls `POST /free` to unload models and waits (up to 15 s) for ComfyUI's reserved VRAM to fall below 512 MiB. `coldStart: true` means that unload was confirmed, so the runtime includes model loading and runs are comparable.
+
+For a local endpoint the runner samples `nvidia-smi memory.used` every 100 ms from just before submission until the run ends and records `peakVram` (`baselineBytes`, `peakBytes`, `sampleCount`). The value is device-wide: it includes other processes and PyTorch's cached allocations, so it is what the card had in use, not the minimum a workflow needs. Close other GPU applications first and check `baselineBytes`. If `nvidia-smi` reports a different GPU at index 0, set `nvidiaSmiGpuIndex`. Remote endpoints record `peakVram.status: "UNAVAILABLE"` with the reason.
+
+### Batch runs
+
+`npm run evidence:batch` runs the STANDARD profile for every workflow with a completed legacy test (or `--workflows 04,29`), `--repeats` times each (default 3), sequentially. It first reads `/object_info` and skips any workflow whose catalog model files are not offered by the running ComfyUI, printing the missing files, so a missing download is never recorded as a GPU failure. Each attempt is still an immutable record. The base config is an execution config without `workflowId` and `executionProfile`:
+
+```json
+{
+  "hardwareProfileId": "local-rtx-5080",
+  "endpoint": "http://127.0.0.1:8188",
+  "timeoutSeconds": 900
+}
+```
 
 ## Hardware access blocker and next phase
 

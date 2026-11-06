@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import crypto from 'node:crypto';
 import path from 'node:path';
 import { apiPrompt } from './workflow-api.mjs';
+import { startVramSampler } from './vram-sampler.mjs';
 
 const configPath = process.argv[2];
 if (!configPath) throw new Error('Supply execution config JSON; see docs/phase7.md.');
@@ -33,7 +34,7 @@ const id = `${config.workflowId}-${Date.now()}-${crypto.randomUUID()}`;
 const record = {
   id, workflowId: config.workflowId, hardwareProfileId: hardware.id, workflowSha256: sha(bytes), promptSha256: null,
   testDate: new Date().toISOString(), executionProfile: config.executionProfile, outcome: 'FAILURE', failure: null,
-  settings: {}, environment: stats.system, models: [], runtimeSeconds: null, artifact: null,
+  settings: {}, environment: stats.system, models: [], runtimeSeconds: null, artifact: null, coldStart: false, peakVram: null,
   evidenceUrl: `/workflow-executions/${id}/record.json`, optimizationNotes: config.optimizationNotes ?? null,
   comparisonManifest: null,
 };
@@ -42,6 +43,7 @@ const raw = { stats, baselinePrompt: null, prompt: null, submission: null, histo
 const outputDir = `public/workflow-executions/${id}`;
 fs.mkdirSync(outputDir, { recursive: true });
 fs.writeFileSync(`${outputDir}/workflow.json`, bytes, { flag: 'wx' });
+let sampler = null;
 try {
   const info = await (await request('/object_info')).json();
   const graph = JSON.parse(bytes);
@@ -66,6 +68,21 @@ try {
   }
   // Comparability remains unavailable unless a fully verified manifest is collected.
   // The runner deliberately does not accept arbitrary comparison claims from config.
+  // Start every run with models unloaded so runtimes and VRAM peaks are comparable.
+  // ComfyUI applies /free asynchronously, so wait for its reserved VRAM to drop.
+  await request('/free', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ unload_models: true, free_memory: true }) });
+  const unloadDeadline = Date.now() + 15000;
+  while (!record.coldStart && Date.now() < unloadDeadline) {
+    const reserved = (await (await request('/system_stats')).json()).devices?.[config.deviceIndex ?? 0]?.torch_vram_total;
+    if (typeof reserved === 'number' && reserved < 512 * 1024 ** 2) record.coldStart = true;
+    else await new Promise(resolve => setTimeout(resolve, 250));
+  }
+  if (['127.0.0.1', 'localhost', '[::1]'].includes(endpoint.hostname)) {
+    sampler = startVramSampler({ gpuIndex: config.nvidiaSmiGpuIndex ?? 0, expectedName: hardware.name, sampler: config.vramSampler });
+    try { await sampler.ready; } catch (error) { sampler = null; record.peakVram = { status: 'UNAVAILABLE', reason: error.message }; }
+  } else {
+    record.peakVram = { status: 'UNAVAILABLE', reason: 'ComfyUI endpoint is remote; nvidia-smi on this machine cannot observe that GPU.' };
+  }
   stage = 'transport';
   const submitted = await fetch(new URL('/prompt', endpoint), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ prompt: raw.prompt, client_id: id }), signal: AbortSignal.timeout(30000) });
   raw.submission = await submitted.json();
@@ -107,6 +124,7 @@ try {
 } catch (error) {
   record.failure ??= { stage, type: error.cause?.code ?? error.name, message: error.message };
 }
+if (sampler) record.peakVram = sampler.stop();
 if (record.failure?.stage === 'transport') record.outcome = 'INDETERMINATE';
 record.rawEvidence = `/workflow-executions/${id}/raw.json`;
 fs.writeFileSync(`${outputDir}/raw.json`, JSON.stringify(raw, null, 2), { flag: 'wx' });

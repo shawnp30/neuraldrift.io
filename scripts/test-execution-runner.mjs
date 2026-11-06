@@ -11,14 +11,17 @@ for (const dir of ['data', 'public/workflows']) fs.mkdirSync(path.join(fixture, 
 const profile = { id: 'fixture-only', name: 'Fixture GPU', gpuId: 'fixture-only', vramBytes: 16 * 1024 ** 3 };
 fs.writeFileSync(path.join(fixture, 'data/hardware-profiles.json'), JSON.stringify([profile]));
 fs.writeFileSync(path.join(fixture, 'data/workflow-executions.json'), '[]');
+fs.writeFileSync(path.join(fixture, 'data/workflow-tests.json'), JSON.stringify({ '01': { status: 'completed' }, '02': { status: 'completed' } }));
+fs.writeFileSync(path.join(fixture, 'data/workflow-assets.json'), JSON.stringify({ '01': { models: [{ file: 'fixture.safetensors' }] }, '02': { models: [{ file: 'missing.safetensors' }] } }));
 fs.writeFileSync(path.join(fixture, 'public/workflows/01.json'), JSON.stringify({ nodes: [{ id: 1, type: 'FixtureSave', widgets_values: ['fixture'] }], links: [] }));
-let mode = 'success', submitted = 0;
+let mode = 'success', submitted = 0, freeCalls = 0, freed = false;
 const server = http.createServer(async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   const send = x => res.end(JSON.stringify(x));
-  if (req.url === '/system_stats') return send({ devices: [{ name: mode === 'mismatch' ? 'Different GPU' : 'Fixture GPU', type: 'cuda', vram_total: 16 * 1024 ** 3 }], system: { os: 'fixture', ram_total: 32 * 1024 ** 3 } });
+  if (req.url === '/system_stats') return send({ devices: [{ name: mode === 'mismatch' ? 'Different GPU' : 'Fixture GPU', type: 'cuda', vram_total: 16 * 1024 ** 3, torch_vram_total: freed ? 0 : 4 * 1024 ** 3 }], system: { os: 'fixture', ram_total: 32 * 1024 ** 3 } });
   if (req.url === '/queue') return send({ queue_running: [], queue_pending: [] });
-  if (req.url === '/object_info') return send({ FixtureSave: { input: { required: { text: ['STRING', {}] } } } });
+  if (req.url === '/free') { freeCalls++; freed = true; for await (const chunk of req) { void chunk; } return send({}); }
+  if (req.url === '/object_info') return send({ FixtureSave: { input: { required: { text: ['STRING', {}] } } }, FixtureLoader: { input: { required: { ckpt_name: [['fixture.safetensors']] } } } });
   if (req.url === '/prompt') {
     submitted++;
     for await (const chunk of req) { void chunk; }
@@ -38,7 +41,9 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const endpoint = `http://127.0.0.1:${server.address().port}`;
 const records = () => JSON.parse(fs.readFileSync(path.join(fixture, 'data/workflow-executions.json'), 'utf8'));
 async function run(executionProfile = 'STANDARD') {
-  const config = { workflowId: '01', hardwareProfileId: 'fixture-only', endpoint, executionProfile, timeoutSeconds: 0.01 };
+  freed = false;
+  const fakeSmi = "console.log('Fixture GPU, 1000'); console.log('Fixture GPU, 3000'); setInterval(() => {}, 1000);";
+  const config = { workflowId: '01', hardwareProfileId: 'fixture-only', endpoint, executionProfile, timeoutSeconds: 0.01, vramSampler: { command: process.execPath, args: ['-e', fakeSmi] } };
   if (executionProfile === 'OPTIMIZED') {
     const promptFile = path.join(fixture, 'optimized.json');
     fs.writeFileSync(promptFile, JSON.stringify({ 1: { class_type: 'FixtureSave', inputs: { text: 'changed fixture' } } }));
@@ -58,6 +63,11 @@ try {
   assert.equal((await run()).code, 0);
   assert.equal(records()[0].outcome, 'SUCCESS');
   assert.equal(records()[0].runtimeSeconds, 1.5);
+  assert.equal(records()[0].coldStart, true, 'runs must start after a confirmed model unload');
+  assert.equal(freeCalls, 1);
+  assert.equal(records()[0].peakVram.status, 'MEASURED');
+  assert.equal(records()[0].peakVram.baselineBytes, 1000 * 1024 ** 2);
+  assert.equal(records()[0].peakVram.peakBytes, 3000 * 1024 ** 2);
   assert(fs.existsSync(path.join(fixture, 'public', records()[0].artifact)));
   mode = 'error'; assert.equal((await run()).code, 1);
   assert.equal(records()[1].failure.type, 'FixtureOOM');
@@ -72,5 +82,20 @@ try {
   assert.notEqual(records()[4].promptSha256, records()[0].promptSha256);
   assert.equal(records()[4].workflowSha256, records()[0].workflowSha256);
   assert.equal(records().length, 5);
+  freed = false;
+  const fakeSmi = "console.log('Fixture GPU, 1000'); console.log('Fixture GPU, 3000'); setInterval(() => {}, 1000);";
+  fs.writeFileSync(path.join(fixture, 'base.json'), JSON.stringify({ hardwareProfileId: 'fixture-only', endpoint, timeoutSeconds: 0.01, vramSampler: { command: process.execPath, args: ['-e', fakeSmi] } }));
+  const batch = await new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, [path.join(root, 'scripts/run-execution-batch.mjs'), 'base.json', '--repeats', '2'], { cwd: fixture, windowsHide: true });
+    let output = '';
+    child.stdout.on('data', data => output += data);
+    child.stderr.on('data', data => output += data);
+    child.on('error', reject);
+    child.on('exit', code => resolve({ code, output }));
+  });
+  assert.equal(batch.code, 0, batch.output);
+  assert.match(batch.output, /SKIP 02: model file\(s\) not installed in this ComfyUI: missing\.safetensors/);
+  assert.equal(records().length, 7, 'batch must append one immutable record per attempt');
+  assert(records().slice(5).every(r => r.workflowId === '01' && r.outcome === 'SUCCESS' && r.peakVram.status === 'MEASURED'));
   console.log('Runner integration passed: STANDARD success, exact execution failure, validation failure, timeout, hardware mismatch, OPTIMIZED success, append-only records and saved artifacts. All synthetic records isolated in ' + fixture);
 } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
