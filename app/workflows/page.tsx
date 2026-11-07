@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CATALOG, CatalogFilters, filterWorkflows, MEMORY_OPTIONS, workflowType, WORKFLOW_TESTS, memoryEstimate, PRIMARY_CATEGORIES, primaryCategoryLabel } from '@/lib/catalog';
+import { CATALOG, CatalogFilters, filterWorkflows, MEMORY_OPTIONS, workflowType, hasCurrentRun, memoryEstimate, PRIMARY_CATEGORIES, primaryCategoryLabel } from '@/lib/catalog';
 import WorkflowCard from '@/components/workflows/WorkflowCard';
 import { pageMeta } from '@/lib/seo';
 import { COMMON_GPUS, findGpuBySlug } from '@/lib/hardware/gpuData';
@@ -25,9 +25,9 @@ export default function WorkflowsPage({ searchParams }: Props) {
 
   // Filter by evidence status if requested
   if (evidenceParam === 'tested') {
-    results = results.filter(w => WORKFLOW_TESTS[w.id]?.status === 'completed');
+    results = results.filter(w => hasCurrentRun(w.id));
   } else if (evidenceParam === 'estimated') {
-    results = results.filter(w => WORKFLOW_TESTS[w.id]?.status !== 'completed' && memoryEstimate(w) !== null);
+    results = results.filter(w => !hasCurrentRun(w.id) && memoryEstimate(w) !== null);
   } else if (evidenceParam === 'unknown') {
     results = results.filter(w => memoryEstimate(w) === null);
   }

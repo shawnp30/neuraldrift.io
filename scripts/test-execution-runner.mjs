@@ -5,7 +5,16 @@ import http from 'node:http';
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import { spawn } from 'node:child_process';
+import { apiPrompt } from './workflow-api.mjs';
 const root = process.cwd();
+// V3 dynamic combos (ComfyUI's SaveVideo) send nested values as "parent.child"; hidden inputs take no saved value.
+const codec = ['COMFY_DYNAMICCOMBO_V3', { options: [{ key: 'auto', inputs: { required: {} } }, { key: 'h264', inputs: { required: { crf: ['FLOAT', { default: 23 }] } } }] }];
+const saveVideo = { input: { required: { video: ['VIDEO', {}], filename_prefix: ['STRING', { default: 'video/ComfyUI' }], format: ['COMFY_DYNAMICCOMBO_V3', { options: [{ key: 'auto', inputs: { required: { codec } } }, { key: 'mp4', inputs: { required: { codec } } }] }] }, optional: { codec: [codec[0], { ...codec[1], hidden: true }] } } };
+const videoGraph = (values) => ({ nodes: [{ id: 2, type: 'SaveVideo', inputs: [{ name: 'video', type: 'VIDEO', link: 1 }], widgets_values: values }, { id: 1, type: 'VideoSource', widgets_values: [] }], links: [[1, 1, 0, 2, 0, 'VIDEO']] });
+const objectInfoV3 = { SaveVideo: saveVideo, VideoSource: { input: { required: {} } } };
+assert.deepEqual(apiPrompt(videoGraph(['video/ComfyUI', 'auto', 'auto']), objectInfoV3)[2].inputs, { video: ['1', 0], filename_prefix: 'video/ComfyUI', format: 'auto', 'format.codec': 'auto' });
+assert.deepEqual(apiPrompt(videoGraph(['clip', 'mp4', 'h264', 18]), objectInfoV3)[2].inputs, { video: ['1', 0], filename_prefix: 'clip', format: 'mp4', 'format.codec': 'h264', 'format.codec.crf': 18 });
+assert.throws(() => apiPrompt(videoGraph(['clip', 'gif', 'auto']), objectInfoV3), /SaveVideo\.format: "gif" is not an option/);
 fs.mkdirSync('tmp', { recursive: true });
 const fixture = fs.mkdtempSync(path.join(root, 'tmp', 'phase7-runner-fixture-'));
 for (const dir of ['data', 'public/workflows']) fs.mkdirSync(path.join(fixture, dir), { recursive: true });

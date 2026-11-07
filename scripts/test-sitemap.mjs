@@ -2,7 +2,7 @@
 // excluded, and that lastModified is only ever real data, never invented.
 import assert from 'node:assert';
 import sitemap from '../app/sitemap.ts';
-import { CATALOG, WORKFLOW_TESTS } from '../lib/catalog.ts';
+import { CATALOG, WORKFLOW_TESTS, measuredRuns } from '../lib/catalog.ts';
 import { getIndexableGuides, INDEXABILITY_HOLD_GUIDES } from '../lib/guides.ts';
 import { TUTORIALS } from '../lib/tutorials.ts';
 import { NEWSLETTER_ISSUES } from '../lib/newsletterIssues.ts';
@@ -63,7 +63,8 @@ console.log('5. All dynamic workflow, guide, tutorial, newsletter issue, and ben
 const byUrl = new Map(entries.map(e => [e.url, e]));
 for (const workflow of CATALOG) {
   const entry = byUrl.get(`${SITE_URL}/workflows/${workflow.id}`);
-  const testDate = WORKFLOW_TESTS[workflow.id]?.testDate;
+  // The latest measured run when there is one, else the legacy test date.
+  const testDate = measuredRuns(workflow.id)?.latestTestDate ?? WORKFLOW_TESTS[workflow.id]?.testDate;
   if (testDate) assert.equal(entry.lastModified, testDate, `workflow ${workflow.id} lastModified must be the real recorded testDate, not invented`);
   else assert.equal(entry.lastModified, undefined, `workflow ${workflow.id} has no real date evidence; lastModified must be omitted, not fabricated`);
 }

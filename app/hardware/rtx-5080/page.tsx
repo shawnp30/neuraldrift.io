@@ -10,7 +10,7 @@ import { getAllEvidenceRecords } from '@/lib/hardware/evidence';
 export const metadata = pageMeta(
   '/hardware/rtx-5080',
   'NVIDIA GeForce RTX 5080 ComfyUI Testbench Dossier',
-  'Empirical execution evidence for 37 ComfyUI workflows tested on the NVIDIA GeForce RTX 5080 (16GB). Real measured runtimes, model families, and verified constraints.'
+  `Empirical execution evidence for ${CATALOG.filter(w => measuredRuns(w.id)).length} ComfyUI workflows tested on the NVIDIA GeForce RTX 5080 (16GB). Real measured runtimes, model families, and verified constraints.`
 );
 
 export default function Rtx5080EvidencePage() {

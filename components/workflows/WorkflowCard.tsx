@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { WorkflowEntry } from '@/lib/workflowsData';
-import { compatibilityLabel, compatibilityStatus, workflowKind, workflowKindLabel, WORKFLOW_TESTS } from '@/lib/catalog';
+import { artifactKind, compatibilityLabel, compatibilityStatus, measuredRuns, workflowKind, workflowKindLabel, WORKFLOW_TESTS } from '@/lib/catalog';
 import { evaluateCompatibility, HardwareTarget } from '@/lib/hardware/compatibility';
 
 export default function WorkflowCard({ workflow, targetHardware }: { workflow: WorkflowEntry; targetHardware?: HardwareTarget }) {
-  const test = WORKFLOW_TESTS[workflow.id];
+  const runArtifact = measuredRuns(workflow.id)?.artifact;
+  const outputKind = runArtifact ? artifactKind(runArtifact) : WORKFLOW_TESTS[workflow.id]?.outputKind;
   const defaultStatus = compatibilityStatus(workflow);
   const kind = workflowKind(workflow);
 
@@ -15,11 +16,11 @@ export default function WorkflowCard({ workflow, targetHardware }: { workflow: W
     <Link href={`/workflows/${workflow.id}`} className="nd-preview" tabIndex={-1} aria-hidden="true">
       <Image src={workflow.imageUrl} alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" className="object-cover" />
       <span className="nd-image-label">
-        {test?.outputKind === 'image'
+        {outputKind === 'image'
           ? 'Actual output · tested on RTX 5080'
-          : test?.outputKind === 'audio'
+          : outputKind === 'audio'
           ? 'Actual audio · tested on RTX 5080'
-          : test?.outputKind === 'video'
+          : outputKind === 'video'
           ? 'Actual video · tested on RTX 5080'
           : 'Catalog illustration · output not verified'}
       </span>

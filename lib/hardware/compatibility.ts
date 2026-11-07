@@ -6,7 +6,7 @@ import { GPUDefinition, findGpuBySlug } from './gpuData';
 import { getHardwareEvidence } from './evidence';
 import { EXECUTIONS, WORKFLOW_HASHES, HARDWARE_PROFILES, ExecutionRecord, evidenceFreshness, workflowExecutions, selectExactExecution, crossGpuComparisons } from './executions';
 import { WorkflowEntry } from '@/lib/workflowsData';
-import { memoryEstimate, WORKFLOW_TESTS, CATALOG } from '@/lib/catalog';
+import { memoryEstimate, hasCurrentRun, CATALOG } from '@/lib/catalog';
 
 export type CompatibilityState = 
   | 'DIRECT_TESTED'
@@ -172,8 +172,8 @@ function getAlternatives(workflow: WorkflowEntry, maxVram: number) {
     })
     .sort((a, b) => {
       // Prioritize Level 5 tested workflows first
-      const aTested = WORKFLOW_TESTS[a.id]?.status === 'completed' ? 1 : 0;
-      const bTested = WORKFLOW_TESTS[b.id]?.status === 'completed' ? 1 : 0;
+      const aTested = hasCurrentRun(a.id) ? 1 : 0;
+      const bTested = hasCurrentRun(b.id) ? 1 : 0;
       if (bTested !== aTested) return bTested - aTested;
       return (memoryEstimate(a) ?? 99) - (memoryEstimate(b) ?? 99);
     })
@@ -183,6 +183,6 @@ function getAlternatives(workflow: WorkflowEntry, maxVram: number) {
       title: w.title,
       category: w.category,
       vram: memoryEstimate(w) ? `${memoryEstimate(w)}GB` : 'Unknown',
-      tested: WORKFLOW_TESTS[w.id]?.status === 'completed'
+      tested: hasCurrentRun(w.id)
     }));
 }

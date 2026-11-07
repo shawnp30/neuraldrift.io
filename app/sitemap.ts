@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { CATALOG, WORKFLOW_TESTS } from '@/lib/catalog';
+import { CATALOG, WORKFLOW_TESTS, measuredRuns } from '@/lib/catalog';
 import { getIndexableGuides } from '@/lib/guides';
 import { SITE_URL } from '@/lib/seo';
 import { TUTORIALS } from '@/lib/tutorials';
@@ -65,7 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       ...(g.publishedAt ? { lastModified: g.publishedAt } : {}),
     })),
     ...CATALOG.map((w) => {
-      const testDate = WORKFLOW_TESTS[w.id]?.testDate;
+      const testDate = measuredRuns(w.id)?.latestTestDate ?? WORKFLOW_TESTS[w.id]?.testDate;
       return { url: `${SITE_URL}/workflows/${w.id}`, ...(testDate ? { lastModified: testDate } : {}) };
     }),
     ...newsletterIssues.map((issue) => ({

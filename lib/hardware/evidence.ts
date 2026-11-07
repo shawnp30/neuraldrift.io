@@ -4,6 +4,8 @@
 
 import testDataRaw from '@/data/workflow-tests.json';
 import matrixDataRaw from '@/data/workflow-test-matrix.json';
+import { artifactKind, measuredRuns, TESTBENCH_PROFILE_ID, WORKFLOW_ASSETS } from '@/lib/catalog';
+import { HARDWARE_PROFILES } from '@/lib/hardware/executions';
 
 export interface HardwareEvidenceRecord {
   workflowId: string;
@@ -135,6 +137,48 @@ export function getHardwareEvidence(workflowId: string, workflowTitle: string): 
       artifact: test.preview || null,
       semanticVerification: test.semanticVerification ?? null,
       notes: `Historical execution on ${test.gpu || "unrecorded GPU"}; see original settings and artifact.`
+    };
+  }
+
+  // No legacy test, but measured runs of the published download exist.
+  const run = measuredRuns(workflowId);
+  const bench = HARDWARE_PROFILES.find(p => p.id === TESTBENCH_PROFILE_ID);
+  if (run && bench) {
+    const model = WORKFLOW_ASSETS[workflowId]?.models.find(m => /checkpoints|diffusion_models/.test(m.dir))?.file ?? run.modelFiles[0] ?? null;
+    return {
+      workflowId,
+      workflowTitle,
+      testDate: run.latestTestDate,
+      status: "completed",
+      gpuVendor: bench.vendor,
+      gpuModel: parseGpuModel(bench.name),
+      gpuVramGb: Math.round(bench.vramBytes / (1024 ** 3)),
+      systemRamGb: run.ramTotalBytes ? Math.round(run.ramTotalBytes / (1024 ** 3)) : null,
+      os: null,
+      comfyUiVersion: run.comfyUI,
+      pythonVersion: null,
+      pytorchVersion: run.pytorch,
+      cudaVersion: parseCudaVersion(run.pytorch),
+      modelFilename: model,
+      modelFamily: inferModelFamily(model, workflowTitle),
+      modelPrecision: model?.includes("fp8") ? "FP8" : model?.includes("fp16") ? "FP16" : null,
+      modelHash: null,
+      resolutionWidth: run.width,
+      resolutionHeight: run.height,
+      frameCount: null,
+      audioDuration: null,
+      steps: run.steps,
+      cfg: run.cfg,
+      sampler: run.sampler,
+      scheduler: run.scheduler,
+      batchSize: run.batchSize ?? 1,
+      denoise: null,
+      runtimeSeconds: run.medianSeconds,
+      peakVramGb: run.peakVramBytes != null ? Number((run.peakVramBytes / (1024 ** 3)).toFixed(2)) : null,
+      outputType: run.artifact ? artifactKind(run.artifact) : null,
+      artifact: run.artifact,
+      semanticVerification: null,
+      notes: `Median of ${run.runs} measured cold-start runs of the published download.`
     };
   }
 

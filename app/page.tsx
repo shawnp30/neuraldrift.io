@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { pageMeta } from '@/lib/seo';
-import { CATALOG, MEMORY_OPTIONS, WORKFLOW_TESTS, primaryCategory } from '@/lib/catalog';
+import { CATALOG, MEMORY_OPTIONS, hasCurrentRun, primaryCategory } from '@/lib/catalog';
 import { getGuides } from '@/lib/guides';
 import WorkflowCard from '@/components/workflows/WorkflowCard';
 import { NewsletterSignup } from '@/components/newsletter/NewsletterSignup';
@@ -10,6 +10,7 @@ export const metadata = pageMeta('/', 'Find ComfyUI workflows for your GPU', 'Ex
 export default function HomePage() {
   const guides = getGuides();
   const helpful = guides.filter(g => ['installation', 'model-folders', 'workflow-errors'].includes(g.slug));
+  const testedCount = CATALOG.filter(w => hasCurrentRun(w.id)).length;
 
   // Curated subsets (3 cards per section) optimized for practical setup, lower complexity, and real execution evidence
   const starter = ['04', '21', '01'].map(id => CATALOG.find(w => w.id === id)!).filter(Boolean); // 04 (SD 1.5 - 4GB, tested), 21 (ESRGAN - 6GB, tested), 01 (Flux Dev - 16GB, tested)
@@ -61,7 +62,7 @@ export default function HomePage() {
           <p className="nd-eyebrow">VERIFICATION STANDARDS</p>
           <h2>NeuralDrift 5-Level Validation Framework</h2>
           <p style={{ marginTop: '1rem', color: '#94a3b8', fontSize: '0.92rem', lineHeight: 1.7 }}>
-            Unlike indexes that scrape unverified graphs, NeuralDrift evaluates compatibility through a rigorous 5-level hierarchy. {Object.keys(WORKFLOW_TESTS).length} workflows have recorded physical execution tests; the others are marked with conservative catalog estimates.
+            Unlike indexes that scrape unverified graphs, NeuralDrift evaluates compatibility through a rigorous 5-level hierarchy. {testedCount} workflows have recorded physical execution tests; the others are marked with conservative catalog estimates.
           </p>
           <div style={{ marginTop: '1.4rem' }}>
             <Link className="nd-text-link" href="/compatibility">How compatibility is reported →</Link>
@@ -94,7 +95,7 @@ export default function HomePage() {
           <p className="nd-eyebrow">EXECUTION-TESTED</p>
           <h2>Verified runs on physical hardware</h2>
         </div>
-        <Link className="nd-text-link" href="/workflows?evidence=tested">All {Object.keys(WORKFLOW_TESTS).length} tested workflows →</Link>
+        <Link className="nd-text-link" href="/workflows?evidence=tested">All {testedCount} tested workflows →</Link>
       </div>
       <div className="nd-grid">{executionTested.map(w => <WorkflowCard key={w.id} workflow={w} />)}</div>
     </section>
