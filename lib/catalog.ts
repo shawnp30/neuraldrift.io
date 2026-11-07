@@ -135,8 +135,10 @@ export function memoryEstimate(workflow: WorkflowEntry): number | null {
 export function downloadUrl(workflow: WorkflowEntry) {
   return workflow.workflowJsonUrl || `/workflows/${workflow.id}.json`;
 }
+// A successful run on the current workflow file: a legacy test or a measured run.
+export const hasCurrentRun = (workflowId: string) => workflowExecutions(workflowId).some(r => r.outcome === 'SUCCESS' && evidenceFreshness(r) === 'CURRENT');
 export function compatibilityStatus(workflow: WorkflowEntry): 'TESTED' | 'ESTIMATED' | 'UNKNOWN' {
-  if (workflowExecutions(workflow.id).some(r => r.outcome === 'SUCCESS' && evidenceFreshness(r) === 'CURRENT')) return 'TESTED';
+  if (hasCurrentRun(workflow.id)) return 'TESTED';
   const memory = memoryEstimate(workflow);
   return memory === null ? 'UNKNOWN' : 'ESTIMATED';
 }

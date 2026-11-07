@@ -1,0 +1,561 @@
+{
+  "stats": {
+    "system": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 28504653824,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 17066360832,
+        "vram_free": 15458500608,
+        "torch_vram_total": 201326592,
+        "torch_vram_free": 89522176
+      }
+    ]
+  },
+  "baselinePrompt": {
+    "4": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sd_xl_base_1.0.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "daytime sky nature dark blue galaxy bottle",
+        "clip": [
+          "4",
+          1
+        ]
+      }
+    },
+    "7": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "text, watermark",
+        "clip": [
+          "4",
+          1
+        ]
+      }
+    },
+    "10": {
+      "class_type": "KSamplerAdvanced",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "add_noise": "enable",
+        "noise_seed": 6767725640732,
+        "steps": 25,
+        "cfg": 8,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "positive": [
+          "6",
+          0
+        ],
+        "negative": [
+          "7",
+          0
+        ],
+        "latent_image": [
+          "5",
+          0
+        ],
+        "start_at_step": 0,
+        "end_at_step": 20,
+        "return_with_leftover_noise": "enable"
+      }
+    },
+    "11": {
+      "class_type": "KSamplerAdvanced",
+      "inputs": {
+        "model": [
+          "12",
+          0
+        ],
+        "add_noise": "disable",
+        "noise_seed": 0,
+        "steps": 25,
+        "cfg": 8,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "positive": [
+          "15",
+          0
+        ],
+        "negative": [
+          "16",
+          0
+        ],
+        "latent_image": [
+          "10",
+          0
+        ],
+        "start_at_step": 20,
+        "end_at_step": 10000,
+        "return_with_leftover_noise": "disable"
+      }
+    },
+    "12": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sd_xl_refiner_1.0.safetensors"
+      }
+    },
+    "15": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "daytime scenery  sky nature dark blue bottle with a galaxy stars milky way in it",
+        "clip": [
+          "12",
+          1
+        ]
+      }
+    },
+    "16": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "text, watermark",
+        "clip": [
+          "12",
+          1
+        ]
+      }
+    },
+    "17": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "11",
+          0
+        ],
+        "vae": [
+          "12",
+          2
+        ]
+      }
+    },
+    "19": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "17",
+          0
+        ],
+        "filename_prefix": "ComfyUI"
+      }
+    }
+  },
+  "prompt": {
+    "4": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sd_xl_base_1.0.safetensors"
+      }
+    },
+    "5": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    "6": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "daytime sky nature dark blue galaxy bottle",
+        "clip": [
+          "4",
+          1
+        ]
+      }
+    },
+    "7": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "text, watermark",
+        "clip": [
+          "4",
+          1
+        ]
+      }
+    },
+    "10": {
+      "class_type": "KSamplerAdvanced",
+      "inputs": {
+        "model": [
+          "4",
+          0
+        ],
+        "add_noise": "enable",
+        "noise_seed": 6767725640732,
+        "steps": 25,
+        "cfg": 8,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "positive": [
+          "6",
+          0
+        ],
+        "negative": [
+          "7",
+          0
+        ],
+        "latent_image": [
+          "5",
+          0
+        ],
+        "start_at_step": 0,
+        "end_at_step": 20,
+        "return_with_leftover_noise": "enable"
+      }
+    },
+    "11": {
+      "class_type": "KSamplerAdvanced",
+      "inputs": {
+        "model": [
+          "12",
+          0
+        ],
+        "add_noise": "disable",
+        "noise_seed": 0,
+        "steps": 25,
+        "cfg": 8,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "positive": [
+          "15",
+          0
+        ],
+        "negative": [
+          "16",
+          0
+        ],
+        "latent_image": [
+          "10",
+          0
+        ],
+        "start_at_step": 20,
+        "end_at_step": 10000,
+        "return_with_leftover_noise": "disable"
+      }
+    },
+    "12": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sd_xl_refiner_1.0.safetensors"
+      }
+    },
+    "15": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "daytime scenery  sky nature dark blue bottle with a galaxy stars milky way in it",
+        "clip": [
+          "12",
+          1
+        ]
+      }
+    },
+    "16": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "text, watermark",
+        "clip": [
+          "12",
+          1
+        ]
+      }
+    },
+    "17": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "11",
+          0
+        ],
+        "vae": [
+          "12",
+          2
+        ]
+      }
+    },
+    "19": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "17",
+          0
+        ],
+        "filename_prefix": "ComfyUI"
+      }
+    }
+  },
+  "submission": {
+    "prompt_id": "c7f8d74d-b833-4c09-a1c4-5ace3019b560",
+    "number": 402,
+    "node_errors": {}
+  },
+  "history": {
+    "prompt": [
+      402,
+      "c7f8d74d-b833-4c09-a1c4-5ace3019b560",
+      {
+        "4": {
+          "class_type": "CheckpointLoaderSimple",
+          "inputs": {
+            "ckpt_name": "sd_xl_base_1.0.safetensors"
+          }
+        },
+        "5": {
+          "class_type": "EmptyLatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "6": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "text": "daytime sky nature dark blue galaxy bottle",
+            "clip": [
+              "4",
+              1
+            ]
+          }
+        },
+        "7": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "text": "text, watermark",
+            "clip": [
+              "4",
+              1
+            ]
+          }
+        },
+        "10": {
+          "class_type": "KSamplerAdvanced",
+          "inputs": {
+            "model": [
+              "4",
+              0
+            ],
+            "add_noise": "enable",
+            "noise_seed": 6767725640732,
+            "steps": 25,
+            "cfg": 8,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "positive": [
+              "6",
+              0
+            ],
+            "negative": [
+              "7",
+              0
+            ],
+            "latent_image": [
+              "5",
+              0
+            ],
+            "start_at_step": 0,
+            "end_at_step": 20,
+            "return_with_leftover_noise": "enable"
+          }
+        },
+        "11": {
+          "class_type": "KSamplerAdvanced",
+          "inputs": {
+            "model": [
+              "12",
+              0
+            ],
+            "add_noise": "disable",
+            "noise_seed": 0,
+            "steps": 25,
+            "cfg": 8,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "positive": [
+              "15",
+              0
+            ],
+            "negative": [
+              "16",
+              0
+            ],
+            "latent_image": [
+              "10",
+              0
+            ],
+            "start_at_step": 20,
+            "end_at_step": 10000,
+            "return_with_leftover_noise": "disable"
+          }
+        },
+        "12": {
+          "class_type": "CheckpointLoaderSimple",
+          "inputs": {
+            "ckpt_name": "sd_xl_refiner_1.0.safetensors"
+          }
+        },
+        "15": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "text": "daytime scenery  sky nature dark blue bottle with a galaxy stars milky way in it",
+            "clip": [
+              "12",
+              1
+            ]
+          }
+        },
+        "16": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "text": "text, watermark",
+            "clip": [
+              "12",
+              1
+            ]
+          }
+        },
+        "17": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "11",
+              0
+            ],
+            "vae": [
+              "12",
+              2
+            ]
+          }
+        },
+        "19": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "17",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        }
+      },
+      {
+        "client_id": "03-1794020737333-c9b83b66-a359-42ad-9438-a967926cb7e7",
+        "create_time": 1794020743051
+      },
+      [
+        "19"
+      ]
+    ],
+    "outputs": {
+      "19": {
+        "images": [
+          {
+            "filename": "ComfyUI_00246_.png",
+            "subfolder": "",
+            "type": "output"
+          }
+        ]
+      }
+    },
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "c7f8d74d-b833-4c09-a1c4-5ace3019b560",
+            "timestamp": 1794020743053
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "c7f8d74d-b833-4c09-a1c4-5ace3019b560",
+            "timestamp": 1794020743054
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "c7f8d74d-b833-4c09-a1c4-5ace3019b560",
+            "timestamp": 1794020757499
+          }
+        ]
+      ]
+    },
+    "meta": {
+      "19": {
+        "node_id": "19",
+        "display_node": "19",
+        "parent_node": null,
+        "real_node_id": "19"
+      }
+    }
+  }
+}
