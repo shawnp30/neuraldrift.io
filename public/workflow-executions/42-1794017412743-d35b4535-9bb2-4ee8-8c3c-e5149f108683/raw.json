@@ -1,0 +1,384 @@
+{
+  "stats": {
+    "system": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 33228644352,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 17066360832,
+        "vram_free": 13310437886,
+        "torch_vram_total": 201326592,
+        "torch_vram_free": 88943102
+      }
+    ]
+  },
+  "baselinePrompt": {
+    "1": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "deliberate_v6.safetensors"
+      }
+    },
+    "2": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "A small RPG-style pixel-art hero sprite, 16-bit style, clean isolated background",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "3": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "blurry, realistic, photo, 3d, watermark",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "4": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "width": 512,
+        "height": 512,
+        "batch_size": 1
+      }
+    },
+    "5": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "seed": 42,
+        "steps": 20,
+        "cfg": 7.5,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "positive": [
+          "2",
+          0
+        ],
+        "negative": [
+          "3",
+          0
+        ],
+        "latent_image": [
+          "4",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "6": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "5",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "7": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "6",
+          0
+        ],
+        "filename_prefix": "nh_pixel"
+      }
+    }
+  },
+  "prompt": {
+    "1": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "deliberate_v6.safetensors"
+      }
+    },
+    "2": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "A small RPG-style pixel-art hero sprite, 16-bit style, clean isolated background",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "3": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "blurry, realistic, photo, 3d, watermark",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "4": {
+      "class_type": "EmptyLatentImage",
+      "inputs": {
+        "width": 512,
+        "height": 512,
+        "batch_size": 1
+      }
+    },
+    "5": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "seed": 42,
+        "steps": 20,
+        "cfg": 7.5,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "positive": [
+          "2",
+          0
+        ],
+        "negative": [
+          "3",
+          0
+        ],
+        "latent_image": [
+          "4",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "6": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "5",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "7": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "6",
+          0
+        ],
+        "filename_prefix": "nh_pixel"
+      }
+    }
+  },
+  "submission": {
+    "prompt_id": "90bf2fee-aa15-4426-8047-9f08526443b0",
+    "number": 400,
+    "node_errors": {}
+  },
+  "history": {
+    "prompt": [
+      400,
+      "90bf2fee-aa15-4426-8047-9f08526443b0",
+      {
+        "1": {
+          "class_type": "CheckpointLoaderSimple",
+          "inputs": {
+            "ckpt_name": "deliberate_v6.safetensors"
+          }
+        },
+        "2": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "text": "A small RPG-style pixel-art hero sprite, 16-bit style, clean isolated background",
+            "clip": [
+              "1",
+              1
+            ]
+          }
+        },
+        "3": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "text": "blurry, realistic, photo, 3d, watermark",
+            "clip": [
+              "1",
+              1
+            ]
+          }
+        },
+        "4": {
+          "class_type": "EmptyLatentImage",
+          "inputs": {
+            "width": 512,
+            "height": 512,
+            "batch_size": 1
+          }
+        },
+        "5": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "seed": 42,
+            "steps": 20,
+            "cfg": 7.5,
+            "sampler_name": "euler",
+            "scheduler": "normal",
+            "positive": [
+              "2",
+              0
+            ],
+            "negative": [
+              "3",
+              0
+            ],
+            "latent_image": [
+              "4",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "6": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "5",
+              0
+            ],
+            "vae": [
+              "1",
+              2
+            ]
+          }
+        },
+        "7": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "6",
+              0
+            ],
+            "filename_prefix": "nh_pixel"
+          }
+        }
+      },
+      {
+        "client_id": "42-1794017412743-d35b4535-9bb2-4ee8-8c3c-e5149f108683",
+        "create_time": 1794017418618
+      },
+      [
+        "7"
+      ]
+    ],
+    "outputs": {
+      "7": {
+        "images": [
+          {
+            "filename": "nh_pixel_00002_.png",
+            "subfolder": "",
+            "type": "output"
+          }
+        ]
+      }
+    },
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "90bf2fee-aa15-4426-8047-9f08526443b0",
+            "timestamp": 1794017418620
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "90bf2fee-aa15-4426-8047-9f08526443b0",
+            "timestamp": 1794017418621
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "90bf2fee-aa15-4426-8047-9f08526443b0",
+            "timestamp": 1794017420006
+          }
+        ]
+      ]
+    },
+    "meta": {
+      "7": {
+        "node_id": "7",
+        "display_node": "7",
+        "parent_node": null,
+        "real_node_id": "7"
+      }
+    }
+  }
+}

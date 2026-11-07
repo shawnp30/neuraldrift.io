@@ -1,0 +1,184 @@
+{
+  "id": "23-1794017266015-bcddb1d9-e2f8-4153-a2aa-77bb1e21a702",
+  "workflowId": "23",
+  "hardwareProfileId": "local-rtx-5080",
+  "workflowSha256": "26b16192cd2ca2b76abf20dcc02914df47714dad4802f2bb7eafd213970a84e8",
+  "promptSha256": "dd88b853fe3d5a58a708bd826958ad1493a6203558d93a44210cd10c0268922d",
+  "testDate": "2026-11-07T02:07:46.016Z",
+  "executionProfile": "STANDARD",
+  "outcome": "SUCCESS",
+  "failure": null,
+  "settings": {
+    "prompt": {
+      "1": {
+        "class_type": "CheckpointLoaderSimple",
+        "inputs": {
+          "ckpt_name": "sd_xl_base_1.0.safetensors"
+        }
+      },
+      "2": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "transform into oil painting style, impressionist, rich colors, thick brushstrokes",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "3": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "blurry, low quality, watermark, ugly",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "5": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "seed": 42,
+          "steps": 20,
+          "cfg": 7,
+          "sampler_name": "dpmpp_2m",
+          "scheduler": "karras",
+          "positive": [
+            "2",
+            0
+          ],
+          "negative": [
+            "3",
+            0
+          ],
+          "latent_image": [
+            "11",
+            0
+          ],
+          "denoise": 0.65
+        }
+      },
+      "6": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "5",
+            0
+          ],
+          "vae": [
+            "1",
+            2
+          ]
+        }
+      },
+      "7": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "6",
+            0
+          ],
+          "filename_prefix": "nh_i2i_painting"
+        }
+      },
+      "9": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "input.png"
+        }
+      },
+      "11": {
+        "class_type": "VAEEncode",
+        "inputs": {
+          "pixels": [
+            "9",
+            0
+          ],
+          "vae": [
+            "1",
+            2
+          ]
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "ram_total": 66185273344,
+    "ram_free": 33361477632,
+    "comfyui_version": "0.33.0",
+    "required_frontend_version": "1.49.6",
+    "installed_templates_version": "0.11.44",
+    "required_templates_version": "0.11.44",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.49.6",
+        "required": "1.49.6"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.44",
+        "required": "0.11.44"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.10",
+        "required": "0.5.10"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.31",
+        "required": "0.2.31"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.4.13",
+        "required": "0.4.13"
+      }
+    ],
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "pytorch_version": "2.11.0.dev20260211+cu128",
+    "embedded_python": false,
+    "deploy_environment": "local-git",
+    "argv": [
+      "main.py",
+      "--force-fp16",
+      "--use-pytorch-cross-attention",
+      "--auto-launch"
+    ]
+  },
+  "models": [
+    {
+      "filename": "sd_xl_base_1.0.safetensors",
+      "sha256": null
+    }
+  ],
+  "runtimeSeconds": 4.862,
+  "artifact": "/workflow-executions/23-1794017266015-bcddb1d9-e2f8-4153-a2aa-77bb1e21a702/output-0.png",
+  "coldStart": true,
+  "coldStartCheck": {
+    "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+    "torchReservedBytes": 201326592,
+    "vramFreeBeforeBytes": 12876563070,
+    "vramFreeBytes": 15458500608,
+    "minFreeBytes": 13847887864
+  },
+  "cachedNodes": [],
+  "peakVram": {
+    "status": "MEASURED",
+    "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+    "baselineBytes": 3163553792,
+    "peakBytes": 10739515392,
+    "sampleCount": 49
+  },
+  "evidenceUrl": "/workflow-executions/23-1794017266015-bcddb1d9-e2f8-4153-a2aa-77bb1e21a702/record.json",
+  "optimizationNotes": null,
+  "comparisonManifest": null,
+  "rawEvidence": "/workflow-executions/23-1794017266015-bcddb1d9-e2f8-4153-a2aa-77bb1e21a702/raw.json"
+}
