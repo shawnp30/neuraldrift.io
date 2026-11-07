@@ -1,0 +1,173 @@
+{
+  "id": "49-1794013139298-ecf28c7e-7854-413b-a63e-77854315db76",
+  "workflowId": "49",
+  "hardwareProfileId": "local-rtx-5080",
+  "workflowSha256": "719efc624ed93b39fd7fc1e98401f3a8b89ced05c240ddbc6bcce4dc95045c8e",
+  "promptSha256": "86cc429038d026ec2ff221e7ecd148154bc734f9cad53ddd10fd340fbffd906e",
+  "testDate": "2026-11-07T00:58:59.299Z",
+  "executionProfile": "STANDARD",
+  "outcome": "SUCCESS",
+  "failure": null,
+  "settings": {
+    "prompt": {
+      "1": {
+        "class_type": "CheckpointLoaderSimple",
+        "inputs": {
+          "ckpt_name": "sd_xl_base_1.0.safetensors"
+        }
+      },
+      "2": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "A sprawling neon city at night, rain-slicked streets, flying cars, cyberpunk atmosphere",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "3": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "blurry, low quality, day, watermark, flat",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "4": {
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "width": 1024,
+          "height": 1024,
+          "batch_size": 1
+        }
+      },
+      "5": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "seed": 42,
+          "steps": 30,
+          "cfg": 7.5,
+          "sampler_name": "dpmpp_2m",
+          "scheduler": "karras",
+          "positive": [
+            "2",
+            0
+          ],
+          "negative": [
+            "3",
+            0
+          ],
+          "latent_image": [
+            "4",
+            0
+          ],
+          "denoise": 1
+        }
+      },
+      "6": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "5",
+            0
+          ],
+          "vae": [
+            "1",
+            2
+          ]
+        }
+      },
+      "7": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "6",
+            0
+          ],
+          "filename_prefix": "nh_night_city"
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "ram_total": 66185273344,
+    "ram_free": 28800528384,
+    "comfyui_version": "0.33.0",
+    "required_frontend_version": "1.49.6",
+    "installed_templates_version": "0.11.44",
+    "required_templates_version": "0.11.44",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.49.6",
+        "required": "1.49.6"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.44",
+        "required": "0.11.44"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.10",
+        "required": "0.5.10"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.31",
+        "required": "0.2.31"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.4.13",
+        "required": "0.4.13"
+      }
+    ],
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "pytorch_version": "2.11.0.dev20260211+cu128",
+    "embedded_python": false,
+    "deploy_environment": "local-git",
+    "argv": [
+      "main.py",
+      "--force-fp16",
+      "--use-pytorch-cross-attention",
+      "--auto-launch"
+    ]
+  },
+  "models": [
+    {
+      "filename": "sd_xl_base_1.0.safetensors",
+      "sha256": null
+    }
+  ],
+  "runtimeSeconds": 6.808,
+  "artifact": "/workflow-executions/49-1794013139298-ecf28c7e-7854-413b-a63e-77854315db76/output-0.png",
+  "coldStart": true,
+  "coldStartCheck": {
+    "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+    "torchReservedBytes": 201326592,
+    "vramFreeBeforeBytes": 8511003386,
+    "vramFreeBytes": 15458500608,
+    "minFreeBytes": 13873446912
+  },
+  "cachedNodes": [],
+  "peakVram": {
+    "status": "MEASURED",
+    "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+    "baselineBytes": 1939865600,
+    "peakBytes": 11227103232,
+    "sampleCount": 66
+  },
+  "evidenceUrl": "/workflow-executions/49-1794013139298-ecf28c7e-7854-413b-a63e-77854315db76/record.json",
+  "optimizationNotes": null,
+  "comparisonManifest": null,
+  "rawEvidence": "/workflow-executions/49-1794013139298-ecf28c7e-7854-413b-a63e-77854315db76/raw.json"
+}

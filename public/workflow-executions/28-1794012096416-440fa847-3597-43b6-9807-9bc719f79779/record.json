@@ -1,0 +1,173 @@
+{
+  "id": "28-1794012096416-440fa847-3597-43b6-9807-9bc719f79779",
+  "workflowId": "28",
+  "hardwareProfileId": "local-rtx-5080",
+  "workflowSha256": "362826945387b3efb9895218a8bf60274de563bbcecffe74d0778cfc9a78d3fd",
+  "promptSha256": "be4522c86f06880b520aa2419a6bf5a2ff8c5893669115b7b1b28c926b122d4c",
+  "testDate": "2026-11-07T00:41:36.417Z",
+  "executionProfile": "STANDARD",
+  "outcome": "SUCCESS",
+  "failure": null,
+  "settings": {
+    "prompt": {
+      "1": {
+        "class_type": "CheckpointLoaderSimple",
+        "inputs": {
+          "ckpt_name": "sd_xl_base_1.0.safetensors"
+        }
+      },
+      "2": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "Product shot: luxury perfume bottle on a white pedestal, soft studio lighting, high-end commercial style",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "3": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "blurry, low quality, bad lighting, shadows, watermark",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "4": {
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "width": 1024,
+          "height": 1024,
+          "batch_size": 1
+        }
+      },
+      "5": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "seed": 42,
+          "steps": 30,
+          "cfg": 7,
+          "sampler_name": "dpmpp_2m",
+          "scheduler": "karras",
+          "positive": [
+            "2",
+            0
+          ],
+          "negative": [
+            "3",
+            0
+          ],
+          "latent_image": [
+            "4",
+            0
+          ],
+          "denoise": 1
+        }
+      },
+      "6": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "5",
+            0
+          ],
+          "vae": [
+            "1",
+            2
+          ]
+        }
+      },
+      "7": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "6",
+            0
+          ],
+          "filename_prefix": "nh_product"
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "ram_total": 66185273344,
+    "ram_free": 30536781824,
+    "comfyui_version": "0.33.0",
+    "required_frontend_version": "1.49.6",
+    "installed_templates_version": "0.11.44",
+    "required_templates_version": "0.11.44",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.49.6",
+        "required": "1.49.6"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.44",
+        "required": "0.11.44"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.10",
+        "required": "0.5.10"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.31",
+        "required": "0.2.31"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.4.13",
+        "required": "0.4.13"
+      }
+    ],
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "pytorch_version": "2.11.0.dev20260211+cu128",
+    "embedded_python": false,
+    "deploy_environment": "local-git",
+    "argv": [
+      "main.py",
+      "--force-fp16",
+      "--use-pytorch-cross-attention",
+      "--auto-launch"
+    ]
+  },
+  "models": [
+    {
+      "filename": "sd_xl_base_1.0.safetensors",
+      "sha256": null
+    }
+  ],
+  "runtimeSeconds": 6.772,
+  "artifact": "/workflow-executions/28-1794012096416-440fa847-3597-43b6-9807-9bc719f79779/output-0.png",
+  "coldStart": true,
+  "coldStartCheck": {
+    "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+    "torchReservedBytes": 167772160,
+    "vramFreeBeforeBytes": 8536562426,
+    "vramFreeBytes": 15484059648,
+    "minFreeBytes": 13873446912
+  },
+  "cachedNodes": [],
+  "peakVram": {
+    "status": "MEASURED",
+    "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+    "baselineBytes": 2323644416,
+    "peakBytes": 11621367808,
+    "sampleCount": 66
+  },
+  "evidenceUrl": "/workflow-executions/28-1794012096416-440fa847-3597-43b6-9807-9bc719f79779/record.json",
+  "optimizationNotes": null,
+  "comparisonManifest": null,
+  "rawEvidence": "/workflow-executions/28-1794012096416-440fa847-3597-43b6-9807-9bc719f79779/raw.json"
+}

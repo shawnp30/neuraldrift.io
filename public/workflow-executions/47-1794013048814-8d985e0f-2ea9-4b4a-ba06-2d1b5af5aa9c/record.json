@@ -1,0 +1,173 @@
+{
+  "id": "47-1794013048814-8d985e0f-2ea9-4b4a-ba06-2d1b5af5aa9c",
+  "workflowId": "47",
+  "hardwareProfileId": "local-rtx-5080",
+  "workflowSha256": "d5c970f785f21048bec802600f2685eea37a6de089bc7500f52036e808f430ba",
+  "promptSha256": "fdc0915a4a753312ee19c85b23a156b289a3fd4e39d36f8ed5b1330daea473fb",
+  "testDate": "2026-11-07T00:57:28.815Z",
+  "executionProfile": "STANDARD",
+  "outcome": "SUCCESS",
+  "failure": null,
+  "settings": {
+    "prompt": {
+      "1": {
+        "class_type": "CheckpointLoaderSimple",
+        "inputs": {
+          "ckpt_name": "sd_xl_base_1.0.safetensors"
+        }
+      },
+      "2": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "A clock melting over a tree in a desert under a red sky, surrealism, high detail",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "3": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "blurry, low quality, watermark, ugly",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "4": {
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "width": 1024,
+          "height": 1024,
+          "batch_size": 1
+        }
+      },
+      "5": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "seed": 2024,
+          "steps": 25,
+          "cfg": 7.5,
+          "sampler_name": "dpmpp_2m",
+          "scheduler": "karras",
+          "positive": [
+            "2",
+            0
+          ],
+          "negative": [
+            "3",
+            0
+          ],
+          "latent_image": [
+            "4",
+            0
+          ],
+          "denoise": 1
+        }
+      },
+      "6": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "5",
+            0
+          ],
+          "vae": [
+            "1",
+            2
+          ]
+        }
+      },
+      "7": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "6",
+            0
+          ],
+          "filename_prefix": "nh_sdxl_landscape"
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "ram_total": 66185273344,
+    "ram_free": 28992159744,
+    "comfyui_version": "0.33.0",
+    "required_frontend_version": "1.49.6",
+    "installed_templates_version": "0.11.44",
+    "required_templates_version": "0.11.44",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.49.6",
+        "required": "1.49.6"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.44",
+        "required": "0.11.44"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.10",
+        "required": "0.5.10"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.31",
+        "required": "0.2.31"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.4.13",
+        "required": "0.4.13"
+      }
+    ],
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "pytorch_version": "2.11.0.dev20260211+cu128",
+    "embedded_python": false,
+    "deploy_environment": "local-git",
+    "argv": [
+      "main.py",
+      "--force-fp16",
+      "--use-pytorch-cross-attention",
+      "--auto-launch"
+    ]
+  },
+  "models": [
+    {
+      "filename": "sd_xl_base_1.0.safetensors",
+      "sha256": null
+    }
+  ],
+  "runtimeSeconds": 6.017,
+  "artifact": "/workflow-executions/47-1794013048814-8d985e0f-2ea9-4b4a-ba06-2d1b5af5aa9c/output-0.png",
+  "coldStart": true,
+  "coldStartCheck": {
+    "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+    "torchReservedBytes": 201326592,
+    "vramFreeBeforeBytes": 8511003386,
+    "vramFreeBytes": 15458500608,
+    "minFreeBytes": 13873446912
+  },
+  "cachedNodes": [],
+  "peakVram": {
+    "status": "MEASURED",
+    "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+    "baselineBytes": 1939865600,
+    "peakBytes": 11230248960,
+    "sampleCount": 59
+  },
+  "evidenceUrl": "/workflow-executions/47-1794013048814-8d985e0f-2ea9-4b4a-ba06-2d1b5af5aa9c/record.json",
+  "optimizationNotes": null,
+  "comparisonManifest": null,
+  "rawEvidence": "/workflow-executions/47-1794013048814-8d985e0f-2ea9-4b4a-ba06-2d1b5af5aa9c/raw.json"
+}

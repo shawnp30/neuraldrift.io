@@ -1,0 +1,432 @@
+{
+  "stats": {
+    "system": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 38112301056,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 17066360832,
+        "vram_free": 15466188532,
+        "torch_vram_total": 167772160,
+        "torch_vram_free": 63655668
+      }
+    ]
+  },
+  "baselinePrompt": {
+    "1": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sd_xl_base_1.0.safetensors"
+      }
+    },
+    "2": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "seamless background fill, photorealistic, consistent lighting, no seams",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "3": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "blurry, low quality, watermark, ugly, bad",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "5": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "seed": 42,
+        "steps": 20,
+        "cfg": 7.5,
+        "sampler_name": "dpmpp_2m",
+        "scheduler": "karras",
+        "positive": [
+          "2",
+          0
+        ],
+        "negative": [
+          "3",
+          0
+        ],
+        "latent_image": [
+          "11",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "6": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "5",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "7": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "6",
+          0
+        ],
+        "filename_prefix": "nh_inpaint"
+      }
+    },
+    "9": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "input_with_mask.png"
+      }
+    },
+    "11": {
+      "class_type": "VAEEncodeForInpaint",
+      "inputs": {
+        "pixels": [
+          "9",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ],
+        "mask": [
+          "9",
+          1
+        ],
+        "grow_mask_by": 6
+      }
+    }
+  },
+  "prompt": {
+    "1": {
+      "class_type": "CheckpointLoaderSimple",
+      "inputs": {
+        "ckpt_name": "sd_xl_base_1.0.safetensors"
+      }
+    },
+    "2": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "seamless background fill, photorealistic, consistent lighting, no seams",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "3": {
+      "class_type": "CLIPTextEncode",
+      "inputs": {
+        "text": "blurry, low quality, watermark, ugly, bad",
+        "clip": [
+          "1",
+          1
+        ]
+      }
+    },
+    "5": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "1",
+          0
+        ],
+        "seed": 42,
+        "steps": 20,
+        "cfg": 7.5,
+        "sampler_name": "dpmpp_2m",
+        "scheduler": "karras",
+        "positive": [
+          "2",
+          0
+        ],
+        "negative": [
+          "3",
+          0
+        ],
+        "latent_image": [
+          "11",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "6": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "5",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      }
+    },
+    "7": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "6",
+          0
+        ],
+        "filename_prefix": "nh_inpaint"
+      }
+    },
+    "9": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "input_with_mask.png"
+      }
+    },
+    "11": {
+      "class_type": "VAEEncodeForInpaint",
+      "inputs": {
+        "pixels": [
+          "9",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ],
+        "mask": [
+          "9",
+          1
+        ],
+        "grow_mask_by": 6
+      }
+    }
+  },
+  "submission": {
+    "prompt_id": "ead18932-cda1-4c1b-bcc1-724476dbd986",
+    "number": 315,
+    "node_errors": {}
+  },
+  "history": {
+    "prompt": [
+      315,
+      "ead18932-cda1-4c1b-bcc1-724476dbd986",
+      {
+        "1": {
+          "class_type": "CheckpointLoaderSimple",
+          "inputs": {
+            "ckpt_name": "sd_xl_base_1.0.safetensors"
+          }
+        },
+        "2": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "text": "seamless background fill, photorealistic, consistent lighting, no seams",
+            "clip": [
+              "1",
+              1
+            ]
+          }
+        },
+        "3": {
+          "class_type": "CLIPTextEncode",
+          "inputs": {
+            "text": "blurry, low quality, watermark, ugly, bad",
+            "clip": [
+              "1",
+              1
+            ]
+          }
+        },
+        "5": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "1",
+              0
+            ],
+            "seed": 42,
+            "steps": 20,
+            "cfg": 7.5,
+            "sampler_name": "dpmpp_2m",
+            "scheduler": "karras",
+            "positive": [
+              "2",
+              0
+            ],
+            "negative": [
+              "3",
+              0
+            ],
+            "latent_image": [
+              "11",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "6": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "5",
+              0
+            ],
+            "vae": [
+              "1",
+              2
+            ]
+          }
+        },
+        "7": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "6",
+              0
+            ],
+            "filename_prefix": "nh_inpaint"
+          }
+        },
+        "9": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "input_with_mask.png"
+          }
+        },
+        "11": {
+          "class_type": "VAEEncodeForInpaint",
+          "inputs": {
+            "pixels": [
+              "9",
+              0
+            ],
+            "vae": [
+              "1",
+              2
+            ],
+            "mask": [
+              "9",
+              1
+            ],
+            "grow_mask_by": 6
+          }
+        }
+      },
+      {
+        "client_id": "26-1794012024552-7a4082e5-68cc-4a0e-835d-3d08ec5711d4",
+        "create_time": 1794012030066
+      },
+      [
+        "7"
+      ]
+    ],
+    "outputs": {
+      "7": {
+        "images": [
+          {
+            "filename": "nh_inpaint_00010_.png",
+            "subfolder": "",
+            "type": "output"
+          }
+        ]
+      }
+    },
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "ead18932-cda1-4c1b-bcc1-724476dbd986",
+            "timestamp": 1794012030067
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "ead18932-cda1-4c1b-bcc1-724476dbd986",
+            "timestamp": 1794012030074
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "ead18932-cda1-4c1b-bcc1-724476dbd986",
+            "timestamp": 1794012034628
+          }
+        ]
+      ]
+    },
+    "meta": {
+      "7": {
+        "node_id": "7",
+        "display_node": "7",
+        "parent_node": null,
+        "real_node_id": "7"
+      }
+    }
+  }
+}

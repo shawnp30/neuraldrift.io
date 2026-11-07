@@ -1,0 +1,435 @@
+{
+  "stats": {
+    "system": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 7096557568,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 17066360832,
+        "vram_free": 2800317868,
+        "torch_vram_total": 167772160,
+        "torch_vram_free": 80778668
+      }
+    ]
+  },
+  "baselinePrompt": {
+    "8": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "31",
+          0
+        ],
+        "vae": [
+          "39",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "8",
+          0
+        ],
+        "filename_prefix": "ComfyUI"
+      }
+    },
+    "27": {
+      "class_type": "EmptySD3LatentImage",
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    "31": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "38",
+          0
+        ],
+        "seed": 192044955347061,
+        "steps": 20,
+        "cfg": 1,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "41",
+          0
+        ],
+        "negative": [
+          "42",
+          0
+        ],
+        "latent_image": [
+          "27",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "38": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "flux1-dev.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "39": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      }
+    },
+    "40": {
+      "class_type": "DualCLIPLoader",
+      "inputs": {
+        "clip_name1": "clip_l.safetensors",
+        "clip_name2": "t5xxl_fp16.safetensors",
+        "type": "flux",
+        "device": "default"
+      }
+    },
+    "41": {
+      "class_type": "CLIPTextEncodeFlux",
+      "inputs": {
+        "clip": [
+          "40",
+          0
+        ],
+        "clip_l": "A realistic portrait of an elderly fisherman with a weathered face, sunset lighting, DSLR photography",
+        "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+        "guidance": 3.5
+      }
+    },
+    "42": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "41",
+          0
+        ]
+      }
+    }
+  },
+  "prompt": {
+    "8": {
+      "class_type": "VAEDecode",
+      "inputs": {
+        "samples": [
+          "31",
+          0
+        ],
+        "vae": [
+          "39",
+          0
+        ]
+      }
+    },
+    "9": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "8",
+          0
+        ],
+        "filename_prefix": "ComfyUI"
+      }
+    },
+    "27": {
+      "class_type": "EmptySD3LatentImage",
+      "inputs": {
+        "width": 1024,
+        "height": 1024,
+        "batch_size": 1
+      }
+    },
+    "31": {
+      "class_type": "KSampler",
+      "inputs": {
+        "model": [
+          "38",
+          0
+        ],
+        "seed": 192044955347061,
+        "steps": 20,
+        "cfg": 1,
+        "sampler_name": "euler",
+        "scheduler": "simple",
+        "positive": [
+          "41",
+          0
+        ],
+        "negative": [
+          "42",
+          0
+        ],
+        "latent_image": [
+          "27",
+          0
+        ],
+        "denoise": 1
+      }
+    },
+    "38": {
+      "class_type": "UNETLoader",
+      "inputs": {
+        "unet_name": "flux1-dev.safetensors",
+        "weight_dtype": "default"
+      }
+    },
+    "39": {
+      "class_type": "VAELoader",
+      "inputs": {
+        "vae_name": "ae.safetensors"
+      }
+    },
+    "40": {
+      "class_type": "DualCLIPLoader",
+      "inputs": {
+        "clip_name1": "clip_l.safetensors",
+        "clip_name2": "t5xxl_fp16.safetensors",
+        "type": "flux",
+        "device": "default"
+      }
+    },
+    "41": {
+      "class_type": "CLIPTextEncodeFlux",
+      "inputs": {
+        "clip": [
+          "40",
+          0
+        ],
+        "clip_l": "A realistic portrait of an elderly fisherman with a weathered face, sunset lighting, DSLR photography",
+        "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+        "guidance": 3.5
+      }
+    },
+    "42": {
+      "class_type": "ConditioningZeroOut",
+      "inputs": {
+        "conditioning": [
+          "41",
+          0
+        ]
+      }
+    }
+  },
+  "submission": {
+    "prompt_id": "b00ada80-b0ef-42a6-b33a-a752e71c9e43",
+    "number": 355,
+    "node_errors": {}
+  },
+  "history": {
+    "prompt": [
+      355,
+      "b00ada80-b0ef-42a6-b33a-a752e71c9e43",
+      {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "A realistic portrait of an elderly fisherman with a weathered face, sunset lighting, DSLR photography",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      },
+      {
+        "client_id": "40-1794012681980-59a18be9-3b05-4dc7-8bd6-0f9517e65da3",
+        "create_time": 1794012689690
+      },
+      [
+        "9"
+      ]
+    ],
+    "outputs": {
+      "9": {
+        "images": [
+          {
+            "filename": "ComfyUI_00238_.png",
+            "subfolder": "",
+            "type": "output"
+          }
+        ]
+      }
+    },
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "b00ada80-b0ef-42a6-b33a-a752e71c9e43",
+            "timestamp": 1794012689692
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "b00ada80-b0ef-42a6-b33a-a752e71c9e43",
+            "timestamp": 1794012689692
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "b00ada80-b0ef-42a6-b33a-a752e71c9e43",
+            "timestamp": 1794012718357
+          }
+        ]
+      ]
+    },
+    "meta": {
+      "9": {
+        "node_id": "9",
+        "display_node": "9",
+        "parent_node": null,
+        "real_node_id": "9"
+      }
+    }
+  }
+}

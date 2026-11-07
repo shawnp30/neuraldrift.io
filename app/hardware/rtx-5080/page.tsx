@@ -2,7 +2,7 @@
 // Authoritative evidence dossier for RTX 5080 testbench runs.
 
 import Link from 'next/link';
-import { EXECUTIONS, evidenceFreshness } from '@/lib/hardware/executions';
+import { EXECUTIONS, coldStartSummary, evidenceFreshness } from '@/lib/hardware/executions';
 import { pageMeta } from '@/lib/seo';
 import { CATALOG, WORKFLOW_TESTS } from '@/lib/catalog';
 import { getAllEvidenceRecords } from '@/lib/hardware/evidence';
@@ -18,6 +18,9 @@ export default function Rtx5080EvidencePage() {
   const currentIds = new Set(EXECUTIONS.filter(r => r.hardwareProfileId === 'local-rtx-5080' && r.outcome === 'SUCCESS' && evidenceFreshness(r) === 'CURRENT').map(r => r.workflowId));
   const testedRecords = Object.values(allEvidence).filter(e => currentIds.has(e.workflowId));
   const unexecutedRecords = Object.values(allEvidence).filter(e => e.status !== 'completed');
+  const summaries = new Map(testedRecords.map(r => [r.workflowId, coldStartSummary(r.workflowId, 'local-rtx-5080')]));
+  const coldStartCount = [...summaries.values()].filter(Boolean).length;
+  const gb = (bytes: number) => `${(bytes / 1e9).toFixed(1)} GB`;
 
   // Group tested by family
   const families: Record<string, typeof testedRecords> = {};
@@ -38,7 +41,11 @@ export default function Rtx5080EvidencePage() {
           <p className="nd-eyebrow">PRIMARY LOCAL TESTBENCH DOSSIER</p>
           <h1>NVIDIA GeForce RTX 5080 (16GB) Evidence</h1>
           <p className="nd-lead">
-            Authoritative local hardware verification results. {testedRecords.length} workflows have current successful evidence on the RTX 5080. Historical runs remain unclassified because STANDARD versus OPTIMIZED settings were not recorded. See each workflow for its complete execution history.
+            Authoritative local hardware verification results. {testedRecords.length} workflows have current successful evidence on the RTX 5080. See each workflow for its complete execution history.
+          </p>
+          <p className="nd-subtle">
+            {coldStartCount} of them have repeated STANDARD runs of the unchanged catalog workflow, each started with models unloaded and the release confirmed by device-wide free memory. For those, runtime is the median from ComfyUI&apos;s own execution timestamps, and peak VRAM is the highest device-wide <code>nvidia-smi</code> reading, sampled every 100 ms. It includes the desktop and other processes, shown as the baseline, so it is what the card had in use, not the minimum a workflow needs.
+            {coldStartCount < testedRecords.length && ` The other ${testedRecords.length - coldStartCount} show legacy figures, marked "legacy": those runs changed inputs and models, capped sampling at 20 steps, were timed by polling every 2 s and recorded no VRAM.`}
           </p>
         </header>
 
@@ -115,11 +122,19 @@ export default function Rtx5080EvidencePage() {
                         <th style={{ padding: '0.5rem' }}>Resolution / Frames</th>
                         <th style={{ padding: '0.5rem' }}>Steps / Sampler</th>
                         <th style={{ padding: '0.5rem' }}>Runtime</th>
+                        <th style={{ padding: '0.5rem' }}>Peak VRAM (device)</th>
                         <th style={{ padding: '0.5rem' }}>Output</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {records.map(r => (
+                      {records.map(r => {
+                        const s = summaries.get(r.workflowId);
+                        const width = s ? s.width : r.resolutionWidth;
+                        const height = s ? s.height : r.resolutionHeight;
+                        const steps = s ? s.steps : r.steps;
+                        const sampler = s ? s.sampler : r.sampler;
+                        const artifact = s ? s.artifact : r.artifact;
+                        return (
                         <tr key={r.workflowId} style={{ borderBottom: '1px solid #1e293b' }}>
                           <td style={{ padding: '0.5rem', fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>{r.workflowId}</td>
                           <td style={{ padding: '0.5rem' }}>
@@ -128,24 +143,52 @@ export default function Rtx5080EvidencePage() {
                             </Link>
                           </td>
                           <td style={{ padding: '0.5rem', color: '#cbd5e1' }}>
-                            {r.resolutionWidth && r.resolutionHeight ? `${r.resolutionWidth}×${r.resolutionHeight}` : 'Default'}
-                            {r.frameCount ? ` (${r.frameCount}f)` : ''}
+                            {width && height ? `${width}×${height}` : 'Default'}
+                            {!s && r.frameCount ? ` (${r.frameCount}f)` : ''}
                           </td>
                           <td style={{ padding: '0.5rem', color: '#94a3b8' }}>
-                            {r.steps ? `${r.steps} steps` : '—'} {r.sampler ? `(${r.sampler})` : ''}
+                            {steps ? `${steps} steps` : '—'} {sampler ? `(${sampler})` : ''}
                           </td>
-                          <td style={{ padding: '0.5rem', color: '#34d399', fontWeight: 600, fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
-                            {r.runtimeSeconds ? `${r.runtimeSeconds.toFixed(2)}s` : '—'}
+                          <td style={{ padding: '0.5rem', fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
+                            {s ? (
+                              <>
+                                <span style={{ color: '#34d399', fontWeight: 600 }}>{s.medianSeconds.toFixed(2)}s</span>
+                                <span style={{ display: 'block', color: '#94a3b8', fontSize: '0.7rem' }}>
+                                  median of {s.runs} · {s.minSeconds.toFixed(2)}–{s.maxSeconds.toFixed(2)}s
+                                </span>
+                              </>
+                            ) : r.runtimeSeconds ? (
+                              <>
+                                <span style={{ color: '#cbd5e1' }}>{r.runtimeSeconds.toFixed(2)}s</span>
+                                <span style={{ display: 'block', color: '#94a3b8', fontSize: '0.7rem' }}>legacy, ±2 s</span>
+                              </>
+                            ) : '—'}
+                          </td>
+                          <td style={{ padding: '0.5rem', fontFamily: 'var(--font-ibm-plex-mono), monospace' }}>
+                            {s?.peakVramBytes != null ? (
+                              <>
+                                <span style={{ color: '#f8fafc' }}>{gb(s.peakVramBytes)}</span>
+                                {s.peakBaselineBytes != null && (
+                                  <span style={{ display: 'block', color: '#94a3b8', fontSize: '0.7rem' }}>baseline {gb(s.peakBaselineBytes)}</span>
+                                )}
+                              </>
+                            ) : <span style={{ color: '#94a3b8' }}>not measured</span>}
                           </td>
                           <td style={{ padding: '0.5rem' }}>
-                            {r.artifact ? (
-                              <a href={r.artifact} target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', fontSize: '0.75rem' }}>
+                            {artifact ? (
+                              <a href={artifact} target="_blank" rel="noopener noreferrer" style={{ color: '#38bdf8', fontSize: '0.75rem' }}>
                                 View Artifact ↗
                               </a>
                             ) : 'None'}
+                            {s && (
+                              <a href={s.evidenceUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'block', color: '#38bdf8', fontSize: '0.75rem' }}>
+                                Run record ↗
+                              </a>
+                            )}
                           </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>

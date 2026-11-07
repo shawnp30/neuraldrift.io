@@ -1,0 +1,213 @@
+{
+  "id": "34-1794012360585-75cdfbb9-5188-448c-ac4c-78765aae03ce",
+  "workflowId": "34",
+  "hardwareProfileId": "local-rtx-5080",
+  "workflowSha256": "ed655113da36bbe82ab37af52fcd25e67993c183c517d5e6a0ef415906f580e9",
+  "promptSha256": "4cecd1343f56334171a7376dc15f0252fbc39708523e6686ffaf723034a15df1",
+  "testDate": "2026-11-07T00:46:00.586Z",
+  "executionProfile": "STANDARD",
+  "outcome": "SUCCESS",
+  "failure": null,
+  "settings": {
+    "prompt": {
+      "1": {
+        "class_type": "CheckpointLoaderSimple",
+        "inputs": {
+          "ckpt_name": "dreamshaper_8.safetensors"
+        }
+      },
+      "2": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "detailed anime character, vibrant colors, cel shaded, high quality, masterpiece",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "3": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "blurry, low quality, bad anatomy, extra limbs",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "4": {
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "width": 512,
+          "height": 512,
+          "batch_size": 1
+        }
+      },
+      "5": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "seed": 42,
+          "steps": 25,
+          "cfg": 7,
+          "sampler_name": "dpmpp_2m",
+          "scheduler": "karras",
+          "positive": [
+            "13",
+            0
+          ],
+          "negative": [
+            "13",
+            1
+          ],
+          "latent_image": [
+            "4",
+            0
+          ],
+          "denoise": 1
+        }
+      },
+      "6": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "5",
+            0
+          ],
+          "vae": [
+            "1",
+            2
+          ]
+        }
+      },
+      "7": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "6",
+            0
+          ],
+          "filename_prefix": "nh_cn_lineart"
+        }
+      },
+      "9": {
+        "class_type": "LoadImage",
+        "inputs": {
+          "image": "control_input.png"
+        }
+      },
+      "12": {
+        "class_type": "ControlNetLoader",
+        "inputs": {
+          "control_net_name": "control_v11p_sd15_lineart.pth"
+        }
+      },
+      "13": {
+        "class_type": "ControlNetApplyAdvanced",
+        "inputs": {
+          "positive": [
+            "2",
+            0
+          ],
+          "negative": [
+            "3",
+            0
+          ],
+          "control_net": [
+            "12",
+            0
+          ],
+          "image": [
+            "9",
+            0
+          ],
+          "strength": 1,
+          "start_percent": 0,
+          "end_percent": 1
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "ram_total": 66185273344,
+    "ram_free": 31631753216,
+    "comfyui_version": "0.33.0",
+    "required_frontend_version": "1.49.6",
+    "installed_templates_version": "0.11.44",
+    "required_templates_version": "0.11.44",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.49.6",
+        "required": "1.49.6"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.44",
+        "required": "0.11.44"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.10",
+        "required": "0.5.10"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.31",
+        "required": "0.2.31"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.4.13",
+        "required": "0.4.13"
+      }
+    ],
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "pytorch_version": "2.11.0.dev20260211+cu128",
+    "embedded_python": false,
+    "deploy_environment": "local-git",
+    "argv": [
+      "main.py",
+      "--force-fp16",
+      "--use-pytorch-cross-attention",
+      "--auto-launch"
+    ]
+  },
+  "models": [
+    {
+      "filename": "dreamshaper_8.safetensors",
+      "sha256": null
+    },
+    {
+      "filename": "control_v11p_sd15_lineart.pth",
+      "sha256": null
+    }
+  ],
+  "runtimeSeconds": 3.178,
+  "artifact": "/workflow-executions/34-1794012360585-75cdfbb9-5188-448c-ac4c-78765aae03ce/output-0.png",
+  "coldStart": true,
+  "coldStartCheck": {
+    "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+    "torchReservedBytes": 167772160,
+    "vramFreeBeforeBytes": 12597619486,
+    "vramFreeBytes": 15484059648,
+    "minFreeBytes": 13873446912
+  },
+  "cachedNodes": [],
+  "peakVram": {
+    "status": "MEASURED",
+    "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+    "baselineBytes": 2706374656,
+    "peakBytes": 5729419264,
+    "sampleCount": 37
+  },
+  "evidenceUrl": "/workflow-executions/34-1794012360585-75cdfbb9-5188-448c-ac4c-78765aae03ce/record.json",
+  "optimizationNotes": null,
+  "comparisonManifest": null,
+  "rawEvidence": "/workflow-executions/34-1794012360585-75cdfbb9-5188-448c-ac4c-78765aae03ce/raw.json"
+}
