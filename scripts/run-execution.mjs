@@ -5,6 +5,7 @@ import crypto from 'node:crypto';
 import path from 'node:path';
 import { apiPrompt } from './workflow-api.mjs';
 import { startVramSampler } from './vram-sampler.mjs';
+import { workflowSha256 } from './workflow-hashes.mjs';
 
 const configPath = process.argv[2];
 if (!configPath) throw new Error('Supply execution config JSON; see docs/phase7.md.');
@@ -32,9 +33,9 @@ const bytes = fs.readFileSync(`public/workflows/${config.workflowId}.json`);
 const sha = value => crypto.createHash('sha256').update(value).digest('hex');
 const id = `${config.workflowId}-${Date.now()}-${crypto.randomUUID()}`;
 const record = {
-  id, workflowId: config.workflowId, hardwareProfileId: hardware.id, workflowSha256: sha(bytes), promptSha256: null,
+  id, workflowId: config.workflowId, hardwareProfileId: hardware.id, workflowSha256: workflowSha256(config.workflowId), promptSha256: null,
   testDate: new Date().toISOString(), executionProfile: config.executionProfile, outcome: 'FAILURE', failure: null,
-  settings: {}, environment: stats.system, models: [], runtimeSeconds: null, artifact: null, coldStart: false, peakVram: null,
+  settings: {}, environment: stats.system, models: [], runtimeSeconds: null, artifact: null, coldStart: false, coldStartCheck: null, cachedNodes: null, peakVram: null,
   evidenceUrl: `/workflow-executions/${id}/record.json`, optimizationNotes: config.optimizationNotes ?? null,
   comparisonManifest: null,
 };
@@ -69,13 +70,32 @@ try {
   // Comparability remains unavailable unless a fully verified manifest is collected.
   // The runner deliberately does not accept arbitrary comparison claims from config.
   // Start every run with models unloaded so runtimes and VRAM peaks are comparable.
-  // ComfyUI applies /free asynchronously, so wait for its reserved VRAM to drop.
+  // ComfyUI applies /free later, on its worker thread. Under cudaMallocAsync the freed pool
+  // is not counted in torch_vram_total, which can read near zero while the card still holds
+  // gigabytes, so also wait for device-wide free memory (vram_free, from the CUDA driver)
+  // to stop changing for a full window before calling the start cold. The worker can be busy
+  // for over 2 s after a run (garbage collection, cache trimming), so the window is 5 s; a run
+  // that still reuses cached nodes is caught after execution and marked not cold.
+  const freeBefore = (await (await request('/system_stats')).json()).devices?.[config.deviceIndex ?? 0]?.vram_free ?? null;
   await request('/free', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ unload_models: true, free_memory: true }) });
-  const unloadDeadline = Date.now() + 15000;
+  // Optional floor from the batch's idle measurement: a settled reading below it means the
+  // previous run's models are still resident (the worker has not applied /free yet).
+  const minFree = config.coldStartMinFreeBytes ?? null;
+  const unloadDeadline = Date.now() + (config.unloadTimeoutSeconds ?? 30) * 1000;
+  let settledFree = null;
+  let settledSince = 0;
   while (!record.coldStart && Date.now() < unloadDeadline) {
-    const reserved = (await (await request('/system_stats')).json()).devices?.[config.deviceIndex ?? 0]?.torch_vram_total;
-    if (typeof reserved === 'number' && reserved < 512 * 1024 ** 2) record.coldStart = true;
-    else await new Promise(resolve => setTimeout(resolve, 250));
+    const unloadDevice = (await (await request('/system_stats')).json()).devices?.[config.deviceIndex ?? 0];
+    const { vram_free: free, torch_vram_total: reserved } = unloadDevice ?? {};
+    if (typeof free !== 'number' || typeof reserved !== 'number') break;
+    if (settledFree === null || Math.abs(free - settledFree) > 64 * 1024 ** 2) { settledFree = free; settledSince = Date.now(); }
+    else if (reserved < 512 * 1024 ** 2 && Date.now() - settledSince >= 5000 && (minFree === null || free >= minFree)) {
+      record.coldStart = true;
+      // What the confirmation rested on. Records made before this check lack it.
+      record.coldStartCheck = { method: 'torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run', torchReservedBytes: reserved, vramFreeBeforeBytes: freeBefore, vramFreeBytes: free, minFreeBytes: minFree };
+      break;
+    }
+    await new Promise(resolve => setTimeout(resolve, 250));
   }
   if (['127.0.0.1', 'localhost', '[::1]'].includes(endpoint.hostname)) {
     sampler = startVramSampler({ gpuIndex: config.nvidiaSmiGpuIndex ?? 0, expectedName: hardware.name, sampler: config.vramSampler });
@@ -105,6 +125,13 @@ try {
       if (success && run.status?.completed) {
         const start = messages.find(([kind]) => kind === 'execution_start')?.[1].timestamp;
         record.runtimeSeconds = start ? (success[1].timestamp - start) / 1000 : null;
+        // ComfyUI applies /free between prompts, and it clears the node cache too. A node
+        // reused from the cache means /free had not been applied, so the models were still
+        // loaded and the runtime skipped work. ComfyUI always lists cached nodes; no list means
+        // the cold start cannot be verified either.
+        const cached = messages.find(([kind]) => kind === 'execution_cached')?.[1].nodes;
+        record.cachedNodes = Array.isArray(cached) ? cached.map(String) : null;
+        if (!record.cachedNodes || record.cachedNodes.length) record.coldStart = false;
         const outputs = Object.values(run.outputs ?? {}).flatMap(o => Object.values(o).flat()).filter(o => o && typeof o === 'object' && typeof o.filename === 'string');
         if (!outputs.length) throw new Error('Execution completed without a downloadable output artifact; success not established.');
         for (const [index, output] of outputs.entries()) {

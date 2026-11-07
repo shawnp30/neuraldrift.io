@@ -1,0 +1,202 @@
+{
+  "id": "30-1794012243839-73cbae93-6baa-4477-ab3f-cf28fdecf02a",
+  "workflowId": "30",
+  "hardwareProfileId": "local-rtx-5080",
+  "workflowSha256": "73d58681c1425c4bc2357bd0cecd3f73b99eea410a6e1044582fa14c61024e45",
+  "promptSha256": "c5e77365827ef1f872c9416b09a44153036a46ad809b21624e4747cd914e3dcb",
+  "testDate": "2026-11-07T00:44:03.839Z",
+  "executionProfile": "STANDARD",
+  "outcome": "SUCCESS",
+  "failure": null,
+  "settings": {
+    "prompt": {
+      "8": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "31",
+            0
+          ],
+          "vae": [
+            "39",
+            0
+          ]
+        }
+      },
+      "9": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "8",
+            0
+          ],
+          "filename_prefix": "ComfyUI"
+        }
+      },
+      "27": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1024,
+          "height": 1024,
+          "batch_size": 1
+        }
+      },
+      "31": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "38",
+            0
+          ],
+          "seed": 192044955347061,
+          "steps": 20,
+          "cfg": 1,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "positive": [
+            "41",
+            0
+          ],
+          "negative": [
+            "42",
+            0
+          ],
+          "latent_image": [
+            "27",
+            0
+          ],
+          "denoise": 1
+        }
+      },
+      "38": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "flux1-dev.safetensors",
+          "weight_dtype": "default"
+        }
+      },
+      "39": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "ae.safetensors"
+        }
+      },
+      "40": {
+        "class_type": "DualCLIPLoader",
+        "inputs": {
+          "clip_name1": "clip_l.safetensors",
+          "clip_name2": "t5xxl_fp16.safetensors",
+          "type": "flux",
+          "device": "default"
+        }
+      },
+      "41": {
+        "class_type": "CLIPTextEncodeFlux",
+        "inputs": {
+          "clip": [
+            "40",
+            0
+          ],
+          "clip_l": "Fashion portrait of a woman with avant-garde makeup, high contrast editorial lighting, film grain",
+          "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+          "guidance": 3.5
+        }
+      },
+      "42": {
+        "class_type": "ConditioningZeroOut",
+        "inputs": {
+          "conditioning": [
+            "41",
+            0
+          ]
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "ram_total": 66185273344,
+    "ram_free": 7057342464,
+    "comfyui_version": "0.33.0",
+    "required_frontend_version": "1.49.6",
+    "installed_templates_version": "0.11.44",
+    "required_templates_version": "0.11.44",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.49.6",
+        "required": "1.49.6"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.44",
+        "required": "0.11.44"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.10",
+        "required": "0.5.10"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.31",
+        "required": "0.2.31"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.4.13",
+        "required": "0.4.13"
+      }
+    ],
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "pytorch_version": "2.11.0.dev20260211+cu128",
+    "embedded_python": false,
+    "deploy_environment": "local-git",
+    "argv": [
+      "main.py",
+      "--force-fp16",
+      "--use-pytorch-cross-attention",
+      "--auto-launch"
+    ]
+  },
+  "models": [
+    {
+      "filename": "flux1-dev.safetensors",
+      "sha256": null
+    },
+    {
+      "filename": "ae.safetensors",
+      "sha256": null
+    },
+    {
+      "filename": "clip_l.safetensors",
+      "sha256": null
+    },
+    {
+      "filename": "t5xxl_fp16.safetensors",
+      "sha256": null
+    }
+  ],
+  "runtimeSeconds": 27.667,
+  "artifact": "/workflow-executions/30-1794012243839-73cbae93-6baa-4477-ab3f-cf28fdecf02a/output-0.png",
+  "coldStart": true,
+  "coldStartCheck": {
+    "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+    "torchReservedBytes": 167772160,
+    "vramFreeBeforeBytes": 2756543916,
+    "vramFreeBytes": 15484059648,
+    "minFreeBytes": 13873446912
+  },
+  "cachedNodes": [],
+  "peakVram": {
+    "status": "MEASURED",
+    "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+    "baselineBytes": 2497708032,
+    "peakBytes": 16459497472,
+    "sampleCount": 260
+  },
+  "evidenceUrl": "/workflow-executions/30-1794012243839-73cbae93-6baa-4477-ab3f-cf28fdecf02a/record.json",
+  "optimizationNotes": null,
+  "comparisonManifest": null,
+  "rawEvidence": "/workflow-executions/30-1794012243839-73cbae93-6baa-4477-ab3f-cf28fdecf02a/raw.json"
+}

@@ -1,0 +1,237 @@
+{
+  "stats": {
+    "system": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 35897286656,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "devices": [
+      {
+        "name": "cuda:0 NVIDIA GeForce RTX 5080 : cudaMallocAsync",
+        "type": "cuda",
+        "index": 0,
+        "vram_total": 17066360832,
+        "vram_free": 14646952574,
+        "torch_vram_total": 939524096,
+        "torch_vram_free": 16171646
+      }
+    ]
+  },
+  "baselinePrompt": {
+    "1": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "example.png"
+      }
+    },
+    "2": {
+      "class_type": "UpscaleModelLoader",
+      "inputs": {
+        "model_name": "RealESRGAN_x4plus.pth"
+      }
+    },
+    "3": {
+      "class_type": "ImageUpscaleWithModel",
+      "inputs": {
+        "upscale_model": [
+          "2",
+          0
+        ],
+        "image": [
+          "1",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "3",
+          0
+        ],
+        "filename_prefix": "nh_upscale_4x"
+      }
+    }
+  },
+  "prompt": {
+    "1": {
+      "class_type": "LoadImage",
+      "inputs": {
+        "image": "example.png"
+      }
+    },
+    "2": {
+      "class_type": "UpscaleModelLoader",
+      "inputs": {
+        "model_name": "RealESRGAN_x4plus.pth"
+      }
+    },
+    "3": {
+      "class_type": "ImageUpscaleWithModel",
+      "inputs": {
+        "upscale_model": [
+          "2",
+          0
+        ],
+        "image": [
+          "1",
+          0
+        ]
+      }
+    },
+    "4": {
+      "class_type": "SaveImage",
+      "inputs": {
+        "images": [
+          "3",
+          0
+        ],
+        "filename_prefix": "nh_upscale_4x"
+      }
+    }
+  },
+  "submission": {
+    "prompt_id": "29087a7d-2a6d-4640-bff2-87ae7e739315",
+    "number": 309,
+    "node_errors": {}
+  },
+  "history": {
+    "prompt": [
+      309,
+      "29087a7d-2a6d-4640-bff2-87ae7e739315",
+      {
+        "1": {
+          "class_type": "LoadImage",
+          "inputs": {
+            "image": "example.png"
+          }
+        },
+        "2": {
+          "class_type": "UpscaleModelLoader",
+          "inputs": {
+            "model_name": "RealESRGAN_x4plus.pth"
+          }
+        },
+        "3": {
+          "class_type": "ImageUpscaleWithModel",
+          "inputs": {
+            "upscale_model": [
+              "2",
+              0
+            ],
+            "image": [
+              "1",
+              0
+            ]
+          }
+        },
+        "4": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "3",
+              0
+            ],
+            "filename_prefix": "nh_upscale_4x"
+          }
+        }
+      },
+      {
+        "client_id": "21-1794011978196-c2f17113-cd26-46d7-86e0-33417a66bdf3",
+        "create_time": 1794011984153
+      },
+      [
+        "4"
+      ]
+    ],
+    "outputs": {
+      "4": {
+        "images": [
+          {
+            "filename": "nh_upscale_4x_00010_.png",
+            "subfolder": "",
+            "type": "output"
+          }
+        ]
+      }
+    },
+    "status": {
+      "status_str": "success",
+      "completed": true,
+      "messages": [
+        [
+          "execution_start",
+          {
+            "prompt_id": "29087a7d-2a6d-4640-bff2-87ae7e739315",
+            "timestamp": 1794011984154
+          }
+        ],
+        [
+          "execution_cached",
+          {
+            "nodes": [],
+            "prompt_id": "29087a7d-2a6d-4640-bff2-87ae7e739315",
+            "timestamp": 1794011984161
+          }
+        ],
+        [
+          "execution_success",
+          {
+            "prompt_id": "29087a7d-2a6d-4640-bff2-87ae7e739315",
+            "timestamp": 1794011986345
+          }
+        ]
+      ]
+    },
+    "meta": {
+      "4": {
+        "node_id": "4",
+        "display_node": "4",
+        "parent_node": null,
+        "real_node_id": "4"
+      }
+    }
+  }
+}

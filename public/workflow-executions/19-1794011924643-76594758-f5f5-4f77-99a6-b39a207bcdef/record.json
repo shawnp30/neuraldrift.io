@@ -1,0 +1,195 @@
+{
+  "id": "19-1794011924643-76594758-f5f5-4f77-99a6-b39a207bcdef",
+  "workflowId": "19",
+  "hardwareProfileId": "local-rtx-5080",
+  "workflowSha256": "8b130451c8e0d548a42ddebd87b4257a79d2f4a7b6b684261f823bb53ebc4371",
+  "promptSha256": "5811d8a6bccd728d600e26b2f911312228aac176789c8ea1e4337ff4ac6367ad",
+  "testDate": "2026-11-07T00:38:44.644Z",
+  "executionProfile": "STANDARD",
+  "outcome": "SUCCESS",
+  "failure": null,
+  "settings": {
+    "prompt": {
+      "1": {
+        "class_type": "CheckpointLoaderSimple",
+        "inputs": {
+          "ckpt_name": "dreamshaper_8.safetensors"
+        }
+      },
+      "2": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "slow zoom into a detailed fantasy city, aerial view, magical atmosphere, fog rolling in",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "3": {
+        "class_type": "CLIPTextEncode",
+        "inputs": {
+          "text": "blurry, low quality, abrupt, bad quality",
+          "clip": [
+            "1",
+            1
+          ]
+        }
+      },
+      "4": {
+        "class_type": "EmptyLatentImage",
+        "inputs": {
+          "width": 768,
+          "height": 512,
+          "batch_size": 16
+        }
+      },
+      "5": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "10",
+            0
+          ],
+          "seed": 1001,
+          "steps": 20,
+          "cfg": 7,
+          "sampler_name": "dpmpp_2m",
+          "scheduler": "karras",
+          "positive": [
+            "2",
+            0
+          ],
+          "negative": [
+            "3",
+            0
+          ],
+          "latent_image": [
+            "4",
+            0
+          ],
+          "denoise": 1
+        }
+      },
+      "6": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "5",
+            0
+          ],
+          "vae": [
+            "1",
+            2
+          ]
+        }
+      },
+      "7": {
+        "class_type": "VHS_VideoCombine",
+        "inputs": {
+          "images": [
+            "6",
+            0
+          ],
+          "frame_rate": 8,
+          "loop_count": 0,
+          "filename_prefix": "nh_animatediff_zoom",
+          "format": "video/h264-mp4",
+          "pingpong": false,
+          "save_output": true
+        }
+      },
+      "10": {
+        "class_type": "ADE_AnimateDiffLoaderWithContext",
+        "inputs": {
+          "model": [
+            "1",
+            0
+          ],
+          "model_name": "mm_sd_v15_v3.ckpt",
+          "beta_schedule": "autoselect",
+          "motion_scale": 1,
+          "apply_v2_models_properly": true
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "ram_total": 66185273344,
+    "ram_free": 35730857984,
+    "comfyui_version": "0.33.0",
+    "required_frontend_version": "1.49.6",
+    "installed_templates_version": "0.11.44",
+    "required_templates_version": "0.11.44",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.49.6",
+        "required": "1.49.6"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.44",
+        "required": "0.11.44"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.10",
+        "required": "0.5.10"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.31",
+        "required": "0.2.31"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.4.13",
+        "required": "0.4.13"
+      }
+    ],
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "pytorch_version": "2.11.0.dev20260211+cu128",
+    "embedded_python": false,
+    "deploy_environment": "local-git",
+    "argv": [
+      "main.py",
+      "--force-fp16",
+      "--use-pytorch-cross-attention",
+      "--auto-launch"
+    ]
+  },
+  "models": [
+    {
+      "filename": "dreamshaper_8.safetensors",
+      "sha256": null
+    },
+    {
+      "filename": "mm_sd_v15_v3.ckpt",
+      "sha256": null
+    }
+  ],
+  "runtimeSeconds": 20.58,
+  "artifact": "/workflow-executions/19-1794011924643-76594758-f5f5-4f77-99a6-b39a207bcdef/output-0.mp4",
+  "coldStart": true,
+  "coldStartCheck": {
+    "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+    "torchReservedBytes": 167772160,
+    "vramFreeBeforeBytes": 12499468926,
+    "vramFreeBytes": 15484059648,
+    "minFreeBytes": 13873446912
+  },
+  "cachedNodes": [],
+  "peakVram": {
+    "status": "MEASURED",
+    "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+    "baselineBytes": 2314207232,
+    "peakBytes": 13951303680,
+    "sampleCount": 195
+  },
+  "evidenceUrl": "/workflow-executions/19-1794011924643-76594758-f5f5-4f77-99a6-b39a207bcdef/record.json",
+  "optimizationNotes": null,
+  "comparisonManifest": null,
+  "rawEvidence": "/workflow-executions/19-1794011924643-76594758-f5f5-4f77-99a6-b39a207bcdef/raw.json"
+}

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
-import { EXECUTIONS, HARDWARE_PROFILES, WORKFLOW_HASHES, evidenceFreshness, selectExactExecution, comparableExecutions } from '../lib/hardware/executions.ts';
+import { EXECUTIONS, HARDWARE_PROFILES, WORKFLOW_HASHES, evidenceFreshness, selectExactExecution, comparableExecutions, coldStartSummary } from '../lib/hardware/executions.ts';
 import { evaluateCompatibility } from '../lib/hardware/compatibility.ts';
 import { CATALOG } from '../lib/catalog.ts';
 import { findGpuBySlug } from '../lib/hardware/gpuData.ts';
@@ -28,6 +28,26 @@ assert.equal(exact([original, failed]).id, 'failure');
 assert.equal(exact([failed, old]).id, 'failure');
 assert.equal(exact([old, failed, optimized]).id, 'optimized');
 assert.equal(exact([old, optimized]).id, 'old');
+// A preflight failure never reached the GPU: it must not hide a success, but still shows when nothing else exists.
+const preflight = { ...failed, id: 'preflight', testDate: '2026-04-01T00:00:00.000Z', failure: { stage: 'preflight', type: 'Error', message: 'Fixture only: Invalid image file: input.png' } };
+const legacy = { ...old, id: 'legacy', executionProfile: 'UNCLASSIFIED' };
+assert.equal(exact([legacy, preflight]).id, 'legacy');
+assert.equal(exact([old, preflight]).id, 'old');
+assert.equal(exact([legacy, failed, preflight]).id, 'failure');
+assert.equal(exact([preflight]).id, 'preflight');
+// Cold-start summaries use only verified STANDARD successes on the current workflow hash.
+const check = { method: 'fixture', torchReservedBytes: 0, vramFreeBytes: 14e9 };
+const run = (id, runtimeSeconds, peakBytes, extra = {}) => ({ ...old, id, runtimeSeconds, coldStart: true, coldStartCheck: check, cachedNodes: [], peakVram: { status: 'MEASURED', method: 'fixture', baselineBytes: 2e9, peakBytes, sampleCount: 10 }, ...extra });
+const summary = coldStartSummary('01', original.hardwareProfileId, [
+  run('r1', 30, 9e9), run('r2', 10, 12e9),
+  run('r3', 20, 8e9, { testDate: '2026-05-01T00:00:00.000Z', settings: { prompt: { 3: { class_type: 'KSampler', inputs: { steps: 30, sampler_name: 'euler', model: ['4', 0] } }, 5: { class_type: 'EmptyLatentImage', inputs: { width: 1024, height: 768 } } } } }),
+  run('unverified', 1, 16e9, { coldStartCheck: undefined }), run('legacy-run', 1, 16e9, { executionProfile: 'UNCLASSIFIED' }),
+  run('stale', 1, 16e9, { workflowSha256: '0'.repeat(64) }),
+  run('cache-hit', 0.001, 16e9, { coldStart: false, cachedNodes: ['3', '4'] }), run('no-cache-evidence', 1, 16e9, { cachedNodes: undefined }), { ...failed, id: 'failed-run', coldStartCheck: check },
+]);
+assert.deepEqual([summary.runs, summary.medianSeconds, summary.minSeconds, summary.maxSeconds, summary.peakVramBytes], [3, 20, 10, 30, 12e9]);
+assert.deepEqual([summary.steps, summary.sampler, summary.width, summary.height, summary.latestTestDate], [30, 'euler', 1024, 768, '2026-05-01T00:00:00.000Z'], 'settings come from the latest run\'s submitted prompt');
+assert.equal(coldStartSummary('01', original.hardwareProfileId, [run('unverified', 1, 1e9, { coldStartCheck: null })]), null);
 assert.equal(exact([{ ...old, hardwareProfileId: 'unknown' }]), null);
 assert.equal(exact([{ ...old, workflowSha256: '0'.repeat(64) }]), null);
 assert.equal(evidenceFreshness({ ...old, workflowSha256: null }), 'UNKNOWN');

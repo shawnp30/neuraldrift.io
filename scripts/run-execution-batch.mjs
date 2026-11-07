@@ -8,6 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { apiPrompt } from './workflow-api.mjs';
 
 const runnerPath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'run-execution.mjs');
 
@@ -25,34 +26,74 @@ const assets = JSON.parse(fs.readFileSync('data/workflow-assets.json', 'utf8'));
 const workflowIds = (flag('workflows')?.split(',') ?? Object.keys(legacyTests).filter((id) => legacyTests[id]?.status === 'completed')).sort();
 for (const id of workflowIds) if (!/^\d{2}$/.test(id) || !assets[id]) throw new Error(`Unknown workflow ID: ${id}`);
 
-// Every option string ComfyUI offers in its loader inputs, i.e. the installed model files.
+// Convert each catalog graph exactly as the runner will, then check every dropdown value
+// (model files, input images) against that node's own option list in the live ComfyUI.
+// A missing download or input file is a setup gap, not a GPU result, so it is skipped
+// instead of recorded. Conversion errors (e.g. subgraphs) are left for the runner to record.
 const objectInfo = await (await fetch(new URL('/object_info', base.endpoint), { signal: AbortSignal.timeout(60000) })).json();
-const installed = new Set();
-const collect = (value) => {
-  if (typeof value === 'string') installed.add(value.replace(/\\/g, '/').split('/').pop());
-  else if (Array.isArray(value)) value.forEach(collect);
-  else if (value && typeof value === 'object') Object.values(value).forEach(collect);
+const comboOptions = (definition) => {
+  const [type, options] = definition ?? [];
+  if (Array.isArray(type)) return type;
+  if (type === 'COMBO' && Array.isArray(options?.options)) return options.options;
+  return null;
 };
-for (const node of Object.values(objectInfo)) collect(node.input);
+function unavailableValues(workflowId) {
+  let prompt;
+  try {
+    prompt = apiPrompt(JSON.parse(fs.readFileSync(`public/workflows/${workflowId}.json`, 'utf8')), objectInfo);
+  } catch (error) {
+    console.log(`NOTE ${workflowId}: graph conversion failed (${error.message}); the runner will record it as a preflight failure.`);
+    return [];
+  }
+  const missing = [];
+  for (const node of Object.values(prompt)) {
+    const schema = objectInfo[node.class_type].input;
+    for (const [name, value] of Object.entries(node.inputs)) {
+      const options = comboOptions(schema.required?.[name] ?? schema.optional?.[name]);
+      if (options && typeof value === 'string' && !options.includes(value)) missing.push(`${node.class_type}.${name} = ${value}`);
+    }
+  }
+  return missing;
+}
 
 const runnable = [];
 for (const id of workflowIds) {
-  const missing = assets[id].models.map((m) => m.file).filter((file) => !installed.has(file));
-  if (missing.length) console.log(`SKIP ${id}: model file(s) not installed in this ComfyUI: ${missing.join(', ')}`);
+  const missing = unavailableValues(id);
+  if (missing.length) console.log(`SKIP ${id}: not available in this ComfyUI: ${missing.join(', ')}`);
   else runnable.push(id);
 }
 if (args.includes('--check-only')) {
-  console.log(`\n${runnable.length} of ${workflowIds.length} workflows have every model file installed: ${runnable.join(', ') || 'none'}`);
+  console.log(`\n${runnable.length} of ${workflowIds.length} workflows have every model and input file available:${runnable.join(', ') || 'none'}`);
   process.exit(0);
 }
 console.log(`\nRunning ${runnable.length} of ${workflowIds.length} workflows, ${repeats} time(s) each.\n`);
+
+const gb = (bytes) => (bytes == null ? '—' : `${(bytes / 1e9).toFixed(2)} GB`);
+
+// Idle reference: device-wide free memory with models unloaded and ComfyUI's worker idle for
+// long enough to have applied /free. Each run must get back within 1.5 GiB of it to count as
+// cold; a run whose predecessor's models are still resident is several GB short.
+const stats = async () => (await (await fetch(new URL('/system_stats', base.endpoint), { signal: AbortSignal.timeout(30000) })).json()).devices?.[base.deviceIndex ?? 0];
+await fetch(new URL('/free', base.endpoint), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ unload_models: true, free_memory: true }), signal: AbortSignal.timeout(30000) });
+let idleFree = null;
+let idleSince = 0;
+for (const deadline = Date.now() + 60000; Date.now() < deadline;) {
+  const free = (await stats())?.vram_free;
+  if (typeof free !== 'number') throw new Error('ComfyUI /system_stats reports no vram_free; cannot measure the idle reference.');
+  if (idleFree === null || Math.abs(free - idleFree) > 64 * 1024 ** 2) { idleFree = free; idleSince = Date.now(); }
+  else if (Date.now() - idleSince >= 10000) break;
+  await new Promise((resolve) => setTimeout(resolve, 500));
+}
+if (Date.now() - idleSince < 10000) throw new Error('Free VRAM did not settle within 60 s; close other GPU applications and retry.');
+const coldStartMinFreeBytes = idleFree - 1.5 * 1024 ** 3;
+console.log(`Idle free VRAM ${gb(idleFree)}; a run counts as cold from ${gb(coldStartMinFreeBytes)} free.\n`);
 
 const configDir = path.join('tmp', 'execution-batch');
 fs.mkdirSync(configDir, { recursive: true });
 
 function runOnce(workflowId, attempt) {
   const configPath = path.join(configDir, `${workflowId}-${attempt}.json`);
-  fs.writeFileSync(configPath, JSON.stringify({ ...base, workflowId, executionProfile: 'STANDARD' }, null, 2));
+  fs.writeFileSync(configPath, JSON.stringify({ ...base, workflowId, executionProfile: 'STANDARD', coldStartMinFreeBytes }, null, 2));
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [runnerPath, configPath], { windowsHide: true });
     let stdout = '';
@@ -72,22 +113,23 @@ function runOnce(workflowId, attempt) {
   });
 }
 
-const gb = (bytes) => (bytes == null ? '—' : `${(bytes / 1e9).toFixed(2)} GB`);
 const results = [];
 for (const id of runnable) {
   for (let attempt = 1; attempt <= repeats; attempt++) {
     const record = await runOnce(id, attempt);
     results.push(record);
     const vram = record.peakVram?.status === 'MEASURED' ? `peak ${gb(record.peakVram.peakBytes)} (baseline ${gb(record.peakVram.baselineBytes)})` : `VRAM ${record.peakVram?.status ?? 'not recorded'}`;
-    console.log(`${id} #${attempt}  ${record.outcome.padEnd(13)} ${record.runtimeSeconds == null ? '' : `${record.runtimeSeconds.toFixed(3)} s  `}${vram}${record.coldStart ? '' : '  [models were not confirmed unloaded]'}${record.failure ? `  ${record.failure.type}: ${record.failure.message.slice(0, 160)}` : ''}`);
+    console.log(`${id} #${attempt}  ${record.outcome.padEnd(13)} ${record.runtimeSeconds == null ? '' : `${record.runtimeSeconds.toFixed(3)} s  `}${vram}${record.coldStart ? '' : record.cachedNodes?.length ? `  [not cold: ${record.cachedNodes.length} node(s) reused from ComfyUI's cache]` : '  [models were not confirmed unloaded]'}${record.failure ? `  ${record.failure.type}: ${record.failure.message.slice(0, 160)}` : ''}`);
   }
 }
 
 const median = (values) => { const s = [...values].sort((a, b) => a - b); const m = Math.floor(s.length / 2); return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
-console.log('\nWorkflow  successes  median runtime  max peak VRAM');
+// Median and peak use only cold successes, matching what the site publishes.
+console.log('\nWorkflow  successes  cold  median runtime  max peak VRAM');
 for (const id of runnable) {
   const ok = results.filter((r) => r.workflowId === id && r.outcome === 'SUCCESS');
-  const peaks = ok.map((r) => r.peakVram?.peakBytes).filter((b) => typeof b === 'number');
-  console.log(`${id.padEnd(9)} ${`${ok.length}/${repeats}`.padEnd(10)} ${ok.length ? `${median(ok.map((r) => r.runtimeSeconds)).toFixed(3)} s`.padEnd(15) : '—'.padEnd(15)} ${peaks.length ? gb(Math.max(...peaks)) : '—'}`);
+  const cold = ok.filter((r) => r.coldStart);
+  const peaks = cold.map((r) => r.peakVram?.peakBytes).filter((b) => typeof b === 'number');
+  console.log(`${id.padEnd(9)} ${`${ok.length}/${repeats}`.padEnd(10)} ${`${cold.length}`.padEnd(5)} ${cold.length ? `${median(cold.map((r) => r.runtimeSeconds)).toFixed(3)} s`.padEnd(15) : '—'.padEnd(15)} ${peaks.length ? gb(Math.max(...peaks)) : '—'}`);
 }
 if (results.some((r) => r.outcome !== 'SUCCESS')) process.exitCode = 1;
