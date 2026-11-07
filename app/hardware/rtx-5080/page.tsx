@@ -2,9 +2,9 @@
 // Authoritative evidence dossier for RTX 5080 testbench runs.
 
 import Link from 'next/link';
-import { EXECUTIONS, coldStartSummary, evidenceFreshness } from '@/lib/hardware/executions';
+import { EXECUTIONS, evidenceFreshness } from '@/lib/hardware/executions';
 import { pageMeta } from '@/lib/seo';
-import { CATALOG, WORKFLOW_TESTS } from '@/lib/catalog';
+import { CATALOG, WORKFLOW_TESTS, measuredRuns } from '@/lib/catalog';
 import { getAllEvidenceRecords } from '@/lib/hardware/evidence';
 
 export const metadata = pageMeta(
@@ -18,7 +18,7 @@ export default function Rtx5080EvidencePage() {
   const currentIds = new Set(EXECUTIONS.filter(r => r.hardwareProfileId === 'local-rtx-5080' && r.outcome === 'SUCCESS' && evidenceFreshness(r) === 'CURRENT').map(r => r.workflowId));
   const testedRecords = Object.values(allEvidence).filter(e => currentIds.has(e.workflowId));
   const unexecutedRecords = Object.values(allEvidence).filter(e => e.status !== 'completed');
-  const summaries = new Map(testedRecords.map(r => [r.workflowId, coldStartSummary(r.workflowId, 'local-rtx-5080')]));
+  const summaries = new Map(testedRecords.map(r => [r.workflowId, measuredRuns(r.workflowId)]));
   const coldStartCount = [...summaries.values()].filter(Boolean).length;
   const gb = (bytes: number) => `${(bytes / 1e9).toFixed(1)} GB`;
 

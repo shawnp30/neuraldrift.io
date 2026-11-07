@@ -105,9 +105,17 @@ export interface ColdStartSummary {
   latestTestDate: string;
   // From the latest run's submitted prompt: what actually ran, not the legacy test settings.
   steps: number | null;
+  cfg: number | null;
   sampler: string | null;
+  scheduler: string | null;
+  seed: number | null;
   width: number | null;
   height: number | null;
+  batchSize: number | null;
+  comfyUI: string | null;
+  pytorch: string | null;
+  ramTotalBytes: number | null;
+  modelFiles: string[];
   artifact: string | null;
   evidenceUrl: string;
 }
@@ -120,7 +128,8 @@ function firstPromptInput(prompt: unknown, name: string): number | string | null
   }
   return null;
 }
-const numberOrNull = (value: number | string | null) => (typeof value === 'number' ? value : null);
+const numberOrNull = (value: unknown) => (typeof value === 'number' ? value : null);
+const stringOrNull = (value: unknown) => (typeof value === 'string' ? value : null);
 // Successful STANDARD runs with a verified cold start on one testbench and the current
 // workflow hash: memory released before the run and no node reused from ComfyUI's cache.
 // Legacy and pre-check records are excluded, so these runtimes are comparable.
@@ -136,7 +145,6 @@ export function coldStartSummary(workflowId: string, hardwareProfileId: string, 
   for (const r of runs) if (r.peakVram?.status === 'MEASURED' && (!peak || r.peakVram.peakBytes > peak.peakBytes)) peak = r.peakVram;
   const latest = runs.reduce((a, r) => (r.testDate > a.testDate ? r : a));
   const prompt = latest.settings.prompt;
-  const sampler = firstPromptInput(prompt, 'sampler_name');
   return {
     runs: runs.length,
     medianSeconds: seconds.length % 2 ? seconds[mid] : (seconds[mid - 1] + seconds[mid]) / 2,
@@ -146,9 +154,17 @@ export function coldStartSummary(workflowId: string, hardwareProfileId: string, 
     peakBaselineBytes: peak?.baselineBytes ?? null,
     latestTestDate: latest.testDate,
     steps: numberOrNull(firstPromptInput(prompt, 'steps')),
-    sampler: typeof sampler === 'string' ? sampler : null,
+    cfg: numberOrNull(firstPromptInput(prompt, 'cfg')),
+    sampler: stringOrNull(firstPromptInput(prompt, 'sampler_name')),
+    scheduler: stringOrNull(firstPromptInput(prompt, 'scheduler')),
+    seed: numberOrNull(firstPromptInput(prompt, 'seed')),
     width: numberOrNull(firstPromptInput(prompt, 'width')),
     height: numberOrNull(firstPromptInput(prompt, 'height')),
+    batchSize: numberOrNull(firstPromptInput(prompt, 'batch_size')),
+    comfyUI: stringOrNull(latest.environment.comfyui_version),
+    pytorch: stringOrNull(latest.environment.pytorch_version),
+    ramTotalBytes: numberOrNull(latest.environment.ram_total),
+    modelFiles: latest.models.map(m => m.filename),
     artifact: latest.artifact,
     evidenceUrl: latest.evidenceUrl,
   };

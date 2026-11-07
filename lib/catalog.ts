@@ -2,7 +2,7 @@ import { WORKFLOWS, WorkflowEntry } from './workflowsData';
 import assetData from '@/data/workflow-assets.json';
 import descriptions from '@/data/workflow-descriptions.json';
 import testData from '@/data/workflow-tests.json';
-import { workflowExecutions, evidenceFreshness, HARDWARE_PROFILES } from './hardware/executions';
+import { workflowExecutions, evidenceFreshness, HARDWARE_PROFILES, coldStartSummary, ColdStartSummary } from './hardware/executions';
 export interface WorkflowAsset { source:string; sourceAsset:string; license:string|null; models:{file:string;dir:string;downloadUrl:string|null}[]; nodeTypes:string[]; hasSubgraphs:boolean; executionTested:boolean; settings:{node:string;id:number;values:unknown[]}[]; inputFiles:string[]; missingModelSources:string[] }
 export const WORKFLOW_ASSETS: Record<string, WorkflowAsset> = assetData;
 export interface WorkflowTestRecord {
@@ -109,10 +109,22 @@ export function workflowKindLabel(kind: WorkflowKind): string {
 }
 
 
+// The local RTX 5080 testbench whose measured runs the workflow pages publish.
+export const TESTBENCH_PROFILE_ID = 'local-rtx-5080';
+// Verified cold-start runs of the published download, or null when none exist yet.
+export const measuredRuns = (workflowId: string): ColdStartSummary | null => coldStartSummary(workflowId, TESTBENCH_PROFILE_ID);
+export function artifactKind(path: string): 'image' | 'video' | 'audio' | null {
+  if (/\.(png|jpe?g|webp)$/i.test(path)) return 'image';
+  if (/\.(mp4|webm|gif)$/i.test(path)) return 'video';
+  if (/\.(mp3|wav|flac|ogg)$/i.test(path)) return 'audio';
+  return null;
+}
 export const CATALOG = Array.from(new Map(WORKFLOWS.map(w => {
  const asset = WORKFLOW_ASSETS[w.id]; const description = (descriptions as Record<string,string>)[w.id] || w.description;
  const test = WORKFLOW_TESTS[w.id];
- return [w.id, { ...w, title:TITLES[w.id] || w.title, description, longDescription:w.longDescription || description, model:asset?.models.find(m => /checkpoints|diffusion_models/.test(m.dir))?.file || w.model, imageUrl:test?.outputKind === 'image' ? test.preview : w.imageUrl, proofPrompt:test?.prompt || w.proofPrompt } as WorkflowEntry];
+ const runArtifact = measuredRuns(w.id)?.artifact;
+ const imageUrl = runArtifact && artifactKind(runArtifact) === 'image' ? runArtifact : test?.outputKind === 'image' ? test.preview : w.imageUrl;
+ return [w.id, { ...w, title:TITLES[w.id] || w.title, description, longDescription:w.longDescription || description, model:asset?.models.find(m => /checkpoints|diffusion_models/.test(m.dir))?.file || w.model, imageUrl, proofPrompt:test?.prompt || w.proofPrompt } as WorkflowEntry];
 })).values());
 export const MEMORY_OPTIONS = [4, 6, 8, 10, 12, 16, 24, 32, 48];
 export function memoryEstimate(workflow: WorkflowEntry): number | null {

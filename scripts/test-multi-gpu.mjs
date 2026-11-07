@@ -40,13 +40,14 @@ const check = { method: 'fixture', torchReservedBytes: 0, vramFreeBytes: 14e9 };
 const run = (id, runtimeSeconds, peakBytes, extra = {}) => ({ ...old, id, runtimeSeconds, coldStart: true, coldStartCheck: check, cachedNodes: [], peakVram: { status: 'MEASURED', method: 'fixture', baselineBytes: 2e9, peakBytes, sampleCount: 10 }, ...extra });
 const summary = coldStartSummary('01', original.hardwareProfileId, [
   run('r1', 30, 9e9), run('r2', 10, 12e9),
-  run('r3', 20, 8e9, { testDate: '2026-05-01T00:00:00.000Z', settings: { prompt: { 3: { class_type: 'KSampler', inputs: { steps: 30, sampler_name: 'euler', model: ['4', 0] } }, 5: { class_type: 'EmptyLatentImage', inputs: { width: 1024, height: 768 } } } } }),
+  run('r3', 20, 8e9, { testDate: '2026-05-01T00:00:00.000Z', environment: { comfyui_version: '9.9.9', pytorch_version: '2.0-fixture', ram_total: 64e9 }, models: [{ filename: 'fixture.safetensors', sha256: null }], settings: { prompt: { 3: { class_type: 'KSampler', inputs: { steps: 30, cfg: 6.5, sampler_name: 'euler', scheduler: 'karras', seed: 7, model: ['4', 0] } }, 5: { class_type: 'EmptyLatentImage', inputs: { width: 1024, height: 768, batch_size: 2 } } } } }),
   run('unverified', 1, 16e9, { coldStartCheck: undefined }), run('legacy-run', 1, 16e9, { executionProfile: 'UNCLASSIFIED' }),
   run('stale', 1, 16e9, { workflowSha256: '0'.repeat(64) }),
   run('cache-hit', 0.001, 16e9, { coldStart: false, cachedNodes: ['3', '4'] }), run('no-cache-evidence', 1, 16e9, { cachedNodes: undefined }), { ...failed, id: 'failed-run', coldStartCheck: check },
 ]);
 assert.deepEqual([summary.runs, summary.medianSeconds, summary.minSeconds, summary.maxSeconds, summary.peakVramBytes], [3, 20, 10, 30, 12e9]);
-assert.deepEqual([summary.steps, summary.sampler, summary.width, summary.height, summary.latestTestDate], [30, 'euler', 1024, 768, '2026-05-01T00:00:00.000Z'], 'settings come from the latest run\'s submitted prompt');
+assert.deepEqual([summary.steps, summary.cfg, summary.sampler, summary.scheduler, summary.seed, summary.width, summary.height, summary.batchSize, summary.latestTestDate], [30, 6.5, 'euler', 'karras', 7, 1024, 768, 2, '2026-05-01T00:00:00.000Z'], 'settings come from the latest run\'s submitted prompt');
+assert.deepEqual([summary.comfyUI, summary.pytorch, summary.ramTotalBytes, summary.modelFiles], ['9.9.9', '2.0-fixture', 64e9, ['fixture.safetensors']], 'software and models come from the latest run');
 assert.equal(coldStartSummary('01', original.hardwareProfileId, [run('unverified', 1, 1e9, { coldStartCheck: null })]), null);
 assert.equal(exact([{ ...old, hardwareProfileId: 'unknown' }]), null);
 assert.equal(exact([{ ...old, workflowSha256: '0'.repeat(64) }]), null);
