@@ -8,7 +8,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { apiPrompt } from './workflow-api.mjs';
+import { apiPrompt, savedSubgraphPrompt } from './workflow-api.mjs';
 
 const runnerPath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'run-execution.mjs');
 
@@ -29,7 +29,8 @@ for (const id of workflowIds) if (!/^\d{2}$/.test(id) || !assets[id]) throw new 
 // Convert each catalog graph exactly as the runner will, then check every dropdown value
 // (model files, input images) against that node's own option list in the live ComfyUI.
 // A missing download or input file is a setup gap, not a GPU result, so it is skipped
-// instead of recorded. Conversion errors (e.g. subgraphs) are left for the runner to record.
+// instead of recorded. So is a subgraph workflow without a current frontend conversion.
+// Other conversion errors are left for the runner to record.
 const objectInfo = await (await fetch(new URL('/object_info', base.endpoint), { signal: AbortSignal.timeout(60000) })).json();
 const comboOptions = (definition) => {
   const [type, options] = definition ?? [];
@@ -37,29 +38,35 @@ const comboOptions = (definition) => {
   if (type === 'COMBO' && Array.isArray(options?.options)) return options.options;
   return null;
 };
-function unavailableValues(workflowId) {
+function setupGap(workflowId) {
+  const graph = JSON.parse(fs.readFileSync(`public/workflows/${workflowId}.json`, 'utf8'));
   let prompt;
-  try {
-    prompt = apiPrompt(JSON.parse(fs.readFileSync(`public/workflows/${workflowId}.json`, 'utf8')), objectInfo);
-  } catch (error) {
-    console.log(`NOTE ${workflowId}: graph conversion failed (${error.message}); the runner will record it as a preflight failure.`);
-    return [];
+  if (graph.definitions?.subgraphs?.length) {
+    try { prompt = savedSubgraphPrompt(workflowId); } catch (error) { return error.message; }
+  } else {
+    try {
+      prompt = apiPrompt(graph, objectInfo);
+    } catch (error) {
+      console.log(`NOTE ${workflowId}: graph conversion failed (${error.message}); the runner will record it as a preflight failure.`);
+      return null;
+    }
   }
   const missing = [];
   for (const node of Object.values(prompt)) {
+    if (!objectInfo[node.class_type]) { missing.push(`node ${node.class_type}`); continue; }
     const schema = objectInfo[node.class_type].input;
     for (const [name, value] of Object.entries(node.inputs)) {
       const options = comboOptions(schema.required?.[name] ?? schema.optional?.[name]);
       if (options && typeof value === 'string' && !options.includes(value)) missing.push(`${node.class_type}.${name} = ${value}`);
     }
   }
-  return missing;
+  return missing.length ? `not available in this ComfyUI: ${missing.join(', ')}` : null;
 }
 
 const runnable = [];
 for (const id of workflowIds) {
-  const missing = unavailableValues(id);
-  if (missing.length) console.log(`SKIP ${id}: not available in this ComfyUI: ${missing.join(', ')}`);
+  const gap = setupGap(id);
+  if (gap) console.log(`SKIP ${id}: ${gap}`);
   else runnable.push(id);
 }
 if (args.includes('--check-only')) {

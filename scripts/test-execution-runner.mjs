@@ -132,5 +132,21 @@ try {
   assert.equal(records().length, 9, 'batch must append one immutable record per attempt');
   assert.match(batch.output, /Idle free VRAM 15\.03 GB/);
   assert(records().slice(7).every(r => r.workflowId === '01' && r.outcome === 'SUCCESS' && r.coldStart && r.coldStartCheck.minFreeBytes === 12.5 * 1024 ** 3 && r.peakVram.status === 'MEASURED'));
-  console.log('Runner integration passed: STANDARD success, exact execution failure, validation failure, timeout, hardware mismatch, OPTIMIZED success, append-only records and saved artifacts. All synthetic records isolated in ' + fixture);
+  // A subgraph workflow runs from its saved frontend conversion while that matches the workflow file.
+  const workflow03 = JSON.stringify({ nodes: [{ id: 5, type: 'fixture-subgraph' }], links: [], definitions: { subgraphs: [{ id: 'fixture-subgraph', nodes: [] }] } });
+  fs.writeFileSync(path.join(fixture, 'public/workflows/03.json'), workflow03);
+  const frontendPrompt = { '5:1': { class_type: 'FixtureSave', inputs: { text: 'frontend', text_encoder: 'encoder.safetensors' } } };
+  fs.mkdirSync(path.join(fixture, 'data/subgraph-prompts'));
+  fs.writeFileSync(path.join(fixture, 'data/subgraph-prompts/03.json'), JSON.stringify({ workflowId: '03', workflowSha256: crypto.createHash('sha256').update(workflow03, 'utf8').digest('hex'), prompt: frontendPrompt }));
+  assert.equal((await run('STANDARD', { workflowId: '03' })).code, 0);
+  assert.equal(records()[9].outcome, 'SUCCESS');
+  assert.deepEqual(records()[9].settings.prompt, frontendPrompt);
+  assert.deepEqual(records()[9].models, [{ filename: 'encoder.safetensors', sha256: null }], 'text encoders must be recorded as models');
+  // Once the workflow file changes, the conversion is stale: refuse before writing any record.
+  fs.writeFileSync(path.join(fixture, 'public/workflows/03.json'), workflow03.replace('"links":[]', '"links":[],"extra":1'));
+  const stale = await run('STANDARD', { workflowId: '03' });
+  assert.equal(stale.code, 1);
+  assert.match(stale.output, /converted from a different version of workflow 03/);
+  assert.equal(records().length, 10, 'a stale conversion must not be recorded');
+  console.log('Runner integration passed: STANDARD success, subgraph prompt from a current frontend conversion, stale conversion refused, exact execution failure, validation failure, timeout, hardware mismatch, OPTIMIZED success, append-only records and saved artifacts. All synthetic records isolated in ' + fixture);
 } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }

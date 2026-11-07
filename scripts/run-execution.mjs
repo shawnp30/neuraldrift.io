@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import path from 'node:path';
-import { apiPrompt } from './workflow-api.mjs';
+import { apiPrompt, savedSubgraphPrompt } from './workflow-api.mjs';
 import { startVramSampler } from './vram-sampler.mjs';
 import { workflowSha256 } from './workflow-hashes.mjs';
 
@@ -30,6 +30,8 @@ if (stats.devices.filter(d => d.type === 'cuda').length !== 1) throw new Error('
 const queue = await (await request('/queue')).json();
 if (queue.queue_running?.length || queue.queue_pending?.length) throw new Error('ComfyUI queue is busy; retry when idle.');
 const bytes = fs.readFileSync(`public/workflows/${config.workflowId}.json`);
+// Checked before any record exists: a missing or stale frontend conversion is a setup gap, not a result.
+const subgraphPrompt = JSON.parse(bytes).definitions?.subgraphs?.length ? savedSubgraphPrompt(config.workflowId) : null;
 const sha = value => crypto.createHash('sha256').update(value).digest('hex');
 const id = `${config.workflowId}-${Date.now()}-${crypto.randomUUID()}`;
 const record = {
@@ -48,13 +50,13 @@ let sampler = null;
 try {
   const info = await (await request('/object_info')).json();
   const graph = JSON.parse(bytes);
-  raw.baselinePrompt = graph.nodes ? apiPrompt(graph, info) : graph;
+  raw.baselinePrompt = subgraphPrompt ?? (graph.nodes ? apiPrompt(graph, info) : graph);
   raw.prompt = config.promptFile ? JSON.parse(fs.readFileSync(config.promptFile, 'utf8')) : raw.baselinePrompt;
   if (raw.prompt.prompt) raw.prompt = raw.prompt.prompt;
   record.promptSha256 = sha(JSON.stringify(raw.prompt));
   record.settings = { prompt: raw.prompt };
   // Capture all recognized model loader inputs. Unknown hashes stay null.
-  const modelKeys = /^(ckpt_name|unet_name|vae_name|clip_name\d*|lora_name|control_net_name|model_name)$/;
+  const modelKeys = /^(ckpt_name|unet_name|vae_name|clip_name\d*|text_encoder|lora_name|control_net_name|model_name)$/;
   const filenames = [...new Set(Object.values(raw.prompt).flatMap(n => Object.entries(n.inputs ?? {}).filter(([k, v]) => modelKeys.test(k) && typeof v === 'string').map(([, v]) => v)))];
   for (const filename of filenames) {
     let hash = null;
