@@ -35470,5 +35470,4045 @@
     "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
     "comparisonManifest": null,
     "rawEvidence": "/workflow-executions/50-1794164987227-25b6bcb1-ead6-481d-897b-d9fe59dd32ff/raw.json"
+  },
+  {
+    "id": "01-1794165662372-0f2ea0a8-4a49-4ea7-94da-b8c465fb8270",
+    "workflowId": "01",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "70d5e91baabd4d9921522e6b1629a98831382a2e5d482b780bc850d5c80ad730",
+    "promptSha256": "194e57f42f28752d8e612ec66b845e23efe32c2c98e0e9c641bf62075f4cfaab",
+    "testDate": "2026-11-08T19:21:02.373Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "A beautiful fantasy girl with long curly silver hair and big blue eyes, wearing a white transparent fairy dress with lace and puffed sleeves. Surrounded by iridescent butterflies and giant glass roses, dreamy lighting, ethereal atmosphere, soft glow, magical realism, highly detailed, cinematic, 8K render.\n",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 24477024256,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 30.375,
+    "artifact": "/workflow-executions/01-1794165662372-0f2ea0a8-4a49-4ea7-94da-b8c465fb8270/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 15380905888,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293144
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 4062183424,
+      "peakBytes": 16238247936,
+      "sampleCount": 288
+    },
+    "evidenceUrl": "/workflow-executions/01-1794165662372-0f2ea0a8-4a49-4ea7-94da-b8c465fb8270/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/01-1794165662372-0f2ea0a8-4a49-4ea7-94da-b8c465fb8270/raw.json"
+  },
+  {
+    "id": "01-1794165699651-eb008f96-18bf-47db-8e76-cd865162c562",
+    "workflowId": "01",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "70d5e91baabd4d9921522e6b1629a98831382a2e5d482b780bc850d5c80ad730",
+    "promptSha256": "194e57f42f28752d8e612ec66b845e23efe32c2c98e0e9c641bf62075f4cfaab",
+    "testDate": "2026-11-08T19:21:39.652Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "A beautiful fantasy girl with long curly silver hair and big blue eyes, wearing a white transparent fairy dress with lace and puffed sleeves. Surrounded by iridescent butterflies and giant glass roses, dreamy lighting, ethereal atmosphere, soft glow, magical realism, highly detailed, cinematic, 8K render.\n",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 6914338816,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 53.223,
+    "artifact": "/workflow-executions/01-1794165699651-eb008f96-18bf-47db-8e76-cd865162c562/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 3085161804,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293144
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 3338665984,
+      "peakBytes": 16274948096,
+      "sampleCount": 492
+    },
+    "evidenceUrl": "/workflow-executions/01-1794165699651-eb008f96-18bf-47db-8e76-cd865162c562/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/01-1794165699651-eb008f96-18bf-47db-8e76-cd865162c562/raw.json"
+  },
+  {
+    "id": "30-1794165760152-48ecc804-6a8a-41c8-af7d-d702eeafec6d",
+    "workflowId": "30",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "73d58681c1425c4bc2357bd0cecd3f73b99eea410a6e1044582fa14c61024e45",
+    "promptSha256": "c5e77365827ef1f872c9416b09a44153036a46ad809b21624e4747cd914e3dcb",
+    "testDate": "2026-11-08T19:22:40.153Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Fashion portrait of a woman with avant-garde makeup, high contrast editorial lighting, film grain",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 6900768768,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 42.116,
+    "artifact": "/workflow-executions/30-1794165760152-48ecc804-6a8a-41c8-af7d-d702eeafec6d/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2742183244,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293144
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2894069760,
+      "peakBytes": 16417554432,
+      "sampleCount": 389
+    },
+    "evidenceUrl": "/workflow-executions/30-1794165760152-48ecc804-6a8a-41c8-af7d-d702eeafec6d/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/30-1794165760152-48ecc804-6a8a-41c8-af7d-d702eeafec6d/raw.json"
+  },
+  {
+    "id": "30-1794165809392-342ba980-31cd-43b7-8a74-b443561e24a1",
+    "workflowId": "30",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "73d58681c1425c4bc2357bd0cecd3f73b99eea410a6e1044582fa14c61024e45",
+    "promptSha256": "c5e77365827ef1f872c9416b09a44153036a46ad809b21624e4747cd914e3dcb",
+    "testDate": "2026-11-08T19:23:29.392Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Fashion portrait of a woman with avant-garde makeup, high contrast editorial lighting, film grain",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 7042273280,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 43.538,
+    "artifact": "/workflow-executions/30-1794165809392-342ba980-31cd-43b7-8a74-b443561e24a1/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2515584332,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293144
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2853175296,
+      "peakBytes": 16274948096,
+      "sampleCount": 409
+    },
+    "evidenceUrl": "/workflow-executions/30-1794165809392-342ba980-31cd-43b7-8a74-b443561e24a1/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/30-1794165809392-342ba980-31cd-43b7-8a74-b443561e24a1/raw.json"
+  },
+  {
+    "id": "40-1794165861122-6bc8777e-216a-4762-9b93-e0b89faf98e5",
+    "workflowId": "40",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "791bebf40e72728082e1a611e44fb6ceb3dd23c246abae06c77efd79312eb2d4",
+    "promptSha256": "6d79886f460ed4bf9c3fa21d76184ac667ce09d1713feb1f1b2ec5f6a0297884",
+    "testDate": "2026-11-08T19:24:21.123Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "A realistic portrait of an elderly fisherman with a weathered face, sunset lighting, DSLR photography",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 7058829312,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 56.044,
+    "artifact": "/workflow-executions/40-1794165861122-6bc8777e-216a-4762-9b93-e0b89faf98e5/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2379269452,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293144
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2971664384,
+      "peakBytes": 16261316608,
+      "sampleCount": 520
+    },
+    "evidenceUrl": "/workflow-executions/40-1794165861122-6bc8777e-216a-4762-9b93-e0b89faf98e5/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/40-1794165861122-6bc8777e-216a-4762-9b93-e0b89faf98e5/raw.json"
+  },
+  {
+    "id": "40-1794165925300-f4f3a896-5e38-45f9-9977-7afcbe4dc6b2",
+    "workflowId": "40",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "791bebf40e72728082e1a611e44fb6ceb3dd23c246abae06c77efd79312eb2d4",
+    "promptSha256": "6d79886f460ed4bf9c3fa21d76184ac667ce09d1713feb1f1b2ec5f6a0297884",
+    "testDate": "2026-11-08T19:25:25.301Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "A realistic portrait of an elderly fisherman with a weathered face, sunset lighting, DSLR photography",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 7043178496,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 42.521,
+    "artifact": "/workflow-executions/40-1794165925300-f4f3a896-5e38-45f9-9977-7afcbe4dc6b2/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2375370060,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293144
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2823815168,
+      "peakBytes": 16278093824,
+      "sampleCount": 399
+    },
+    "evidenceUrl": "/workflow-executions/40-1794165925300-f4f3a896-5e38-45f9-9977-7afcbe4dc6b2/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/40-1794165925300-f4f3a896-5e38-45f9-9977-7afcbe4dc6b2/raw.json"
+  },
+  {
+    "id": "01-1794165993207-62099708-d56a-491e-8365-602655e6bc34",
+    "workflowId": "01",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "70d5e91baabd4d9921522e6b1629a98831382a2e5d482b780bc850d5c80ad730",
+    "promptSha256": "80302464c968a410ba73054e5636ed7119b72e22d80c42d592aa6db2d4de336d",
+    "testDate": "2026-11-08T19:26:33.208Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "A beautiful fantasy girl with long curly silver hair and big blue eyes, wearing a white transparent fairy dress with lace and puffed sleeves. Surrounded by iridescent butterflies and giant glass roses, dreamy lighting, ethereal atmosphere, soft glow, magical realism, highly detailed, cinematic, 8K render.\n",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 27488894976,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 20.912,
+    "artifact": "/workflow-executions/01-1794165993207-62099708-d56a-491e-8365-602655e6bc34/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 15380905888,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 3146776576,
+      "peakBytes": 16197353472,
+      "sampleCount": 195
+    },
+    "evidenceUrl": "/workflow-executions/01-1794165993207-62099708-d56a-491e-8365-602655e6bc34/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/01-1794165993207-62099708-d56a-491e-8365-602655e6bc34/raw.json"
+  },
+  {
+    "id": "01-1794166020294-c76d7ced-834e-4653-a50d-54da4d44a3a2",
+    "workflowId": "01",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "70d5e91baabd4d9921522e6b1629a98831382a2e5d482b780bc850d5c80ad730",
+    "promptSha256": "80302464c968a410ba73054e5636ed7119b72e22d80c42d592aa6db2d4de336d",
+    "testDate": "2026-11-08T19:27:00.294Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "A beautiful fantasy girl with long curly silver hair and big blue eyes, wearing a white transparent fairy dress with lace and puffed sleeves. Surrounded by iridescent butterflies and giant glass roses, dreamy lighting, ethereal atmosphere, soft glow, magical realism, highly detailed, cinematic, 8K render.\n",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 9523695616,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 22.944,
+    "artifact": "/workflow-executions/01-1794166020294-c76d7ced-834e-4653-a50d-54da4d44a3a2/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2547181900,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2865758208,
+      "peakBytes": 16188964864,
+      "sampleCount": 214
+    },
+    "evidenceUrl": "/workflow-executions/01-1794166020294-c76d7ced-834e-4653-a50d-54da4d44a3a2/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/01-1794166020294-c76d7ced-834e-4653-a50d-54da4d44a3a2/raw.json"
+  },
+  {
+    "id": "30-1794166050856-a0ef5fb3-3640-4790-a03f-d8c56f1ef449",
+    "workflowId": "30",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "73d58681c1425c4bc2357bd0cecd3f73b99eea410a6e1044582fa14c61024e45",
+    "promptSha256": "b85e83dc97098a54a78a7b2aaadd54415064562d601d104d6835c167a470cddb",
+    "testDate": "2026-11-08T19:27:30.856Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Fashion portrait of a woman with avant-garde makeup, high contrast editorial lighting, film grain",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 8865083392,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 22.484,
+    "artifact": "/workflow-executions/30-1794166050856-a0ef5fb3-3640-4790-a03f-d8c56f1ef449/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2039474508,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2934964224,
+      "peakBytes": 16111370240,
+      "sampleCount": 214
+    },
+    "evidenceUrl": "/workflow-executions/30-1794166050856-a0ef5fb3-3640-4790-a03f-d8c56f1ef449/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/30-1794166050856-a0ef5fb3-3640-4790-a03f-d8c56f1ef449/raw.json"
+  },
+  {
+    "id": "30-1794166081398-5f076996-017d-4c26-912a-434a7861d9ea",
+    "workflowId": "30",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "73d58681c1425c4bc2357bd0cecd3f73b99eea410a6e1044582fa14c61024e45",
+    "promptSha256": "b85e83dc97098a54a78a7b2aaadd54415064562d601d104d6835c167a470cddb",
+    "testDate": "2026-11-08T19:28:01.398Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Fashion portrait of a woman with avant-garde makeup, high contrast editorial lighting, film grain",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 9258901504,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 22.512,
+    "artifact": "/workflow-executions/30-1794166081398-5f076996-017d-4c26-912a-434a7861d9ea/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2240276812,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2858418176,
+      "peakBytes": 16077815808,
+      "sampleCount": 214
+    },
+    "evidenceUrl": "/workflow-executions/30-1794166081398-5f076996-017d-4c26-912a-434a7861d9ea/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/30-1794166081398-5f076996-017d-4c26-912a-434a7861d9ea/raw.json"
+  },
+  {
+    "id": "40-1794166111880-1ef7496d-0494-4ade-8184-006c8c8efb96",
+    "workflowId": "40",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "791bebf40e72728082e1a611e44fb6ceb3dd23c246abae06c77efd79312eb2d4",
+    "promptSha256": "434ce2c4d1717313bf67cb060c942814bd02a802e0d50a77a10f6eb22959e61a",
+    "testDate": "2026-11-08T19:28:31.880Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "A realistic portrait of an elderly fisherman with a weathered face, sunset lighting, DSLR photography",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 9561313280,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 19.941,
+    "artifact": "/workflow-executions/40-1794166111880-1ef7496d-0494-4ade-8184-006c8c8efb96/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2338634060,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2526019584,
+      "peakBytes": 16109273088,
+      "sampleCount": 186
+    },
+    "evidenceUrl": "/workflow-executions/40-1794166111880-1ef7496d-0494-4ade-8184-006c8c8efb96/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/40-1794166111880-1ef7496d-0494-4ade-8184-006c8c8efb96/raw.json"
+  },
+  {
+    "id": "40-1794166139141-9200c865-98a1-4b24-a89a-705f2c7a2401",
+    "workflowId": "40",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "791bebf40e72728082e1a611e44fb6ceb3dd23c246abae06c77efd79312eb2d4",
+    "promptSha256": "434ce2c4d1717313bf67cb060c942814bd02a802e0d50a77a10f6eb22959e61a",
+    "testDate": "2026-11-08T19:28:59.142Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "A realistic portrait of an elderly fisherman with a weathered face, sunset lighting, DSLR photography",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 9818435584,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 32.817,
+    "artifact": "/workflow-executions/40-1794166139141-9200c865-98a1-4b24-a89a-705f2c7a2401/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2677434700,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2752512000,
+      "peakBytes": 16354639872,
+      "sampleCount": 306
+    },
+    "evidenceUrl": "/workflow-executions/40-1794166139141-9200c865-98a1-4b24-a89a-705f2c7a2401/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/40-1794166139141-9200c865-98a1-4b24-a89a-705f2c7a2401/raw.json"
+  },
+  {
+    "id": "44-1794166198262-6c10fec5-f455-4da0-b168-949814f8f612",
+    "workflowId": "44",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "0059bdafe8a6aca9ec510a6689c3e71864d12ee10ee28766f8f3b880911475bd",
+    "promptSha256": "6417fcffdec4006e1ecee5c7dad0e66e1b52d82b8b8c2760a6fd840b868ad958",
+    "testDate": "2026-11-08T19:29:58.262Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Product photography of a fresh gourmet burger on a wooden plate, studio lighting, macro",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 27838791680,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 31.707,
+    "artifact": "/workflow-executions/44-1794166198262-6c10fec5-f455-4da0-b168-949814f8f612/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 15380905888,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2999975936,
+      "peakBytes": 16355688448,
+      "sampleCount": 297
+    },
+    "evidenceUrl": "/workflow-executions/44-1794166198262-6c10fec5-f455-4da0-b168-949814f8f612/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/44-1794166198262-6c10fec5-f455-4da0-b168-949814f8f612/raw.json"
+  },
+  {
+    "id": "44-1794166236527-04b7cd3a-f4e2-493c-858f-7588b4a75b64",
+    "workflowId": "44",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "0059bdafe8a6aca9ec510a6689c3e71864d12ee10ee28766f8f3b880911475bd",
+    "promptSha256": "6417fcffdec4006e1ecee5c7dad0e66e1b52d82b8b8c2760a6fd840b868ad958",
+    "testDate": "2026-11-08T19:30:36.528Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Product photography of a fresh gourmet burger on a wooden plate, studio lighting, macro",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 6816534528,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 31.601,
+    "artifact": "/workflow-executions/44-1794166236527-04b7cd3a-f4e2-493c-858f-7588b4a75b64/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2386449740,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 3250585600,
+      "peakBytes": 16322134016,
+      "sampleCount": 297
+    },
+    "evidenceUrl": "/workflow-executions/44-1794166236527-04b7cd3a-f4e2-493c-858f-7588b4a75b64/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/44-1794166236527-04b7cd3a-f4e2-493c-858f-7588b4a75b64/raw.json"
+  },
+  {
+    "id": "50-1794166276117-47f491e9-cffa-4c0a-9a2f-7e891d88c5d3",
+    "workflowId": "50",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "0b18d92b77f0c2b7db8e78b2c2e05e337ac7dcadbbee4f9762ce4e592087af52",
+    "promptSha256": "434e050dbd6f4ce5f60e644b4a56e77250515cbf107350c9e2c35ec9bde83eb0",
+    "testDate": "2026-11-08T19:31:16.118Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Moody cinematic portrait of a mysterious man in a tuxedo, side lighting, film grain, analog photography",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 6752739328,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 34.89,
+    "artifact": "/workflow-executions/50-1794166276117-47f491e9-cffa-4c0a-9a2f-7e891d88c5d3/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2306819404,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 3138387968,
+      "peakBytes": 16284385280,
+      "sampleCount": 325
+    },
+    "evidenceUrl": "/workflow-executions/50-1794166276117-47f491e9-cffa-4c0a-9a2f-7e891d88c5d3/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/50-1794166276117-47f491e9-cffa-4c0a-9a2f-7e891d88c5d3/raw.json"
+  },
+  {
+    "id": "50-1794166318726-35f0a3a8-c598-4a2f-972e-0965d04991a7",
+    "workflowId": "50",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "0b18d92b77f0c2b7db8e78b2c2e05e337ac7dcadbbee4f9762ce4e592087af52",
+    "promptSha256": "434e050dbd6f4ce5f60e644b4a56e77250515cbf107350c9e2c35ec9bde83eb0",
+    "testDate": "2026-11-08T19:31:58.727Z",
+    "executionProfile": "STANDARD",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev.safetensors",
+            "weight_dtype": "default"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp16.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Moody cinematic portrait of a mysterious man in a tuxedo, side lighting, film grain, analog photography",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 7022239744,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp16.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 30.998,
+    "artifact": "/workflow-executions/50-1794166318726-35f0a3a8-c598-4a2f-972e-0965d04991a7/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2595562828,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2987393024,
+      "peakBytes": 16330522624,
+      "sampleCount": 288
+    },
+    "evidenceUrl": "/workflow-executions/50-1794166318726-35f0a3a8-c598-4a2f-972e-0965d04991a7/record.json",
+    "optimizationNotes": null,
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/50-1794166318726-35f0a3a8-c598-4a2f-972e-0965d04991a7/raw.json"
+  },
+  {
+    "id": "44-1794166370559-7c7443b1-16c0-4446-88cc-8723abaa573d",
+    "workflowId": "44",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "0059bdafe8a6aca9ec510a6689c3e71864d12ee10ee28766f8f3b880911475bd",
+    "promptSha256": "32258e226873731ab20f2f2227167724a6d6d0a6c294720f339e56e62f307021",
+    "testDate": "2026-11-08T19:32:50.560Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Product photography of a fresh gourmet burger on a wooden plate, studio lighting, macro",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 28165705728,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 32.075,
+    "artifact": "/workflow-executions/44-1794166370559-7c7443b1-16c0-4446-88cc-8723abaa573d/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 15380905888,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2967470080,
+      "peakBytes": 16246636544,
+      "sampleCount": 298
+    },
+    "evidenceUrl": "/workflow-executions/44-1794166370559-7c7443b1-16c0-4446-88cc-8723abaa573d/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/44-1794166370559-7c7443b1-16c0-4446-88cc-8723abaa573d/raw.json"
+  },
+  {
+    "id": "44-1794166408900-1c3def69-03fb-4866-80c7-c6852e8ff677",
+    "workflowId": "44",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "0059bdafe8a6aca9ec510a6689c3e71864d12ee10ee28766f8f3b880911475bd",
+    "promptSha256": "32258e226873731ab20f2f2227167724a6d6d0a6c294720f339e56e62f307021",
+    "testDate": "2026-11-08T19:33:28.900Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Product photography of a fresh gourmet burger on a wooden plate, studio lighting, macro",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 10209046528,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 20.29,
+    "artifact": "/workflow-executions/44-1794166408900-1c3def69-03fb-4866-80c7-c6852e8ff677/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2299693388,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2725249024,
+      "peakBytes": 16290676736,
+      "sampleCount": 195
+    },
+    "evidenceUrl": "/workflow-executions/44-1794166408900-1c3def69-03fb-4866-80c7-c6852e8ff677/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/44-1794166408900-1c3def69-03fb-4866-80c7-c6852e8ff677/raw.json"
+  },
+  {
+    "id": "50-1794166437242-48875544-b323-496a-b118-09272335662c",
+    "workflowId": "50",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "0b18d92b77f0c2b7db8e78b2c2e05e337ac7dcadbbee4f9762ce4e592087af52",
+    "promptSha256": "613fe35ee83e68a278538c776873998f9b82372d97b8085bbb070ce66455819a",
+    "testDate": "2026-11-08T19:33:57.242Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Moody cinematic portrait of a mysterious man in a tuxedo, side lighting, film grain, analog photography",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 9837740032,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 21.438,
+    "artifact": "/workflow-executions/50-1794166437242-48875544-b323-496a-b118-09272335662c/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2230090060,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2607808512,
+      "peakBytes": 16264462336,
+      "sampleCount": 205
+    },
+    "evidenceUrl": "/workflow-executions/50-1794166437242-48875544-b323-496a-b118-09272335662c/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/50-1794166437242-48875544-b323-496a-b118-09272335662c/raw.json"
+  },
+  {
+    "id": "50-1794166466650-b9a2ffac-3588-42a3-9433-fd1ffcb20fa1",
+    "workflowId": "50",
+    "hardwareProfileId": "local-rtx-5080",
+    "workflowSha256": "0b18d92b77f0c2b7db8e78b2c2e05e337ac7dcadbbee4f9762ce4e592087af52",
+    "promptSha256": "613fe35ee83e68a278538c776873998f9b82372d97b8085bbb070ce66455819a",
+    "testDate": "2026-11-08T19:34:26.650Z",
+    "executionProfile": "OPTIMIZED",
+    "outcome": "SUCCESS",
+    "failure": null,
+    "settings": {
+      "prompt": {
+        "8": {
+          "class_type": "VAEDecode",
+          "inputs": {
+            "samples": [
+              "31",
+              0
+            ],
+            "vae": [
+              "39",
+              0
+            ]
+          }
+        },
+        "9": {
+          "class_type": "SaveImage",
+          "inputs": {
+            "images": [
+              "8",
+              0
+            ],
+            "filename_prefix": "ComfyUI"
+          }
+        },
+        "27": {
+          "class_type": "EmptySD3LatentImage",
+          "inputs": {
+            "width": 1024,
+            "height": 1024,
+            "batch_size": 1
+          }
+        },
+        "31": {
+          "class_type": "KSampler",
+          "inputs": {
+            "model": [
+              "38",
+              0
+            ],
+            "seed": 192044955347061,
+            "steps": 20,
+            "cfg": 1,
+            "sampler_name": "euler",
+            "scheduler": "simple",
+            "positive": [
+              "41",
+              0
+            ],
+            "negative": [
+              "42",
+              0
+            ],
+            "latent_image": [
+              "27",
+              0
+            ],
+            "denoise": 1
+          }
+        },
+        "38": {
+          "class_type": "UNETLoader",
+          "inputs": {
+            "unet_name": "flux1-dev-fp8.safetensors",
+            "weight_dtype": "fp8_e4m3fn_fast"
+          }
+        },
+        "39": {
+          "class_type": "VAELoader",
+          "inputs": {
+            "vae_name": "ae.safetensors"
+          }
+        },
+        "40": {
+          "class_type": "DualCLIPLoader",
+          "inputs": {
+            "clip_name1": "clip_l.safetensors",
+            "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+            "type": "flux",
+            "device": "default"
+          }
+        },
+        "41": {
+          "class_type": "CLIPTextEncodeFlux",
+          "inputs": {
+            "clip": [
+              "40",
+              0
+            ],
+            "clip_l": "Moody cinematic portrait of a mysterious man in a tuxedo, side lighting, film grain, analog photography",
+            "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+            "guidance": 3.5
+          }
+        },
+        "42": {
+          "class_type": "ConditioningZeroOut",
+          "inputs": {
+            "conditioning": [
+              "41",
+              0
+            ]
+          }
+        }
+      }
+    },
+    "environment": {
+      "os": "win32",
+      "ram_total": 66185273344,
+      "ram_free": 9837084672,
+      "comfyui_version": "0.33.0",
+      "required_frontend_version": "1.49.6",
+      "installed_templates_version": "0.11.44",
+      "required_templates_version": "0.11.44",
+      "comfy_package_versions": [
+        {
+          "name": "comfyui-frontend-package",
+          "installed": "1.49.6",
+          "required": "1.49.6"
+        },
+        {
+          "name": "comfyui-workflow-templates",
+          "installed": "0.11.44",
+          "required": "0.11.44"
+        },
+        {
+          "name": "comfyui-embedded-docs",
+          "installed": "0.5.10",
+          "required": "0.5.10"
+        },
+        {
+          "name": "comfy-kitchen",
+          "installed": "0.2.31",
+          "required": "0.2.31"
+        },
+        {
+          "name": "comfy-aimdo",
+          "installed": "0.4.13",
+          "required": "0.4.13"
+        }
+      ],
+      "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+      "pytorch_version": "2.11.0.dev20260211+cu128",
+      "embedded_python": false,
+      "deploy_environment": "local-git",
+      "argv": [
+        "main.py",
+        "--force-fp16",
+        "--use-pytorch-cross-attention",
+        "--auto-launch"
+      ]
+    },
+    "models": [
+      {
+        "filename": "flux1-dev-fp8.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "ae.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "clip_l.safetensors",
+        "sha256": null
+      },
+      {
+        "filename": "t5xxl_fp8_e4m3fn.safetensors",
+        "sha256": null
+      }
+    ],
+    "runtimeSeconds": 19.507,
+    "artifact": "/workflow-executions/50-1794166466650-b9a2ffac-3588-42a3-9433-fd1ffcb20fa1/output-0.png",
+    "coldStart": true,
+    "coldStartCheck": {
+      "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+      "torchReservedBytes": 234881024,
+      "vramFreeBeforeBytes": 2578110796,
+      "vramFreeBytes": 15380905888,
+      "minFreeBytes": 13770293152
+    },
+    "cachedNodes": [],
+    "peakVram": {
+      "status": "MEASURED",
+      "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+      "baselineBytes": 2987393024,
+      "peakBytes": 16381902848,
+      "sampleCount": 186
+    },
+    "evidenceUrl": "/workflow-executions/50-1794166466650-b9a2ffac-3588-42a3-9433-fd1ffcb20fa1/record.json",
+    "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+    "comparisonManifest": null,
+    "rawEvidence": "/workflow-executions/50-1794166466650-b9a2ffac-3588-42a3-9433-fd1ffcb20fa1/raw.json"
   }
 ]

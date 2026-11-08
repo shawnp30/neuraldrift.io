@@ -1,0 +1,202 @@
+{
+  "id": "30-1794166081398-5f076996-017d-4c26-912a-434a7861d9ea",
+  "workflowId": "30",
+  "hardwareProfileId": "local-rtx-5080",
+  "workflowSha256": "73d58681c1425c4bc2357bd0cecd3f73b99eea410a6e1044582fa14c61024e45",
+  "promptSha256": "b85e83dc97098a54a78a7b2aaadd54415064562d601d104d6835c167a470cddb",
+  "testDate": "2026-11-08T19:28:01.398Z",
+  "executionProfile": "OPTIMIZED",
+  "outcome": "SUCCESS",
+  "failure": null,
+  "settings": {
+    "prompt": {
+      "8": {
+        "class_type": "VAEDecode",
+        "inputs": {
+          "samples": [
+            "31",
+            0
+          ],
+          "vae": [
+            "39",
+            0
+          ]
+        }
+      },
+      "9": {
+        "class_type": "SaveImage",
+        "inputs": {
+          "images": [
+            "8",
+            0
+          ],
+          "filename_prefix": "ComfyUI"
+        }
+      },
+      "27": {
+        "class_type": "EmptySD3LatentImage",
+        "inputs": {
+          "width": 1024,
+          "height": 1024,
+          "batch_size": 1
+        }
+      },
+      "31": {
+        "class_type": "KSampler",
+        "inputs": {
+          "model": [
+            "38",
+            0
+          ],
+          "seed": 192044955347061,
+          "steps": 20,
+          "cfg": 1,
+          "sampler_name": "euler",
+          "scheduler": "simple",
+          "positive": [
+            "41",
+            0
+          ],
+          "negative": [
+            "42",
+            0
+          ],
+          "latent_image": [
+            "27",
+            0
+          ],
+          "denoise": 1
+        }
+      },
+      "38": {
+        "class_type": "UNETLoader",
+        "inputs": {
+          "unet_name": "flux1-dev-fp8.safetensors",
+          "weight_dtype": "fp8_e4m3fn_fast"
+        }
+      },
+      "39": {
+        "class_type": "VAELoader",
+        "inputs": {
+          "vae_name": "ae.safetensors"
+        }
+      },
+      "40": {
+        "class_type": "DualCLIPLoader",
+        "inputs": {
+          "clip_name1": "clip_l.safetensors",
+          "clip_name2": "t5xxl_fp8_e4m3fn.safetensors",
+          "type": "flux",
+          "device": "default"
+        }
+      },
+      "41": {
+        "class_type": "CLIPTextEncodeFlux",
+        "inputs": {
+          "clip": [
+            "40",
+            0
+          ],
+          "clip_l": "Fashion portrait of a woman with avant-garde makeup, high contrast editorial lighting, film grain",
+          "t5xxl": "A fairy tale scene of a young girl with silver curly hair wearing a delicate white dress, standing among crystal butterflies and glowing glass roses. The scene is filled with soft magical light, like a dream from a fantasy world.",
+          "guidance": 3.5
+        }
+      },
+      "42": {
+        "class_type": "ConditioningZeroOut",
+        "inputs": {
+          "conditioning": [
+            "41",
+            0
+          ]
+        }
+      }
+    }
+  },
+  "environment": {
+    "os": "win32",
+    "ram_total": 66185273344,
+    "ram_free": 9258901504,
+    "comfyui_version": "0.33.0",
+    "required_frontend_version": "1.49.6",
+    "installed_templates_version": "0.11.44",
+    "required_templates_version": "0.11.44",
+    "comfy_package_versions": [
+      {
+        "name": "comfyui-frontend-package",
+        "installed": "1.49.6",
+        "required": "1.49.6"
+      },
+      {
+        "name": "comfyui-workflow-templates",
+        "installed": "0.11.44",
+        "required": "0.11.44"
+      },
+      {
+        "name": "comfyui-embedded-docs",
+        "installed": "0.5.10",
+        "required": "0.5.10"
+      },
+      {
+        "name": "comfy-kitchen",
+        "installed": "0.2.31",
+        "required": "0.2.31"
+      },
+      {
+        "name": "comfy-aimdo",
+        "installed": "0.4.13",
+        "required": "0.4.13"
+      }
+    ],
+    "python_version": "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]",
+    "pytorch_version": "2.11.0.dev20260211+cu128",
+    "embedded_python": false,
+    "deploy_environment": "local-git",
+    "argv": [
+      "main.py",
+      "--force-fp16",
+      "--use-pytorch-cross-attention",
+      "--auto-launch"
+    ]
+  },
+  "models": [
+    {
+      "filename": "flux1-dev-fp8.safetensors",
+      "sha256": null
+    },
+    {
+      "filename": "ae.safetensors",
+      "sha256": null
+    },
+    {
+      "filename": "clip_l.safetensors",
+      "sha256": null
+    },
+    {
+      "filename": "t5xxl_fp8_e4m3fn.safetensors",
+      "sha256": null
+    }
+  ],
+  "runtimeSeconds": 22.512,
+  "artifact": "/workflow-executions/30-1794166081398-5f076996-017d-4c26-912a-434a7861d9ea/output-0.png",
+  "coldStart": true,
+  "coldStartCheck": {
+    "method": "torch_vram_total < 512 MiB, vram_free settled within 64 MiB for 5 s and at least minFreeBytes when set, and no cached nodes in the run",
+    "torchReservedBytes": 234881024,
+    "vramFreeBeforeBytes": 2240276812,
+    "vramFreeBytes": 15380905888,
+    "minFreeBytes": 13770293152
+  },
+  "cachedNodes": [],
+  "peakVram": {
+    "status": "MEASURED",
+    "method": "nvidia-smi memory.used (device-wide), sampled every 100 ms",
+    "baselineBytes": 2858418176,
+    "peakBytes": 16077815808,
+    "sampleCount": 214
+  },
+  "evidenceUrl": "/workflow-executions/30-1794166081398-5f076996-017d-4c26-912a-434a7861d9ea/record.json",
+  "optimizationNotes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+  "comparisonManifest": null,
+  "rawEvidence": "/workflow-executions/30-1794166081398-5f076996-017d-4c26-912a-434a7861d9ea/raw.json"
+}
