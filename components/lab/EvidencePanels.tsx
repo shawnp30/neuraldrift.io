@@ -14,15 +14,16 @@ function formatSize(bytes: number): string {
 }
 
 /**
- * Lists generated artifacts. A player is rendered only when `playableUrls` confirms the file is actually
- * served by the site; local-only artifacts show metadata and their hash, never a broken player.
+ * Lists generated artifacts. A player is rendered only for artifacts published under public/
+ * (the benchmark tests fail if a published file is missing); local-only artifacts show metadata
+ * and their hash, never a broken player.
  */
-export function ArtifactPanel({ artifacts, playableUrls = [] }: { artifacts: ArtifactRef[]; playableUrls?: string[] }) {
+export function ArtifactPanel({ artifacts }: { artifacts: ArtifactRef[] }) {
   if (!artifacts.length) return <p className="nd-subtle">No output artifact was produced by this run.</p>;
   return (
     <div className="nd-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))' }}>
       {artifacts.map((artifact) => {
-        const playable = artifact.storage === 'public' && artifact.publicUrl != null && playableUrls.includes(artifact.publicUrl);
+        const playable = artifact.storage === 'public' && artifact.publicUrl != null;
         return (
           <div className="nd-card nd-card-body" key={artifact.sha256}>
             <p className="nd-eyebrow">{artifact.format.toUpperCase()} ARTIFACT · {playable ? 'PUBLISHED' : 'RETAINED LOCALLY'}</p>

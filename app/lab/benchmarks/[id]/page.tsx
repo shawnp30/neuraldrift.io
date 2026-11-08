@@ -7,7 +7,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { pageMeta } from '@/lib/seo';
 import { getBenchmarkById, getAllBenchmarks } from '@/lib/benchmarks/registry';
-import { servedArtifactUrls } from '@/lib/benchmarks/publicArtifacts';
 import { MetricsGrid, getMetricsView, formatBytes } from '@/components/lab/BenchmarkMetrics';
 import { ArtifactPanel, FailurePanel, HashedFilesTable, LicensePanel, LimitationsPanel } from '@/components/lab/EvidencePanels';
 import { AUDIO_TASKS, audioTaskOf } from '@/lib/audio/catalog';
@@ -146,7 +145,7 @@ export default function BenchmarkDetailPage({ params }: Props) {
         {benchmark.artifacts && (
           <section className="nd-section">
             <h2>Generated Artifact</h2>
-            <ArtifactPanel artifacts={benchmark.artifacts} playableUrls={servedArtifactUrls(benchmark)} />
+            <ArtifactPanel artifacts={benchmark.artifacts} />
           </section>
         )}
 
