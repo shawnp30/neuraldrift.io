@@ -4,12 +4,19 @@ import { workflowSha256 } from './workflow-hashes.mjs';
 // Graphs with subgraphs are converted by ComfyUI's own frontend (scripts/convert-subgraph-workflows.mjs)
 // and saved with the hash of the workflow file they came from. A missing or stale conversion
 // is a setup gap, so this throws instead of guessing.
-export function savedSubgraphPrompt(id){
- const file=`data/subgraph-prompts/${id}.json`;
- if(!fs.existsSync(file))throw new Error(`Workflow ${id} uses subgraphs and has no frontend conversion: run npm run evidence:subgraphs -- ${id}`);
+function savedForCurrentWorkflow(file,id,missing,remedy){
+ if(!fs.existsSync(file))throw new Error(`${missing}: run ${remedy}`);
  const saved=JSON.parse(fs.readFileSync(file,'utf8'));
- if(saved.workflowSha256!==workflowSha256(id))throw new Error(`${file} was converted from a different version of workflow ${id}: run npm run evidence:subgraphs -- ${id}`);
- return saved.prompt;
+ if(saved.workflowSha256!==workflowSha256(id))throw new Error(`${file} was converted from a different version of workflow ${id}: run ${remedy}`);
+ return saved;
+}
+export function savedSubgraphPrompt(id){
+ return savedForCurrentWorkflow(`data/subgraph-prompts/${id}.json`,id,`Workflow ${id} uses subgraphs and has no frontend conversion`,`npm run evidence:subgraphs -- ${id}`).prompt;
+}
+// An OPTIMIZED prompt is the workflow's STANDARD prompt with a recipe's explicit changes applied
+// (scripts/create-optimized-prompts.mjs); it carries the notes and the list of changed inputs.
+export function savedOptimizedPrompt(id){
+ return savedForCurrentWorkflow(`data/optimized-prompts/${id}.json`,id,`Workflow ${id} has no optimized prompt`,`npm run evidence:optimize -- <recipe> ${id}`);
 }
 export function apiPrompt(graph, info = JSON.parse(fs.readFileSync('tmp/object-info.json'))){
  if(graph.definitions?.subgraphs?.length)throw new Error('Subgraph conversion requires the ComfyUI frontend: use savedSubgraphPrompt.');

@@ -118,6 +118,8 @@ export interface ColdStartSummary {
   modelFiles: string[];
   artifact: string | null;
   evidenceUrl: string;
+  // What the latest run changed from the published download (OPTIMIZED runs only).
+  optimizationNotes: string | null;
 }
 function firstPromptInput(prompt: unknown, name: string): number | string | null {
   if (!prompt || typeof prompt !== 'object') return null;
@@ -130,12 +132,13 @@ function firstPromptInput(prompt: unknown, name: string): number | string | null
 }
 const numberOrNull = (value: unknown) => (typeof value === 'number' ? value : null);
 const stringOrNull = (value: unknown) => (typeof value === 'string' ? value : null);
-// Successful STANDARD runs with a verified cold start on one testbench and the current
-// workflow hash: memory released before the run and no node reused from ComfyUI's cache.
-// Legacy and pre-check records are excluded, so these runtimes are comparable.
-export function coldStartSummary(workflowId: string, hardwareProfileId: string, records = EXECUTIONS, currentHashes = WORKFLOW_HASHES): ColdStartSummary | null {
+// Successful runs of one execution profile (STANDARD by default) with a verified cold start on
+// one testbench and the current workflow hash: memory released before the run and no node
+// reused from ComfyUI's cache. Legacy and pre-check records are excluded, so these runtimes are
+// comparable.
+export function coldStartSummary(workflowId: string, hardwareProfileId: string, records = EXECUTIONS, currentHashes = WORKFLOW_HASHES, executionProfile: 'STANDARD' | 'OPTIMIZED' = 'STANDARD'): ColdStartSummary | null {
   const runs = records.filter(r => r.workflowId === workflowId && r.hardwareProfileId === hardwareProfileId
-    && r.executionProfile === 'STANDARD' && r.outcome === 'SUCCESS' && r.runtimeSeconds != null
+    && r.executionProfile === executionProfile && r.outcome === 'SUCCESS' && r.runtimeSeconds != null
     && r.coldStart === true && r.coldStartCheck && Array.isArray(r.cachedNodes) && r.cachedNodes.length === 0
     && evidenceFreshness(r, currentHashes) === 'CURRENT');
   if (!runs.length) return null;
@@ -167,6 +170,7 @@ export function coldStartSummary(workflowId: string, hardwareProfileId: string, 
     modelFiles: latest.models.map(m => m.filename),
     artifact: latest.artifact,
     evidenceUrl: latest.evidenceUrl,
+    optimizationNotes: executionProfile === 'OPTIMIZED' ? latest.optimizationNotes : null,
   };
 }
 function canonical(value: unknown): string {

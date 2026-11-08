@@ -2,7 +2,7 @@ import { WORKFLOWS, WorkflowEntry } from './workflowsData';
 import assetData from '@/data/workflow-assets.json';
 import descriptions from '@/data/workflow-descriptions.json';
 import testData from '@/data/workflow-tests.json';
-import { workflowExecutions, evidenceFreshness, HARDWARE_PROFILES, coldStartSummary, ColdStartSummary } from './hardware/executions';
+import { workflowExecutions, evidenceFreshness, HARDWARE_PROFILES, coldStartSummary, ColdStartSummary, EXECUTIONS, WORKFLOW_HASHES } from './hardware/executions';
 export interface WorkflowAsset { source:string; sourceAsset:string; license:string|null; models:{file:string;dir:string;downloadUrl:string|null}[]; nodeTypes:string[]; hasSubgraphs:boolean; executionTested:boolean; settings:{node:string;id:number;values:unknown[]}[]; inputFiles:string[]; missingModelSources:string[] }
 export const WORKFLOW_ASSETS: Record<string, WorkflowAsset> = assetData;
 export interface WorkflowTestRecord {
@@ -113,6 +113,8 @@ export function workflowKindLabel(kind: WorkflowKind): string {
 export const TESTBENCH_PROFILE_ID = 'local-rtx-5080';
 // Verified cold-start runs of the published download, or null when none exist yet.
 export const measuredRuns = (workflowId: string): ColdStartSummary | null => coldStartSummary(workflowId, TESTBENCH_PROFILE_ID);
+// The same, for runs with documented changes to the download (fp8 weights, for example).
+export const measuredOptimizedRuns = (workflowId: string): ColdStartSummary | null => coldStartSummary(workflowId, TESTBENCH_PROFILE_ID, EXECUTIONS, WORKFLOW_HASHES, 'OPTIMIZED');
 export function artifactKind(path: string): 'image' | 'video' | 'audio' | null {
   if (/\.(png|jpe?g|webp)$/i.test(path)) return 'image';
   if (/\.(mp4|webm|gif)$/i.test(path)) return 'video';
