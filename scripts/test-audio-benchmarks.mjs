@@ -18,7 +18,6 @@ import { parseRunnerResult, failureStageFromRunner } from '../lib/benchmarks/ada
 import { checkComparability, calculateConfigFingerprint } from '../lib/benchmarks/fingerprint.ts';
 import { getWorkloadById } from '../lib/benchmarks/workloads.ts';
 import { getAllBenchmarks } from '../lib/benchmarks/registry.ts';
-import { servedArtifactUrls } from '../lib/benchmarks/publicArtifacts.ts';
 import { gpuArchFromComputeCapability, hardwareIdFromGpuName, parseDriverCudaVersion } from '../lib/benchmarks/environment.ts';
 import { groupAudioRuns, stat, knownLimitationsFor } from '../lib/audio/comparison.ts';
 import { UPSTREAM_FAMILIES, upstreamFamiliesForTask, AUDIO_TASKS } from '../lib/audio/catalog.ts';
@@ -204,7 +203,6 @@ for (const r of liveAudio) {
     assert(!a.path.match(/\.wav$/) || !fs.existsSync(path.join('public', a.path)), 'WAV artifacts must not be committed under public/ without explicit publication');
     const local = path.join(process.cwd(), a.path);
     if (fs.existsSync(local)) assert.equal(await sha256File(local), a.sha256, `${r.id} retained artifact must still match its recorded hash`);
-    if (a.storage === 'public') assert(servedArtifactUrls(r).includes(a.publicUrl), `${r.id} published artifact must exist under public/`);
   }
   assert(fs.existsSync(path.join('public', r.rawEvidenceUrl)), `${r.id} raw evidence JSON must be published`);
 }
@@ -222,14 +220,21 @@ for (const r of getAllBenchmarks()) {
   if (r.category === 'creator_audio') assert(grid.includes('REAL-TIME FACTOR') && !grid.includes('tok/s'), 'audio records render audio metrics');
   assert(html(createElement(MetricsSummary, { run: r })).includes('Peak VRAM'));
 }
-const localOnly = html(createElement(ArtifactPanel, { artifacts: [base.artifact], playableUrls: [] }));
+const localOnly = html(createElement(ArtifactPanel, { artifacts: [base.artifact] }));
 assert(!localOnly.includes('<audio'), 'a local-only artifact must never render a player');
 assert(localOnly.includes('f'.repeat(64)), 'artifact hash must be shown');
-const unserved = html(createElement(ArtifactPanel, { artifacts: [{ ...base.artifact, storage: 'public', publicUrl: '/audio/missing.wav' }], playableUrls: [] }));
-assert(!unserved.includes('<audio'), 'a published URL whose file is not served must not render a player');
-const served = html(createElement(ArtifactPanel, { artifacts: [{ ...base.artifact, storage: 'public', publicUrl: '/audio/ok.wav' }], playableUrls: ['/audio/ok.wav'] }));
-assert(served.includes('<audio') && served.includes('src="/audio/ok.wav"'), 'a served artifact renders a player');
-assert.deepEqual(servedArtifactUrls({ artifacts: [{ ...base.artifact, storage: 'public', publicUrl: '/definitely-not-here.wav' }] }), []);
+const published = html(createElement(ArtifactPanel, { artifacts: [{ ...base.artifact, storage: 'public', publicUrl: '/audio/ok.wav' }] }));
+assert(published.includes('<audio') && published.includes('src="/audio/ok.wav"'), 'a published artifact renders a player');
+// The page renders a player for every published artifact without checking the disk (a runtime
+// check under public/ makes the build bundle all of public/ into the page's function), so every
+// published artifact must be served from public/.
+for (const r of getAllBenchmarks()) {
+  for (const a of r.artifacts ?? []) {
+    if (a.storage !== 'public') continue;
+    assert(a.publicUrl?.startsWith('/') && !a.publicUrl.includes('..'), `${r.id} published artifact needs a site-relative publicUrl`);
+    assert(fs.existsSync(path.join('public', ...a.publicUrl.slice(1).split('/'))), `${r.id} published artifact ${a.publicUrl} must exist under public/`);
+  }
+}
 const licenses = html(createElement(LicensePanel, { run: passRec.runtime.license ? passRec : { ...passRec, runtime: { ...passRec.runtime, license: { id: 'Apache-2.0', commercialUse: 'COMMERCIAL_OK', sourceUrl: 'https://example.invalid/runtime' } } } }));
 assert(licenses.includes('RUNTIME LICENSE') && licenses.includes('MODEL LICENSE') && licenses.includes('not legal advice'));
 assert(knownLimitationsFor(pyRec).some((l) => l.includes('nano-vllm')), 'Python reference records disclose the planner backend fallback');

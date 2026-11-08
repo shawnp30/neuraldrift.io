@@ -2,14 +2,6 @@
 const nextConfig = {
   eslint: { ignoreDuringBuilds: false },
   typescript: { ignoreBuildErrors: false },
-  experimental: {
-    // The benchmark page checks that artifacts exist with a runtime path under public/, so the
-    // tracer bundles all of public/ (workflow evidence included) into its function, past Vercel's
-    // 250 MB limit. Its pages are prerendered at build time, where public/ is present, and the
-    // CDN serves public/ itself, so the function needs none of it.
-    // Keys are globs ("[id]" would be a character class), so match the route segment with "*".
-    outputFileTracingExcludes: { "/lab/benchmarks/*": ["public/**"] },
-  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "**.supabase.co" },
