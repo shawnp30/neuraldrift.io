@@ -1,7 +1,18 @@
 import fs from 'node:fs';
 import { pathToFileURL } from 'node:url';
+import { workflowSha256 } from './workflow-hashes.mjs';
+// Graphs with subgraphs are converted by ComfyUI's own frontend (scripts/convert-subgraph-workflows.mjs)
+// and saved with the hash of the workflow file they came from. A missing or stale conversion
+// is a setup gap, so this throws instead of guessing.
+export function savedSubgraphPrompt(id){
+ const file=`data/subgraph-prompts/${id}.json`;
+ if(!fs.existsSync(file))throw new Error(`Workflow ${id} uses subgraphs and has no frontend conversion: run npm run evidence:subgraphs -- ${id}`);
+ const saved=JSON.parse(fs.readFileSync(file,'utf8'));
+ if(saved.workflowSha256!==workflowSha256(id))throw new Error(`${file} was converted from a different version of workflow ${id}: run npm run evidence:subgraphs -- ${id}`);
+ return saved.prompt;
+}
 export function apiPrompt(graph, info = JSON.parse(fs.readFileSync('tmp/object-info.json'))){
- if(graph.definitions?.subgraphs?.length)throw new Error('Subgraph conversion requires the ComfyUI frontend.');
+ if(graph.definitions?.subgraphs?.length)throw new Error('Subgraph conversion requires the ComfyUI frontend: use savedSubgraphPrompt.');
  const prompt={};const nodes=new Map(graph.nodes.map(n=>[n.id,n]));
  for(const node of graph.nodes){
   if(['Note','MarkdownNote','PrimitiveNode','Reroute'].includes(node.type))continue;

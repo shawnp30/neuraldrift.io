@@ -24,6 +24,7 @@
     "test": "npm run test:compatibility && npm run test:multi-gpu && npm run test:runner && npm run test:workflow-download && npm run test:newsletter && npm run test:broadcast && npm run test:sitemap && npm run test:indexability && npm run test:benchmarks",
     "evidence:run": "node scripts/run-execution.mjs",
     "evidence:batch": "node scripts/run-execution-batch.mjs",
+    "evidence:subgraphs": "node scripts/convert-subgraph-workflows.mjs",
     "evidence:hardware": "node --require ./scripts/register-ts.cjs scripts/register-hardware.mjs",
     "test:runner": "node scripts/test-execution-runner.mjs"
   },
