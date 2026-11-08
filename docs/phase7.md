@@ -2,6 +2,16 @@
 
 Project: `D:\neuraldrift.io-main\neuraldrift.io-main`. Local only; no push, deployment, or other worktree changes.
 
+## Current status (2026-11-08)
+
+The sections after this one record Phase 7 as it was done and are kept unchanged; their counts describe that point in time. Current figures, from `data/workflow-executions.json` and the legacy records:
+
+- Execution records: **201**, all on the current workflow hashes: **139** STANDARD successes, **25** OPTIMIZED successes, **37** preserved unclassified historical successes, **0** recorded failures.
+- **43 of 50** workflows have verified cold-start STANDARD runs on the RTX 5080 (`local-rtx-5080`, still the only registered testbench), which the workflow pages publish as medians. Subgraph workflows 11–14 run from frontend conversions (`npm run evidence:subgraphs`). 06 and 08 have conversions too, but their models are not installed.
+- **OPTIMIZED:** workflows 01, 30, 40, 44 and 50 have 5 cold runs each with recipe `flux-dev-fp8` (`data/optimization-recipes/flux-dev-fp8.json`), each next to 5 STANDARD runs.
+- **No execution:** 02, 05, 06, 07, 08, 09 and 10. Each needs model or input files that are not installed: Flux Schnell, HiDream, HunyuanImage 2.1, Lumina 2, Qwen Image Edit, Chroma1-HD and AuraFlow 0.2. They stay catalog estimates until those are downloaded.
+- **Cross-GPU comparisons:** still **0**. A second testbench has not been registered.
+
 ## State found before continuation
 
 The directory has no Git metadata. Source/evidence snapshots were saved under `tmp/phase7-before` with `.snapshot` extensions before editing. These are review copies, not executable source files.
