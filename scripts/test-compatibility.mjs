@@ -65,14 +65,14 @@ assert.strictEqual(resSd15On12Gb.state, 'ESTIMATED');
 assert.strictEqual(resSd15On12Gb.confidence, 'LOW');
 assert.notStrictEqual(resSd15On12Gb.state, 'DIRECT_TESTED');
 
-// 6. Platform Blocker (Workflow 11, LTX Video with frontend subgraphs)
+// 6. Measured runs supersede a saved preflight blocker (Workflow 11, LTX Video with frontend
+// subgraphs, now run from its frontend-converted prompt)
 const wf11 = CATALOG.find(w => w.id === '11');
 assert(wf11, 'Workflow 11 must exist');
-const resBlocked = evaluateCompatibility(wf11, { gpu: rtx5080, vramGb: 16 });
-console.log('6. Platform Blocker (Workflow 11):', resBlocked.state, resBlocked.badgeLabel);
-assert.strictEqual(resBlocked.state, 'BLOCKED');
-assert.strictEqual(resBlocked.badgeLabel, 'DEPENDENCY BLOCKED');
-assert(resBlocked.reason.includes('frontend composite subgraphs'));
+const resMeasured = evaluateCompatibility(wf11, { gpu: rtx5080, vramGb: 16 });
+console.log('6. Measured over preflight blocker (Workflow 11):', resMeasured.state, resMeasured.badgeLabel);
+assert.strictEqual(resMeasured.state, 'DIRECT_TESTED');
+assert(!resMeasured.reason.includes('frontend composite subgraphs'));
 
 // 7. Large Model Hold (Workflow 02, Flux Schnell not installed)
 const wf02 = CATALOG.find(w => w.id === '02');
