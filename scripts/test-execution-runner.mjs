@@ -148,5 +148,34 @@ try {
   assert.equal(stale.code, 1);
   assert.match(stale.output, /converted from a different version of workflow 03/);
   assert.equal(records().length, 10, 'a stale conversion must not be recorded');
-  console.log('Runner integration passed: STANDARD success, subgraph prompt from a current frontend conversion, stale conversion refused, exact execution failure, validation failure, timeout, hardware mismatch, OPTIMIZED success, append-only records and saved artifacts. All synthetic records isolated in ' + fixture);
+  // OPTIMIZED: a recipe's explicit changes applied to the STANDARD prompt, then run by the batch.
+  const spawnOutput = (script, scriptArgs) => new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, [path.join(root, script), ...scriptArgs], { cwd: fixture, windowsHide: true });
+    let output = '';
+    child.stdout.on('data', data => output += data);
+    child.stderr.on('data', data => output += data);
+    child.on('error', reject);
+    child.on('exit', code => resolve({ code, output }));
+  });
+  fs.writeFileSync(path.join(fixture, 'recipe.json'), JSON.stringify({ id: 'fixture-recipe', notes: 'Fixture text changed', changes: [{ classType: 'FixtureSave', input: 'text', from: 'fixture', to: 'optimized' }] }));
+  fs.writeFileSync(path.join(fixture, 'bad-recipe.json'), JSON.stringify({ id: 'bad', notes: 'Never applies', changes: [{ classType: 'FixtureSave', input: 'text', from: 'absent', to: 'x' }] }));
+  const badRecipe = await spawnOutput('scripts/create-optimized-prompts.mjs', ['bad-recipe.json', '01', '--endpoint', endpoint]);
+  assert.equal(badRecipe.code, 1);
+  assert.match(badRecipe.output, /Workflow 01 has no FixtureSave with text = absent; recipe bad does not apply/);
+  const created = await spawnOutput('scripts/create-optimized-prompts.mjs', ['recipe.json', '01', '--endpoint', endpoint]);
+  assert.equal(created.code, 0, created.output);
+  const saved = JSON.parse(fs.readFileSync(path.join(fixture, 'data/optimized-prompts/01.json'), 'utf8'));
+  assert.equal(saved.workflowSha256, canonicalSha01);
+  assert.deepEqual(saved.changes, [{ node: '1', classType: 'FixtureSave', input: 'text', from: 'fixture', to: 'optimized' }]);
+  assert.deepEqual(saved.prompt, { 1: { class_type: 'FixtureSave', inputs: { text: 'optimized' } } });
+  const optimizedBatch = await spawnOutput('scripts/run-execution-batch.mjs', ['base.json', '--repeats', '1', '--workflows', '01,02', '--optimized']);
+  assert.equal(optimizedBatch.code, 0, optimizedBatch.output);
+  assert.match(optimizedBatch.output, /SKIP 02: Workflow 02 has no optimized prompt/);
+  assert.match(optimizedBatch.output, /Running 1 of 2 workflows OPTIMIZED/);
+  assert.equal(records().length, 11);
+  assert.equal(records()[10].executionProfile, 'OPTIMIZED');
+  assert.equal(records()[10].optimizationNotes, 'Fixture text changed');
+  assert.deepEqual(records()[10].settings.prompt, saved.prompt);
+  assert.equal(records()[10].coldStart, true);
+  console.log('Runner integration passed: STANDARD success, subgraph prompt from a current frontend conversion, stale conversion refused, OPTIMIZED prompts from a recipe run by the batch, exact execution failure, validation failure, timeout, hardware mismatch, OPTIMIZED success, append-only records and saved artifacts. All synthetic records isolated in ' + fixture);
 } finally { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }

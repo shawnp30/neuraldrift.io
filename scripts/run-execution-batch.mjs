@@ -1,14 +1,16 @@
 // Runs scripts/run-execution.mjs for many workflows, several times each, against one
 // local ComfyUI. Every attempt is still its own immutable record; this only drives them.
 //
-// Usage: npm run evidence:batch -- path/to/base-config.json [--repeats 3] [--workflows 04,29] [--check-only]
+// Usage: npm run evidence:batch -- path/to/base-config.json [--repeats 3] [--workflows 04,29] [--optimized] [--check-only]
 // The base config is a run-execution config without workflowId/executionProfile.
+// --optimized runs OPTIMIZED from data/optimized-prompts/<id>.json (npm run evidence:optimize)
+// instead of STANDARD; workflows without a current optimized prompt are skipped.
 // Default workflows: every workflow with a completed legacy test in data/workflow-tests.json.
 import fs from 'node:fs';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { apiPrompt, savedSubgraphPrompt } from './workflow-api.mjs';
+import { apiPrompt, savedOptimizedPrompt, savedSubgraphPrompt } from './workflow-api.mjs';
 
 const runnerPath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'run-execution.mjs');
 
@@ -18,6 +20,8 @@ if (!basePath || basePath.startsWith('--')) throw new Error('Supply a base confi
 const flag = (name) => { const i = args.indexOf(`--${name}`); return i === -1 ? undefined : args[i + 1]; };
 const repeats = Number(flag('repeats') ?? 3);
 if (!Number.isInteger(repeats) || repeats < 1 || repeats > 10) throw new Error('--repeats must be an integer from 1 to 10.');
+const optimized = args.includes('--optimized');
+const executionProfile = optimized ? 'OPTIMIZED' : 'STANDARD';
 
 const base = JSON.parse(fs.readFileSync(basePath, 'utf8'));
 if (base.workflowId || base.executionProfile) throw new Error('The base config must not set workflowId or executionProfile; the batch sets them.');
@@ -29,7 +33,8 @@ for (const id of workflowIds) if (!/^\d{2}$/.test(id) || !assets[id]) throw new 
 // Convert each catalog graph exactly as the runner will, then check every dropdown value
 // (model files, input images) against that node's own option list in the live ComfyUI.
 // A missing download or input file is a setup gap, not a GPU result, so it is skipped
-// instead of recorded. So is a subgraph workflow without a current frontend conversion.
+// instead of recorded. So is a subgraph workflow without a current frontend conversion, and in
+// --optimized mode a workflow without a current optimized prompt.
 // Other conversion errors are left for the runner to record.
 const objectInfo = await (await fetch(new URL('/object_info', base.endpoint), { signal: AbortSignal.timeout(60000) })).json();
 const comboOptions = (definition) => {
@@ -41,7 +46,9 @@ const comboOptions = (definition) => {
 function setupGap(workflowId) {
   const graph = JSON.parse(fs.readFileSync(`public/workflows/${workflowId}.json`, 'utf8'));
   let prompt;
-  if (graph.definitions?.subgraphs?.length) {
+  if (optimized) {
+    try { prompt = savedOptimizedPrompt(workflowId).prompt; } catch (error) { return error.message; }
+  } else if (graph.definitions?.subgraphs?.length) {
     try { prompt = savedSubgraphPrompt(workflowId); } catch (error) { return error.message; }
   } else {
     try {
@@ -73,7 +80,7 @@ if (args.includes('--check-only')) {
   console.log(`\n${runnable.length} of ${workflowIds.length} workflows have every model and input file available:${runnable.join(', ') || 'none'}`);
   process.exit(0);
 }
-console.log(`\nRunning ${runnable.length} of ${workflowIds.length} workflows, ${repeats} time(s) each.\n`);
+console.log(`\nRunning ${runnable.length} of ${workflowIds.length} workflows ${executionProfile}, ${repeats} time(s) each.\n`);
 
 const gb = (bytes) => (bytes == null ? '—' : `${(bytes / 1e9).toFixed(2)} GB`);
 
@@ -100,7 +107,10 @@ fs.mkdirSync(configDir, { recursive: true });
 
 function runOnce(workflowId, attempt) {
   const configPath = path.join(configDir, `${workflowId}-${attempt}.json`);
-  fs.writeFileSync(configPath, JSON.stringify({ ...base, workflowId, executionProfile: 'STANDARD', coldStartMinFreeBytes }, null, 2));
+  const profileSettings = optimized
+    ? { executionProfile, promptFile: `data/optimized-prompts/${workflowId}.json`, optimizationNotes: savedOptimizedPrompt(workflowId).optimizationNotes }
+    : { executionProfile };
+  fs.writeFileSync(configPath, JSON.stringify({ ...base, workflowId, ...profileSettings, coldStartMinFreeBytes }, null, 2));
   return new Promise((resolve, reject) => {
     const child = spawn(process.execPath, [runnerPath, configPath], { windowsHide: true });
     let stdout = '';

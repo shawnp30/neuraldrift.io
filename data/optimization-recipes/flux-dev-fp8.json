@@ -1,0 +1,9 @@
+{
+  "id": "flux-dev-fp8",
+  "notes": "Flux dev loaded as fp8 instead of bf16: the diffusion model flux1-dev.safetensors is replaced by flux1-dev-fp8.safetensors (Kijai/flux-fp8, SHA-256 1be961341be8f5307ef26c787199f80bf4e0de3c1c0b4617095aa6ee5550dfce) with weight_dtype fp8_e4m3fn_fast, so matrix multiplies run in fp8, and the T5 text encoder t5xxl_fp16.safetensors is replaced by t5xxl_fp8_e4m3fn.safetensors (comfyanonymous/flux_text_encoders, SHA-256 7d330da4816157540d6bb7838bf63a0f02f573fc48ca4d8de34bb0cbfd514f09). Prompt text, seed, steps, CFG, sampler, scheduler and resolution are unchanged. fp8 weights change the image slightly.",
+  "changes": [
+    { "classType": "UNETLoader", "input": "unet_name", "from": "flux1-dev.safetensors", "to": "flux1-dev-fp8.safetensors" },
+    { "classType": "UNETLoader", "input": "weight_dtype", "from": "default", "to": "fp8_e4m3fn_fast" },
+    { "classType": "DualCLIPLoader", "input": "clip_name2", "from": "t5xxl_fp16.safetensors", "to": "t5xxl_fp8_e4m3fn.safetensors" }
+  ]
+}

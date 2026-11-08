@@ -25,6 +25,7 @@
     "evidence:run": "node scripts/run-execution.mjs",
     "evidence:batch": "node scripts/run-execution-batch.mjs",
     "evidence:subgraphs": "node scripts/convert-subgraph-workflows.mjs",
+    "evidence:optimize": "node scripts/create-optimized-prompts.mjs",
     "evidence:hardware": "node --require ./scripts/register-ts.cjs scripts/register-hardware.mjs",
     "test:runner": "node scripts/test-execution-runner.mjs"
   },

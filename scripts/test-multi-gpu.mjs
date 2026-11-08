@@ -49,6 +49,13 @@ assert.deepEqual([summary.runs, summary.medianSeconds, summary.minSeconds, summa
 assert.deepEqual([summary.steps, summary.cfg, summary.sampler, summary.scheduler, summary.seed, summary.width, summary.height, summary.batchSize, summary.latestTestDate], [30, 6.5, 'euler', 'karras', 7, 1024, 768, 2, '2026-05-01T00:00:00.000Z'], 'settings come from the latest run\'s submitted prompt');
 assert.deepEqual([summary.comfyUI, summary.pytorch, summary.ramTotalBytes, summary.modelFiles], ['9.9.9', '2.0-fixture', 64e9, ['fixture.safetensors']], 'software and models come from the latest run');
 assert.equal(coldStartSummary('01', original.hardwareProfileId, [run('unverified', 1, 1e9, { coldStartCheck: null })]), null);
+// OPTIMIZED runs are summarised separately, with their notes, and never mix into the STANDARD figures.
+const fp8 = (id, runtimeSeconds) => run(id, runtimeSeconds, 7e9, { executionProfile: 'OPTIMIZED', optimizationNotes: 'Fixture fp8 weights' });
+const mixed = [run('s1', 30, 9e9), run('s2', 32, 9e9), fp8('o1', 12), fp8('o2', 14), fp8('o3', 13)];
+assert.deepEqual([coldStartSummary('01', original.hardwareProfileId, mixed).runs, coldStartSummary('01', original.hardwareProfileId, mixed).medianSeconds], [2, 31]);
+assert.equal(coldStartSummary('01', original.hardwareProfileId, mixed).optimizationNotes, null);
+const optimizedSummary = coldStartSummary('01', original.hardwareProfileId, mixed, undefined, 'OPTIMIZED');
+assert.deepEqual([optimizedSummary.runs, optimizedSummary.medianSeconds, optimizedSummary.peakVramBytes, optimizedSummary.optimizationNotes], [3, 13, 7e9, 'Fixture fp8 weights']);
 assert.equal(exact([{ ...old, hardwareProfileId: 'unknown' }]), null);
 assert.equal(exact([{ ...old, workflowSha256: '0'.repeat(64) }]), null);
 assert.equal(evidenceFreshness({ ...old, workflowSha256: null }), 'UNKNOWN');
